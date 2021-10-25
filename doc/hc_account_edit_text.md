@@ -1,4 +1,4 @@
-# 用户名输入框 AccountEditText
+# 账号输入框 AccountEditText
 
 ## 布局文件使用方式
 ```xml
@@ -31,7 +31,7 @@
 可以通过 *hint_mode* 属性来控制，如：
 ```xml
 <cn.authing.guard.AccountEditText
-    authing:hint_mode="animated" />
+    authing:hintMode="animated" />
 ```
 
 
@@ -42,11 +42,11 @@
 
 ![](./images/aet_clear_all.png)
 
-如果不需要“全部删除”按钮，可以通过 *clear_all* 属性来控制。如：
+如果不需要“全部删除”按钮，可以通过 *clearAllEnabled* 属性来控制。如：
 
 ```xml
 <cn.authing.guard.AccountEditText
-    authing:clear_all="gone" />
+    authing:clearAllEnabled="false" />
 ```
 
 <br>
@@ -63,3 +63,10 @@
 AccountEditText accountEditText = findViewById(R.id.aet);
 EditText editText = accountEditText.getEditText();
 ```
+
+## xml 属性列表
+
+| 属性名                     | 类型 | 说明 | 默认值 |
+| ----------------------- |:--------:| :------:| :-----: |
+|  hintMode     |    string    |  normal/animated/fixed   |    normal   |
+|  clearAllEnabled     |    boolean    |   若为 false，则不显示全部删除按钮   |    true   |
