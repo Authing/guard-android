@@ -11,7 +11,7 @@ Authing android guard 是一个面向身份认证领域的业务组件库，该�
 步骤一：添加依赖
 
 ``` gradle
-implementation 'cn.authing:guard:1.0.0'
+implementation 'cn.authing:guard:1.0.1'
 ```
 
 步骤二：在本项目的 app/src/main/res/layout 目录下选择适合自己 App 的模板布局文件，如：
@@ -38,17 +38,19 @@ protected void onCreate(Bundle savedInstanceState) {
 
 ## 组件使用指南
 
-[AppLogo](./doc/uc.md)
+[AppLogo](./doc/hc_app_logo.md)
+
+[AppName](./doc/hc_app_name.md)
 
 [AccountEditText](./doc/hc_account_edit_text.md)
 
-[PasswordEditText](./doc/uc.md)
+[PasswordEditText](./doc/hc_password_edit_text.md)
 
-[LoginButton](./doc/uc.md)
+[LoginButton](./doc/hc_login_button.md)
 
 <br>
 
-## 深入了解 Authing 登录组件设计细节
+## 深入了解 Authing Android Guard 组件设计细节
 
 一般来说，头部 App 厂商会维持一个 10 人左右的团队，全职开发和维护认证相关的界面和逻辑。这是一笔不小的开销，原因在于登录界面的易用性，健壮性直接决定了付费用户转换率。想象一下，多少次当一个 App 让你登录的时候，也就是你放弃这个 App 的时候。而为了获得付费用户，又必须首先让用户登录。
 
@@ -57,8 +59,8 @@ protected void onCreate(Bundle savedInstanceState) {
 Authing 作为认证领域专家，将数年认证经验沉淀在 Guard 组件里面，可以极大节约开发成本，降低安全风险。接下来，我们深入探讨 Authing 在设计 Guard 组件时所面临的巨大挑战以及我们的解决方案，同时站在软件开发的角度聊一些技术细节。
 
 ### 一 设计理念
-1. 设计一套高内聚，低耦合的组件库
-2. 将一个自然人数字化
+1. 将一个自然人数字化
+2. 设计一套高内聚，低耦合的组件库
 3. 隐私和安全（隐私协议，GDPR，防截屏，每次登录，MFA，异常登录）
 4. 命名考虑（组件名，属性名，接口名）
 
@@ -79,7 +81,7 @@ Authing 作为认证领域专家，将数年认证经验沉淀在 Guard 组件�
 3. 为什么不使用 TextInputLayout
 
 ### 四 更多认证方式
-1. 社会化登录
+1. [社会化登录](./doc/social.md)
 2. 扫描二维码登录
 3. 通过 Biometric API 支持指纹登录
 4. 人脸识别登录
