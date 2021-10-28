@@ -4,9 +4,17 @@ Authing android guard 是一个面向身份认证领域的业务组件库，该�
 
 <br>
 
+## 开始之前
+
+在 Guard 设计开发之前，我们花了大量时间对业界主流 App 登录界面进行了深入分析
+
+[查看报告](./doc/auth_reports.md)
+
+<br>
+
 ## 快速开始
 
-最快的接入方式是使用我们海量的模板。我们深入调查了业界主流 App 登录界面，通过我们 Guard 组件，预置了 100+ 基于业务（行业）的登录/注册界面模板。开发这只需要选择自己的行业，拷贝对应的模板，即可在 10 分钟内实现复杂的，完整的认证流程。
+最快的接入方式是使用我们海量的模板。通过我们 Guard 组件，预置了 100+ 基于业务（行业）的登录/注册界面模板。开发者只需要选择自己的行业，拷贝对应的模板，即可在 10 分钟内实现复杂的，完整的认证流程。
 
 步骤一：添加依赖
 
@@ -38,6 +46,8 @@ protected void onCreate(Bundle savedInstanceState) {
 
 ## 组件使用指南
 
+### Widgets
+
 [AppLogo](./doc/hc_app_logo.md)
 
 [AppName](./doc/hc_app_name.md)
@@ -47,6 +57,28 @@ protected void onCreate(Bundle savedInstanceState) {
 [PasswordEditText](./doc/hc_password_edit_text.md)
 
 [LoginButton](./doc/hc_login_button.md)
+
+[CountryCodePicker](./doc/hc_country_code_picker.md)
+
+[PhoneNumberEditText](./doc/hc_phone_number_edit_text.md)
+
+[VerifyCodeEditText](./doc/hc_verify_code_edit_text.md)
+
+### 聚合控件
+
+LoginPanel
+
+SocialLoginListView
+
+CapchaView
+
+RegisterCompletionForm
+
+### 弹窗
+
+SendSMSDialog
+
+LogoutDialog
 
 <br>
 
@@ -72,8 +104,9 @@ Authing 作为认证领域专家，将数年认证经验沉淀在 Guard 组件�
 5. 关于短信验证码的思考
 6. 合并注册与登录
 7. 登录按钮的设计以及回调
-8. 自动 / 手动触发 MFA
-9. 登出
+8. 根据后台配置自动触发 MFA（Multi-Factor Authentication）
+9. MFA 详解以及手动触发
+10. 登出
 
 ### 三 UX & UI 交互和界面
 1. 提示语位置思考
@@ -96,3 +129,4 @@ Authing 作为认证领域专家，将数年认证经验沉淀在 Guard 组件�
 7. 给图片加上带个人信息的水印
 8. 远程擦除本地数据
 9. Authing Audit（审计功能）
+10. 设备互斥与强制下线
