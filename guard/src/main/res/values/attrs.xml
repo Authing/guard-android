@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="loginContainer">
+        <attr name="type" format="enum">
+            <enum name="phoneCode" value="0"/>
+            <enum name="accountPassword" value="1"/>
+            <enum name="phonePassword" value="2"/>
+            <enum name="emailCode" value="3"/>
+        </attr>
+    </declare-styleable>
+</resources>

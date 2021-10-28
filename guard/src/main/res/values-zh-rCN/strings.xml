@@ -1,0 +1,13 @@
+<resources>
+    <string name="account_edit_text_hint">请输入</string>
+    <string name="authing_username">用户名</string>
+    <string name="authing_email">邮箱</string>
+    <string name="authing_phone">手机号</string>
+    <string name="password_edit_text_hint">请输入密码</string>
+    <string name="authing_login">登录</string>
+    <string name="verify_code_edit_text_hint">请输入验证码</string>
+    <string name="authing_get_verify_code">获取验证码</string>
+    <string name="authing_login_by_account_and_password">帐号密码登录</string>
+    <string name="authing_login_by_phone_and_verify_code">用短信验证码登录</string>
+    <string name="authing_resend_after">%1$d 秒后获取</string>
+</resources>
