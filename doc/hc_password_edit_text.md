@@ -15,7 +15,7 @@
 
 ## 效果如下
 
-![](./images/aet_normal.png)
+![](./images/pet_normal.png)
 
 ### 特性一：
 根据 authing 后台设置，校验密码强度。
@@ -57,4 +57,3 @@ EditText editText = passwordEditText.getEditText();
 |  hintMode     |    string    |  normal/animated/fixed   |    normal   |
 |  toggleEnabled     |    boolean    |   当值为 true 且输入框有内容时，<br>输入框右侧会出现一个显示/隐藏密码明文的按钮   |    true   |
 |  toggleDrawable   |    resource id    |   显示/隐藏密码明文按钮的背景图片对应的资源 ID   |    指向本 SDK 提供的默认图片资源 ID   |
-|  toggleLocation   |    string    |   显示/隐藏密码明文按钮的位置。<br>取值为 'left' 或者 'right'  |    right   |
