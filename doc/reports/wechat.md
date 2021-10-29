@@ -24,13 +24,13 @@
 * 对用户输入的手机号进行合法性校验
 * 一些繁琐的小细节，如提示语的位置、根据输入显示/隐藏全部消除按钮、输入类型设置为数字等
 
-好消息是，Authing Guard 解决了上面问题。优雅、简洁。还免费！还开源！
+好消息是，Authing Guard 解决了上面问题。
 
 请参考：
 
-[CountryCodePicker](./hc_country_code_picker.md)
+[CountryCodePicker](./../hc_country_code_picker.md)
 
-[PhoneNumberEditText](./hc_phone_number_edit_text.md)
+[PhoneNumberEditText](./../hc_phone_number_edit_text.md)
 
 <br>
 
@@ -40,7 +40,7 @@
 
 这里用户可以选择使用密码或者验证码进行登录。若选择密码，可以使用我们的密码输入控件：
 
-[PasswordEditText](./hc_password_edit_text.md)
+[PasswordEditText](./../hc_password_edit_text.md)
 
 若用户选择使用验证码登录，会来到：
 
@@ -48,8 +48,9 @@
 
 实现验证码登录需要和云厂商对接，不仅非常耗时还需要付费。
 
-可以通过我们提供的 [VerifyCodeEditText](./hc_verify_code_edit_text.md) 控件来加速开发。该控件除了发送验证码，还提供一些细节（是的，都不是登月难度的科技，我们就是提供细致好用的控件帮开发者省时）：
+可以通过我们提供的 [VerifyCodeEditText](./../hc_verify_code_edit_text.md) 控件来加速开发。该控件除了发送验证码，还提供一些细节（是的，都不是登月难度的科技，我们就是提供细致好用的控件帮开发者省时）：
 
+* 当用户输入的数字达到验证码位数，自动触发登录
 * 下次发送倒计时
 * 非法输入提醒
 * 将输入框模式设置为数字
@@ -66,6 +67,8 @@
 
 推荐使用以下控件：
 
-[AccountEditText](./hc_account_edit_text.md)
+[AccountEditText](./../hc_account_edit_text.md)
 
-[LoginButton](./hc_login_button.md)
+[PasswordEditText](./../hc_password_edit_text.md)
+
+[LoginButton](./../hc_login_button.md)

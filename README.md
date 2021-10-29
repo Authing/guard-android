@@ -1,14 +1,21 @@
 # Authing Android Guard
 
-Authing android guard 是一个面向身份认证领域的业务组件库，该组件库将复杂的认证系统语义化，标准化。通过使用该组件库，业务 App 可以极速搭建登录/注册页面。相比手动实现，效率提升 x10。
+Authing android guard 是一个面向身份认证领域的业务组件库，该组件库将复杂的认证系统语义化，标准化。通过使用该组件库，业务 App 可以极速实现认证流程。相比手动实现，效率提升 x10。
 
 <br>
 
 ## 开始之前
 
-在 Guard 设计开发之前，我们花了大量时间对业界主流 App 登录界面进行了深入分析
+强烈建议先浏览至少 2 份下面的报告再回来继续阅读，这样对移动认证的复杂性才能有一个大的轮廓。我们在 Guard 设计开发之前，花了大量时间对业界主流 App 登录界面进行了深入分析。
 
 [查看报告](./doc/auth_reports.md)
+
+<br>
+
+## 适用场景
+
+* 初创。需要快速搭建 App MVP，不想为认证功能投入太多资源
+* 长期演进。认证模块的复杂性内置到我们组件里面，由我们负责和业界的持续对标，业务 App 只需要聚焦业务功能
 
 <br>
 
@@ -26,7 +33,13 @@ implementation 'cn.authing:guard:1.0.1'
 
 ![](./doc/images/templates.png)
 
-步骤三：在自己项目的登录 Activity 里面加载对应布局模板文件
+步骤三：在应用启动的时候，如 Application 的 onCreate 方法，调用：
+
+```java
+Authing.init(appContext, "your_authing_app_id");
+```
+
+步骤四：在自己项目的登录 Activity 里面加载对应布局模板文件
 
 ```java
 @Override
@@ -36,7 +49,7 @@ protected void onCreate(Bundle savedInstanceState) {
 }
 ```
 
-步骤四：在工程的 themes.xml 里面修改 App 主色调
+步骤五：在工程的 themes.xml 里面修改 App 主色调
 
 ```xml
 <item name="colorPrimary">your_primary_color</item>
@@ -68,7 +81,11 @@ protected void onCreate(Bundle savedInstanceState) {
 
 LoginPanel
 
+PrivacyConfirmBox
+
 SocialLoginListView
+
+SocialLoginActionSheet
 
 CapchaView
 
@@ -130,3 +147,5 @@ Authing 作为认证领域专家，将数年认证经验沉淀在 Guard 组件�
 8. 远程擦除本地数据
 9. Authing Audit（审计功能）
 10. 设备互斥与强制下线
+11. 深色模式
+12. 多设备适配
