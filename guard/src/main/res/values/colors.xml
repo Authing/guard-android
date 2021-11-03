@@ -1,4 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="authing_main">#396aff</color>
+    <color name="authing_app_name">#000</color>
+    <color name="authing_button_pressed">#FF0A3ACA</color>
+    <color name="authing_button_disabled">#FF92AAF3</color>
 </resources>

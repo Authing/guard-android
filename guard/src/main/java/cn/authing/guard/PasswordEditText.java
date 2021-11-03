@@ -1,106 +1,106 @@
 package cn.authing.guard;
 
 import android.content.Context;
-import android.graphics.Rect;
+import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
+import android.text.Editable;
 import android.text.InputType;
+import android.text.TextWatcher;
 import android.util.AttributeSet;
-import android.view.MotionEvent;
-import android.widget.EditText;
+import android.view.Gravity;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 
-public class PasswordEditText extends androidx.appcompat.widget.AppCompatEditText {
+import cn.authing.guard.internal.EditTextLayout;
+import cn.authing.guard.util.Util;
 
-    private Drawable eyeDrawable;
+public class PasswordEditText extends EditTextLayout implements TextWatcher {
+
+    private Drawable eyeOnDrawable;
     private Drawable eyeOffDrawable;
-    private Drawable rightDrawable;
+    private Drawable eyeDrawable;
+    private ImageView eyeButton;
 
     public PasswordEditText(Context context) {
-        super(context);
-        init(context);
+        this(context, null);
     }
 
     public PasswordEditText(Context context, AttributeSet attrs) {
-        super(context, attrs);
-//        String s1 = attrs.getAttributeValue("http://schemas.android.com/apk/res/android", "layout_marginStart");
-//        if (s1 == null) {
-//            ViewGroup.LayoutParams lp = getLayoutParams();
-//            if (lp instanceof ViewGroup.MarginLayoutParams) {
-//                ((ViewGroup.MarginLayoutParams) lp).setMarginStart(64);
-//            }
-//        }
-//
-//        String s2 = attrs.getAttributeValue("http://schemas.android.com/apk/res/android", "layout_marginEnd");
-//        TypedArray ta = context.obtainStyledAttributes(attrs, new int[]{R.styleable.Layout_android_layout_marginStart});
-//        float ml = ta.getInt(0, 0);
-        init(context);
+        this(context, attrs, 0);
     }
 
     public PasswordEditText(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        init(context);
-    }
 
-    private void init(Context context) {
-        CharSequence s = getHint();
+        CharSequence s = getEditText().getHint();
         if (s == null) {
-            setHint(R.string.password_edit_text_hint);
+            getEditText().setHint(R.string.password_edit_text_hint);
         }
 
-        eyeDrawable = context.getDrawable(R.drawable.ic_authing_eye);
-        eyeOffDrawable = context.getDrawable(R.drawable.ic_authing_eye_off);
-        rightDrawable = eyeDrawable;
-        setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+        TypedArray array = context.obtainStyledAttributes(attrs, R.styleable.PasswordEditText);
+        boolean toggleEnabled = array.getBoolean(R.styleable.PasswordEditText_toggleEnabled, true);
+        array.recycle();
 
-        setMaxLines(1);
+        if (toggleEnabled) {
+            eyeOnDrawable = context.getDrawable(R.drawable.ic_authing_eye);
+            eyeOffDrawable = context.getDrawable(R.drawable.ic_authing_eye_off);
+            eyeDrawable = eyeOnDrawable;
+            getEditText().setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+
+            LinearLayout eyeTouchArea = new LinearLayout(context);
+            eyeTouchArea.setOrientation(HORIZONTAL);
+            eyeTouchArea.setGravity(Gravity.CENTER_VERTICAL);
+            LayoutParams lp = new LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT);
+            eyeTouchArea.setLayoutParams(lp);
+
+            int length = (int) Util.dp2px(context, 24);
+            eyeButton = new ImageView(context);
+            LayoutParams iconParam = new LayoutParams(length, length);
+            int p = (int) Util.dp2px(context, 6);
+            iconParam.setMargins(p, 0, p, 0);
+            eyeButton.setLayoutParams(iconParam);
+            eyeButton.setVisibility(View.GONE);
+            eyeButton.setBackground(eyeOnDrawable);
+            eyeTouchArea.setOnClickListener((v -> toggle()));
+            eyeTouchArea.addView(eyeButton);
+            root.addView(eyeTouchArea);
+
+            getEditText().addTextChangedListener(this);
+        }
     }
 
     @Override
-    protected void onTextChanged(CharSequence text, int start, int lengthBefore, int lengthAfter) {
-        Drawable[] drawables = this.getCompoundDrawablesRelative();
+    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+    }
+
+    @Override
+    public void onTextChanged(CharSequence text, int start, int lengthBefore, int lengthAfter) {
         if (text.toString().length() > 0) {
-            setCompoundDrawablesWithIntrinsicBounds(drawables[0], drawables[1], rightDrawable, drawables[3]);
+            eyeButton.setVisibility(View.VISIBLE);
         } else {
-            setCompoundDrawablesWithIntrinsicBounds(drawables[0], drawables[1], null, drawables[3]);
+            eyeButton.setVisibility(View.GONE);
         }
-        super.onTextChanged(text, start, lengthBefore, lengthAfter);
     }
 
     @Override
-    public boolean onTouchEvent(MotionEvent event) {
-        if (event.getAction() == MotionEvent.ACTION_DOWN) {
-            if (rightDrawable != null) {
-                Rect bounds = rightDrawable.getBounds();
-                int actionX = (int)event.getX();
-                int actionY = (int) event.getY();
-                int x = getWidth() - getPaddingRight() - actionX;
-                int y = getHeight() - getPaddingBottom() - actionY;
+    public void afterTextChanged(Editable s) {
 
-                if (bounds.contains(x, y)) {
-                    event.setAction(MotionEvent.ACTION_CANCEL);
-                    toggle();
-                    return false;
-                }
-            }
-        }
-        return super.onTouchEvent(event);
-    }
-
-    public EditText getEditText() {
-        return this;
     }
 
     private void toggle() {
-        int start = getSelectionStart();
-        int end = getSelectionEnd();
-        if (rightDrawable == eyeDrawable) {
-            setInputType(InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
-            rightDrawable = eyeOffDrawable;
+        int start = getEditText().getSelectionStart();
+        int end = getEditText().getSelectionEnd();
+        if (eyeDrawable == eyeOnDrawable) {
+            getEditText().setInputType(InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
+            eyeDrawable = eyeOffDrawable;
         } else {
-            setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
-            rightDrawable = eyeDrawable;
+            getEditText().setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+            eyeDrawable = eyeOnDrawable;
         }
-        Drawable[] drawables = this.getCompoundDrawablesRelative();
-        setCompoundDrawablesWithIntrinsicBounds(drawables[0], drawables[1], rightDrawable, drawables[3]);
-        setSelection(start, end);
+        eyeButton.setBackground(eyeDrawable);
+        getEditText().setSelection(start, end);
     }
 }

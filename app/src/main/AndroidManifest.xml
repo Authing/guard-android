@@ -10,6 +10,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Guard">
         <activity
+            android:name=".SampleListActivity"
+            android:exported="false" />
+        <activity
             android:name=".MainActivity"
             android:exported="false" />
         <activity
@@ -22,7 +25,10 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".LoginActivity"
+            android:name=".AuthingLoginActivity"
+            android:exported="false" />
+        <activity
+            android:name=".AndroidLoginActivity"
             android:exported="false" />
     </application>
 

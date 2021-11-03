@@ -2,10 +2,9 @@
 
 ## 布局文件使用方式
 ```xml
-<!-- 如果 Logo 居中显示，推荐大小为 64dp -->
 <cn.authing.guard.AppLogo
-    android:layout_width="64dp"
-    android:layout_height="64dp"/>
+    android:layout_width="48dp"
+    android:layout_height="48dp"/>
 ```
 
 ## 效果如下

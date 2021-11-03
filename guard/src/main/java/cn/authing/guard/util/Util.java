@@ -8,6 +8,8 @@ import android.view.ViewGroup;
 import java.security.KeyFactory;
 import java.security.PublicKey;
 import java.security.spec.X509EncodedKeySpec;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.crypto.Cipher;
 
@@ -35,6 +37,36 @@ public class Util {
             return new String(Base64.encode(cipherMsg, Base64.NO_WRAP));
         } catch (Exception e) {
             return "{\"2020\":\"" + e + "\"}";
+        }
+    }
+
+    public static List<Integer> intDigits(int i) {
+        int temp = i;
+        ArrayList<Integer> array = new ArrayList<Integer>();
+        do{
+            array.add(0, temp % 10);
+            temp /= 10;
+        } while  (temp > 0);
+        return array;
+    }
+
+    public static List<View> findAllViewByClass(View current, Class T) {
+        View view = current.getRootView();
+        List<View> result = new ArrayList<>();
+        _findAllViewByClass((ViewGroup)view, T, result);
+        return result;
+    }
+
+    private static void _findAllViewByClass(ViewGroup parent, Class T, List<View> result) {
+        for (int i = 0; i < parent.getChildCount(); i++) {
+            View child = parent.getChildAt(i);
+            if (child instanceof ViewGroup) {
+                _findAllViewByClass((ViewGroup)child, T, result);
+            }
+
+            if (child.getClass().equals(T)) {
+                result.add(child);
+            }
         }
     }
 

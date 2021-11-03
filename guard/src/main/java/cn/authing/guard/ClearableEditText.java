@@ -5,6 +5,7 @@ import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
+import android.view.ViewGroup;
 import android.widget.EditText;
 
 import androidx.annotation.NonNull;
@@ -13,29 +14,33 @@ import androidx.annotation.Nullable;
 public class ClearableEditText extends androidx.appcompat.widget.AppCompatEditText {
 
     protected Drawable clearDrawable;
+    protected boolean clearAllEnabled = true;
 
     public ClearableEditText(@NonNull Context context) {
-        super(context);
-        init(context);
+        this(context, null);
     }
 
     public ClearableEditText(@NonNull Context context, @Nullable AttributeSet attrs) {
-        super(context, attrs);
-        init(context);
+        this(context, attrs, R.attr.editTextStyle);
     }
 
     public ClearableEditText(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        init(context);
-    }
 
-    private void init(Context context) {
         clearDrawable = context.getDrawable(R.drawable.ic_authing_clear_all);
         setMaxLines(1);
+        setSingleLine(true);
+
+        setOnFocusChangeListener((v, hasFocus)-> {
+            ((ViewGroup)getParent()).setPressed(hasFocus);
+        });
     }
 
     @Override
     protected void onTextChanged(CharSequence text, int start, int lengthBefore, int lengthAfter) {
+        if (!clearAllEnabled) {
+            return;
+        }
         Drawable[] drawables = this.getCompoundDrawablesRelative();
         if (text.toString().length() > 0) {
             setCompoundDrawablesWithIntrinsicBounds(drawables[0], drawables[1], clearDrawable, drawables[3]);
@@ -65,7 +70,11 @@ public class ClearableEditText extends androidx.appcompat.widget.AppCompatEditTe
         return super.onTouchEvent(event);
     }
 
-    public EditText getEditText() {
-        return this;
+    public boolean isClearAllEnabled() {
+        return clearAllEnabled;
+    }
+
+    public void setClearAllEnabled(boolean clearAllEnabled) {
+        this.clearAllEnabled = clearAllEnabled;
     }
 }

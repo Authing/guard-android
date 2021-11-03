@@ -1,11 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <declare-styleable name="loginContainer">
+    <declare-styleable name="LoginContainer">
         <attr name="type" format="enum">
             <enum name="phoneCode" value="0"/>
             <enum name="accountPassword" value="1"/>
             <enum name="phonePassword" value="2"/>
             <enum name="emailCode" value="3"/>
         </attr>
+    </declare-styleable>
+
+    <declare-styleable name="EditTextLayout">
+        <attr name="leftIconDrawable" format="reference" />
+        <attr name="clearAllEnabled" format="boolean" />
+    </declare-styleable>
+
+    <declare-styleable name="PasswordEditText">
+        <attr name="toggleEnabled" format="boolean" />
+    </declare-styleable>
+
+    <declare-styleable name="PhoneNumberEditText">
+        <attr name="dividerPattern" format="integer" />
     </declare-styleable>
 </resources>

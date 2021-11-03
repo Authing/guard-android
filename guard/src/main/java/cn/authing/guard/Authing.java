@@ -3,13 +3,9 @@ package cn.authing.guard;
 import android.content.Context;
 import android.util.Log;
 
-import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 
 import cn.authing.guard.data.Config;
@@ -80,19 +76,8 @@ public class Authing {
                 }
 
                 JSONObject data = json.getJSONObject("data");
+                publicConfig = Config.parse(data);
 
-                Config config = new Config();
-
-                config.setUserPoolId(data.getString("userPoolId"));
-                config.setIdentifier(data.getString("identifier"));
-                config.setName(data.getString("name"));
-                config.setUserpoolLogo(data.getString("userpoolLogo"));
-
-                JSONObject passwordTabConfig = data.getJSONObject("passwordTabConfig");
-                JSONArray enabledLoginMethods = passwordTabConfig.getJSONArray("enabledLoginMethods");
-                config.setEnabledLoginMethods(toStringList(enabledLoginMethods));
-
-                publicConfig = config;
                 if (callback != null) {
                     callback.call(true, publicConfig);
                 }
@@ -103,15 +88,6 @@ public class Authing {
                 callback.call(false, null);
             }
         }
-    }
-
-    private static List<String> toStringList(JSONArray array) throws JSONException {
-        List<String> list = new ArrayList<>();
-        int size = array.length();
-        for (int i = 0; i < size; i++) {
-            list.add((array.getString(i)));
-        }
-        return list;
     }
 
     private static void _logout(Callback<Object> callback) {

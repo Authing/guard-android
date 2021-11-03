@@ -33,13 +33,14 @@ public class LoginContainer extends LinearLayout {
     public LoginContainer(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
         setOrientation(VERTICAL);
-        TypedArray array = context.obtainStyledAttributes(attrs, R.styleable.loginContainer);
-        int t = array.getInt(R.styleable.loginContainer_type,0);
+        TypedArray array = context.obtainStyledAttributes(attrs, R.styleable.LoginContainer);
+        int t = array.getInt(R.styleable.LoginContainer_type,0);
         if (t == 0) {
             type = LoginType.EByPhoneCode;
         } else if (t == 1) {
             type = LoginType.EByAccountPassword;
         }
+        array.recycle();
     }
 
     public LoginType getType() {

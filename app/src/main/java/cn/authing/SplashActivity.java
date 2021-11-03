@@ -31,7 +31,7 @@ public class SplashActivity extends AppCompatActivity {
     private void gotoLogin(int flag) {
         this.flag |= flag;
         if (3 == this.flag) {
-            Intent intent = new Intent(this, LoginActivity.class);
+            Intent intent = new Intent(this, SampleListActivity.class);
             startActivity(intent);
             finish();
         }

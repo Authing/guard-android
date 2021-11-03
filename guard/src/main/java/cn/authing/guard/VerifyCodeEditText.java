@@ -1,14 +1,16 @@
 package cn.authing.guard;
 
 import android.content.Context;
+import android.text.Editable;
+import android.text.InputFilter;
 import android.text.InputType;
+import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.view.Gravity;
-import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -16,75 +18,65 @@ import androidx.annotation.Nullable;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import cn.authing.guard.internal.EditTextLayout;
 import cn.authing.guard.network.Guardian;
 import cn.authing.guard.util.Util;
 
-public class VerifyCodeEditText extends LinearLayout {
+public class VerifyCodeEditText extends EditTextLayout implements TextWatcher {
 
-    private ClearableEditText editText;
-    private Button getCodeButton;
+    private final Button getCodeButton;
     private int countDown;
-    private String countDownTip;
+    private final String countDownTip;
+    private int maxLength = 6;
 
     public VerifyCodeEditText(@NonNull Context context) {
-        super(context);
-        init(context);
+        this(context, null);
     }
 
     public VerifyCodeEditText(@NonNull Context context, @Nullable AttributeSet attrs) {
-        super(context, attrs);
-        init(context);
+        this(context, attrs, 0);
     }
 
     public VerifyCodeEditText(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        init(context);
-    }
 
-    public String getText() {
-        return editText.getText().toString();
-    }
-
-    private void init(Context context) {
         setOrientation(HORIZONTAL);
         setGravity(Gravity.CENTER_VERTICAL);
         countDownTip = context.getString(R.string.authing_resend_after);
 
-        editText = new ClearableEditText(context);
         editText.setHint(R.string.verify_code_edit_text_hint);
-        LayoutParams lp = new LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, 1.0f);
-        editText.setLayoutParams(lp);
         editText.setInputType(InputType.TYPE_CLASS_NUMBER);
-        addView(editText);
+        if (Authing.getPublicConfig() != null) {
+            maxLength = Authing.getPublicConfig().getVerifyCodeLength();
+        }
+        editText.setFilters(new InputFilter[] {new InputFilter.LengthFilter(maxLength)});
+        editText.addTextChangedListener(this);
 
         getCodeButton = new Button(context);
         getCodeButton.setText(R.string.authing_get_verify_code);
+        getCodeButton.setBackgroundResource(R.drawable.authing_get_code_button_background);
         getCodeButton.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 12);
         getCodeButton.setTextColor(context.getColor(R.color.authing_main));
-        int height = (int)Util.dp2px(context, 40);
-        LayoutParams btnlp = new LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, height);
+        LayoutParams btnlp = new LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT);
         int m = (int)Util.dp2px(context, 4);
         btnlp.setMargins(m, 0, m, 0);
         getCodeButton.setLayoutParams(btnlp);
-        getCodeButton.setOnClickListener((v -> {
-            getSMSCode();
-        }));
+        getCodeButton.setOnClickListener((v -> getSMSCode()));
         addView(getCodeButton);
     }
 
+    public Editable getText() {
+        return editText.getText();
+    }
+
     private void getSMSCode() {
-        String phoneNumber = null;
-        ViewGroup vg = (ViewGroup) getParent();
-        for (int i = 0;i < vg.getChildCount();++i) {
-            View v = vg.getChildAt(i);
-            if (v instanceof PhoneNumberEditText) {
-                PhoneNumberEditText et = (PhoneNumberEditText)v;
-                phoneNumber = et.getText().toString();
-                break;
-            }
+        PhoneNumberEditText phoneNumberEditText = (PhoneNumberEditText)Util.findViewByClass(this, PhoneNumberEditText.class);
+        if (phoneNumberEditText == null) {
+            return;
         }
 
-        if (phoneNumber == null) {
+        String phoneNumber = phoneNumberEditText.getText().toString();
+        if (TextUtils.isEmpty(phoneNumber)) {
             return;
         }
 
@@ -98,8 +90,6 @@ public class VerifyCodeEditText extends LinearLayout {
             if (data.getCode() == 200 || data.getCode() == 500) {
                 countDown = 60;
                 countDown();
-            } else {
-
             }
         });
     }
@@ -116,6 +106,26 @@ public class VerifyCodeEditText extends LinearLayout {
             getCodeButton.setText(R.string.authing_get_verify_code);
             getCodeButton.setEnabled(true);
             getCodeButton.setTextColor(getContext().getColor(R.color.authing_main));
+        }
+    }
+
+    @Override
+    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+    }
+
+    @Override
+    public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+    }
+
+    @Override
+    public void afterTextChanged(Editable s) {
+        if (s.length() == maxLength) {
+            LoginButton button = (LoginButton)Util.findViewByClass(this, LoginButton.class);
+            if (button != null) {
+                button.login();
+            }
         }
     }
 }

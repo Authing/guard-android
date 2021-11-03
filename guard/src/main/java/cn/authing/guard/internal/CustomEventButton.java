@@ -2,15 +2,15 @@ package cn.authing.guard.internal;
 
 import android.content.Context;
 import android.util.AttributeSet;
+import android.widget.RelativeLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.widget.AppCompatButton;
 
 import cn.authing.guard.Callback;
 import cn.authing.guard.data.UserInfo;
 
-public class CustomEventButton extends AppCompatButton {
+public class CustomEventButton extends RelativeLayout {
 
     protected Callback<UserInfo> callback;
 

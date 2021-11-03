@@ -1,4 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="dimen_clear_padding" />
+    <dimen name="authing_form_start_end_margin">24dp</dimen>
 </resources>

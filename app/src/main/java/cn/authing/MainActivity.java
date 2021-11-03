@@ -32,7 +32,7 @@ public class MainActivity extends AppCompatActivity {
     private void logout() {
         Authing.logout((ok, data)->{
             if (ok) {
-                Intent intent = new Intent(this, LoginActivity.class);
+                Intent intent = new Intent(this, AuthingLoginActivity.class);
                 startActivity(intent);
             }
         });

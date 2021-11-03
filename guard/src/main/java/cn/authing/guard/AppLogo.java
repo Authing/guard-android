@@ -11,21 +11,15 @@ import cn.authing.guard.data.ImageLoader;
 public class AppLogo extends androidx.appcompat.widget.AppCompatImageView {
 
     public AppLogo(Context context) {
-        super(context);
-        init(context);
+        this(context, null);
     }
 
     public AppLogo(Context context, @Nullable AttributeSet attrs) {
-        super(context, attrs);
-        init(context);
+        this(context, attrs, 0);
     }
 
     public AppLogo(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        init(context);
-    }
-
-    private void init(Context context) {
         Config config = Authing.getPublicConfig();
         if (config == null) {
             return;

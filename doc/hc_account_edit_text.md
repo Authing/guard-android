@@ -7,8 +7,8 @@
     android:layout_height="wrap_content"
     app:layout_constraintLeft_toLeftOf="parent"
     app:layout_constraintRight_toRightOf="parent"
-    android:layout_marginStart="48dp"
-    android:layout_marginEnd="48dp"
+    android:layout_marginStart="24dp"
+    android:layout_marginEnd="24dp"
     app:layout_constraintTop_toTopOf="parent"/>
 ```
 
@@ -68,5 +68,5 @@ EditText editText = accountEditText.getEditText();
 
 | 属性名                     | 类型 | 说明 | 默认值 |
 | ----------------------- |:--------:| :------:| :-----: |
-|  hintMode     |    string    |  normal/animated/fixed   |    normal   |
+|  hintMode (建设中)     |    string    |  normal/animated/fixed   |    normal   |
 |  clearAllEnabled     |    boolean    |   若为 false，则不显示全部删除按钮   |    true   |

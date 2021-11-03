@@ -49,12 +49,6 @@ protected void onCreate(Bundle savedInstanceState) {
 }
 ```
 
-步骤五：在工程的 themes.xml 里面修改 App 主色调
-
-```xml
-<item name="colorPrimary">your_primary_color</item>
-```
-
 <br>
 
 ## 组件使用指南
@@ -81,7 +75,7 @@ protected void onCreate(Bundle savedInstanceState) {
 
 LoginPanel
 
-PrivacyConfirmBox
+[PrivacyConfirmBox](./doc/hc_privacy_confirm_box.md)
 
 SocialLoginListView
 
