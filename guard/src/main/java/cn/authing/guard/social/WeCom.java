@@ -14,9 +14,9 @@ public class WeCom {
 
     private static final String TAG = "WeCom";
 
-    private static String schema = "wwauth2fe68893d538b6c1000003";
-    private static String agentId = "1000003";
-    private static String corpId = "ww2fe68893d538b6c1";
+    public static String schema;
+    public static String agentId;
+    public static String corpId;
 
     public static void login(Context context, Callback<UserInfo> callback) {
         // TODO get from authing server
@@ -44,18 +44,6 @@ public class WeCom {
                 }
             }
         });
-    }
-
-    public static void setSchema(String schema) {
-        WeCom.schema = schema;
-    }
-
-    public static void setAgentId(String agentId) {
-        WeCom.agentId = agentId;
-    }
-
-    public static void setCorpId(String corpId) {
-        WeCom.corpId = corpId;
     }
 
     private static void callback(Callback<UserInfo> callback, boolean ok, UserInfo data) {

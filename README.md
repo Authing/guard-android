@@ -65,11 +65,11 @@ protected void onCreate(Bundle savedInstanceState) {
 
 [LoginButton](./doc/hc_login_button.md)
 
-[CountryCodePicker](./doc/hc_country_code_picker.md)
-
 [PhoneNumberEditText](./doc/hc_phone_number_edit_text.md)
 
 [VerifyCodeEditText](./doc/hc_verify_code_edit_text.md)
+
+[CountryCodePicker](./doc/hc_country_code_picker.md)
 
 ### 聚合控件
 

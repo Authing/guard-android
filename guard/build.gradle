@@ -31,5 +31,7 @@ android {
 dependencies {
     implementation 'androidx.appcompat:appcompat:1.2.0'
     implementation "com.squareup.okhttp3:okhttp:4.9.2"
+
     compileOnly files('libs/wechatwork.jar')
+    compileOnly 'com.tencent.mm.opensdk:wechat-sdk-android:6.8.0'
 }

@@ -1,5 +1,8 @@
 package cn.authing.guard.data;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.Serializable;
 
 public class UserInfo implements Serializable {
@@ -244,4 +247,18 @@ public class UserInfo implements Serializable {
         this.accessToken = accessToken;
     }
 
+    public static UserInfo createUserInfo(JSONObject data) throws JSONException {
+        String id = data.getString("id");
+        String username = data.getString("username");
+        String phone = data.getString("phone");
+        String email = data.getString("email");
+        String token = data.getString("token");
+        UserInfo userInfo = new UserInfo();
+        userInfo.setId(id);
+        userInfo.setName(username);
+        userInfo.setPhone_number(phone);
+        userInfo.setEmail(email);
+        userInfo.setAccessToken(token);
+        return userInfo;
+    }
 }

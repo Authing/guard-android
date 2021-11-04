@@ -18,8 +18,6 @@ public class SplashActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        Authing.init(getApplicationContext(), "60caaf41df670b771fd08937");
-
         Objects.requireNonNull(getSupportActionBar()).hide();
         setContentView(R.layout.activity_splash);
 

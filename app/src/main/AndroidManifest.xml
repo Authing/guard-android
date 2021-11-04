@@ -2,13 +2,18 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="cn.authing">
 
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+
     <application
-        android:allowBackup="true"
+        android:name=".App"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Guard">
+        <activity
+            android:name=".oneclick.OneClickActivity"
+            android:exported="false" />
         <activity
             android:name=".SampleListActivity"
             android:exported="false" />

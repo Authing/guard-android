@@ -6,7 +6,7 @@ android {
     compileSdk 30
 
     defaultConfig {
-        applicationId "cn.authing"
+        applicationId "cn.authing.guard"
         minSdk 23
         targetSdk 30
         versionCode 1
@@ -15,10 +15,25 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
+    signingConfigs {
+        release {
+            storeFile file("keystore")
+            storePassword '123456'
+            keyAlias 'guard'
+            keyPassword '123456'
+        }
+    }
+
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
+        }
+
+        debug {
+            debuggable true
+            signingConfig signingConfigs.release
         }
     }
     compileOptions {
@@ -34,5 +49,12 @@ dependencies {
     implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
 
     implementation project(':guard')
+
+    // 企业微信不提供远程依赖
     implementation files('libs/wechatwork.jar')
+
+    // 通过网易云盾实现一键登录
+    implementation 'io.github.yidun:quicklogin:3.1.1'
+
+    implementation 'com.tencent.mm.opensdk:wechat-sdk-android:6.8.0'
 }

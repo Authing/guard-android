@@ -122,7 +122,7 @@ public class LoginButton extends CustomEventButton {
                 if (data != null) {
                     UserInfo userInfo;
                     try {
-                        userInfo = createUserInfo(data.getData());
+                        userInfo = UserInfo.createUserInfo(data.getData());
                         fireCallback(userInfo);
                     } catch (JSONException e) {
                         e.printStackTrace();
@@ -156,7 +156,7 @@ public class LoginButton extends CustomEventButton {
                 if (data != null) {
                     UserInfo userInfo;
                     try {
-                        userInfo = createUserInfo(data.getData());
+                        userInfo = UserInfo.createUserInfo(data.getData());
                         fireCallback(userInfo);
                     } catch (JSONException e) {
                         e.printStackTrace();
@@ -170,19 +170,6 @@ public class LoginButton extends CustomEventButton {
             e.printStackTrace();
             fireCallback(null);
         }
-    }
-
-    private UserInfo createUserInfo(JSONObject data) throws JSONException {
-        String id = data.getString("id");
-        String username = data.getString("username");
-        String phone = data.getString("phone");
-        String email = data.getString("email");
-        UserInfo userInfo = new UserInfo();
-        userInfo.setId(id);
-        userInfo.setName(username);
-        userInfo.setPhone_number(phone);
-        userInfo.setEmail(email);
-        return userInfo;
     }
 
     private void fireCallback(UserInfo info) {

@@ -20,7 +20,7 @@ public class Authing {
 
     private static Context sAppContext;
     private static String sAppId;
-    private static Config publicConfig;
+    private static Config publicConfig = new Config();
 
     public static void init(final Context context, String appId) {
         sAppContext = context.getApplicationContext();

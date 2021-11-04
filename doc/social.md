@@ -8,8 +8,9 @@
 
 2C：
 
-* [支付宝](./alipay.md)
+* [微信](./social/wechat.md)
+* [支付宝](./social/alipay.md)
 
 2E：
 
-* [企业微信](./wecom.md)
+* [企业微信](./social/wecom.md)
