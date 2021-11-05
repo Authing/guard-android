@@ -94,6 +94,7 @@ public class LoginMethodTab extends LinearLayout {
                 item.loseFocus();
             }
             ((LoginMethodTabItem)v).gainFocus();
+            Util.setErrorText(this, null);
         });
     }
 

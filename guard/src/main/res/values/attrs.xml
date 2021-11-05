@@ -1,5 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
+    <attr name="background" format="reference" />
+    <attr name="textColor" format="reference|color" />
+    <attr name="textSize" format="dimension" />
+    <attr name="paddingLeft" format="dimension" />
+    <attr name="paddingRight" format="dimension" />
+    <attr name="paddingTop" format="dimension" />
+    <attr name="paddingBottom" format="dimension" />
+
     <declare-styleable name="LoginContainer">
         <attr name="type" format="enum">
             <enum name="phoneCode" value="0"/>
@@ -12,6 +21,8 @@
     <declare-styleable name="EditTextLayout">
         <attr name="leftIconDrawable" format="reference" />
         <attr name="clearAllEnabled" format="boolean" />
+        <attr name="background" />
+        <attr name="textSize" />
     </declare-styleable>
 
     <declare-styleable name="PasswordEditText">
@@ -20,5 +31,25 @@
 
     <declare-styleable name="PhoneNumberEditText">
         <attr name="dividerPattern" format="integer" />
+    </declare-styleable>
+
+    <declare-styleable name="SocialLoginListView">
+        <attr name="src" format="string" />
+    </declare-styleable>
+
+    <declare-styleable name="CountryCodePicker">
+        <attr name="showCountryName" format="boolean" />
+        <attr name="showRightArrow" format="boolean" />
+    </declare-styleable>
+
+    <declare-styleable name="GetVerifyCodeButton">
+        <attr name="background" />
+        <attr name="text" format="string" />
+        <attr name="textColor" />
+        <attr name="textSize" />
+        <attr name="paddingLeft" />
+        <attr name="paddingRight" />
+        <attr name="paddingTop" />
+        <attr name="paddingBottom" />
     </declare-styleable>
 </resources>

@@ -15,11 +15,11 @@ public class CustomEventButton extends RelativeLayout {
     protected Callback<UserInfo> callback;
 
     public CustomEventButton(@NonNull Context context) {
-        super(context);
+        this(context, null);
     }
 
     public CustomEventButton(@NonNull Context context, @Nullable AttributeSet attrs) {
-        super(context, attrs);
+        this(context, attrs, 0);
     }
 
     public CustomEventButton(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr) {

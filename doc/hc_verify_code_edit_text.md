@@ -27,7 +27,7 @@
 可以通过 *hint_mode* 属性来控制，如：
 ```xml
 <cn.authing.guard.PhoneNumberEditText
-    authing:hintMode="animated" />
+    app:hintMode="animated" />
 ```
 
 <br>

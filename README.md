@@ -26,7 +26,7 @@ Authing android guard 是一个面向身份认证领域的业务组件库，该�
 步骤一：添加依赖
 
 ``` gradle
-implementation 'cn.authing:guard:1.0.1'
+implementation 'cn.authing:guard:1.0.2'
 ```
 
 步骤二：在本项目的 app/src/main/res/layout 目录下选择适合自己 App 的模板布局文件，如：
@@ -71,15 +71,17 @@ protected void onCreate(Bundle savedInstanceState) {
 
 [CountryCodePicker](./doc/hc_country_code_picker.md)
 
+[ErrorTextView](./doc/hc_error_text_view.md)
+
 ### 聚合控件
 
-LoginPanel
+[LoginMethodTab](./doc/hc_login_method_tab.md)
+
+[LoginContainer](./doc/hc_login_container.md)
 
 [PrivacyConfirmBox](./doc/hc_privacy_confirm_box.md)
 
-SocialLoginListView
-
-SocialLoginActionSheet
+[SocialLoginListView](./doc/hc_social_login_list_view.md)
 
 CapchaView
 

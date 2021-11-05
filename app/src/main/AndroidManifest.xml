@@ -12,15 +12,6 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Guard">
         <activity
-            android:name=".oneclick.OneClickActivity"
-            android:exported="false" />
-        <activity
-            android:name=".SampleListActivity"
-            android:exported="false" />
-        <activity
-            android:name=".MainActivity"
-            android:exported="false" />
-        <activity
             android:name=".SplashActivity"
             android:exported="true">
             <intent-filter>
@@ -30,11 +21,27 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".AuthingLoginActivity"
+            android:name=".SampleListActivity"
             android:exported="false" />
         <activity
-            android:name=".AndroidLoginActivity"
+            android:name=".MainActivity"
             android:exported="false" />
+
+        <activity
+            android:name=".AuthingLoginActivity"
+            android:exported="false"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".AndroidLoginActivity"
+            android:exported="false"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".oneclick.OneClickActivity"
+            android:exported="false" />
+        <activity
+            android:name=".wechat.WechatLoginActivity"
+            android:exported="false"
+            android:screenOrientation="portrait"/>
     </application>
 
 </manifest>

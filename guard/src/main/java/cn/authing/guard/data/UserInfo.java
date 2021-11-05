@@ -70,6 +70,7 @@ public class UserInfo implements Serializable {
     private boolean phone_number_verified;
 
     private String accessToken;
+    private String thirdPartySource;
 
     public String getId() {
         return id == null ? getSub() : id;
@@ -245,6 +246,14 @@ public class UserInfo implements Serializable {
 
     public void setAccessToken(String accessToken) {
         this.accessToken = accessToken;
+    }
+
+    public String getThirdPartySource() {
+        return thirdPartySource;
+    }
+
+    public void setThirdPartySource(String thirdPartySource) {
+        this.thirdPartySource = thirdPartySource;
     }
 
     public static UserInfo createUserInfo(JSONObject data) throws JSONException {

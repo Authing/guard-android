@@ -22,8 +22,6 @@
 ### 特性一：
 和账号输入框 AccountEditText 一样，提示语支持三种模式：
 
-<br>
-
 * *normal* 当用户输入时，提示语消失；当输入框没有内容时，提示语显示。
 * *animated* 当输入框获得焦点时，提示语移动至顶部；当失去焦点时，提示语移动至输入框内。
 * *fixed* 提示语总是固定在顶部。
@@ -31,7 +29,7 @@
 可以通过 *hint_mode* 属性来控制，如：
 ```xml
 <cn.authing.guard.PhoneNumberEditText
-    authing:hintMode="animated" />
+    app:hintMode="animated" />
 ```
 
 <br>

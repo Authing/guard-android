@@ -51,3 +51,25 @@ btn.setOnLoginListener((ok, data) -> {
 当输入框内容不合法，disable 按钮
 
 <br>
+
+## API
+
+**setOnLoginListener**
+
+```java
+public void setOnLoginListener(Callback<UserInfo> callback)
+```
+
+登录完成后会触发 callback 回调。如果登录成功，user 为 authing 用户信息。使用示例：
+
+```java
+LoginButton btn = findViewById(R.id.btn);
+btn.setOnLoginListener((ok, user) -> {
+    if (ok) {
+        Intent intent = new Intent(AuthingLoginActivity.this, MainActivity.class);
+        intent.putExtra("user", user);
+        startActivity(intent);
+        finish();
+    }
+});
+```

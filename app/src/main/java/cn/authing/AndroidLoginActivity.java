@@ -3,20 +3,16 @@ package cn.authing;
 import android.content.Intent;
 import android.os.Bundle;
 
-import androidx.appcompat.app.AppCompatActivity;
-
-import java.util.Objects;
-
 import cn.authing.guard.GlobalStyle;
 import cn.authing.guard.LoginButton;
-import cn.authing.guard.SocialLoginListView;
+import cn.authing.guard.activity.BaseLoginActivity;
+import cn.authing.guard.social.SocialLoginListView;
 
-public class AndroidLoginActivity extends AppCompatActivity {
+public class AndroidLoginActivity extends BaseLoginActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Objects.requireNonNull(getSupportActionBar()).hide();
 
         GlobalStyle.clear();
 

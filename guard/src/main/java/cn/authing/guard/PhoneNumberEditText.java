@@ -5,8 +5,10 @@ import android.content.res.TypedArray;
 import android.text.Editable;
 import android.text.InputType;
 import android.text.Spannable;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.AttributeSet;
+import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -55,6 +57,11 @@ public class PhoneNumberEditText extends EditTextLayout implements TextWatcher {
 
     @Override
     public void onTextChanged(CharSequence s, int start, int before, int count) {
+        super.onTextChanged(s, start, before, count);
+        if (dividerPattern == null || (dividerPattern.size() == 1 && dividerPattern.get(0) == 0)) {
+            return;
+        }
+
         Spannable spannableString = (Spannable)editText.getText();
         if (spannableString == null) {
             return;
@@ -81,5 +88,19 @@ public class PhoneNumberEditText extends EditTextLayout implements TextWatcher {
     @Override
     public void afterTextChanged(Editable s) {
 
+    }
+
+    public boolean isContentValid() {
+        String text = getText().toString();
+        if (TextUtils.isEmpty(text)) {
+            return false;
+        }
+
+        // TODO validate number with country code
+//        if (text.length() != 11) {
+//            return false;
+//        }
+
+        return true;
     }
 }

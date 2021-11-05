@@ -1,22 +1,18 @@
 package cn.authing;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 
-import java.util.Objects;
-
 import cn.authing.guard.GlobalStyle;
 import cn.authing.guard.LoginButton;
-import cn.authing.guard.SocialLoginListView;
+import cn.authing.guard.activity.BaseLoginActivity;
+import cn.authing.guard.social.SocialLoginListView;
 
-public class AuthingLoginActivity extends AppCompatActivity {
+public class AuthingLoginActivity extends BaseLoginActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Objects.requireNonNull(getSupportActionBar()).hide();
 
         GlobalStyle.setsEditTextBackground(0);
         GlobalStyle.setsEditTextLayoutBackground((R.drawable.authing_edit_text_layout_background));

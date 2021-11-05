@@ -1,6 +1,7 @@
 package cn.authing.guard.util;
 
 import android.content.Context;
+import android.text.TextUtils;
 import android.util.Base64;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +13,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.crypto.Cipher;
+
+import cn.authing.guard.ErrorTextView;
 
 public class Util {
 
@@ -90,5 +93,21 @@ public class Util {
             }
         }
         return null;
+    }
+
+    public static void setErrorText(View view, String text) {
+        view.post(()->{
+            View v = Util.findViewByClass(view, ErrorTextView.class);
+            if (v == null) {
+                return;
+            }
+            ErrorTextView errorView = (ErrorTextView)v;
+            errorView.setText(text);
+            if (TextUtils.isEmpty(text)) {
+                v.setVisibility(View.GONE);
+            } else {
+                v.setVisibility(View.VISIBLE);
+            }
+        });
     }
 }

@@ -31,7 +31,7 @@
 可以通过 *hint_mode* 属性来控制，如：
 ```xml
 <cn.authing.guard.AccountEditText
-    authing:hintMode="animated" />
+    app:hintMode="animated" />
 ```
 
 
@@ -46,7 +46,7 @@
 
 ```xml
 <cn.authing.guard.AccountEditText
-    authing:clearAllEnabled="false" />
+    app:clearAllEnabled="false" />
 ```
 
 <br>

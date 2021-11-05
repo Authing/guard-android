@@ -10,4 +10,10 @@
     <string name="authing_login_by_account_and_password">帐号密码登录</string>
     <string name="authing_login_by_phone_and_verify_code">用短信验证码登录</string>
     <string name="authing_resend_after">%1$d 秒后获取</string>
+
+    <!--error messages-->
+    <string name="authing_get_verify_code_failed">发送短信失败：无效手机号码</string>
+    <string name="authing_invalid_phone_number">手机号填写错误</string>
+    <string name="authing_incorrect_verify_code">验证码不正确</string>
+    <string name="authing_incorrect_credential">用户名或密码错误</string>
 </resources>
