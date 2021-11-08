@@ -13,11 +13,11 @@ public class GlobalStyle {
         isEditTextBackgroundSet = false;
     }
 
-    public static int getsEditTextLayoutBackground() {
+    public static int getEditTextLayoutBackground() {
         return sEditTextLayoutBackground;
     }
 
-    public static void setsEditTextLayoutBackground(int sEditTextLayoutBackground) {
+    public static void setEditTextLayoutBackground(int sEditTextLayoutBackground) {
         GlobalStyle.sEditTextLayoutBackground = sEditTextLayoutBackground;
         isEditTextLayoutBackgroundSet = true;
     }
@@ -26,11 +26,11 @@ public class GlobalStyle {
         return isEditTextLayoutBackgroundSet;
     }
 
-    public static int getsEditTextBackground() {
+    public static int getEditTextBackground() {
         return sEditTextBackground;
     }
 
-    public static void setsEditTextBackground(int sEditTextBackground) {
+    public static void setEditTextBackground(int sEditTextBackground) {
         GlobalStyle.sEditTextBackground = sEditTextBackground;
         isEditTextBackgroundSet = true;
     }

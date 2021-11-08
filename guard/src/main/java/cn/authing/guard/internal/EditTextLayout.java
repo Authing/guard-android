@@ -46,22 +46,22 @@ public class EditTextLayout extends LinearLayout implements TextWatcher {
 
         setOrientation(HORIZONTAL);
 
-        root = new LinearLayout(context);
+        root = this;
         root.setOrientation(HORIZONTAL);
         LayoutParams rootParam = new LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT, 1f);
         root.setGravity(Gravity.CENTER_VERTICAL);
         root.setLayoutParams(rootParam);
-        addView(root);
+//        addView(root);
 
         if (GlobalStyle.isIsEditTextLayoutBackgroundSet()) {
-            int background = GlobalStyle.getsEditTextLayoutBackground();
+            int background = GlobalStyle.getEditTextLayoutBackground();
             root.setBackgroundResource(background);
         }
 
         TypedArray array = context.obtainStyledAttributes(attrs, R.styleable.EditTextLayout);
         Drawable leftDrawable = array.getDrawable(R.styleable.EditTextLayout_leftIconDrawable);
         boolean clearAllEnabled = array.getBoolean(R.styleable.EditTextLayout_clearAllEnabled, true);
-        Drawable bgDrawable = array.getDrawable(R.styleable.EditTextLayout_background);
+//        Drawable bgDrawable = array.getDrawable(R.styleable.EditTextLayout_background);
         float textSize = array.getDimension(R.styleable.EditTextLayout_textSize, Util.dp2px(context, 16));
         array.recycle();
 
@@ -88,7 +88,7 @@ public class EditTextLayout extends LinearLayout implements TextWatcher {
         LayoutParams lp = new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT, 1f);
         editText.setLayoutParams(lp);
         if (GlobalStyle.isIsEditTextBackgroundSet()) {
-            int background = GlobalStyle.getsEditTextBackground();
+            int background = GlobalStyle.getEditTextBackground();
             editText.setBackgroundResource(background);
         }
         root.addView(editText);

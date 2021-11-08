@@ -1,6 +1,7 @@
 package cn.authing;
 
 import cn.authing.guard.Authing;
+import cn.authing.guard.social.Alipay;
 import cn.authing.guard.social.WeCom;
 import cn.authing.guard.social.Wechat;
 
@@ -11,6 +12,8 @@ public class App extends android.app.Application {
 
         // social public info has to be set manually
         Wechat.appId = "wx1cddb15e280c0f67";
+
+        Alipay.appId = "2017031306201694";
 
         WeCom.corpId = "ww2fe68893d538b6c1";
         WeCom.agentId = "1000003";

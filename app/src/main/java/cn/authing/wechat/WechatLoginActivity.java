@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
 
-import cn.authing.AuthingLoginActivity;
 import cn.authing.MainActivity;
 import cn.authing.R;
 import cn.authing.guard.CountryCodePicker;
@@ -24,7 +23,7 @@ public class WechatLoginActivity extends BaseLoginActivity {
         super.onCreate(savedInstanceState);
 
         // remove EditText's default underline
-        GlobalStyle.setsEditTextBackground(0);
+        GlobalStyle.setEditTextBackground(0);
 
         setContentView(R.layout.wechat_login);
 

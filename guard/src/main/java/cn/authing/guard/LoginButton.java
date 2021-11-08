@@ -7,9 +7,6 @@ import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -27,6 +24,10 @@ import cn.authing.guard.util.Util;
 
 public class LoginButton extends LoadingButton {
 
+    private String phoneNumber;
+    private String phoneCode;
+    protected Callback<UserInfo> callback;
+
     public LoginButton(@NonNull Context context) {
         this(context, null);
     }
@@ -38,19 +39,12 @@ public class LoginButton extends LoadingButton {
     public LoginButton(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
 
-        TextView textView = new TextView(context);
-        LayoutParams lp = new LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        lp.addRule(RelativeLayout.CENTER_VERTICAL, RelativeLayout.TRUE);
-        lp.addRule(RelativeLayout.RIGHT_OF, loadingView.getId());
-        textView.setLayoutParams(lp);
-        addView(textView);
-
         if (attrs == null || attrs.getAttributeValue(NS_ANDROID, "text") == null) {
-            textView.setText(R.string.authing_login);
+            setText(R.string.authing_login);
         }
 
         if (attrs == null || attrs.getAttributeValue(NS_ANDROID, "textColor") == null) {
-            textView.setTextColor(0xffffffff);
+            setTextColor(0xffffffff);
         }
 
         if (attrs == null || attrs.getAttributeValue(NS_ANDROID, "background") == null) {
@@ -58,14 +52,23 @@ public class LoginButton extends LoadingButton {
         }
 
         if (attrs == null || attrs.getAttributeValue(NS_ANDROID, "textSize") == null) {
-            textView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 16);
+            setTextSize(TypedValue.COMPLEX_UNIT_DIP, 16);
         }
 
         setOnClickListener((v -> login()));
     }
 
+    public void setOnLoginListener(Callback<UserInfo> callback) {
+        this.callback = callback;
+    }
+
+    // manually set phone number. in case of 2 step login
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
     public void login() {
-        if (loadingView.getVisibility() == View.VISIBLE) {
+        if (showLoading) {
             return;
         }
 
@@ -75,8 +78,26 @@ public class LoginButton extends LoadingButton {
             return;
         }
 
+        if (requiresAgreement()) {
+            return;
+        }
+
         View phoneNumberET = Util.findViewByClass(this, PhoneNumberEditText.class);
         View phoneCodeET = Util.findViewByClass(this, VerifyCodeEditText.class);
+        if (phoneNumberET != null && phoneNumberET.isShown()) {
+            PhoneNumberEditText phoneNumberEditText = (PhoneNumberEditText)phoneNumberET;
+            phoneNumber = phoneNumberEditText.getText().toString();
+        }
+        if (phoneCodeET != null && phoneCodeET.isShown()) {
+            VerifyCodeEditText verifyCodeEditText = (VerifyCodeEditText)phoneCodeET;
+            phoneCode = verifyCodeEditText.getText().toString();
+        }
+        if (!TextUtils.isEmpty(phoneNumber) && !TextUtils.isEmpty(phoneCode)) {
+            startLoadingVisualEffect();
+            loginByPhoneCode(phoneNumber, phoneCode);
+            return;
+        }
+
         if (phoneNumberET != null && phoneNumberET.isShown()
                 && phoneCodeET != null && phoneCodeET.isShown()) {
             PhoneNumberEditText phoneNumberEditText = (PhoneNumberEditText)phoneNumberET;
@@ -94,7 +115,7 @@ public class LoginButton extends LoadingButton {
                 return;
             }
 
-            startLoginVisualEffect();
+            startLoadingVisualEffect();
             loginByPhoneCode(phone, code);
         } else {
             View accountET = Util.findViewByClass(this, AccountEditText.class);
@@ -108,10 +129,19 @@ public class LoginButton extends LoadingButton {
                     return;
                 }
 
-                startLoginVisualEffect();
+                startLoadingVisualEffect();
                 loginByAccount(account, password);
             }
         }
+    }
+
+    private boolean requiresAgreement() {
+        View box = Util.findViewByClass(this, PrivacyConfirmBox.class);
+        if (box == null) {
+            return false;
+        }
+
+        return ((PrivacyConfirmBox)box).require(true);
     }
 
     private void loginByPhoneCode(String phone, String code) {
@@ -179,7 +209,7 @@ public class LoginButton extends LoadingButton {
     }
 
     private void fireCallback(UserInfo info) {
-        stopLoginVisualEffect();
+        stopLoadingVisualEffect();
 
         if (callback != null) {
             if (info == null) {

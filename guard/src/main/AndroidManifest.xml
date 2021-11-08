@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="cn.authing.guard">
 
     <uses-permission android:name="android.permission.INTERNET" />
@@ -11,7 +12,13 @@
     <application>
         <activity
             android:name=".activity.BaseLoginActivity"
-            android:exported="false" />
+            android:exported="false">
+            <intent-filter tools:node="replace">
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
+                <data android:scheme="__authing_guard__"/>
+            </intent-filter>
+        </activity>
         <activity
             android:name=".wxapi.WXEntryActivity"
             android:exported="true" />

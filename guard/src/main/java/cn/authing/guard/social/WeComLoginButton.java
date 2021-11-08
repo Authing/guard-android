@@ -8,23 +8,23 @@ import androidx.annotation.Nullable;
 
 import cn.authing.guard.R;
 
-public class WechatLoginButton extends SocialLoginButton {
+public class WeComLoginButton extends SocialLoginButton {
 
-    public WechatLoginButton(@NonNull Context context) {
+    public WeComLoginButton(@NonNull Context context) {
         this(context, null);
     }
 
     @Override
     protected SocialAuthenticator createAuthenticator() {
-        return new Wechat();
+        return new WeCom();
     }
 
-    public WechatLoginButton(@NonNull Context context, @Nullable AttributeSet attrs) {
+    public WeComLoginButton(@NonNull Context context, @Nullable AttributeSet attrs) {
         this(context, attrs, R.attr.buttonStyle);
     }
 
-    public WechatLoginButton(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
+    public WeComLoginButton(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        setImageResource(R.drawable.ic_authing_wechat);
+        setImageResource(R.drawable.ic_authing_wecom);
     }
 }

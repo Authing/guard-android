@@ -7,7 +7,7 @@ android {
 
     defaultConfig {
         applicationId "cn.authing.guard"
-        minSdk 23
+        minSdk 24
         targetSdk 30
         versionCode 1
         versionName "1.0"
@@ -50,11 +50,15 @@ dependencies {
 
     implementation project(':guard')
 
-    // 企业微信不提供远程依赖
-    implementation files('libs/wechatwork.jar')
-
     // 通过网易云盾实现一键登录
     implementation 'io.github.yidun:quicklogin:3.1.1'
 
+    // 微信登录
     implementation 'com.tencent.mm.opensdk:wechat-sdk-android:6.8.0'
+
+    // 支付宝登录
+    implementation files('libs/alipaysdk.aar')
+
+    // 企业微信
+    implementation files('libs/wechatwork.jar')
 }

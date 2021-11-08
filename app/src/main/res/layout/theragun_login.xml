@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:paddingLeft="24dp"
+    android:paddingRight="24dp">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:text="登录 Theragun"
+        android:textColor="@color/black"
+        android:textSize="26sp"
+        android:layout_marginTop="100dp"/>
+
+    <cn.authing.guard.PhoneNumberEditText
+        android:id="@+id/theragun_pet"
+        android:background="@drawable/edit_text_bg"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:layout_marginTop="24dp"
+        app:codeMode="frame"
+        app:boxWidth="44dp"
+        app:boxHeight="66dp"
+        app:boxSpacing="16dp"/>
+
+    <cn.authing.guard.ErrorTextView
+        android:id="@+id/tv_error"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"/>
+
+    <cn.authing.guard.internal.LoadingButton
+        android:id="@+id/btn_login"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:background="@color/black"
+        app:backgroundTint="@null"
+        android:textSize="14sp"
+        android:text="@string/authing_login"
+        android:textColor="@color/white"
+        android:layout_marginTop="24dp" />
+
+</LinearLayout>

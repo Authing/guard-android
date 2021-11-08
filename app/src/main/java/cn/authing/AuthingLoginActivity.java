@@ -14,8 +14,8 @@ public class AuthingLoginActivity extends BaseLoginActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        GlobalStyle.setsEditTextBackground(0);
-        GlobalStyle.setsEditTextLayoutBackground((R.drawable.authing_edit_text_layout_background));
+        GlobalStyle.setEditTextBackground(0);
+        GlobalStyle.setEditTextLayoutBackground((R.drawable.authing_edit_text_layout_background));
 
         setContentView(R.layout.activity_login_authing);
 

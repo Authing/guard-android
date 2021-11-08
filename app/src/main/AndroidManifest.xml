@@ -26,7 +26,6 @@
         <activity
             android:name=".MainActivity"
             android:exported="false" />
-
         <activity
             android:name=".AuthingLoginActivity"
             android:exported="false"
@@ -41,7 +40,14 @@
         <activity
             android:name=".wechat.WechatLoginActivity"
             android:exported="false"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".theragun.TheragunLoginActivity"
+            android:exported="false" />
+        <activity
+            android:name=".theragun.TheragunVerifyCodeActivity"
+            android:exported="false"
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>

@@ -10,12 +10,13 @@ import cn.authing.guard.Callback;
 import cn.authing.guard.data.UserInfo;
 import cn.authing.guard.wxapi.WXEntryActivity;
 
-public class Wechat {
+public class Wechat extends SocialAuthenticator {
 
     public static IWXAPI api;
     public static String appId;
 
-    public static void login(Context context, Callback<UserInfo> callback) {
+    @Override
+    public void login(Context context, Callback<UserInfo> callback) {
         api = WXAPIFactory.createWXAPI(context, appId, true);
         api.registerApp(appId);
 

@@ -90,6 +90,7 @@ public class Guardian {
                 fireCallback(callback, resp);
             } else {
                 Log.w(TAG, response.code() + " Post failed for:" + url);
+                fireCallback(callback, null);
             }
         } catch (Exception e) {
             e.printStackTrace();

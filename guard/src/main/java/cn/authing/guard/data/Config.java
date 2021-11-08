@@ -16,6 +16,8 @@ public class Config {
     private List<String> loginTabList;
     private String defaultLoginMethod;
     private int verifyCodeLength = 6;
+    private List<SocialConfig> socialConfigs;
+    private List<Agreement> agreements;
 
     public static Config parse(JSONObject data) throws JSONException {
         Config config = new Config();
@@ -34,6 +36,12 @@ public class Config {
         JSONObject passwordTabConfig = data.getJSONObject("passwordTabConfig");
         JSONArray enabledLoginMethods = passwordTabConfig.getJSONArray("enabledLoginMethods");
         config.setEnabledLoginMethods(toStringList(enabledLoginMethods));
+
+        JSONArray socialConnections = data.getJSONArray("socialConnections");
+        config.socialConfigs = toSocialList(socialConnections);
+
+        JSONArray agreements = data.getJSONArray("agreements");
+        config.agreements = toAgreementList(agreements);
         return config;
     }
 
@@ -101,11 +109,51 @@ public class Config {
         this.verifyCodeLength = verifyCodeLength;
     }
 
+    public List<SocialConfig> getSocialConfigs() {
+        return socialConfigs;
+    }
+
+    public List<Agreement> getAgreements() {
+        return agreements;
+    }
+
     private static List<String> toStringList(JSONArray array) throws JSONException {
         List<String> list = new ArrayList<>();
         int size = array.length();
         for (int i = 0; i < size; i++) {
             list.add((array.getString(i)));
+        }
+        return list;
+    }
+
+    private static List<SocialConfig> toSocialList(JSONArray array) throws JSONException {
+        List<SocialConfig> list = new ArrayList<>();
+        int size = array.length();
+        for (int i = 0; i < size; i++) {
+            JSONObject obj = array.getJSONObject(i);
+            String id = obj.getString("id");
+            String provider = obj.getString("provider");
+            SocialConfig config = new SocialConfig();
+            config.setId(id);
+            config.setProvider(provider);
+            list.add(config);
+        }
+        return list;
+    }
+
+    private static List<Agreement> toAgreementList(JSONArray array) throws JSONException {
+        List<Agreement> list = new ArrayList<>();
+        int size = array.length();
+        for (int i = 0; i < size; i++) {
+            JSONObject obj = array.getJSONObject(i);
+            String title = obj.getString("title");
+            String lang = obj.getString("lang");
+            boolean isRequired = obj.getBoolean("required");
+            Agreement agreement = new Agreement();
+            agreement.setTitle(title);
+            agreement.setLang(lang);
+            agreement.setRequired(isRequired);
+            list.add(agreement);
         }
         return list;
     }

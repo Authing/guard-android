@@ -80,7 +80,7 @@ public class WXEntryActivity extends AppCompatActivity implements IWXAPIEventHan
         String poolId = config.getUserPoolId();
         String url = "https://core.authing.cn/connection/social/wechat:mobile/" + poolId + "/callback?code=" + code;
         Guardian.get(url, (response)->{
-            if (response.getCode() == 200) {
+            if (response != null && response.getCode() == 200) {
                 try {
                     UserInfo userInfo = UserInfo.createUserInfo(response.getData());
                     fireCallback(userInfo);

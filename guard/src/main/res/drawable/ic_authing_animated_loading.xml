@@ -4,5 +4,5 @@
 
   <target
       android:name="circle"
-      android:animation="@animator/animation_button_loading" />
+      android:animation="@animator/authing_button_loading" />
 </animated-vector>

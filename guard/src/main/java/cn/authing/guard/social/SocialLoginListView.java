@@ -11,10 +11,7 @@ import androidx.annotation.Nullable;
 
 import cn.authing.guard.Callback;
 import cn.authing.guard.R;
-import cn.authing.guard.WeComLoginButton;
 import cn.authing.guard.data.UserInfo;
-import cn.authing.guard.internal.CustomEventButton;
-import cn.authing.guard.social.WechatLoginButton;
 import cn.authing.guard.util.Util;
 
 public class SocialLoginListView extends LinearLayout {
@@ -42,7 +39,7 @@ public class SocialLoginListView extends LinearLayout {
         TypedArray array = context.obtainStyledAttributes(attrs, R.styleable.SocialLoginListView);
         String src = array.getString(R.styleable.SocialLoginListView_src);
         if (TextUtils.isEmpty(src)) {
-            src = "wechat|wecom";
+            src = "wechat";
         }
         array.recycle();
 
@@ -54,10 +51,12 @@ public class SocialLoginListView extends LinearLayout {
         for (int i = 0;i < sources.length;++i) {
             String src = sources[i].trim();
 
-            CustomEventButton button = null;
+            SocialLoginButton button = null;
             if (src.equals("wechat")) {
                 button = new WechatLoginButton(context);
-            } else if (src.equals("wecom")) {
+            } else if (src.equals("alipay")) {
+                button = new AlipayLoginButton(context);
+            }else if (src.equals("wecom")) {
                 button = new WeComLoginButton(context);
             }
 

@@ -4,10 +4,6 @@
     <attr name="background" format="reference" />
     <attr name="textColor" format="reference|color" />
     <attr name="textSize" format="dimension" />
-    <attr name="paddingLeft" format="dimension" />
-    <attr name="paddingRight" format="dimension" />
-    <attr name="paddingTop" format="dimension" />
-    <attr name="paddingBottom" format="dimension" />
 
     <declare-styleable name="LoginContainer">
         <attr name="type" format="enum">
@@ -33,6 +29,17 @@
         <attr name="dividerPattern" format="integer" />
     </declare-styleable>
 
+    <declare-styleable name="VerifyCodeEditText">
+        <attr name="codeMode" format="enum">
+            <enum name="normal" value="0"/>
+            <enum name="frame" value="1"/>
+            <enum name="underLine" value="2"/>
+        </attr>
+        <attr name="boxWidth" format="dimension" />
+        <attr name="boxHeight" format="dimension" />
+        <attr name="boxSpacing" format="dimension" />
+    </declare-styleable>
+
     <declare-styleable name="SocialLoginListView">
         <attr name="src" format="string" />
     </declare-styleable>
@@ -42,14 +49,4 @@
         <attr name="showRightArrow" format="boolean" />
     </declare-styleable>
 
-    <declare-styleable name="GetVerifyCodeButton">
-        <attr name="background" />
-        <attr name="text" format="string" />
-        <attr name="textColor" />
-        <attr name="textSize" />
-        <attr name="paddingLeft" />
-        <attr name="paddingRight" />
-        <attr name="paddingTop" />
-        <attr name="paddingBottom" />
-    </declare-styleable>
 </resources>

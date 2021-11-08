@@ -4,13 +4,11 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
-import android.view.WindowManager;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import cn.authing.oneclick.OneClickActivity;
+import cn.authing.theragun.TheragunLoginActivity;
 import cn.authing.wechat.WechatLoginActivity;
 
 public class SampleListActivity extends AppCompatActivity {
@@ -19,7 +17,8 @@ public class SampleListActivity extends AppCompatActivity {
             "Authing 标准登录",
             "Android 默认风格登录",
             "一键登录",
-            "微信"
+            "微信",
+            "Theragun"
     };
 
     @Override
@@ -27,7 +26,7 @@ public class SampleListActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sample_list);
 
-        ListView listView = (ListView) findViewById(R.id.lv_samples);
+        ListView listView = findViewById(R.id.lv_samples);
 
         final ArrayAdapter adapter = new ArrayAdapter(this,
                 R.layout.sample_list_item, from);
@@ -46,6 +45,9 @@ public class SampleListActivity extends AppCompatActivity {
                 startActivity(intent);
             } else if (pos == 3) {
                 Intent intent = new Intent(SampleListActivity.this, WechatLoginActivity.class);
+                startActivity(intent);
+            } else if (pos == 4) {
+                Intent intent = new Intent(SampleListActivity.this, TheragunLoginActivity.class);
                 startActivity(intent);
             }
         });

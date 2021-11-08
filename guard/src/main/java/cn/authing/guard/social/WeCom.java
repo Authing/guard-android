@@ -10,7 +10,7 @@ import com.tencent.wework.api.model.WWAuthMessage;
 import cn.authing.guard.Callback;
 import cn.authing.guard.data.UserInfo;
 
-public class WeCom {
+public class WeCom extends SocialAuthenticator {
 
     private static final String TAG = "WeCom";
 
@@ -18,7 +18,8 @@ public class WeCom {
     public static String agentId;
     public static String corpId;
 
-    public static void login(Context context, Callback<UserInfo> callback) {
+    @Override
+    public void login(Context context, Callback<UserInfo> callback) {
         // TODO get from authing server
 
         IWWAPI iwwapi = WWAPIFactory.createWWAPI(context);
@@ -34,21 +35,21 @@ public class WeCom {
                 WWAuthMessage.Resp rsp = (WWAuthMessage.Resp) resp;
                 if (rsp.errCode == WWAuthMessage.ERR_CANCEL) {
                     Log.i(TAG, "登录取消");
-                    callback(callback, false, null);
+                    fireCallback(callback, null);
                 } else if (rsp.errCode == WWAuthMessage.ERR_FAIL) {
                     Log.i(TAG, "登录失败");
-                    callback(callback, false, null);
+                    fireCallback(callback, null);
                 } else if (rsp.errCode == WWAuthMessage.ERR_OK) {
                     // TODO get auth info from autthing server
-                    callback(callback, true, null);
+                    fireCallback(callback, null);
                 }
             }
         });
     }
 
-    private static void callback(Callback<UserInfo> callback, boolean ok, UserInfo data) {
+    private static void fireCallback(Callback<UserInfo> callback, UserInfo info) {
         if (callback != null) {
-            callback.call(ok, data);
+            callback.call(true, info);
         }
     }
 }
