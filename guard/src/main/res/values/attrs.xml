@@ -16,6 +16,10 @@
 
     <declare-styleable name="EditTextLayout">
         <attr name="leftIconDrawable" format="reference" />
+        <attr name="hintMode" format="enum">
+            <enum name="normal" value="0"/>
+            <enum name="animated" value="1"/>
+        </attr>
         <attr name="clearAllEnabled" format="boolean" />
         <attr name="background" />
         <attr name="textSize" />

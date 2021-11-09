@@ -12,6 +12,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Guard">
         <activity
+            android:name=".abao.AbaoVerifyCodeActivity"
+            android:exported="false" />
+        <activity
             android:name=".SplashActivity"
             android:exported="true">
             <intent-filter>
@@ -22,12 +25,13 @@
         </activity>
         <activity
             android:name=".SampleListActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:launchMode="singleTask" />
         <activity
             android:name=".MainActivity"
             android:exported="false" />
         <activity
-            android:name=".AuthingLoginActivity"
+            android:name=".AuthingDemoLoginActivity"
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity
@@ -46,6 +50,10 @@
             android:exported="false" />
         <activity
             android:name=".theragun.TheragunVerifyCodeActivity"
+            android:exported="false"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".abao.AbaoActivity"
             android:exported="false"
             android:screenOrientation="portrait" />
     </application>

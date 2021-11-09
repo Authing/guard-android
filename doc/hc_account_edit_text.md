@@ -1,32 +1,25 @@
-# 账号输入框 AccountEditText
+# 帐号输入框 AccountEditText
 
 ## 布局文件使用方式
 ```xml
 <cn.authing.guard.AccountEditText
-    android:layout_width="0dp"
-    android:layout_height="wrap_content"
-    app:layout_constraintLeft_toLeftOf="parent"
-    app:layout_constraintRight_toRightOf="parent"
-    android:layout_marginStart="24dp"
-    android:layout_marginEnd="24dp"
-    app:layout_constraintTop_toTopOf="parent"/>
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content" />
 ```
 
 ## 效果如下
 
 ![](./images/aet_normal.png)
 
-### 特性一：
-根据 authing 后台设置，提示语可动态显示，无需手动去判断。如后台只允许邮箱登录，则提示语为：请输入邮箱
-
 <br>
 
-### 特性二：
-提示语支持三种模式：
+### 特性一：
+提示语支持以下模式：
 
 * *normal* 当用户输入时，提示语消失；当输入框没有内容时，提示语显示。
 * *animated* 当输入框获得焦点时，提示语移动至顶部；当失去焦点时，提示语移动至输入框内。
-* *fixed* 提示语总是固定在顶部。
+
+![](./gif/animated_hint.gif)
 
 可以通过 *hint_mode* 属性来控制，如：
 ```xml
@@ -34,6 +27,10 @@
     app:hintMode="animated" />
 ```
 
+<br>
+
+### 特性二：
+根据 authing 后台设置，提示语可动态显示，无需手动去判断。如后台只允许邮箱登录，则提示语为：请输入邮箱
 
 <br>
 
@@ -69,4 +66,5 @@ EditText editText = accountEditText.getEditText();
 | 属性名                     | 类型 | 说明 | 默认值 |
 | ----------------------- |:--------:| :------:| :-----: |
 |  hintMode (建设中)     |    string    |  normal/animated/fixed   |    normal   |
+|  leftIconDrawable     |    reference    |   输入框左边图标   |    @drawable/ic_authing_shield_check   |
 |  clearAllEnabled     |    boolean    |   若为 false，则不显示全部删除按钮   |    true   |

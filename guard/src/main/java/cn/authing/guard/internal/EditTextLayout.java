@@ -1,15 +1,21 @@
 package cn.authing.guard.internal;
 
+import android.animation.ValueAnimator;
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.graphics.Canvas;
+import android.graphics.Paint;
 import android.graphics.drawable.Drawable;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AccelerateInterpolator;
+import android.view.animation.DecelerateInterpolator;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -22,12 +28,32 @@ import cn.authing.guard.GlobalStyle;
 import cn.authing.guard.R;
 import cn.authing.guard.util.Util;
 
-public class EditTextLayout extends LinearLayout implements TextWatcher {
+public class EditTextLayout extends LinearLayout implements TextWatcher, View.OnFocusChangeListener {
+
+    protected static final int ENormal = 0;
+    protected static final int EAnimated = 1;
 
     protected LinearLayout root;
+    protected int hintMode;
+    protected CharSequence hintText; // manually handle it in animated/fixed mode
     protected ImageView leftIcon;
+    protected int leftIconSize; // in pixel
     protected AppCompatEditText editText;
     protected ImageView clearAllButton;
+
+    protected static final int ICON_LEFT_RIGHT_MARGIN = 8;
+    protected static final int LEFT_PADDING = 4;
+    protected static final int TOP_PADDING = 4; // in dp
+    protected static final int DURATION = 167;
+    protected float leftPaddingPx;
+    protected float topPaddingPx;
+    protected float hintUpY;
+    protected float hintDownY;
+    protected float hintUpSize;
+    protected Paint hintPaint;
+    protected ValueAnimator hintYAnimator;
+    protected ValueAnimator hintSizeAnimator;
+    protected boolean isUp;
 
     public EditTextLayout(@NonNull Context context) {
         this(context, null);
@@ -44,32 +70,39 @@ public class EditTextLayout extends LinearLayout implements TextWatcher {
     public EditTextLayout(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
 
-        setOrientation(HORIZONTAL);
+        TypedArray array = context.obtainStyledAttributes(attrs, R.styleable.EditTextLayout);
+        hintMode = array.getInt(R.styleable.EditTextLayout_hintMode, ENormal);
+        Drawable leftDrawable = array.getDrawable(R.styleable.EditTextLayout_leftIconDrawable);
+        boolean clearAllEnabled = array.getBoolean(R.styleable.EditTextLayout_clearAllEnabled, true);
+        float textSize = array.getDimension(R.styleable.EditTextLayout_textSize, Util.dp2px(context, 16));
+        array.recycle();
 
-        root = this;
-        root.setOrientation(HORIZONTAL);
-        LayoutParams rootParam = new LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT, 1f);
-        root.setGravity(Gravity.CENTER_VERTICAL);
-        root.setLayoutParams(rootParam);
-//        addView(root);
+        setWillNotDraw(false);
+
+        if (hintMode == ENormal) {
+            root = this;
+            root.setOrientation(HORIZONTAL);
+            LayoutParams rootParam = new LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT, 1f);
+            root.setGravity(Gravity.CENTER_VERTICAL);
+            root.setLayoutParams(rootParam);
+        } else if (hintMode == EAnimated) {
+            root = this;
+            root.setOrientation(HORIZONTAL);
+            LayoutParams rootParam = new LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT, 1f);
+            root.setGravity(Gravity.BOTTOM);
+            root.setLayoutParams(rootParam);
+        }
 
         if (GlobalStyle.isIsEditTextLayoutBackgroundSet()) {
             int background = GlobalStyle.getEditTextLayoutBackground();
             root.setBackgroundResource(background);
         }
 
-        TypedArray array = context.obtainStyledAttributes(attrs, R.styleable.EditTextLayout);
-        Drawable leftDrawable = array.getDrawable(R.styleable.EditTextLayout_leftIconDrawable);
-        boolean clearAllEnabled = array.getBoolean(R.styleable.EditTextLayout_clearAllEnabled, true);
-//        Drawable bgDrawable = array.getDrawable(R.styleable.EditTextLayout_background);
-        float textSize = array.getDimension(R.styleable.EditTextLayout_textSize, Util.dp2px(context, 16));
-        array.recycle();
-
         leftIcon = new ImageView(context);
-        int length = (int) Util.dp2px(context, 24);
-        LayoutParams iconParam = new LayoutParams(length, length);
+        leftIconSize = (int) Util.dp2px(context, 24);
+        LayoutParams iconParam = new LayoutParams(leftIconSize, leftIconSize);
         leftIcon.setLayoutParams(iconParam);
-        int m = (int) Util.dp2px(context, 8);
+        int m = (int) Util.dp2px(context, ICON_LEFT_RIGHT_MARGIN);
         iconParam.setMargins(m, 0, 0, 0);
         leftIcon.setImageDrawable(leftDrawable);
         root.addView(leftIcon);
@@ -78,13 +111,10 @@ public class EditTextLayout extends LinearLayout implements TextWatcher {
         }
 
         editText = new AppCompatEditText(context);
-//        editText.setBackground(bgDrawable);
         editText.setTextSize(TypedValue.COMPLEX_UNIT_PX, textSize);
         editText.setMaxLines(1);
         editText.setSingleLine(true);
-        editText.setOnFocusChangeListener((v, hasFocus)-> {
-            root.setPressed(hasFocus);
-        });
+        editText.setOnFocusChangeListener(this);
         LayoutParams lp = new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT, 1f);
         editText.setLayoutParams(lp);
         if (GlobalStyle.isIsEditTextBackgroundSet()) {
@@ -95,6 +125,15 @@ public class EditTextLayout extends LinearLayout implements TextWatcher {
 
         if (clearAllEnabled) {
             addClearAllButton();
+        }
+
+        if (hintMode == EAnimated) {
+            hintPaint = new Paint();
+            int color = editText.getHintTextColors().getDefaultColor();
+            hintPaint.setColor(color);
+            editText.setHintTextColor(0);
+            leftPaddingPx = Util.dp2px(context, LEFT_PADDING);
+            topPaddingPx = Util.dp2px(context, TOP_PADDING);
         }
     }
 
@@ -110,12 +149,12 @@ public class EditTextLayout extends LinearLayout implements TextWatcher {
         int length = (int) Util.dp2px(context, 24);
         clearAllButton = new ImageView(context);
         LayoutParams iconParam = new LayoutParams(length, length);
-        int p = (int) Util.dp2px(context, 6);
+        int p = (int) Util.dp2px(context, ICON_LEFT_RIGHT_MARGIN);
         iconParam.setMargins(p, 0, p, 0);
         clearAllButton.setLayoutParams(iconParam);
         clearAllButton.setVisibility(View.GONE);
         clearAllButton.setBackground(clearDrawable);
-        clearAllTouchArea.setOnClickListener((v -> editText.setText("")));
+        clearAllTouchArea.setOnClickListener(this::clearAllText);
         clearAllTouchArea.addView(clearAllButton);
         root.addView(clearAllTouchArea);
 
@@ -130,6 +169,13 @@ public class EditTextLayout extends LinearLayout implements TextWatcher {
         return editText.getText();
     }
 
+    private void clearAllText(View v) {
+        editText.setText("");
+        if (hintMode == EAnimated && !editText.hasFocus()) {
+            moveHintDown();
+        }
+    }
+
     @Override
     public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
@@ -138,7 +184,7 @@ public class EditTextLayout extends LinearLayout implements TextWatcher {
     @Override
     public void onTextChanged(CharSequence text, int start, int lengthBefore, int lengthAfter) {
         if (clearAllButton != null) {
-            if (text.toString().length() > 0) {
+            if (editText.isEnabled() && text.toString().length() > 0) {
                 clearAllButton.setVisibility(View.VISIBLE);
             } else {
                 clearAllButton.setVisibility(View.GONE);
@@ -149,5 +195,118 @@ public class EditTextLayout extends LinearLayout implements TextWatcher {
     @Override
     public void afterTextChanged(Editable s) {
 
+    }
+
+    @Override
+    protected void onLayout(boolean changed, int l, int t, int r, int b) {
+        super.onLayout(changed, l, t, r, b);
+        if (hintMode == EAnimated) {
+            // force left icon to be vertically centered
+            int h = getHeight();
+            int top = (h - leftIconSize) / 2;
+            leftIcon.layout(leftIcon.getLeft(), top, leftIcon.getRight(), h-top);
+
+            if (clearAllButton != null) {
+                int eh = editText.getHeight();
+                int ch = clearAllButton.getHeight();
+                int cbb = editText.getBottom() - (eh - ch) / 2;
+                clearAllButton.layout(clearAllButton.getLeft(), cbb - clearAllButton.getHeight(), clearAllButton.getRight(), cbb);
+            }
+        }
+    }
+
+    @Override
+    protected void onDraw(Canvas canvas) {
+        super.onDraw(canvas);
+        if (hintMode == EAnimated) {
+            hintText = editText.getHint();
+            if (TextUtils.isEmpty(hintText)) {
+                return;
+            }
+
+            hintPaint.setTextSize(editText.getTextSize());
+            hintPaint.setTypeface(editText.getTypeface());
+
+            canvas.save();
+
+            canvas.translate(leftIcon.getRight(), 0);
+
+            if (hintYAnimator != null && hintYAnimator.isRunning()) {
+                hintPaint.setTextSize((float)hintSizeAnimator.getAnimatedValue());
+                float y = (float) hintYAnimator.getAnimatedValue();
+                canvas.drawText(hintText.toString(), leftPaddingPx, y, hintPaint);
+                invalidate();
+            } else {
+                int h = getHeight();
+                float a = hintPaint.ascent();
+                float d = hintPaint.descent();
+                float th = d - a;
+                if (isUp) {
+                    hintPaint.setTextSize(hintUpSize);
+                    canvas.drawText(hintText.toString(), leftPaddingPx, hintUpY, hintPaint);
+                } else if (TextUtils.isEmpty(getText())) {
+                    float y = (h + th) / 2 - d;
+                    canvas.drawText(hintText.toString(), leftPaddingPx, y, hintPaint);
+                }
+            }
+
+            canvas.restore();
+        }
+    }
+
+    @Override
+    public void onFocusChange(View v, boolean hasFocus) {
+        this.setPressed(hasFocus);
+        if (hintMode == EAnimated && TextUtils.isEmpty(getText())) {
+            if (hasFocus) {
+                moveHintUp();
+            } else {
+                moveHintDown();
+            }
+        }
+    }
+
+    private void moveHintUp() {
+        isUp = true;
+
+        float downTextSize = editText.getTextSize();
+        float upTextHeight = getHeight() - editText.getHeight() - TOP_PADDING*2;
+        // when there is a lot of empty space, up size still has to be smaller
+        hintUpSize = Math.min(upTextHeight, downTextSize*4/5);
+        hintPaint.setTextSize(hintUpSize);
+
+        int h = getHeight();
+        float a = hintPaint.ascent();
+        float d = hintPaint.descent();
+        float th = d - a;
+        hintUpY = topPaddingPx + th - d;
+        hintDownY = (h + th)/2 - d;
+        hintYAnimator = ValueAnimator.ofFloat(hintDownY, hintUpY);
+        hintYAnimator.setDuration(DURATION);
+        hintYAnimator.start();
+
+        hintSizeAnimator = ValueAnimator.ofFloat(editText.getTextSize(), hintUpSize);
+        hintSizeAnimator.setDuration(DURATION);
+        hintSizeAnimator.setInterpolator(new DecelerateInterpolator());
+        hintSizeAnimator.start();
+    }
+
+    private void moveHintDown() {
+        isUp = false;
+
+        int h = getHeight();
+        float a = hintPaint.ascent();
+        float d = hintPaint.descent();
+        float th = d - a;
+        hintUpY = topPaddingPx + th - d;
+        hintDownY = (h + th)/2 - d;
+        hintYAnimator = ValueAnimator.ofFloat(hintUpY, hintDownY);
+        hintYAnimator.setDuration(DURATION);
+        hintYAnimator.start();
+
+        hintSizeAnimator = ValueAnimator.ofFloat(hintUpSize, editText.getTextSize());
+        hintSizeAnimator.setDuration(DURATION);
+        hintSizeAnimator.setInterpolator(new AccelerateInterpolator());
+        hintSizeAnimator.start();
     }
 }

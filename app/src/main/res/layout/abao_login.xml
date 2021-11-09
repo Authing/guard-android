@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="#FAFAFA"
+    android:paddingLeft="24dp"
+    android:paddingRight="24dp">
+
+    <ImageView
+        android:layout_width="88dp"
+        android:layout_height="88dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="200dp"
+        android:src="@mipmap/abao_logo"/>
+
+    <cn.authing.guard.PhoneNumberEditText
+        android:id="@+id/pet"
+        android:background="@drawable/abao_et_bg"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:layout_marginTop="48dp">
+        <cn.authing.guard.CountryCodePicker
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:textSize="16sp"
+            android:textColor="@color/black"
+            android:layout_marginStart="32dp"
+            android:layout_marginEnd="8dp"/>
+    </cn.authing.guard.PhoneNumberEditText>
+
+    <cn.authing.guard.ErrorTextView
+        android:id="@+id/tv_error"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"/>
+
+    <ImageView
+        android:id="@+id/btn_login"
+        android:layout_width="56dp"
+        android:layout_height="56dp"
+        android:layout_gravity="center_horizontal"
+        android:background="@drawable/abao_btn_bg"
+        android:src="@drawable/ic_arrow_right"
+        android:padding="16dp"
+        app:backgroundTint="@null"
+        android:textSize="14sp"
+        android:text="@string/authing_login"
+        android:textColor="@color/white"
+        android:layout_marginTop="24dp" />
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"/>
+
+    <cn.authing.guard.social.SocialLoginListView
+        android:id="@+id/lv_social"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="64dp"
+        app:src="wechat|alipay" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:textSize="12dp"
+        android:textColor="#a4a4a4"
+        android:text="注册登录表示同意 用户协议 &amp; 隐私条款"
+        android:layout_marginBottom="40dp"/>
+
+</LinearLayout>

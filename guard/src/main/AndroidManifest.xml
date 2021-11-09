@@ -20,6 +20,10 @@
             </intent-filter>
         </activity>
         <activity
+            android:name=".activity.AuthingLoginActivity"
+            android:exported="false"
+            android:screenOrientation="portrait" />
+        <activity
             android:name=".wxapi.WXEntryActivity"
             android:exported="true" />
     </application>

@@ -7,6 +7,8 @@ import android.os.Bundle;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import cn.authing.abao.AbaoActivity;
+import cn.authing.guard.activity.AuthingLoginActivity;
 import cn.authing.oneclick.OneClickActivity;
 import cn.authing.theragun.TheragunLoginActivity;
 import cn.authing.wechat.WechatLoginActivity;
@@ -18,7 +20,8 @@ public class SampleListActivity extends AppCompatActivity {
             "Android 默认风格登录",
             "一键登录",
             "微信",
-            "Theragun"
+            "Theragun",
+            "阿宝说"
     };
 
     @Override
@@ -35,7 +38,7 @@ public class SampleListActivity extends AppCompatActivity {
 
         listView.setOnItemClickListener((arg0, arg1, arg2, pos) -> {
             if (pos == 0) {
-                Intent intent = new Intent(SampleListActivity.this, AuthingLoginActivity.class);
+                Intent intent = new Intent(SampleListActivity.this, AuthingDemoLoginActivity.class);
                 startActivity(intent);
             } else if (pos == 1) {
                 Intent intent = new Intent(SampleListActivity.this, AndroidLoginActivity.class);
@@ -48,6 +51,9 @@ public class SampleListActivity extends AppCompatActivity {
                 startActivity(intent);
             } else if (pos == 4) {
                 Intent intent = new Intent(SampleListActivity.this, TheragunLoginActivity.class);
+                startActivity(intent);
+            } else if (pos == 5) {
+                Intent intent = new Intent(SampleListActivity.this, AbaoActivity.class);
                 startActivity(intent);
             }
         });

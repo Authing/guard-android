@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".AuthingLoginActivity">
+    tools:context=".guard.activity.AuthingLoginActivity">
 
     <cn.authing.guard.AppLogo
         android:id="@+id/iv_logo"

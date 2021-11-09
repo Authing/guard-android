@@ -9,6 +9,7 @@ import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.AttributeSet;
 import android.view.View;
+import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -52,6 +53,15 @@ public class PhoneNumberEditText extends EditTextLayout implements TextWatcher {
     }
 
     @Override
+    public void addView(@NonNull View child, int index, @NonNull final ViewGroup.LayoutParams params) {
+        if (child instanceof CountryCodePicker) {
+            super.addView(child, 0, params);
+        } else {
+            super.addView(child, index, params);
+        }
+    }
+
+    @Override
     public void beforeTextChanged(CharSequence s, int start, int count, int after) {
     }
 
@@ -62,7 +72,7 @@ public class PhoneNumberEditText extends EditTextLayout implements TextWatcher {
             return;
         }
 
-        Spannable spannableString = (Spannable)editText.getText();
+        Spannable spannableString = editText.getText();
         if (spannableString == null) {
             return;
         }
@@ -92,15 +102,11 @@ public class PhoneNumberEditText extends EditTextLayout implements TextWatcher {
 
     public boolean isContentValid() {
         String text = getText().toString();
-        if (TextUtils.isEmpty(text)) {
-            return false;
-        }
+        return !TextUtils.isEmpty(text);
 
         // TODO validate number with country code
 //        if (text.length() != 11) {
 //            return false;
 //        }
-
-        return true;
     }
 }

@@ -22,7 +22,7 @@ import cn.authing.guard.util.Util;
 public class GetVerifyCodeButton extends LoadingButton {
 
     private int countDown;
-    private final String countDownTip;
+    private String countDownTip;
 
     private final String text;
 
@@ -99,13 +99,31 @@ public class GetVerifyCodeButton extends LoadingButton {
     private void countDown() {
         if (countDown >= 0) {
             postDelayed(() -> {
-                setEnabled(false);
-                setText(String.format(countDownTip, countDown--));
+                updateCountDown();
                 countDown();
             }, 1000);
         } else {
             setText(text);
             setEnabled(true);
         }
+    }
+
+    private void updateCountDown() {
+        setEnabled(false);
+        setText(String.format(countDownTip, countDown--));
+    }
+
+    public void startCountDown() {
+        startCountDown(60);
+    }
+
+    public void startCountDown(int cd) {
+        countDown = cd;
+        updateCountDown();
+        countDown();
+    }
+
+    public void setCountDownTip(String format) {
+        countDownTip = format;
     }
 }
