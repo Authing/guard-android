@@ -51,6 +51,14 @@ protected void onCreate(Bundle savedInstanceState) {
 
 <br>
 
+## 使用 Authing 风格的原生界面 [接入步骤](./doc/start_with_authing.md)
+
+如果应用可以接受我们的标准 UI，则可以通过上面简单的步骤快速接入。
+
+![](./doc/images/authing_login.png)
+
+<br>
+
 ## 组件使用指南
 
 ### Widgets
