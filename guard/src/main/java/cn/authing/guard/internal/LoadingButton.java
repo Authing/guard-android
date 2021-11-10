@@ -29,7 +29,7 @@ public class LoadingButton extends Button {
     public LoadingButton(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
 
-        loading = (AnimatedVectorDrawable)context.getDrawable(R.drawable.ic_authing_animated_loading);
+        loading = (AnimatedVectorDrawable)context.getDrawable(R.drawable.ic_authing_animated_loading_blue);
         loading.setVisible(false, true);
     }
 

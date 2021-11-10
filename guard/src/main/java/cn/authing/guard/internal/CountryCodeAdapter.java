@@ -30,13 +30,13 @@ public class CountryCodeAdapter extends ArrayAdapter<Country> {
         if (convertView == null) {
             viewHolder = new ViewHolder();
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.country_code_picker_item, parent, false);
-            viewHolder.name = (TextView) convertView.findViewById(R.id.tv_name);
-            viewHolder.code = (TextView) convertView.findViewById(R.id.tv_code);
+            viewHolder.name = convertView.findViewById(R.id.tv_name);
+            viewHolder.code = convertView.findViewById(R.id.tv_code);
             convertView.setTag(viewHolder);
         } else {
             viewHolder = (ViewHolder) convertView.getTag();
         }
-        viewHolder.name.setText(country.getName());
+        viewHolder.name.setText(country.getEmoji() + " " + country.getName());
         viewHolder.code.setText("+" + country.getCode());
         return convertView;
     }

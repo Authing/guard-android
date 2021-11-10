@@ -9,7 +9,6 @@ import java.nio.charset.StandardCharsets;
 import java.util.Objects;
 
 import cn.authing.guard.Authing;
-import cn.authing.guard.Callback;
 import cn.authing.guard.data.Config;
 import okhttp3.Call;
 import okhttp3.MediaType;
@@ -49,17 +48,17 @@ public class Guardian {
             return;
         }
 
-        Request request;
+        Request.Builder builder = new Request.Builder();
+        builder.url(url);
+        if (config.getUserPoolId() != null) {
+            builder.addHeader("x-authing-userpool-id", config.getUserPoolId());
+        }
         if (method.equals("post")) {
             RequestBody requestBody = RequestBody.create(body.toString(), JSON);
-            request = new Request.Builder().url(url)
-                    .addHeader("x-authing-userpool-id", config.getUserPoolId())
-                    .post(requestBody).build();
-        } else {
-            request = new Request.Builder().url(url)
-                    .addHeader("x-authing-userpool-id", config.getUserPoolId())
-                    .build();
+            builder.post(requestBody);
         }
+
+        Request request = builder.build();
         OkHttpClient client = new OkHttpClient();
         Call call = client.newCall(request);
         okhttp3.Response response;
@@ -69,27 +68,35 @@ public class Guardian {
                 Response resp = new Response();
                 String s = new String(Objects.requireNonNull(response.body()).bytes(), StandardCharsets.UTF_8);
                 JSONObject json = new JSONObject(s);
-                int code;
+                int code = 0;
                 try {
                     code = json.getInt("code");
                     resp.setCode(code);
-                    String message = json.getString("message");
-                    resp.setMessage(message);
-                    if (code == 200) {
-                        JSONObject data = json.getJSONObject("data");
-                        resp.setData(data);
-                    } else {
-                        Log.i(TAG, "Post failed for:" + url + " msg:" + json);
-                    }
                 } catch (JSONException je) {
                     // when success for some api, there is no 'code' field
                     resp.setCode(200);
                     resp.setData(json);
                 }
 
+                try {
+                    String message = json.getString("message");
+                    resp.setMessage(message);
+                } catch (JSONException ignored) {
+                }
+
+                try {
+                    if (code == 200) {
+                        JSONObject data = json.getJSONObject("data");
+                        resp.setData(data);
+                    } else {
+                        Log.i(TAG, "Post failed for:" + url + " msg:" + json);
+                    }
+                } catch (JSONException ignored) {
+                }
+
                 fireCallback(callback, resp);
             } else {
-                Log.w(TAG, response.code() + " Post failed for:" + url);
+                Log.w(TAG, response.code() + " Guardian failed for:" + url);
                 fireCallback(callback, null);
             }
         } catch (Exception e) {

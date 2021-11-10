@@ -49,6 +49,7 @@
     </declare-styleable>
 
     <declare-styleable name="CountryCodePicker">
+        <attr name="showFlag" format="boolean" />
         <attr name="showCountryName" format="boolean" />
         <attr name="showRightArrow" format="boolean" />
     </declare-styleable>

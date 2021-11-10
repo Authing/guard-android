@@ -9,9 +9,11 @@ import org.json.JSONObject;
 
 import cn.authing.MainActivity;
 import cn.authing.R;
+import cn.authing.guard.CountryCodePicker;
 import cn.authing.guard.GlobalStyle;
 import cn.authing.guard.PhoneNumberEditText;
 import cn.authing.guard.activity.BaseLoginActivity;
+import cn.authing.guard.data.Country;
 import cn.authing.guard.network.Guardian;
 import cn.authing.guard.network.Response;
 import cn.authing.guard.social.SocialLoginListView;
@@ -19,8 +21,11 @@ import cn.authing.guard.util.Util;
 
 public class AbaoActivity extends BaseLoginActivity {
 
+    private CountryCodePicker countryCodePicker;
     PhoneNumberEditText editText;
     ImageView btn;
+
+    boolean debug = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,19 +35,26 @@ public class AbaoActivity extends BaseLoginActivity {
         GlobalStyle.setEditTextBackground(0);
 
         setContentView(R.layout.abao_login);
+
+        countryCodePicker = findViewById(R.id.ccp);
         editText = findViewById(R.id.pet);
         btn = findViewById(R.id.btn_login);
 
         if (btn != null) {
             btn.setOnClickListener((v) -> {
-//                next();
+                if (debug) {
+                    next();
+                    return;
+                }
 
                 if (!editText.isContentValid()) {
                     Util.setErrorText(editText, getString(cn.authing.guard.R.string.authing_invalid_phone_number));
                     return;
                 }
 
-                String phoneNumber = editText.getText().toString();
+                Country country = countryCodePicker.getCountry();
+                String code = "+" + country.getCode();
+                String phoneNumber = code + editText.getText().toString();
                 JSONObject body = new JSONObject();
                 try {
                     body.put("phone", phoneNumber);
@@ -81,6 +93,7 @@ public class AbaoActivity extends BaseLoginActivity {
     private void next() {
         Intent intent = new Intent(this, AbaoVerifyCodeActivity.class);
         intent.putExtra("phone", editText.getText().toString());
+        intent.putExtra("country", countryCodePicker.getCountry());
         startActivity(intent);
     }
 }

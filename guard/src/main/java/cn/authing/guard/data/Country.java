@@ -1,24 +1,26 @@
 package cn.authing.guard.data;
 
-public class Country {
-    private String shortName;
+import java.io.Serializable;
+
+public class Country implements Serializable {
+    private String abbrev;
     private String name;
-    private String en;
     private String code;
+    private String emoji;
 
-    public Country(String shortName, String name, String en, String code) {
-        this.shortName = shortName;
+    public Country(String abbrev, String name, String code, String emoji) {
+        this.abbrev = abbrev;
         this.name = name;
-        this.en = en;
         this.code = code;
+        this.emoji = emoji;
     }
 
-    public String getShortName() {
-        return shortName;
+    public String getAbbrev() {
+        return abbrev;
     }
 
-    public void setShortName(String shortName) {
-        this.shortName = shortName;
+    public void setAbbrev(String abbrev) {
+        this.abbrev = abbrev;
     }
 
     public String getName() {
@@ -29,19 +31,19 @@ public class Country {
         this.name = name;
     }
 
-    public String getEn() {
-        return en;
-    }
-
-    public void setEn(String en) {
-        this.en = en;
-    }
-
     public String getCode() {
         return code;
     }
 
     public void setCode(String code) {
         this.code = code;
+    }
+
+    public String getEmoji() {
+        return emoji;
+    }
+
+    public void setEmoji(String emoji) {
+        this.emoji = emoji;
     }
 }

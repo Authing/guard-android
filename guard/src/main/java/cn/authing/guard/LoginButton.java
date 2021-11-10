@@ -3,6 +3,9 @@ package cn.authing.guard;
 import static cn.authing.guard.util.Const.NS_ANDROID;
 
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffColorFilter;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.util.TypedValue;
@@ -54,6 +57,10 @@ public class LoginButton extends LoadingButton {
         if (attrs == null || attrs.getAttributeValue(NS_ANDROID, "textSize") == null) {
             setTextSize(TypedValue.COMPLEX_UNIT_DIP, 16);
         }
+
+        PorterDuffColorFilter porterDuffColorFilter = new PorterDuffColorFilter(Color.WHITE,
+                PorterDuff.Mode.SRC_ATOP);
+        loading.setColorFilter(porterDuffColorFilter);
 
         setOnClickListener((v -> login()));
     }

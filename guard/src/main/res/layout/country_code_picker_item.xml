@@ -8,6 +8,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
         android:layout_marginLeft="16dp"
+        android:textColor="#000"
         android:text="Name" />
     <TextView
         android:id="@+id/tv_code"

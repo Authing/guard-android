@@ -18,7 +18,7 @@ public class SampleListActivity extends AppCompatActivity {
     String[] from = {
             "Authing 标准登录",
             "Android 默认风格登录",
-            "一键登录",
+            "手机号一键登录",
             "微信",
             "Theragun",
             "阿宝说"

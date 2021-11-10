@@ -22,6 +22,8 @@
         android:layout_height="56dp"
         android:layout_marginTop="48dp">
         <cn.authing.guard.CountryCodePicker
+            android:id="@+id/ccp"
+            app:showFlag="true"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:textSize="16sp"

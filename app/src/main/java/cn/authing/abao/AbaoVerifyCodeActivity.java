@@ -11,6 +11,7 @@ import cn.authing.guard.GlobalStyle;
 import cn.authing.guard.LoginButton;
 import cn.authing.guard.PhoneNumberEditText;
 import cn.authing.guard.activity.BaseLoginActivity;
+import cn.authing.guard.data.Country;
 
 public class AbaoVerifyCodeActivity extends BaseLoginActivity {
 
@@ -23,10 +24,12 @@ public class AbaoVerifyCodeActivity extends BaseLoginActivity {
 
         setContentView(R.layout.abao_login_verify_code);
 
+        String phone = getIntent().getStringExtra("phone");
+        Country country = (Country)getIntent().getSerializableExtra("country");
+
         CountryCodePicker ccp = findViewById(R.id.ccp);
         ccp.setEnabled(false);
-
-        String phone = getIntent().getStringExtra("phone");
+        ccp.setCountry(country);
 
         PhoneNumberEditText phoneNumberEditText = findViewById(R.id.pet);
         phoneNumberEditText.getEditText().setEnabled(false);

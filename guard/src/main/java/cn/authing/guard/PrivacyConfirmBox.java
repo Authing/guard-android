@@ -14,6 +14,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatCheckBox;
 import androidx.core.text.HtmlCompat;
 
+import java.util.List;
 import java.util.Locale;
 
 import cn.authing.guard.data.Agreement;
@@ -22,7 +23,7 @@ import cn.authing.guard.data.Config;
 public class PrivacyConfirmBox extends LinearLayout {
 
     private boolean isRequired = true;
-    private AppCompatCheckBox checkBox;
+    private final AppCompatCheckBox checkBox;
     private final Animation animShake;
 
     public PrivacyConfirmBox(Context context) {
@@ -43,19 +44,21 @@ public class PrivacyConfirmBox extends LinearLayout {
         checkBox = new AppCompatCheckBox(context);
         addView(checkBox);
 
-        TextView textView = new TextView(context);
-        addView(textView);
-
         Config config = Authing.getPublicConfig();
         if (config != null) {
-            String lang = Locale.getDefault().getLanguage();
-            for (Agreement agreement : config.getAgreements()) {
-                if (agreement.getLang().startsWith(lang)) {
-                    Spanned htmlAsSpanned = Html.fromHtml(agreement.getTitle(), HtmlCompat.FROM_HTML_MODE_LEGACY);
-                    textView.setText(htmlAsSpanned);
-                    textView.setMovementMethod(LinkMovementMethod.getInstance());
-                    isRequired = agreement.isRequired();
-                    break;
+            List<Agreement> agreements = config.getAgreements();
+            if (agreements != null) {
+                TextView textView = new TextView(context);
+                addView(textView);
+                String lang = Locale.getDefault().getLanguage();
+                for (Agreement agreement : config.getAgreements()) {
+                    if (agreement.getLang().startsWith(lang)) {
+                        Spanned htmlAsSpanned = Html.fromHtml(agreement.getTitle(), HtmlCompat.FROM_HTML_MODE_LEGACY);
+                        textView.setText(htmlAsSpanned);
+                        textView.setMovementMethod(LinkMovementMethod.getInstance());
+                        isRequired = agreement.isRequired();
+                        break;
+                    }
                 }
             }
         }
