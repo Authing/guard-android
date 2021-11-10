@@ -145,3 +145,4 @@ Authing 作为认证领域专家，将数年认证经验沉淀在 Guard 组件�
 10. 设备互斥与强制下线
 11. 深色模式
 12. 多设备适配
+13. [AppAuth](./doc/topics/app_auth.md)
