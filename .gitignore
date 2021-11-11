@@ -16,6 +16,5 @@ local.properties
 gradlew
 gradlew.bat
 app/build
-gradle
 guard/build
 app/release
