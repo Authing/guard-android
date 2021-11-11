@@ -12,6 +12,7 @@ import cn.authing.appauth.AppAuthActivity;
 import cn.authing.guard.activity.AuthingLoginActivity;
 import cn.authing.oneclick.OneClickActivity;
 import cn.authing.theragun.TheragunLoginActivity;
+import cn.authing.webview.AuthingWebViewActivity;
 import cn.authing.wechat.WechatLoginActivity;
 
 public class SampleListActivity extends AppCompatActivity {
@@ -25,7 +26,8 @@ public class SampleListActivity extends AppCompatActivity {
             "微信",
             "Theragun",
             "阿宝说",
-            "AppAuth"
+            "AppAuth",
+            "Authing WebView"
     };
 
     @Override
@@ -61,6 +63,9 @@ public class SampleListActivity extends AppCompatActivity {
                 startActivity(intent);
             } else if (pos == 6) {
                 Intent intent = new Intent(SampleListActivity.this, AppAuthActivity.class);
+                startActivity(intent);
+            } else if (pos == 7) {
+                Intent intent = new Intent(SampleListActivity.this, AuthingWebViewActivity.class);
                 startActivity(intent);
             }
         });

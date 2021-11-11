@@ -70,6 +70,7 @@ public class UserInfo implements Serializable {
     private boolean phone_number_verified;
 
     private String accessToken;
+    private String idToken;
     private String thirdPartySource;
 
     public String getId() {
@@ -246,6 +247,14 @@ public class UserInfo implements Serializable {
 
     public void setAccessToken(String accessToken) {
         this.accessToken = accessToken;
+    }
+
+    public String getIdToken() {
+        return idToken;
+    }
+
+    public void setIdToken(String idToken) {
+        this.idToken = idToken;
     }
 
     public String getThirdPartySource() {

@@ -17,9 +17,6 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Guard">
         <activity
-            android:name=".appauth.AppAuthActivity"
-            android:exported="false" />
-        <activity
             android:name=".abao.AbaoVerifyCodeActivity"
             android:exported="false" />
         <activity
@@ -65,6 +62,10 @@
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity
+            android:name=".appauth.AppAuthActivity"
+            android:exported="false" />
+        <activity
+            android:exported="true"
             android:name="net.openid.appauth.RedirectUriReceiverActivity"
             tools:node="replace">
             <intent-filter>
@@ -74,6 +75,21 @@
                 <data android:scheme="https"
                     android:host="guard.authing"
                     android:path="/redirect"/>
+            </intent-filter>
+        </activity>
+        <activity
+            android:exported="true"
+            android:screenOrientation="portrait"
+            android:name=".webview.AuthingWebViewActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:host="authing.cn"
+                    android:scheme="guard" />
             </intent-filter>
         </activity>
     </application>

@@ -31,7 +31,7 @@ Authing android guard 是一个面向身份认证领域的业务组件库，该�
 
 2. 如果应用需要自定义界面风格，则可以 [基于我们提供的主流 App 模板接入](./doc/start_with_template.md)
 
-3. [通过 Web 风格接入](./doc/topics/app_auth.md)
+3. [通过 WebView 接入](./doc/start_with_webview.md)
 
 <br>
 
