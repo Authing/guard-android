@@ -1,4 +1,4 @@
-# 国家码选择器 CountryCodePicker
+# 国家码选择器 CountryCodePicker
 
 ## 布局文件使用方式
 
@@ -18,27 +18,13 @@
 
 ## 效果如下
 
-![](./images/ccp_normal.png)
-
-## 弹出对话框：
-
-![](./images/ccp_show.png)
-
-### 特性一：
-可以通过 *showCountryName* 属性设置是否显示国家名称，如：
-```xml
-<n.authing.guard.CountryCodePicker
-    app:showCountryName="true" />
-```
+![](./gif/ccp_flag.gif)
 
 <br>
 
-### 特性二：
-可以通过 *showRightArrow* 属性设置是否显示右边的箭头。如果不显示国家名称，建议显示箭头提示用户可以点击，如：
-```xml
-<n.authing.guard.CountryCodePicker
-    app:showRightArrow="true" />
-```
+## 特性
+
+通过使用 Emoji 显示国旗，避免引入大量图片资源，从而避免 guard 库 size 过大
 
 <br>
 
@@ -46,6 +32,7 @@
 
 | 属性名                     | 类型 | 说明 | 默认值 |
 | ----------------------- |:--------:| :------:| :-----: |
+|  showFlag     |    boolean    |  是否显示国家国旗   |    false   |
 |  showCountryName     |    boolean    |  是否显示国家名称   |    false   |
 |  showRightArrow     |    boolean    |   是否显示右边的箭头   |    true   |
 

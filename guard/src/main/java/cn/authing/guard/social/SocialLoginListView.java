@@ -48,16 +48,20 @@ public class SocialLoginListView extends LinearLayout {
 
     private void setup(Context context, String s) {
         String[] sources = s.split("\\|");
-        for (int i = 0;i < sources.length;++i) {
-            String src = sources[i].trim();
+        for (String source : sources) {
+            String src = source.trim();
 
             SocialLoginButton button = null;
-            if (src.equals("wechat")) {
-                button = new WechatLoginButton(context);
-            } else if (src.equals("alipay")) {
-                button = new AlipayLoginButton(context);
-            }else if (src.equals("wecom")) {
-                button = new WeComLoginButton(context);
+            switch (src) {
+                case "wechat":
+                    button = new WechatLoginButton(context);
+                    break;
+                case "alipay":
+                    button = new AlipayLoginButton(context);
+                    break;
+                case "wecom":
+                    button = new WeComLoginButton(context);
+                    break;
             }
 
             if (button == null) {
@@ -70,9 +74,7 @@ public class SocialLoginListView extends LinearLayout {
             lp.setMargins(m, 0, m, 0);
             button.setLayoutParams(lp);
             addView(button);
-            button.setOnLoginListener((ok, data) -> {
-                fireCallback(data, src);
-            });
+            button.setOnLoginListener((ok, data) -> fireCallback(data, src));
         }
     }
 

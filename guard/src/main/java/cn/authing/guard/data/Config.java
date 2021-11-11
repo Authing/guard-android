@@ -8,6 +8,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Config {
+
+    public interface ConfigCallback {
+        void call(Config config);
+    }
+
     private String userPoolId;
     private String identifier; // host
     private String name;

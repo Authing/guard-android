@@ -20,12 +20,13 @@ public class AppLogo extends androidx.appcompat.widget.AppCompatImageView {
 
     public AppLogo(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        Config config = Authing.getPublicConfig();
-        if (config == null) {
-            return;
-        }
+        Authing.getPublicConfig((config)->{
+            if (config == null) {
+                return;
+            }
 
-        String url = config.getUserpoolLogo();
-        ImageLoader.with(context).load(url).into(this);
+            String url = config.getUserpoolLogo();
+            ImageLoader.with(context).load(url).into(this);
+        });
     }
 }

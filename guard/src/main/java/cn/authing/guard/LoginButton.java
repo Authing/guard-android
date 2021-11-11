@@ -29,6 +29,7 @@ public class LoginButton extends LoadingButton {
 
     private String phoneNumber;
     private String phoneCode;
+    private String identifier;
     protected Callback<UserInfo> callback;
 
     public LoginButton(@NonNull Context context) {
@@ -79,15 +80,20 @@ public class LoginButton extends LoadingButton {
             return;
         }
 
-        Config config = Authing.getPublicConfig();
+        if (requiresAgreement()) {
+            return;
+        }
+
+        Authing.getPublicConfig((this::_login));
+    }
+
+    public void _login(Config config) {
         if (config == null) {
             fireCallback(null);
             return;
         }
 
-        if (requiresAgreement()) {
-            return;
-        }
+        identifier = config.getIdentifier();
 
         View phoneNumberET = Util.findViewByClass(this, PhoneNumberEditText.class);
         View phoneCodeET = Util.findViewByClass(this, VerifyCodeEditText.class);
@@ -153,11 +159,10 @@ public class LoginButton extends LoadingButton {
 
     private void loginByPhoneCode(String phone, String code) {
         try {
-            Config config = Authing.getPublicConfig();
             JSONObject body = new JSONObject();
             body.put("phone", phone);
             body.put("code", code);
-            String url = "https://" + config.getIdentifier() + ".authing.cn/api/v2/login/phone-code";
+            String url = "https://" + identifier + ".authing.cn/api/v2/login/phone-code";
             getUserInfo(url, body);
         } catch (Exception e) {
             e.printStackTrace();
@@ -167,12 +172,11 @@ public class LoginButton extends LoadingButton {
 
     private void loginByAccount(String account, String password) {
         try {
-            Config config = Authing.getPublicConfig();
             password = Util.encryptPassword(password);
             JSONObject body = new JSONObject();
             body.put("account", account);
             body.put("password", password);
-            String url = "https://" + config.getIdentifier() + ".authing.cn/api/v2/login/account";
+            String url = "https://" + identifier + ".authing.cn/api/v2/login/account";
             getUserInfo(url, body);
         } catch (Exception e) {
             e.printStackTrace();

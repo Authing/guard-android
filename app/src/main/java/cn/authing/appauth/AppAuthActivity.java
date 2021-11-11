@@ -19,7 +19,6 @@ import net.openid.appauth.ResponseTypeValues;
 
 import cn.authing.R;
 import cn.authing.guard.Authing;
-import cn.authing.guard.data.Config;
 import cn.authing.guard.internal.LoadingButton;
 
 public class AppAuthActivity extends AppCompatActivity {
@@ -46,18 +45,19 @@ public class AppAuthActivity extends AppCompatActivity {
 
         btn.startLoadingVisualEffect();
 
-        Config config = Authing.getPublicConfig();
-        String host = config.getIdentifier();
-        AuthorizationServiceConfiguration.fetchFromIssuer(Uri.parse("https://" + host + ".authing.cn/oidc"),
-                (serviceConfiguration, ex) -> {
-                    if (ex != null) {
-                        Log.e(TAG, "failed to fetch configuration");
-                        return;
-                    }
+        Authing.getPublicConfig(config -> {
+            String host = config.getIdentifier();
+            AuthorizationServiceConfiguration.fetchFromIssuer(Uri.parse("https://" + host + ".authing.cn/oidc"),
+                    (serviceConfiguration, ex) -> {
+                        if (ex != null) {
+                            Log.e(TAG, "failed to fetch configuration");
+                            return;
+                        }
 
-                    authState = new AuthState(serviceConfiguration);
-                    startAuth(serviceConfiguration);
-                });
+                        authState = new AuthState(serviceConfiguration);
+                        startAuth(serviceConfiguration);
+                    });
+        });
     }
 
     private void startAuth(AuthorizationServiceConfiguration serviceConfig) {

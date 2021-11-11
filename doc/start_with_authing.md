@@ -12,13 +12,7 @@ implementation 'cn.authing:guard:+'
 Authing.init(appContext, "your_authing_app_id");
 ```
 
-3. 在 App 启动界面，如闪屏，调用
-
-```java
-Authing.requestPublicConfig((ok, data) -> continue_your_app_flow());
-```
-
-4. 继承 AuthingLoginActivity，处理登录结果
+3. 继承 AuthingLoginActivity，处理登录结果
 
 ```java
 public class AuthingDemoLoginActivity extends AuthingLoginActivity {

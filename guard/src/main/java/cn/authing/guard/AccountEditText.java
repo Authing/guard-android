@@ -2,6 +2,7 @@ package cn.authing.guard;
 
 import android.content.Context;
 import android.util.AttributeSet;
+import android.view.inputmethod.EditorInfo;
 
 import java.util.List;
 
@@ -26,17 +27,20 @@ public class AccountEditText extends EditTextLayout {
         super(context, attrs, defStyleAttr);
         CharSequence s = getEditText().getHint();
         if (s == null) {
-            getEditText().setHint(getHintByConfig(context));
+            Authing.getPublicConfig((config -> getEditText().setHint(getHintByConfig(config, context))));
         }
+
+        // most likely account is in English
+        editText.setImeOptions(EditorInfo.IME_FLAG_FORCE_ASCII);
     }
 
-    private String getHintByConfig(Context context) {
-        String s = context.getString(R.string.account_edit_text_hint);
+    private String getHintByConfig(Config config, Context context) {
+        StringBuilder s = new StringBuilder(context.getString(R.string.account_edit_text_hint));
         String username = context.getString(R.string.authing_username);
         String email = context.getString(R.string.authing_email);
         String phone = context.getString(R.string.authing_phone);
         String defaultHint = s + username + " / " + email + " / " + phone;
-        Config config = Authing.getPublicConfig();
+
         if (config == null) {
             return defaultHint;
         }
@@ -46,17 +50,21 @@ public class AccountEditText extends EditTextLayout {
         }
         for (int i = 0, n = enabledLoginMethods.size();i < n;++i) {
             String opt = enabledLoginMethods.get(i);
-            if (opt.equals(LOGIN_METHOD_UN)) {
-                s += username;
-            } else if (opt.equals(LOGIN_METHOD_EMAIL)) {
-                s += email;
-            } else if (opt.equals(LOGIN_METHOD_PHONE)) {
-                s += phone;
+            switch (opt) {
+                case LOGIN_METHOD_UN:
+                    s.append(username);
+                    break;
+                case LOGIN_METHOD_EMAIL:
+                    s.append(email);
+                    break;
+                case LOGIN_METHOD_PHONE:
+                    s.append(phone);
+                    break;
             }
             if (i < n - 1) {
-                s +=" / ";
+                s.append(" / ");
             }
         }
-        return  s;
+        return s.toString();
     }
 }

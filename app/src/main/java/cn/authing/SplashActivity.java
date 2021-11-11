@@ -8,11 +8,7 @@ import android.os.Handler;
 
 import java.util.Objects;
 
-import cn.authing.guard.Authing;
-
 public class SplashActivity extends AppCompatActivity {
-
-    private int flag;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,17 +17,12 @@ public class SplashActivity extends AppCompatActivity {
         Objects.requireNonNull(getSupportActionBar()).hide();
         setContentView(R.layout.activity_splash);
 
-        new Handler().postDelayed(() -> gotoLogin(1), 2000);
-
-        Authing.requestPublicConfig((ok, data) -> gotoLogin(2));
+        new Handler().postDelayed(this::gotoLogin, 1000);
     }
 
-    private void gotoLogin(int flag) {
-        this.flag |= flag;
-        if (3 == this.flag) {
-            Intent intent = new Intent(this, SampleListActivity.class);
-            startActivity(intent);
-            finish();
-        }
+    private void gotoLogin() {
+        Intent intent = new Intent(this, SampleListActivity.class);
+        startActivity(intent);
+        finish();
     }
 }

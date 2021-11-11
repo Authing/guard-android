@@ -24,6 +24,7 @@ import androidx.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
+import cn.authing.guard.data.Config;
 import cn.authing.guard.internal.EditTextLayout;
 import cn.authing.guard.util.Util;
 
@@ -34,7 +35,7 @@ public class VerifyCodeEditText extends EditTextLayout implements TextWatcher {
     private static final int EUnderline = 2;
 
     private int maxLength = 6;
-    private final int codeMode;
+    private int codeMode;
     private final List<EditText> editTextList = new ArrayList<>();
 
     public VerifyCodeEditText(@NonNull Context context) {
@@ -47,13 +48,16 @@ public class VerifyCodeEditText extends EditTextLayout implements TextWatcher {
 
     public VerifyCodeEditText(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
+        Authing.getPublicConfig(config -> init(config, context, attrs, defStyleAttr));
+    }
+
+    private void init(Config config, Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
+        if (config != null) {
+            maxLength = config.getVerifyCodeLength();
+        }
 
         TypedArray array = context.obtainStyledAttributes(attrs, R.styleable.VerifyCodeEditText);
         codeMode = array.getInt(R.styleable.VerifyCodeEditText_codeMode, 0);
-
-        if (Authing.getPublicConfig() != null) {
-            maxLength = Authing.getPublicConfig().getVerifyCodeLength();
-        }
 
         if (codeMode == ENormal) {
             editText.setHint(R.string.verify_code_edit_text_hint);

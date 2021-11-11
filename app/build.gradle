@@ -61,4 +61,7 @@ dependencies {
 
     // 企业微信
     implementation files('libs/wechatwork.jar')
+
+    // AppAuth
+    implementation 'net.openid:appauth:0.10.0'
 }

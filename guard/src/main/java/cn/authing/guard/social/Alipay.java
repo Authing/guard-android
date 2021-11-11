@@ -75,19 +75,27 @@ public class Alipay extends SocialAuthenticator{
             return;
         }
 
+        Authing.getPublicConfig(config -> _handleResult(config, bundle, callback));
+    }
+
+    private static void _handleResult(Config config, Bundle bundle, Callback<UserInfo> callback) {
+        if (config == null) {
+            fireCallback(callback, null);
+            return;
+        }
+
         String connId = "";
-        List<SocialConfig> configs = Authing.getPublicConfig().getSocialConfigs();
-        for (SocialConfig config : configs) {
-            String provider = config.getProvider();
+        List<SocialConfig> configs = config.getSocialConfigs();
+        for (SocialConfig c : configs) {
+            String provider = c.getProvider();
             if ("alipay".equals(provider)) {
-                connId = config.getId();
+                connId = c.getId();
                 break;
             }
         }
 
         try {
             String code = bundle.get("auth_code").toString();
-            Config config = Authing.getPublicConfig();
             JSONObject body = new JSONObject();
             body.put("connId", connId);
             body.put(" s", code);

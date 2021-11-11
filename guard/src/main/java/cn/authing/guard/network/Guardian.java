@@ -26,31 +26,25 @@ public class Guardian {
     }
 
     public static void get(String url, GuardianCallback callback) {
-        new Thread() {
-            public void run() {
-                send(url, "get", null, callback);
-            }
-        }.start();
+        request(url, "get", null, callback);
     }
 
     public static void post(String url, JSONObject body, GuardianCallback callback) {
+        request(url, "post", body, callback);
+    }
+
+    private static void request(String url, String method, JSONObject body, GuardianCallback callback) {
         new Thread() {
             public void run() {
-                send(url, "post", body, callback);
+                Authing.getPublicConfig(config -> request(config, url, method, body, callback));
             }
         }.start();
     }
 
-    private static void send(String url, String method, JSONObject body, GuardianCallback callback) {
-        Config config = Authing.getPublicConfig();
-        if (config == null) {
-            fireCallback(callback, null);
-            return;
-        }
-
+    public static void request(Config config, String url, String method, JSONObject body, GuardianCallback callback) {
         Request.Builder builder = new Request.Builder();
         builder.url(url);
-        if (config.getUserPoolId() != null) {
+        if (config != null && config.getUserPoolId() != null) {
             builder.addHeader("x-authing-userpool-id", config.getUserPoolId());
         }
         if (method.equals("post")) {

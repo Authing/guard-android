@@ -18,7 +18,6 @@ import java.util.List;
 import java.util.Locale;
 
 import cn.authing.guard.data.Agreement;
-import cn.authing.guard.data.Config;
 
 public class PrivacyConfirmBox extends LinearLayout {
 
@@ -44,8 +43,13 @@ public class PrivacyConfirmBox extends LinearLayout {
         checkBox = new AppCompatCheckBox(context);
         addView(checkBox);
 
-        Config config = Authing.getPublicConfig();
-        if (config != null) {
+        animShake = AnimationUtils.loadAnimation(context, R.anim.authing_shake);
+
+        Authing.getPublicConfig((config -> {
+            if (config == null) {
+                return;
+            }
+
             List<Agreement> agreements = config.getAgreements();
             if (agreements != null) {
                 TextView textView = new TextView(context);
@@ -61,9 +65,7 @@ public class PrivacyConfirmBox extends LinearLayout {
                     }
                 }
             }
-        }
-
-        animShake = AnimationUtils.loadAnimation(context, R.anim.authing_shake);
+        }));
     }
 
     public boolean require(boolean shake) {

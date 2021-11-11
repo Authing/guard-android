@@ -16,7 +16,6 @@ import org.json.JSONException;
 
 import cn.authing.guard.Authing;
 import cn.authing.guard.Callback;
-import cn.authing.guard.data.Config;
 import cn.authing.guard.data.UserInfo;
 import cn.authing.guard.network.Guardian;
 import cn.authing.guard.social.Wechat;
@@ -76,21 +75,22 @@ public class WXEntryActivity extends AppCompatActivity implements IWXAPIEventHan
     }
 
     private void getUserInfo(String code) {
-        Config config = Authing.getPublicConfig();
-        String poolId = config.getUserPoolId();
-        String url = "https://core.authing.cn/connection/social/wechat:mobile/" + poolId + "/callback?code=" + code;
-        Guardian.get(url, (response)->{
-            if (response != null && response.getCode() == 200) {
-                try {
-                    UserInfo userInfo = UserInfo.createUserInfo(response.getData());
-                    fireCallback(userInfo);
-                } catch (JSONException e) {
-                    e.printStackTrace();
+        Authing.getPublicConfig((config -> {
+            String poolId = config.getUserPoolId();
+            String url = "https://core.authing.cn/connection/social/wechat:mobile/" + poolId + "/callback?code=" + code;
+            Guardian.get(url, (response)->{
+                if (response != null && response.getCode() == 200) {
+                    try {
+                        UserInfo userInfo = UserInfo.createUserInfo(response.getData());
+                        fireCallback(userInfo);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                } else {
+                    fireCallback(null);
                 }
-            } else {
-                fireCallback(null);
-            }
-        });
+            });
+        }));
     }
 
     private void fireCallback(UserInfo info) {

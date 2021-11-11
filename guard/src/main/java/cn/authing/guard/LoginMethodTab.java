@@ -16,7 +16,7 @@ import cn.authing.guard.util.Util;
 
 public class LoginMethodTab extends LinearLayout {
 
-    private List<LoginMethodTabItem> items = new ArrayList<>();
+    private final List<LoginMethodTabItem> items = new ArrayList<>();
 
     public LoginMethodTab(Context context) {
         this(context, null);
@@ -54,13 +54,16 @@ public class LoginMethodTab extends LinearLayout {
         container.setOrientation(LinearLayout.HORIZONTAL);
         scrollView.addView(container);
 
-        Config config = Authing.getPublicConfig();
+        Authing.getPublicConfig((config -> init(config, container)));
+    }
+
+    private void init(Config config, LinearLayout container) {
         if (config == null) {
             initDefaultLogins(container);
             return;
         }
 
-        List<String> loginTabList = Authing.getPublicConfig().getLoginTabList();
+        List<String> loginTabList = config.getLoginTabList();
         if (loginTabList == null || loginTabList.size() == 0) {
             initDefaultLogins(container);
             return;

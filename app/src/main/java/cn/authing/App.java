@@ -13,7 +13,7 @@ public class App extends android.app.Application {
         // social public info has to be set manually
         Wechat.appId = "wx1cddb15e280c0f67";
 
-        Alipay.appId = "2017031306201694";
+        Alipay.appId = "2021002192647456";
 
         WeCom.corpId = "ww2fe68893d538b6c1";
         WeCom.agentId = "1000003";

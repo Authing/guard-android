@@ -21,41 +21,17 @@ Authing android guard 是一个面向身份认证领域的业务组件库，该�
 
 ## 快速开始
 
-最快的接入方式是使用我们海量的模板。通过我们 Guard 组件，预置了 100+ 基于业务（行业）的登录/注册界面模板。开发者只需要选择自己的行业，拷贝对应的模板，即可在 10 分钟内实现复杂的，完整的认证流程。
+可以通过以下几种方式之一接入 Authing：
 
-步骤一：添加依赖
+1. 如果应用可以接受 Authing 标准 UI（见下图），则可以 [使用 Authing 风格的原生界面接入](./doc/start_with_authing.md)：
 
-``` gradle
-implementation 'cn.authing:guard:1.0.2'
-```
-
-步骤二：在本项目的 app/src/main/res/layout 目录下选择适合自己 App 的模板布局文件，如：
-
-![](./doc/images/templates.png)
-
-步骤三：在应用启动的时候，如 Application 的 onCreate 方法，调用：
-
-```java
-Authing.init(appContext, "your_authing_app_id");
-```
-
-步骤四：在自己项目的登录 Activity 里面加载对应布局模板文件
-
-```java
-@Override
-protected void onCreate(Bundle savedInstanceState) {
-    super.onCreate(savedInstanceState);
-    setContentView(R.layout.starbucks_login);
-}
-```
+![](./doc/images/authing_login.png)
 
 <br>
 
-## 使用 Authing 风格的原生界面 [接入步骤](./doc/start_with_authing.md)
+2. 如果应用需要自定义界面风格，则可以 [基于我们提供的主流 App 模板接入](./doc/start_with_template.md)
 
-如果应用可以接受我们的标准 UI，则可以通过上面简单的步骤快速接入。
-
-![](./doc/images/authing_login.png)
+3. [通过 Web 风格接入](./doc/topics/app_auth.md)
 
 <br>
 
@@ -90,16 +66,6 @@ protected void onCreate(Bundle savedInstanceState) {
 [PrivacyConfirmBox](./doc/hc_privacy_confirm_box.md)
 
 [SocialLoginListView](./doc/hc_social_login_list_view.md)
-
-CapchaView
-
-RegisterCompletionForm
-
-### 弹窗
-
-SendSMSDialog
-
-LogoutDialog
 
 <br>
 

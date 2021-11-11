@@ -81,31 +81,25 @@ https://guard.authing/redirect
 Authing.init(appContext, "your_authing_app_id");
 ```
 
-## 2. 获取 Authing 基础信息
-
-在 App 启动界面，如闪屏，调用：
+## 2. 获取 Authing 端点信息
 
 ```java
-Authing.requestPublicConfig((ok, data) -> continue_your_app_flow());
+Authing.getPublicConfig(config -> {
+    String host = config.getIdentifier();
+    AuthorizationServiceConfiguration.fetchFromIssuer(Uri.parse("https://" + host + ".authing.cn/oidc"),
+            (serviceConfiguration, ex) -> {
+                if (ex != null) {
+                    Log.e(TAG, "failed to fetch configuration");
+                    return;
+                }
+
+                authState = new AuthState(serviceConfiguration);
+                startAuth(serviceConfiguration);
+            });
+});
 ```
 
-## 3. 获取 Authing 端点信息
-
-```java
-Config config = Authing.getPublicConfig();
-String host = config.getIdentifier();
-AuthorizationServiceConfiguration.fetchFromIssuer(Uri.parse("https://" + host + ".authing.cn/oidc"),
-        (serviceConfiguration, ex) -> {
-            if (ex != null) {
-                Log.e(TAG, "failed to fetch configuration");
-                return;
-            }
-
-            startAuth(serviceConfiguration);
-        });
-```
-
-## 4. 用系统浏览打开认证界面
+## 3. 用系统浏览打开认证界面
 
 ```java
 AuthorizationRequest.Builder authRequestBuilder =
@@ -126,7 +120,7 @@ startActivityForResult(authIntent, 1000);
 
 >注意：这里的 "https://guard.authing/redirect" 即上面配置信息里面的回调地址，确保已在 authing 后台配置
 
-## 5. 拿到凭证
+## 4. 拿到凭证
 
 ```java
 @Override
