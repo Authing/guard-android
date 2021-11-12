@@ -2,6 +2,7 @@ package cn.authing.guard.network;
 
 import android.util.Log;
 
+import org.jetbrains.annotations.NotNull;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -25,15 +26,15 @@ public class Guardian {
         void call(Response response);
     }
 
-    public static void get(String url, GuardianCallback callback) {
+    public static void get(String url, @NotNull GuardianCallback callback) {
         request(url, "get", null, callback);
     }
 
-    public static void post(String url, JSONObject body, GuardianCallback callback) {
+    public static void post(String url, JSONObject body, @NotNull GuardianCallback callback) {
         request(url, "post", body, callback);
     }
 
-    private static void request(String url, String method, JSONObject body, GuardianCallback callback) {
+    private static void request(String url, String method, JSONObject body, @NotNull GuardianCallback callback) {
         new Thread() {
             public void run() {
                 Authing.getPublicConfig(config -> request(config, url, method, body, callback));
@@ -41,7 +42,7 @@ public class Guardian {
         }.start();
     }
 
-    public static void request(Config config, String url, String method, JSONObject body, GuardianCallback callback) {
+    public static void request(Config config, String url, String method, JSONObject body, @NotNull GuardianCallback callback) {
         Request.Builder builder = new Request.Builder();
         builder.url(url);
         if (config != null && config.getUserPoolId() != null) {
@@ -88,20 +89,14 @@ public class Guardian {
                 } catch (JSONException ignored) {
                 }
 
-                fireCallback(callback, resp);
+                callback.call(resp);
             } else {
                 Log.w(TAG, response.code() + " Guardian failed for:" + url);
-                fireCallback(callback, null);
+                callback.call(new Response(response.code(), "Network Error", null));
             }
         } catch (Exception e) {
             e.printStackTrace();
-            fireCallback(callback, null);
-        }
-    }
-
-    private static void fireCallback(GuardianCallback callback, Response data) {
-        if (callback != null) {
-            callback.call(data);
+            callback.call(new Response(500, "Network Exception", null));
         }
     }
 }

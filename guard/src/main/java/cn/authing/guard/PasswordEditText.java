@@ -2,6 +2,7 @@ package cn.authing.guard;
 
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.text.Editable;
 import android.text.InputType;
@@ -43,11 +44,13 @@ public class PasswordEditText extends EditTextLayout implements TextWatcher {
         boolean toggleEnabled = array.getBoolean(R.styleable.PasswordEditText_toggleEnabled, true);
         array.recycle();
 
+        getEditText().setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+        getEditText().setTypeface(Typeface.DEFAULT);
+
         if (toggleEnabled) {
             eyeOnDrawable = context.getDrawable(R.drawable.ic_authing_eye);
             eyeOffDrawable = context.getDrawable(R.drawable.ic_authing_eye_off);
             eyeDrawable = eyeOnDrawable;
-            getEditText().setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
 
             LinearLayout eyeTouchArea = new LinearLayout(context);
             eyeTouchArea.setOrientation(HORIZONTAL);
@@ -78,10 +81,12 @@ public class PasswordEditText extends EditTextLayout implements TextWatcher {
 
     @Override
     public void onTextChanged(CharSequence text, int start, int lengthBefore, int lengthAfter) {
-        if (text.toString().length() > 0) {
-            eyeButton.setVisibility(View.VISIBLE);
-        } else {
-            eyeButton.setVisibility(View.GONE);
+        if (eyeButton != null) {
+            if (text.toString().length() > 0) {
+                eyeButton.setVisibility(View.VISIBLE);
+            } else {
+                eyeButton.setVisibility(View.GONE);
+            }
         }
     }
 

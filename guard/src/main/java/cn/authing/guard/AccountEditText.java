@@ -1,6 +1,7 @@
 package cn.authing.guard;
 
 import android.content.Context;
+import android.text.InputType;
 import android.util.AttributeSet;
 import android.view.inputmethod.EditorInfo;
 
@@ -25,13 +26,14 @@ public class AccountEditText extends EditTextLayout {
 
     public AccountEditText(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        CharSequence s = getEditText().getHint();
-        if (s == null) {
-            Authing.getPublicConfig((config -> getEditText().setHint(getHintByConfig(config, context))));
-        }
+        Authing.getPublicConfig((config -> {
+            CharSequence s = getEditText().getHint();
+            if (s == null) {
+                getEditText().setHint(getHintByConfig(config, context));
+            }
 
-        // most likely account is in English
-        editText.setImeOptions(EditorInfo.IME_FLAG_FORCE_ASCII);
+            setup(config);
+        }));
     }
 
     private String getHintByConfig(Config config, Context context) {
@@ -66,5 +68,25 @@ public class AccountEditText extends EditTextLayout {
             }
         }
         return s.toString();
+    }
+
+    private void setup(Config config) {
+        // most likely account is in English
+        editText.setImeOptions(EditorInfo.IME_FLAG_FORCE_ASCII);
+
+        List<String> enabledLoginMethods = config.getEnabledLoginMethods();
+        if (enabledLoginMethods.size() == 1) {
+            String opt = enabledLoginMethods.get(0);
+            switch (opt) {
+                case LOGIN_METHOD_UN:
+                    break;
+                case LOGIN_METHOD_EMAIL:
+                    editText.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
+                    break;
+                case LOGIN_METHOD_PHONE:
+                    editText.setInputType(InputType.TYPE_CLASS_PHONE);
+                    break;
+            }
+        }
     }
 }

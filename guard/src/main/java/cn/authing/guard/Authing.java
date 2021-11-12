@@ -11,6 +11,7 @@ import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 import cn.authing.guard.data.Config;
+import cn.authing.guard.network.AuthClient;
 import cn.authing.guard.network.Guardian;
 
 public class Authing {
@@ -102,5 +103,9 @@ public class Authing {
         if (callback != null) {
             callback.call(true, null);
         }
+    }
+
+    public static void loginByAccount(String account, String password, AuthClient.AuthCallback callback) {
+        AuthClient.loginByAccount(account, password, callback);
     }
 }

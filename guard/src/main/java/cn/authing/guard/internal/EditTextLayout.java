@@ -75,7 +75,7 @@ public class EditTextLayout extends LinearLayout implements TextWatcher, View.On
         Drawable leftDrawable = array.getDrawable(R.styleable.EditTextLayout_leftIconDrawable);
         boolean clearAllEnabled = array.getBoolean(R.styleable.EditTextLayout_clearAllEnabled, true);
         float textSize = array.getDimension(R.styleable.EditTextLayout_textSize, Util.dp2px(context, 16));
-        array.recycle();
+        hintText = array.getString(R.styleable.EditTextLayout_hint);
 
         setWillNotDraw(false);
 
@@ -112,6 +112,9 @@ public class EditTextLayout extends LinearLayout implements TextWatcher, View.On
 
         editText = new AppCompatEditText(context);
         editText.setTextSize(TypedValue.COMPLEX_UNIT_PX, textSize);
+        editText.setHint(hintText);
+        editText.setHintTextColor(array.getColor(R.styleable.EditTextLayout_hintColor, 0xff808080));
+        editText.setTextColor(array.getColor(R.styleable.EditTextLayout_textColor, 0xff000000));
         editText.setMaxLines(1);
         editText.setSingleLine(true);
         editText.setOnFocusChangeListener(this);
@@ -135,6 +138,8 @@ public class EditTextLayout extends LinearLayout implements TextWatcher, View.On
             leftPaddingPx = Util.dp2px(context, LEFT_PADDING);
             topPaddingPx = Util.dp2px(context, TOP_PADDING);
         }
+
+        array.recycle();
     }
 
     private void addClearAllButton() {

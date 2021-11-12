@@ -7,6 +7,14 @@ public class Response {
     private String message;
     private JSONObject data;
 
+    public Response() {}
+
+    public Response(int code, String message, JSONObject obj) {
+        this.code = code;
+        this.message = message;
+        this.data = obj;
+    }
+
     public int getCode() {
         return code;
     }

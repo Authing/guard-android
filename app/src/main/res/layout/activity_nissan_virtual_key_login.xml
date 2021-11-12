@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingLeft="@dimen/authing_form_start_end_margin"
+    android:paddingRight="@dimen/authing_form_start_end_margin"
+    android:background="#13172c">
+    
+    <ImageView
+        android:layout_width="144dp"
+        android:layout_height="144dp"
+        android:layout_marginTop="56dp"
+        android:layout_gravity="center_horizontal"
+        android:src="@drawable/nissan_logo"
+        android:scaleType="fitCenter"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:text="Nissan Virtual Key"
+        android:textColor="@color/white"
+        android:textSize="16sp"
+        android:layout_gravity="center_horizontal"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:text="Email"
+        android:textColor="@color/white"/>
+
+    <cn.authing.guard.AccountEditText
+        android:background="@drawable/nissan_edit_text_bg"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        app:textColor="@color/white"
+        app:hintColor="#949494"
+        app:hint="Your email"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="Password"
+        android:textColor="@color/white"/>
+
+    <cn.authing.guard.PasswordEditText
+        android:background="@drawable/nissan_edit_text_bg"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        app:textColor="@color/white"
+        app:hintColor="#949494"
+        app:hint="Your password"/>
+
+    <cn.authing.guard.LoginButton
+        android:id="@+id/btn_login"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="48dp"
+        android:text="Sign in"
+        android:textAllCaps="false"
+        android:background="@drawable/nissan_btn_bg"/>
+
+</LinearLayout>

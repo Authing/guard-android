@@ -10,6 +10,7 @@ import android.widget.ListView;
 import cn.authing.abao.AbaoActivity;
 import cn.authing.appauth.AppAuthActivity;
 import cn.authing.guard.activity.AuthingLoginActivity;
+import cn.authing.nissan.NissanVirtualKeyLoginActivity;
 import cn.authing.oneclick.OneClickActivity;
 import cn.authing.theragun.TheragunLoginActivity;
 import cn.authing.webview.AuthingWebViewActivity;
@@ -26,6 +27,7 @@ public class SampleListActivity extends AppCompatActivity {
             "微信",
             "Theragun",
             "阿宝说",
+            "Nissan Virtual Key",
             "AppAuth",
             "Authing WebView"
     };
@@ -62,9 +64,12 @@ public class SampleListActivity extends AppCompatActivity {
                 Intent intent = new Intent(SampleListActivity.this, AbaoActivity.class);
                 startActivity(intent);
             } else if (pos == 6) {
-                Intent intent = new Intent(SampleListActivity.this, AppAuthActivity.class);
+                Intent intent = new Intent(SampleListActivity.this, NissanVirtualKeyLoginActivity.class);
                 startActivity(intent);
             } else if (pos == 7) {
+                Intent intent = new Intent(SampleListActivity.this, AppAuthActivity.class);
+                startActivity(intent);
+            } else if (pos == 8) {
                 Intent intent = new Intent(SampleListActivity.this, AuthingWebViewActivity.class);
                 startActivity(intent);
             }

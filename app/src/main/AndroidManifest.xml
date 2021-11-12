@@ -17,6 +17,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Guard">
         <activity
+            android:name=".nissan.NissanVirtualKeyLoginActivity"
+            android:exported="false" />
+        <activity
             android:name=".abao.AbaoVerifyCodeActivity"
             android:exported="false" />
         <activity
@@ -65,22 +68,25 @@
             android:name=".appauth.AppAuthActivity"
             android:exported="false" />
         <activity
-            android:exported="true"
             android:name="net.openid.appauth.RedirectUriReceiverActivity"
+            android:exported="true"
             tools:node="replace">
             <intent-filter>
-                <action android:name="android.intent.action.VIEW"/>
-                <category android:name="android.intent.category.DEFAULT"/>
-                <category android:name="android.intent.category.BROWSABLE"/>
-                <data android:scheme="https"
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
                     android:host="guard.authing"
-                    android:path="/redirect"/>
+                    android:path="/redirect"
+                    android:scheme="https" />
             </intent-filter>
         </activity>
         <activity
+            android:name=".webview.AuthingWebViewActivity"
             android:exported="true"
-            android:screenOrientation="portrait"
-            android:name=".webview.AuthingWebViewActivity">
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
 

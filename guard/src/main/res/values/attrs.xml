@@ -23,6 +23,9 @@
         <attr name="clearAllEnabled" format="boolean" />
         <attr name="background" />
         <attr name="textSize" />
+        <attr name="textColor" />
+        <attr name="hint" format="string" />
+        <attr name="hintColor" format="reference|color" />
     </declare-styleable>
 
     <declare-styleable name="PasswordEditText">
