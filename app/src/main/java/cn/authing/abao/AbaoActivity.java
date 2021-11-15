@@ -69,8 +69,8 @@ public class AbaoActivity extends BaseLoginActivity {
 
         SocialLoginListView lv = findViewById(R.id.lv_social);
         if (lv != null) {
-            lv.setOnLoginListener((ok, data) -> {
-                if (ok) {
+            lv.setOnLoginListener((code, message, data) -> {
+                if (code == 200) {
                     Intent intent = new Intent(AbaoActivity.this, MainActivity.class);
                     intent.putExtra("user", data);
                     startActivity(intent);

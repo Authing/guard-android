@@ -70,7 +70,8 @@ public class AppAuthActivity extends AppCompatActivity {
                         Uri.parse("https://guard.authing/redirect")); // the redirect URI to which the auth response is sent
 
         AuthorizationRequest authRequest = authRequestBuilder
-                .setScope("openid profile email phone address")
+                .setScope("openid profile email phone address offline_access role")
+                .setPrompt("consent")
                 .build();
 
         authService = new AuthorizationService(this);
@@ -95,6 +96,9 @@ public class AppAuthActivity extends AppCompatActivity {
                             runOnUiThread(()->{
                                 tvTitle.setVisibility(View.VISIBLE);
                                 tvRes.setText(resp1.idToken);
+                                Log.d(TAG, resp1.idToken);
+                                Log.d(TAG, "ak:" + resp1.accessToken);
+                                Log.d(TAG, "rk:" + resp1.refreshToken);
                                 btn.setVisibility(View.GONE);
                             });
                         } else {

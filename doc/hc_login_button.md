@@ -1,4 +1,4 @@
-# 登录按钮 LoginButton
+# 登录按钮 LoginButton
 
 ## 布局文件使用方式
 
@@ -19,21 +19,7 @@
 ![](./images/btn_login_normal.png)
 
 ### 特性一：
-当用户点击登录按钮时，该组件会向 Authing 服务器发起登录请求，然后通过 callback 回传登录结果。使用示例：
-
-```java
-LoginButton btn = findViewById(R.id.btn_login);
-btn.setOnLoginListener((ok, data) -> {
-    if (ok) {
-        // 登录成功，data 为 UserInfo 对象
-        Intent intent = new Intent(this, MainActivity.class);
-        intent.putExtra("user", data);
-        startActivity(intent);
-    } else {
-        // 登录失败 
-    }
-});
-```
+当用户点击登录按钮时，该组件会向 Authing 服务器发起登录请求，然后通过 callback 回传登录结果。参考 setOnLoginListener API
 
 <br>
 
@@ -48,7 +34,7 @@ btn.setOnLoginListener((ok, data) -> {
 <br>
 
 ### 特性四：
-当输入框内容不合法，disable 按钮
+自动播放动画
 
 <br>
 
@@ -64,8 +50,8 @@ public void setOnLoginListener(Callback<UserInfo> callback)
 
 ```java
 LoginButton btn = findViewById(R.id.btn);
-btn.setOnLoginListener((ok, user) -> {
-    if (ok) {
+btn.setOnLoginListener((code, message, user) -> {
+    if (code == 200) {
         Intent intent = new Intent(AuthingLoginActivity.this, MainActivity.class);
         intent.putExtra("user", user);
         startActivity(intent);

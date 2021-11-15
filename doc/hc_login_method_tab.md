@@ -1,4 +1,4 @@
-# 登录方法切换器 LoginMethodTab
+# 登录方法切换器 LoginMethodTab
 
 ## 布局文件使用方式
 

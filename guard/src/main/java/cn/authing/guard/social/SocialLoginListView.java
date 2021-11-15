@@ -9,14 +9,14 @@ import android.widget.LinearLayout;
 
 import androidx.annotation.Nullable;
 
-import cn.authing.guard.Callback;
+import cn.authing.guard.AuthCallback;
 import cn.authing.guard.R;
 import cn.authing.guard.data.UserInfo;
 import cn.authing.guard.util.Util;
 
 public class SocialLoginListView extends LinearLayout {
 
-    protected Callback<UserInfo> callback;
+    protected AuthCallback callback;
 
     public SocialLoginListView(Context context) {
         this(context, null);
@@ -78,17 +78,17 @@ public class SocialLoginListView extends LinearLayout {
         }
     }
 
-    public void setOnLoginListener(Callback<UserInfo> callback) {
+    public void setOnLoginListener(AuthCallback callback) {
         this.callback = callback;
     }
 
     private void fireCallback(UserInfo info, String src) {
         if (callback != null) {
             if (info == null) {
-                callback.call(false, null);
+                callback.call(500, "error when login", null);
             } else {
                 info.setThirdPartySource(src);
-                callback.call(true, info);
+                callback.call(200, "", info);
             }
         }
     }

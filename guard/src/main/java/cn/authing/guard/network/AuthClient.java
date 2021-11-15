@@ -4,16 +4,12 @@ import org.jetbrains.annotations.NotNull;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import cn.authing.guard.AuthCallback;
 import cn.authing.guard.Authing;
 import cn.authing.guard.data.UserInfo;
 import cn.authing.guard.util.Util;
 
 public class AuthClient {
-
-    public interface AuthCallback {
-        void call(int code, String message, UserInfo userInfo);
-    }
-
     public static void loginByAccount(String account, String password, @NotNull AuthCallback callback) {
         Authing.getPublicConfig((config -> {
             try {

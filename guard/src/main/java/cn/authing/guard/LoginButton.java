@@ -20,6 +20,7 @@ import org.json.JSONObject;
 import cn.authing.guard.data.Config;
 import cn.authing.guard.data.UserInfo;
 import cn.authing.guard.internal.LoadingButton;
+import cn.authing.guard.network.AuthClient;
 import cn.authing.guard.network.Guardian;
 import cn.authing.guard.network.Response;
 import cn.authing.guard.util.Const;
@@ -30,7 +31,7 @@ public class LoginButton extends LoadingButton {
     private String phoneNumber;
     private String phoneCode;
     private String identifier;
-    protected Callback<UserInfo> callback;
+    protected AuthCallback callback;
 
     public LoginButton(@NonNull Context context) {
         this(context, null);
@@ -66,7 +67,7 @@ public class LoginButton extends LoadingButton {
         setOnClickListener((v -> login()));
     }
 
-    public void setOnLoginListener(Callback<UserInfo> callback) {
+    public void setOnLoginListener(AuthCallback callback) {
         this.callback = callback;
     }
 
@@ -89,7 +90,7 @@ public class LoginButton extends LoadingButton {
 
     public void _login(Config config) {
         if (config == null) {
-            fireCallback(null);
+            fireCallback("Public Config is null");
             return;
         }
 
@@ -116,7 +117,7 @@ public class LoginButton extends LoadingButton {
             PhoneNumberEditText phoneNumberEditText = (PhoneNumberEditText)phoneNumberET;
             if (!phoneNumberEditText.isContentValid()) {
                 Util.setErrorText(this, getContext().getString(R.string.authing_invalid_phone_number));
-                fireCallback(null);
+                fireCallback(getContext().getString(R.string.authing_invalid_phone_number));
                 return;
             }
 
@@ -124,7 +125,7 @@ public class LoginButton extends LoadingButton {
             final String code = ((VerifyCodeEditText) phoneCodeET).getText().toString();
             if (TextUtils.isEmpty(code)) {
                 Util.setErrorText(this, getContext().getString(R.string.authing_incorrect_verify_code));
-                fireCallback(null);
+                fireCallback(getContext().getString(R.string.authing_incorrect_verify_code));
                 return;
             }
 
@@ -138,7 +139,7 @@ public class LoginButton extends LoadingButton {
                 final String account = ((AccountEditText) accountET).getText().toString();
                 final String password = ((PasswordEditText) passwordET).getText().toString();
                 if (TextUtils.isEmpty(account) || TextUtils.isEmpty(password)) {
-                    fireCallback(null);
+                    fireCallback("Account or password is invalid");
                     return;
                 }
 
@@ -166,44 +167,36 @@ public class LoginButton extends LoadingButton {
             getUserInfo(url, body);
         } catch (Exception e) {
             e.printStackTrace();
-            fireCallback(null);
+            fireCallback("Exception when login by phone code");
         }
     }
 
     private void loginByAccount(String account, String password) {
-        try {
-            password = Util.encryptPassword(password);
-            JSONObject body = new JSONObject();
-            body.put("account", account);
-            body.put("password", password);
-            String url = "https://" + identifier + ".authing.cn/api/v2/login/account";
-            getUserInfo(url, body);
-        } catch (Exception e) {
-            e.printStackTrace();
-            fireCallback(null);
-        }
+        AuthClient.loginByAccount(account, password, (code, message, data)->{
+            if (code == 200) {
+                fireCallback(200, "", data);
+            } else {
+                Util.setErrorText(this, message);
+                fireCallback(code, message, null);
+            }
+        });
     }
 
     private void getUserInfo(String url, JSONObject body) {
         Guardian.post(url, body, (data)->{
-            if (data == null) {
-                fireCallback(null);
-                return;
-            }
-
             if (data.getCode() != 200) {
                 handleError(data);
-                fireCallback(null);
+                fireCallback(data.getCode(), data.getMessage(), null);
                 return;
             }
 
             UserInfo userInfo;
             try {
                 userInfo = UserInfo.createUserInfo(data.getData());
-                fireCallback(userInfo);
+                fireCallback(200, "", userInfo);
             } catch (JSONException e) {
                 e.printStackTrace();
-                fireCallback(null);
+                fireCallback("Exception parsing User");
             }
         });
     }
@@ -219,15 +212,15 @@ public class LoginButton extends LoadingButton {
         }
     }
 
-    private void fireCallback(UserInfo info) {
+    private void fireCallback(String message) {
+        fireCallback(500, message, null);
+    }
+
+    private void fireCallback(int code, String message, UserInfo info) {
         stopLoadingVisualEffect();
 
         if (callback != null) {
-            if (info == null) {
-                post(()-> callback.call(false, null));
-            } else {
-                post(()-> callback.call(true, info));
-            }
+            post(()-> callback.call(code, message, info));
         }
     }
 }

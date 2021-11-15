@@ -1,4 +1,4 @@
-# 验证码输入框 ErrorTextView
+# 验证码输入框 ErrorTextView
 
 ## 布局文件使用方式
 

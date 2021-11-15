@@ -21,8 +21,8 @@ public class NissanVirtualKeyLoginActivity extends BaseLoginActivity {
         setContentView(R.layout.activity_nissan_virtual_key_login);
 
         LoginButton btn = findViewById(R.id.btn_login);
-        btn.setOnLoginListener((ok, data) -> {
-            if (ok) {
+        btn.setOnLoginListener((code, message, data) -> {
+            if (code == 200) {
                 Intent intent = new Intent(NissanVirtualKeyLoginActivity.this, MainActivity.class);
                 intent.putExtra("user", data);
                 startActivity(intent);

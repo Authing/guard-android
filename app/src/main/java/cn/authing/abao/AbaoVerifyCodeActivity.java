@@ -42,8 +42,8 @@ public class AbaoVerifyCodeActivity extends BaseLoginActivity {
 
         LoginButton btn = findViewById(R.id.btn_login);
         btn.setPhoneNumber(phone);
-        btn.setOnLoginListener((ok, data) -> {
-            if (ok) {
+        btn.setOnLoginListener((code, message, data) -> {
+            if (code == 200) {
                 Intent intent = new Intent(AbaoVerifyCodeActivity.this, MainActivity.class);
                 intent.putExtra("user", data);
                 startActivity(intent);

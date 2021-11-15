@@ -20,8 +20,8 @@ public class AndroidLoginActivity extends BaseLoginActivity {
 
         LoginButton btn = findViewById(R.id.btn_login);
         if (btn != null) {
-            btn.setOnLoginListener((ok, data) -> {
-                if (ok) {
+            btn.setOnLoginListener((code, message, data) -> {
+                if (code == 200) {
                     Intent intent = new Intent(AndroidLoginActivity.this, MainActivity.class);
                     intent.putExtra("user", data);
                     startActivity(intent);
@@ -32,8 +32,8 @@ public class AndroidLoginActivity extends BaseLoginActivity {
 
         SocialLoginListView lv = findViewById(R.id.lv_social);
         if (lv != null) {
-            lv.setOnLoginListener((ok, data) -> {
-                if (ok) {
+            lv.setOnLoginListener((code, message, data) -> {
+                if (code == 200) {
                     Intent intent = new Intent(AndroidLoginActivity.this, MainActivity.class);
                     intent.putExtra("user", data);
                     startActivity(intent);

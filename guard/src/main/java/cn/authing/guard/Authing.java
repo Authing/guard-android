@@ -105,7 +105,7 @@ public class Authing {
         }
     }
 
-    public static void loginByAccount(String account, String password, AuthClient.AuthCallback callback) {
+    public static void loginByAccount(String account, String password, AuthCallback callback) {
         AuthClient.loginByAccount(account, password, callback);
     }
 }

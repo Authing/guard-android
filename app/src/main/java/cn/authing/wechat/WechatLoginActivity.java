@@ -47,8 +47,8 @@ public class WechatLoginActivity extends BaseLoginActivity {
         phoneNumberEditText.getEditText().setEnabled(false);
 
         LoginButton btn = findViewById(R.id.btn_login);
-        btn.setOnLoginListener((ok, data) -> {
-            if (ok) {
+        btn.setOnLoginListener((c, message, data) -> {
+            if (c == 200) {
                 Intent intent = new Intent(WechatLoginActivity.this, MainActivity.class);
                 intent.putExtra("user", data);
                 startActivity(intent);

@@ -23,7 +23,7 @@ public class Guardian {
     private static final String TAG = "Guardian";
 
     public interface GuardianCallback {
-        void call(Response response);
+        void call(@NotNull Response response);
     }
 
     public static void get(String url, @NotNull GuardianCallback callback) {
@@ -35,11 +35,11 @@ public class Guardian {
     }
 
     private static void request(String url, String method, JSONObject body, @NotNull GuardianCallback callback) {
-        new Thread() {
+        Authing.getPublicConfig(config -> new Thread() {
             public void run() {
-                Authing.getPublicConfig(config -> request(config, url, method, body, callback));
+                 request(config, url, method, body, callback);
             }
-        }.start();
+        }.start());
     }
 
     public static void request(Config config, String url, String method, JSONObject body, @NotNull GuardianCallback callback) {

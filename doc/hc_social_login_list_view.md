@@ -1,4 +1,4 @@
-# 社会化登录列表 SocialLoginListView
+# 社会化登录列表 SocialLoginListView
 
 ## 布局文件使用方式
 
@@ -55,8 +55,8 @@ String src = user.getThirdPartySource();
 
 ```java
 SocialLoginListView lv = findViewById(R.id.lv_social);
-lv.setOnLoginListener((ok, user) -> {
-    if (ok) {
+lv.setOnLoginListener((code, message, user) -> {
+    if (code == 200) {
         Intent intent = new Intent(AuthingLoginActivity.this, MainActivity.class);
         intent.putExtra("user", user);
         startActivity(intent);
