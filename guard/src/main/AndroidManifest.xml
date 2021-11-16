@@ -11,16 +11,23 @@
 
     <application>
         <activity
+            android:name=".activity.AuthingRegisterActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:exported="false" />
+        <activity
             android:name=".activity.BaseLoginActivity"
             android:exported="false">
             <intent-filter tools:node="replace">
-                <category android:name="android.intent.category.DEFAULT"/>
-                <category android:name="android.intent.category.BROWSABLE"/>
-                <data android:scheme="__authing_guard__"/>
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data android:scheme="__authing_guard__" />
             </intent-filter>
         </activity>
         <activity
             android:name=".activity.AuthingLoginActivity"
+            android:launchMode="singleTask"
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity

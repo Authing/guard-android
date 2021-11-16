@@ -20,9 +20,12 @@ public class Config {
     private List<String> enabledLoginMethods;
     private List<String> loginTabList;
     private String defaultLoginMethod;
+    private List<String> registerTabList;
+    private String defaultRegisterMethod;
     private int verifyCodeLength = 6;
     private List<SocialConfig> socialConfigs;
     private List<Agreement> agreements;
+    private int passwordStrength;
 
     public static Config parse(JSONObject data) throws JSONException {
         Config config = new Config();
@@ -32,11 +35,17 @@ public class Config {
         config.setName(data.getString("name"));
         config.setUserpoolLogo(data.getString("userpoolLogo"));
         config.setVerifyCodeLength(data.getInt("verifyCodeLength"));
+        config.setPasswordStrength(data.getInt("passwordStrength"));
 
         JSONObject loginTabs = data.getJSONObject("loginTabs");
         JSONArray loginTabList = loginTabs.getJSONArray("list");
         config.setLoginTabList(toStringList(loginTabList));
         config.setDefaultLoginMethod(loginTabs.getString("default"));
+
+        JSONObject registerTabs = data.getJSONObject("registerTabs");
+        JSONArray registerTabList = registerTabs.getJSONArray("list");
+        config.setRegisterTabList(toStringList(registerTabList));
+        config.setDefaultRegisterMethod(registerTabs.getString("default"));
 
         JSONObject passwordTabConfig = data.getJSONObject("passwordTabConfig");
         JSONArray enabledLoginMethods = passwordTabConfig.getJSONArray("enabledLoginMethods");
@@ -106,6 +115,22 @@ public class Config {
         this.defaultLoginMethod = defaultLoginMethod;
     }
 
+    public List<String> getRegisterTabList() {
+        return registerTabList;
+    }
+
+    public void setRegisterTabList(List<String> registerTabList) {
+        this.registerTabList = registerTabList;
+    }
+
+    public String getDefaultRegisterMethod() {
+        return defaultRegisterMethod;
+    }
+
+    public void setDefaultRegisterMethod(String defaultRegisterMethod) {
+        this.defaultRegisterMethod = defaultRegisterMethod;
+    }
+
     public int getVerifyCodeLength() {
         return verifyCodeLength;
     }
@@ -120,6 +145,14 @@ public class Config {
 
     public List<Agreement> getAgreements() {
         return agreements;
+    }
+
+    public int getPasswordStrength() {
+        return passwordStrength;
+    }
+
+    public void setPasswordStrength(int passwordStrength) {
+        this.passwordStrength = passwordStrength;
     }
 
     private static List<String> toStringList(JSONArray array) throws JSONException {

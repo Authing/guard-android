@@ -4,17 +4,32 @@
     <attr name="background" format="reference" />
     <attr name="textColor" format="reference|color" />
     <attr name="textSize" format="dimension" />
+    <attr name="type" format="enum" >
+        <enum name="phoneCode" value="0"/>
+        <enum name="accountPassword" value="1"/>
+        <enum name="phoneCodePassword" value="2"/>
+        <enum name="emailPassword" value="3"/>
+    </attr>
+
+    <attr name="pageType" format="enum" >
+        <enum name="login" value="0"/>
+        <enum name="register" value="1"/>
+    </attr>
+
+    <declare-styleable name="AppName">
+        <attr name="pageType" />
+    </declare-styleable>
 
     <declare-styleable name="LoginContainer">
-        <attr name="type" format="enum">
-            <enum name="phoneCode" value="0"/>
-            <enum name="accountPassword" value="1"/>
-            <enum name="phonePassword" value="2"/>
-            <enum name="emailCode" value="3"/>
-        </attr>
+        <attr name="type" />
+    </declare-styleable>
+
+    <declare-styleable name="RegisterContainer">
+        <attr name="type" />
     </declare-styleable>
 
     <declare-styleable name="EditTextLayout">
+        <attr name="pageType" />
         <attr name="leftIconDrawable" format="reference" />
         <attr name="hintMode" format="enum">
             <enum name="normal" value="0"/>
@@ -26,9 +41,10 @@
         <attr name="textColor" />
         <attr name="hint" format="string" />
         <attr name="hintColor" format="reference|color" />
+        <attr name="errorEnabled" format="boolean" />
     </declare-styleable>
 
-    <declare-styleable name="PasswordEditText">
+    <declare-styleable name="BasePasswordEditText">
         <attr name="toggleEnabled" format="boolean" />
     </declare-styleable>
 
@@ -55,6 +71,21 @@
         <attr name="showFlag" format="boolean" />
         <attr name="showCountryName" format="boolean" />
         <attr name="showRightArrow" format="boolean" />
+    </declare-styleable>
+
+    <declare-styleable name="PrivacyConfirmBox">
+        <attr name="textColor" />
+        <attr name="textSize" />
+        <attr name="linkTextColor" format="reference|color" />
+        <attr name="uncheckColor" format="reference|color" />
+        <attr name="checkColor" format="reference|color" />
+    </declare-styleable>
+
+    <declare-styleable name="MandatoryField">
+        <attr name="asteriskPosition" format="enum">
+            <enum name="left" value="0"/>
+            <enum name="right" value="1"/>
+        </attr>
     </declare-styleable>
 
 </resources>

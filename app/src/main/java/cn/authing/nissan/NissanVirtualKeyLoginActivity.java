@@ -2,6 +2,8 @@ package cn.authing.nissan;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.widget.Button;
+import android.widget.TextView;
 
 import cn.authing.MainActivity;
 import cn.authing.R;
@@ -20,6 +22,12 @@ public class NissanVirtualKeyLoginActivity extends BaseLoginActivity {
 
         setContentView(R.layout.activity_nissan_virtual_key_login);
 
+        TextView tvReset = findViewById(R.id.tv_reset);
+        tvReset.setOnClickListener((v)->{
+            Intent intent = new Intent(NissanVirtualKeyLoginActivity.this, NissanVirtualKeySendEmailActivity.class);
+            startActivity(intent);
+        });
+
         LoginButton btn = findViewById(R.id.btn_login);
         btn.setOnLoginListener((code, message, data) -> {
             if (code == 200) {
@@ -28,6 +36,12 @@ public class NissanVirtualKeyLoginActivity extends BaseLoginActivity {
                 startActivity(intent);
                 finish();
             }
+        });
+
+        Button signBtn = findViewById(R.id.btn_goto_signup);
+        signBtn.setOnClickListener((v)->{
+            Intent intent = new Intent(NissanVirtualKeyLoginActivity.this, NissanVirtualKeySignupOneActivity.class);
+            startActivity(intent);
         });
     }
 }

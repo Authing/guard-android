@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingLeft="@dimen/authing_form_start_end_margin"
+    android:paddingRight="@dimen/authing_form_start_end_margin"
+    android:background="#13172c">
+    
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:text="Sign up"
+        android:textColor="@color/white"
+        android:textSize="16sp"
+        android:layout_gravity="center_horizontal"/>
+
+    <LinearLayout
+        android:layout_marginTop="32dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <cn.authing.guard.MandatoryField
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="First name"
+            android:textColor="@color/white"/>
+        <cn.authing.guard.MandatoryField
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Last name"
+            android:layout_marginStart="16dp"
+            android:textColor="@color/white"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_marginTop="8dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <EditText
+            android:id="@+id/nvk_et_fn"
+            android:background="@drawable/nissan_edit_text_bg"
+            android:hint="First name"
+            android:textColorHint="#949494"
+            android:textColor="@color/white"
+            android:layout_weight="1"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
+            android:layout_marginEnd="8dp"
+            android:textSize="16sp"
+            android:layout_width="wrap_content"
+            android:layout_height="42dp" />
+        <androidx.appcompat.widget.AppCompatEditText
+            android:id="@+id/nvk_et_ln"
+            android:background="@drawable/nissan_edit_text_bg"
+            android:hint="Last name"
+            android:textColorHint="#949494"
+            android:textColor="@color/white"
+            android:layout_weight="1"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
+            android:textSize="16sp"
+            android:layout_marginStart="8dp"
+            android:layout_width="wrap_content"
+            android:layout_height="42dp" />
+    </LinearLayout>
+
+    <cn.authing.guard.MandatoryField
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="Email"
+        android:textColor="@color/white"/>
+
+    <cn.authing.guard.AccountEditText
+        android:id="@+id/nvk_et_email"
+        android:background="@drawable/nissan_edit_text_bg"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:paddingStart="16dp"
+        app:pageType="register"
+        app:textColor="@color/white"
+        app:hintColor="#949494"
+        app:errorEnabled="true"
+        app:hint="Email"/>
+
+    <cn.authing.guard.MandatoryField
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="Mobile phone"
+        android:textColor="@color/white"/>
+
+    <LinearLayout
+        android:layout_marginTop="8dp"
+        android:layout_width="match_parent"
+        android:layout_height="42dp"
+        android:gravity="center_vertical">
+        <cn.authing.guard.CountryCodePicker
+            android:background="@drawable/nissan_edit_text_bg"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            app:showFlag="true"
+            android:paddingStart="8dp"
+            android:paddingEnd="8dp"
+            android:layout_marginEnd="16dp"
+            android:textColor="@color/white"/>
+        <cn.authing.guard.PhoneNumberEditText
+            android:id="@+id/nvk_et_phone"
+            android:background="@drawable/nissan_edit_text_bg"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
+            app:textColor="@color/white"
+            app:hintColor="#949494"
+            app:hint="Phone number" />
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="*:Mandatory fields"
+        android:textColor="#ddd"/>
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btn_next"
+        android:enabled="false"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:layout_marginStart="48dp"
+        android:layout_marginEnd="48dp"
+        android:text="Next"
+        android:textAllCaps="false"
+        android:background="@drawable/nissan_btn_bg"/>
+
+</LinearLayout>

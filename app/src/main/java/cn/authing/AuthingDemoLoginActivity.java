@@ -2,6 +2,7 @@ package cn.authing;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.widget.TextView;
 
 import cn.authing.guard.LoginButton;
 import cn.authing.guard.activity.AuthingLoginActivity;
@@ -12,6 +13,12 @@ public class AuthingDemoLoginActivity extends AuthingLoginActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        TextView tvRegister = findViewById(R.id.tv_register);
+        tvRegister.setOnClickListener((v)->{
+            Intent intent = new Intent(AuthingDemoLoginActivity.this, AuthingDemoRegisterActivity.class);
+            startActivity(intent);
+        });
 
         LoginButton btn = findViewById(R.id.btn_login);
         if (btn != null) {

@@ -16,7 +16,7 @@ import cn.authing.guard.util.Util;
 
 public class SocialLoginListView extends LinearLayout {
 
-    protected AuthCallback callback;
+    protected AuthCallback<UserInfo> callback;
 
     public SocialLoginListView(Context context) {
         this(context, null);
@@ -78,7 +78,7 @@ public class SocialLoginListView extends LinearLayout {
         }
     }
 
-    public void setOnLoginListener(AuthCallback callback) {
+    public void setOnLoginListener(AuthCallback<UserInfo> callback) {
         this.callback = callback;
     }
 

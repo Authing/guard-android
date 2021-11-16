@@ -3,6 +3,7 @@ package cn.authing.guard.util;
 import android.content.Context;
 import android.text.TextUtils;
 import android.util.Base64;
+import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -17,10 +18,12 @@ import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 import javax.crypto.Cipher;
 
 import cn.authing.guard.ErrorTextView;
+import cn.authing.guard.R;
 
 public class Util {
 
@@ -59,14 +62,14 @@ public class Util {
         return array;
     }
 
-    public static List<View> findAllViewByClass(View current, Class T) {
+    public static List<View> findAllViewByClass(View current, Class<?> T) {
         View view = current.getRootView();
         List<View> result = new ArrayList<>();
         _findAllViewByClass((ViewGroup)view, T, result);
         return result;
     }
 
-    private static void _findAllViewByClass(ViewGroup parent, Class T, List<View> result) {
+    private static void _findAllViewByClass(ViewGroup parent, Class<?> T, List<View> result) {
         for (int i = 0; i < parent.getChildCount(); i++) {
             View child = parent.getChildAt(i);
             if (child instanceof ViewGroup) {
@@ -79,15 +82,15 @@ public class Util {
         }
     }
 
-    public static View findViewByClass(View current, Class T) {
+    public static View findViewByClass(View current, Class<?> T) {
         View view = current.getRootView();
         return _findViewByClass((ViewGroup)view, T);
     }
 
-    private static View _findViewByClass(ViewGroup parent, Class T) {
+    private static View _findViewByClass(ViewGroup parent, Class<?> T) {
         for (int i = 0; i < parent.getChildCount(); i++) {
             View child = parent.getChildAt(i);
-            if (child instanceof ViewGroup) {
+            if (child instanceof ViewGroup && child.isShown()) {
                 View result = _findViewByClass((ViewGroup)child, T);
                 if (result != null) {
                     return result;
@@ -124,11 +127,17 @@ public class Util {
             final int idx = pair.indexOf("=");
             final String key = idx > 0 ? URLDecoder.decode(pair.substring(0, idx), charset) : pair;
             if (!queryPairs.containsKey(key)) {
-                queryPairs.put(key, new LinkedList<String>());
+                queryPairs.put(key, new LinkedList<>());
             }
             final String value = idx > 0 && pair.length() > idx + 1 ? URLDecoder.decode(pair.substring(idx + 1), "UTF-8") : null;
-            queryPairs.get(key).add(value);
+            Objects.requireNonNull(queryPairs.get(key)).add(value);
         }
         return queryPairs;
+    }
+
+    public static int getThemeAccentColor (final Context context) {
+        final TypedValue value = new TypedValue ();
+        context.getTheme ().resolveAttribute (R.attr.colorAccent, value, true);
+        return value.data;
     }
 }

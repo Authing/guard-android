@@ -14,38 +14,35 @@ import android.view.View;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import cn.authing.guard.data.Config;
 import cn.authing.guard.data.UserInfo;
 import cn.authing.guard.internal.LoadingButton;
 import cn.authing.guard.network.AuthClient;
-import cn.authing.guard.network.Guardian;
 import cn.authing.guard.network.Response;
 import cn.authing.guard.util.Const;
 import cn.authing.guard.util.Util;
 
-public class LoginButton extends LoadingButton {
+public class RegisterButton extends LoadingButton {
 
     private String phoneNumber;
     private String phoneCode;
     private String identifier;
+    private String email;
     protected AuthCallback<UserInfo> callback;
 
-    public LoginButton(@NonNull Context context) {
+    public RegisterButton(@NonNull Context context) {
         this(context, null);
     }
 
-    public LoginButton(@NonNull Context context, @Nullable AttributeSet attrs) {
+    public RegisterButton(@NonNull Context context, @Nullable AttributeSet attrs) {
         this(context, attrs, R.attr.buttonStyle);
     }
 
-    public LoginButton(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
+    public RegisterButton(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
 
         if (attrs == null || attrs.getAttributeValue(NS_ANDROID, "text") == null) {
-            setText(R.string.authing_login);
+            setText(R.string.authing_register);
         }
 
         if (attrs == null || attrs.getAttributeValue(NS_ANDROID, "textColor") == null) {
@@ -64,10 +61,10 @@ public class LoginButton extends LoadingButton {
                 PorterDuff.Mode.SRC_ATOP);
         loading.setColorFilter(porterDuffColorFilter);
 
-        setOnClickListener((v -> login()));
+        setOnClickListener((v -> register()));
     }
 
-    public void setOnLoginListener(AuthCallback<UserInfo> callback) {
+    public void setOnRegisterListener(AuthCallback<UserInfo> callback) {
         this.callback = callback;
     }
 
@@ -76,7 +73,11 @@ public class LoginButton extends LoadingButton {
         this.phoneNumber = phoneNumber;
     }
 
-    public void login() {
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public void register() {
         if (showLoading) {
             return;
         }
@@ -85,10 +86,10 @@ public class LoginButton extends LoadingButton {
             return;
         }
 
-        Authing.getPublicConfig((this::_login));
+        Authing.getPublicConfig((this::_register));
     }
 
-    public void _login(Config config) {
+    public void _register(Config config) {
         if (config == null) {
             fireCallback("Public Config is null");
             return;
@@ -97,22 +98,24 @@ public class LoginButton extends LoadingButton {
         identifier = config.getIdentifier();
 
         View phoneNumberET = Util.findViewByClass(this, PhoneNumberEditText.class);
+        View passwordET = Util.findViewByClass(this, PasswordEditText.class);
         View phoneCodeET = Util.findViewByClass(this, VerifyCodeEditText.class);
-        if (phoneNumberET != null && phoneNumberET.isShown()) {
-            PhoneNumberEditText phoneNumberEditText = (PhoneNumberEditText)phoneNumberET;
-            phoneNumber = phoneNumberEditText.getText().toString();
-        }
-        if (phoneCodeET != null && phoneCodeET.isShown()) {
-            VerifyCodeEditText verifyCodeEditText = (VerifyCodeEditText)phoneCodeET;
-            phoneCode = verifyCodeEditText.getText().toString();
-        }
-        if (!TextUtils.isEmpty(phoneNumber) && !TextUtils.isEmpty(phoneCode)) {
-            startLoadingVisualEffect();
-            loginByPhoneCode(phoneNumber, phoneCode);
-            return;
-        }
+//        if (phoneNumberET != null && phoneNumberET.isShown()) {
+//            PhoneNumberEditText phoneNumberEditText = (PhoneNumberEditText)phoneNumberET;
+//            phoneNumber = phoneNumberEditText.getText().toString();
+//        }
+//        if (phoneCodeET != null && phoneCodeET.isShown()) {
+//            VerifyCodeEditText verifyCodeEditText = (VerifyCodeEditText)phoneCodeET;
+//            phoneCode = verifyCodeEditText.getText().toString();
+//        }
+//        if (!TextUtils.isEmpty(phoneNumber) && !TextUtils.isEmpty(phoneCode)) {
+//            startLoadingVisualEffect();
+//            registerByPhoneCode(phoneNumber, phoneCode);
+//            return;
+//        }
 
         if (phoneNumberET != null && phoneNumberET.isShown()
+                && passwordET != null && passwordET.isShown()
                 && phoneCodeET != null && phoneCodeET.isShown()) {
             PhoneNumberEditText phoneNumberEditText = (PhoneNumberEditText)phoneNumberET;
             if (!phoneNumberEditText.isContentValid()) {
@@ -129,22 +132,38 @@ public class LoginButton extends LoadingButton {
                 return;
             }
 
+            final String password = ((PasswordEditText) passwordET).getText().toString();
+            if (TextUtils.isEmpty(password)) {
+                fireCallback("Password is invalid");
+                return;
+            }
+
             startLoadingVisualEffect();
-            loginByPhoneCode(phone, code);
+            registerByPhoneCode(phone, password, code);
         } else {
             View accountET = Util.findViewByClass(this, AccountEditText.class);
-            View passwordET = Util.findViewByClass(this, PasswordEditText.class);
-            if (accountET != null && accountET.isShown()
+            if ((email != null || accountET != null && accountET.isShown())
                     && passwordET != null && passwordET.isShown()) {
-                final String account = ((AccountEditText) accountET).getText().toString();
+                final String account = email != null ? email : ((AccountEditText) accountET).getText().toString();
                 final String password = ((PasswordEditText) passwordET).getText().toString();
                 if (TextUtils.isEmpty(account) || TextUtils.isEmpty(password)) {
+                    Util.setErrorText(this, "Account or password is invalid");
                     fireCallback("Account or password is invalid");
                     return;
                 }
 
+                View v = Util.findViewByClass(this, PasswordConfirmEditText.class);
+                if (v != null) {
+                    PasswordConfirmEditText passwordConfirmEditText = (PasswordConfirmEditText)v;
+                    if (!password.equals(passwordConfirmEditText.getText().toString())) {
+                        Util.setErrorText(this, getResources().getString(R.string.authing_password_not_match));
+                        fireCallback(getResources().getString(R.string.authing_password_not_match));
+                        return;
+                    }
+                }
+
                 startLoadingVisualEffect();
-                loginByAccount(account, password);
+                registerByEmail(account, password);
             }
         }
     }
@@ -158,21 +177,8 @@ public class LoginButton extends LoadingButton {
         return ((PrivacyConfirmBox)box).require(true);
     }
 
-    private void loginByPhoneCode(String phone, String code) {
-        try {
-            JSONObject body = new JSONObject();
-            body.put("phone", phone);
-            body.put("code", code);
-            String url = "https://" + identifier + ".authing.cn/api/v2/login/phone-code";
-            getUserInfo(url, body);
-        } catch (Exception e) {
-            e.printStackTrace();
-            fireCallback("Exception when login by phone code");
-        }
-    }
-
-    private void loginByAccount(String account, String password) {
-        AuthClient.loginByAccount(account, password, (code, message, data)->{
+    private void registerByPhoneCode(String phone, String password, String phoneCode) {
+        AuthClient.registerByPhoneCode(phone, password, phoneCode, (code, message, data)->{
             if (code == 200) {
                 fireCallback(200, "", data);
             } else {
@@ -182,21 +188,13 @@ public class LoginButton extends LoadingButton {
         });
     }
 
-    private void getUserInfo(String url, JSONObject body) {
-        Guardian.post(url, body, (data)->{
-            if (data.getCode() != 200) {
-                handleError(data);
-                fireCallback(data.getCode(), data.getMessage(), null);
-                return;
-            }
-
-            UserInfo userInfo;
-            try {
-                userInfo = UserInfo.createUserInfo(data.getData());
-                fireCallback(200, "", userInfo);
-            } catch (JSONException e) {
-                e.printStackTrace();
-                fireCallback("Exception parsing User");
+    private void registerByEmail(String email, String password) {
+        AuthClient.registerByEmail(email, password, (code, message, data)->{
+            if (code == 200) {
+                fireCallback(200, "", data);
+            } else {
+                Util.setErrorText(this, message);
+                fireCallback(code, message, null);
             }
         });
     }

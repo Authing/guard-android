@@ -23,6 +23,9 @@ public class MainActivity extends AppCompatActivity {
         if (name == null || name.equals("null")) {
             name = userInfo.getPhone_number();
         }
+        if (name == null || name.equals("null")) {
+            name = userInfo.getEmail();
+        }
         tv.setText("你好，" + name);
 
         Button btn = findViewById(R.id.btn_logout);

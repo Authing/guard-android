@@ -11,26 +11,26 @@ import java.util.ArrayList;
 import java.util.List;
 
 import cn.authing.guard.data.Config;
-import cn.authing.guard.internal.LoginMethodTabItem;
+import cn.authing.guard.internal.RegisterMethodTabItem;
 import cn.authing.guard.util.Util;
 
-public class LoginMethodTab extends LinearLayout {
+public class RegisterMethodTab extends LinearLayout {
 
-    private final List<LoginMethodTabItem> items = new ArrayList<>();
+    private final List<RegisterMethodTabItem> items = new ArrayList<>();
 
-    public LoginMethodTab(Context context) {
+    public RegisterMethodTab(Context context) {
         this(context, null);
     }
 
-    public LoginMethodTab(Context context, AttributeSet attrs) {
+    public RegisterMethodTab(Context context, AttributeSet attrs) {
         this(context, attrs, 0);
     }
 
-    public LoginMethodTab(Context context, AttributeSet attrs, int defStyleAttr) {
+    public RegisterMethodTab(Context context, AttributeSet attrs, int defStyleAttr) {
         this(context, attrs, defStyleAttr, 0);
     }
 
-    public LoginMethodTab(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
+    public RegisterMethodTab(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
 
         setOrientation(LinearLayout.VERTICAL);
@@ -42,14 +42,14 @@ public class LoginMethodTab extends LinearLayout {
 
         View underLine = new View(context);
         int height = (int) Util.dp2px(context, 1);
-        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, height);
+        LayoutParams lp = new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, height);
         underLine.setLayoutParams(lp);
         underLine.setBackgroundColor(0xfff4f4f4);
         addView(underLine);
 
         // contents
         LinearLayout container = new LinearLayout(context);
-        LinearLayout.LayoutParams containerParam = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT, 1f);
+        LayoutParams containerParam = new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT, 1f);
         container.setLayoutParams(containerParam);
         container.setOrientation(LinearLayout.HORIZONTAL);
         scrollView.addView(container);
@@ -63,23 +63,23 @@ public class LoginMethodTab extends LinearLayout {
             return;
         }
 
-        List<String> loginTabList = config.getLoginTabList();
-        if (loginTabList == null || loginTabList.size() == 0) {
+        List<String> tabList = config.getRegisterTabList();
+        if (tabList == null || tabList.size() == 0) {
             initDefaultLogins(container);
             return;
         }
 
-        for (String s : loginTabList) {
-            LoginMethodTabItem b = new LoginMethodTabItem(getContext());
-            if ("phone-code".equals(s)) {
-                b.setText(getResources().getString(R.string.authing_login_by_phone_code));
-                b.setType(LoginContainer.LoginType.EByPhoneCode);
-            } else if ("password".equals(s)) {
-                b.setText(getResources().getString(R.string.authing_login_by_password));
-                b.setType(LoginContainer.LoginType.EByAccountPassword);
+        for (String s : tabList) {
+            RegisterMethodTabItem b = new RegisterMethodTabItem(getContext());
+            if ("phone".equals(s)) {
+                b.setText(getResources().getString(R.string.authing_register_by_phone_code));
+                b.setType(RegisterContainer.RegisterType.EByPhoneCodePassword);
+            } else if ("email".equals(s)) {
+                b.setText(getResources().getString(R.string.authing_register_by_email));
+                b.setType(RegisterContainer.RegisterType.EByEmailPassword);
             }
 
-            if (config.getDefaultLoginMethod().equals(s)) {
+            if (config.getDefaultRegisterMethod().equals(s)) {
                 b.gainFocus();
                 container.addView(b, 0);
             } else {
@@ -93,26 +93,26 @@ public class LoginMethodTab extends LinearLayout {
 
     public void addClickListener(View view) {
         view.setOnClickListener((v) -> {
-            for (LoginMethodTabItem item : items) {
+            for (RegisterMethodTabItem item : items) {
                 item.loseFocus();
             }
-            ((LoginMethodTabItem)v).gainFocus();
+            ((RegisterMethodTabItem)v).gainFocus();
             Util.setErrorText(this, null);
         });
     }
 
     private void initDefaultLogins(ViewGroup container) {
-        LoginMethodTabItem b = new LoginMethodTabItem(getContext());
-        b.setText("验证码登录");
+        RegisterMethodTabItem b = new RegisterMethodTabItem(getContext());
+        b.setText("手机号注册");
         container.addView(b);
         b.gainFocus();
-        b.setType(LoginContainer.LoginType.EByPhoneCode);
+        b.setType(RegisterContainer.RegisterType.EByPhoneCodePassword);
         addClickListener(b);
         items.add(b);
 
-        b = new LoginMethodTabItem(getContext());
-        b.setText("密码登录");
-        b.setType(LoginContainer.LoginType.EByAccountPassword);
+        b = new RegisterMethodTabItem(getContext());
+        b.setText("邮箱注册");
+        b.setType(RegisterContainer.RegisterType.EByEmailPassword);
         container.addView(b);
         addClickListener(b);
         items.add(b);

@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Guard</string>
+
+    <string name="nvk_reset_pwd_title">Please enter the temporary code we\'ve sent to %1$s to reset your password</string>
 </resources>

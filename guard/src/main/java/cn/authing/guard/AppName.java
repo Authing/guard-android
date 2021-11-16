@@ -3,6 +3,7 @@ package cn.authing.guard;
 import static cn.authing.guard.util.Const.NS_ANDROID;
 
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.graphics.Typeface;
 import android.util.AttributeSet;
 import android.util.TypedValue;
@@ -26,7 +27,16 @@ public class AppName extends AppCompatTextView {
             if (config != null) {
                 CharSequence s = getText();
                 if (s == null || s.length() == 0) {
-                    setText(getResources().getString(R.string.authing_login) + " " + config.getName());
+                    String pre = "";
+                    TypedArray array = context.obtainStyledAttributes(attrs, R.styleable.AppName);
+                    int t = array.getInt(R.styleable.AppName_pageType,0);
+                    if (t == 0) {
+                        pre = getResources().getString(R.string.authing_login);
+                    } else if (t == 1) {
+                        pre = getResources().getString(R.string.authing_welcome_to);
+                    }
+                    array.recycle();
+                    setText(pre + " " + config.getName());
                 }
             }
 

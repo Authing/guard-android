@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingLeft="@dimen/authing_form_start_end_margin"
+    android:paddingRight="@dimen/authing_form_start_end_margin"
+    android:orientation="vertical"
+    android:background="#13172c"
+    tools:context=".nissan.NissanVirtualKeySendEmailActivity">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:text="Password help"
+        android:textColor="@color/white"
+        android:textSize="16sp"
+        android:layout_gravity="center_horizontal"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:text="Please enter your email address below to reset your password"
+        android:textColor="@color/white"
+        android:layout_marginTop="16dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="Email"
+        android:textColor="@color/white"/>
+
+    <cn.authing.guard.AccountEditText
+        android:id="@+id/nvk_et_email"
+        android:background="@drawable/nissan_edit_text_bg"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:paddingStart="16dp"
+        app:pageType="register"
+        app:textColor="@color/white"
+        app:hintColor="#949494"
+        app:errorEnabled="true"
+        app:hint="Your email"/>
+
+    <cn.authing.guard.internal.LoadingButton
+        android:id="@+id/btn_reset"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="Reset password"
+        android:textAllCaps="false"
+        android:background="@drawable/nissan_btn_bg"/>
+</LinearLayout>

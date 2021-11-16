@@ -266,17 +266,27 @@ public class UserInfo implements Serializable {
     }
 
     public static UserInfo createUserInfo(JSONObject data) throws JSONException {
-        String id = data.getString("id");
-        String username = data.getString("username");
-        String phone = data.getString("phone");
-        String email = data.getString("email");
-        String token = data.getString("token");
         UserInfo userInfo = new UserInfo();
-        userInfo.setId(id);
-        userInfo.setName(username);
-        userInfo.setPhone_number(phone);
-        userInfo.setEmail(email);
-        userInfo.setAccessToken(token);
+        if (data.has("id")) {
+            String id = data.getString("id");
+            userInfo.setId(id);
+        }
+        if (data.has("username")) {
+            String username = data.getString("username");
+            userInfo.setName(username);
+        }
+        if (data.has("phone")) {
+            String phone = data.getString("phone");
+            userInfo.setPhone_number(phone);
+        }
+        if (data.has("email")) {
+            String email = data.getString("email");
+            userInfo.setEmail(email);
+        }
+        if (data.has("token")) {
+            String token = data.getString("token");
+            userInfo.setAccessToken(token);
+        }
         return userInfo;
     }
 }

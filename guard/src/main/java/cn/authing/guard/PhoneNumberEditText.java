@@ -39,7 +39,7 @@ public class PhoneNumberEditText extends EditTextLayout implements TextWatcher {
 
         CharSequence s = editText.getHint();
         if (s == null) {
-            editText.setHint(context.getString(R.string.account_edit_text_hint) + context.getString(R.string.authing_phone));
+            editText.setHint(context.getString(R.string.authing_account_edit_text_hint) + context.getString(R.string.authing_phone));
         }
 
         TypedArray array = context.obtainStyledAttributes(attrs, R.styleable.PhoneNumberEditText);

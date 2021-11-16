@@ -60,7 +60,10 @@ public class VerifyCodeEditText extends EditTextLayout implements TextWatcher {
         codeMode = array.getInt(R.styleable.VerifyCodeEditText_codeMode, 0);
 
         if (codeMode == ENormal) {
-            editText.setHint(R.string.verify_code_edit_text_hint);
+            CharSequence s = getEditText().getHint();
+            if (s == null) {
+                editText.setHint(R.string.authing_verify_code_edit_text_hint);
+            }
             editText.setInputType(InputType.TYPE_CLASS_NUMBER);
             editText.setFilters(new InputFilter[]{new InputFilter.LengthFilter(maxLength)});
             editText.addTextChangedListener(this);

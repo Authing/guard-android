@@ -1,19 +1,41 @@
 <resources>
-    <string name="account_edit_text_hint">请输入</string>
+    <string name="authing_account_edit_text_hint">请输入</string>
     <string name="authing_username">用户名</string>
     <string name="authing_email">邮箱</string>
     <string name="authing_phone">手机号</string>
-    <string name="password_edit_text_hint">请输入密码</string>
+    <string name="authing_password_edit_text_hint">请输入密码</string>
+    <string name="authing_password_confirm_edit_text_hint">请再次输入密码</string>
     <string name="authing_login">登录</string>
-    <string name="verify_code_edit_text_hint">请输入验证码</string>
+    <string name="authing_verify_code_edit_text_hint">请输入验证码</string>
     <string name="authing_get_verify_code">发送验证码</string>
     <string name="authing_login_by_account_and_password">帐号密码登录</string>
     <string name="authing_login_by_phone_and_verify_code">用短信验证码登录</string>
     <string name="authing_resend_after">%1$d 秒后获取</string>
+    <string name="authing_register">注册</string>
+    <string name="authing_welcome_to">欢迎加入</string>
+    <string name="authing_login_by_phone_code">验证码登录</string>
+    <string name="authing_login_by_password">密码登录</string>
+    <string name="authing_register_by_phone_code">手机号注册</string>
+    <string name="authing_register_by_email">邮箱注册</string>
+    <string name="authing_go_login">去登录</string>
+    <string name="authing_register_now">立即注册</string>
+    <string name="authing_3rd_login">第三方帐号登录</string>
 
     <!--error messages-->
+    <string name="authing_password_error_1">至少 6 位</string>
+    <string name="authing_password_error_2">至少包含小写字母</string>
+    <string name="authing_password_error_3">至少包含大写字母</string>
+    <string name="authing_password_error_4">至少包含数字</string>
+    <string name="authing_password_error_5">至少包含特殊字符</string>
+    <string name="authing_password_strength1">密码长度至少为 6 位</string>
+    <string name="authing_password_strength2">密码长度至少为 6 位，且要包含英文、数字与符号中的两种</string>
+    <string name="authing_password_strength3">密码长度至少为 6 位，且要包含英文、数字与符号</string>
+    <string name="authing_password_not_match">两次输入的密码必须一致</string>
     <string name="authing_get_verify_code_failed">发送短信失败：无效手机号码</string>
     <string name="authing_invalid_phone_number">手机号填写错误</string>
     <string name="authing_incorrect_verify_code">验证码不正确</string>
     <string name="authing_incorrect_credential">用户名或密码错误</string>
+    <string name="authing_invalid_email">邮箱格式不正确</string>
+    <string name="authing_invalid_phone">电话号码格式不正确</string>
+    <string name="authing_invalid_input">输入格式不正确</string>
 </resources>

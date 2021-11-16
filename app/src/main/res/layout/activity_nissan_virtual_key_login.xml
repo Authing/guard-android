@@ -61,13 +61,39 @@
         app:hintColor="#949494"
         app:hint="Your password"/>
 
+    <TextView
+        android:id="@+id/tv_reset"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="Password help >"
+        android:textColor="#7ACAFF"/>
+
     <cn.authing.guard.LoginButton
         android:id="@+id/btn_login"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="48dp"
+        android:layout_marginTop="32dp"
         android:text="Sign in"
         android:textAllCaps="false"
         android:background="@drawable/nissan_btn_bg"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_gravity="center_horizontal"
+        android:text="Don't have an account?"
+        android:textColor="@color/white"/>
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btn_goto_signup"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="Sign up"
+        android:textAllCaps="false"
+        android:textColor="#7ACAFF"
+        android:background="@drawable/nissan_btn_outline_bg"/>
 
 </LinearLayout>

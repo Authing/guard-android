@@ -19,6 +19,7 @@ import android.view.animation.DecelerateInterpolator;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -34,12 +35,16 @@ public class EditTextLayout extends LinearLayout implements TextWatcher, View.On
     protected static final int EAnimated = 1;
 
     protected LinearLayout root;
+    protected int pageType;
     protected int hintMode;
     protected CharSequence hintText; // manually handle it in animated/fixed mode
     protected ImageView leftIcon;
     protected int leftIconSize; // in pixel
     protected AppCompatEditText editText;
     protected ImageView clearAllButton;
+    protected boolean errorEnabled;
+    protected TextView errorTextView;
+    protected String errorText = "";
 
     protected static final int ICON_LEFT_RIGHT_MARGIN = 8;
     protected static final int LEFT_PADDING = 4;
@@ -70,33 +75,48 @@ public class EditTextLayout extends LinearLayout implements TextWatcher, View.On
     public EditTextLayout(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
 
+        setOrientation(VERTICAL);
+
         TypedArray array = context.obtainStyledAttributes(attrs, R.styleable.EditTextLayout);
+        pageType = array.getInt(R.styleable.EditTextLayout_pageType,0);
         hintMode = array.getInt(R.styleable.EditTextLayout_hintMode, ENormal);
         Drawable leftDrawable = array.getDrawable(R.styleable.EditTextLayout_leftIconDrawable);
         boolean clearAllEnabled = array.getBoolean(R.styleable.EditTextLayout_clearAllEnabled, true);
+        errorEnabled = array.getBoolean(R.styleable.EditTextLayout_errorEnabled, false);
         float textSize = array.getDimension(R.styleable.EditTextLayout_textSize, Util.dp2px(context, 16));
         hintText = array.getString(R.styleable.EditTextLayout_hint);
 
         setWillNotDraw(false);
 
+        root = new LinearLayout(context);
+        addView(root);
+        root.setOrientation(HORIZONTAL);
         if (hintMode == ENormal) {
-            root = this;
-            root.setOrientation(HORIZONTAL);
-            LayoutParams rootParam = new LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT, 1f);
+            LayoutParams rootParam = new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT, 1f);
             root.setGravity(Gravity.CENTER_VERTICAL);
             root.setLayoutParams(rootParam);
         } else if (hintMode == EAnimated) {
-            root = this;
-            root.setOrientation(HORIZONTAL);
-            LayoutParams rootParam = new LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT, 1f);
+            LayoutParams rootParam = new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT, 1f);
             root.setGravity(Gravity.BOTTOM);
             root.setLayoutParams(rootParam);
         }
+
+        // Intrinsically, setting background of *EditText should set our root's background
+        // which includes left icon, input box, right icon, clear all button while excludes error text
+        root.setBackground(getBackground());
+        setBackground(null);
 
         if (GlobalStyle.isIsEditTextLayoutBackgroundSet()) {
             int background = GlobalStyle.getEditTextLayoutBackground();
             root.setBackgroundResource(background);
         }
+
+        int paddingStart = getPaddingStart();
+        int paddingTop = getPaddingTop();
+        int paddingBottom = getPaddingBottom();
+        int paddingEnd = getPaddingEnd();
+        root.setPadding(paddingStart, paddingTop, paddingEnd, paddingBottom);
+        setPadding(0, 0, 0, 0);
 
         leftIcon = new ImageView(context);
         leftIconSize = (int) Util.dp2px(context, 24);
@@ -118,7 +138,7 @@ public class EditTextLayout extends LinearLayout implements TextWatcher, View.On
         editText.setMaxLines(1);
         editText.setSingleLine(true);
         editText.setOnFocusChangeListener(this);
-        LayoutParams lp = new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT, 1f);
+        LayoutParams lp = new LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, 1f);
         editText.setLayoutParams(lp);
         if (GlobalStyle.isIsEditTextBackgroundSet()) {
             int background = GlobalStyle.getEditTextBackground();
@@ -138,6 +158,11 @@ public class EditTextLayout extends LinearLayout implements TextWatcher, View.On
             leftPaddingPx = Util.dp2px(context, LEFT_PADDING);
             topPaddingPx = Util.dp2px(context, TOP_PADDING);
         }
+
+        errorTextView = new TextView(context);
+        errorTextView.setTextColor(context.getColor(R.color.authing_error));
+        errorTextView.setVisibility(View.GONE);
+        addView(errorTextView);
 
         array.recycle();
     }
@@ -172,6 +197,18 @@ public class EditTextLayout extends LinearLayout implements TextWatcher, View.On
 
     public Editable getText() {
         return editText.getText();
+    }
+
+    public void showError(String error) {
+        if (errorEnabled) {
+            errorText = error;
+            if (TextUtils.isEmpty(error)) {
+                errorTextView.setVisibility(View.GONE);
+            } else {
+                errorTextView.setText(errorText);
+                errorTextView.setVisibility(View.VISIBLE);
+            }
+        }
     }
 
     private void clearAllText(View v) {

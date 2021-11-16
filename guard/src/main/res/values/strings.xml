@@ -1,19 +1,41 @@
 <resources>
-    <string name="account_edit_text_hint">Please input </string>
+    <string name="authing_account_edit_text_hint">Please input </string>
     <string name="authing_username">User Name</string>
     <string name="authing_email">Email</string>
     <string name="authing_phone">Phone</string>
-    <string name="password_edit_text_hint">Please input password</string>
+    <string name="authing_password_edit_text_hint">Please input password</string>
+    <string name="authing_password_confirm_edit_text_hint">Confirm password</string>
     <string name="authing_login">Login</string>
-    <string name="verify_code_edit_text_hint">Please input verify code</string>
+    <string name="authing_verify_code_edit_text_hint">Please input verify code</string>
     <string name="authing_get_verify_code">Get Verify Code</string>
     <string name="authing_login_by_account_and_password">Login by account and password</string>
     <string name="authing_login_by_phone_and_verify_code">Login by SMS code</string>
     <string name="authing_resend_after">Re-send after %1$d seconds</string>
+    <string name="authing_register">Register</string>
+    <string name="authing_welcome_to">Welcome to</string>
+    <string name="authing_login_by_phone_code">Phone</string>
+    <string name="authing_login_by_password">Password</string>
+    <string name="authing_register_by_phone_code">Phone</string>
+    <string name="authing_register_by_email">Email</string>
+    <string name="authing_go_login">Sign In Instead</string>
+    <string name="authing_register_now">Sign up Now</string>
+    <string name="authing_3rd_login">Continue With</string>
 
     <!--error messages-->
+    <string name="authing_password_error_1">At least 6 characters</string>
+    <string name="authing_password_error_2">At least 1 lowercase letter</string>
+    <string name="authing_password_error_3">At least 1 uppercase letter</string>
+    <string name="authing_password_error_4">At least 1 number</string>
+    <string name="authing_password_error_5">At least 1 special character</string>
+    <string name="authing_password_strength1">Password must be at least 6 characters long</string>
+    <string name="authing_password_strength2">Password must be at least 6 characters long, and must contain two of English, numbers and symbols</string>
+    <string name="authing_password_strength3">Password must be at least 6 characters long, and must contain English, numbers and symbols</string>
+    <string name="authing_password_not_match">Password and confirm password do not match</string>
     <string name="authing_get_verify_code_failed">Send SMS failed. Invalid phone number</string>
     <string name="authing_invalid_phone_number">Invalid phone number</string>
     <string name="authing_incorrect_verify_code">Incorrect Verify Code</string>
     <string name="authing_incorrect_credential">Incorrect Credential</string>
+    <string name="authing_invalid_email">Email address is invalid</string>
+    <string name="authing_invalid_phone">Phone number is invalid</string>
+    <string name="authing_invalid_input">Input is invalid</string>
 </resources>

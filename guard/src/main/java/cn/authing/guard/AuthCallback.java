@@ -1,7 +1,5 @@
 package cn.authing.guard;
 
-import cn.authing.guard.data.UserInfo;
-
-public interface AuthCallback {
-    void call(int code, String message, UserInfo userInfo);
+public interface AuthCallback<T> {
+    void call(int code, String message, T userInfo);
 }
