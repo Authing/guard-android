@@ -55,7 +55,7 @@ public class PhoneNumberEditText extends EditTextLayout implements TextWatcher {
     @Override
     public void addView(@NonNull View child, int index, @NonNull final ViewGroup.LayoutParams params) {
         if (child instanceof CountryCodePicker) {
-            super.addView(child, 0, params);
+            root.addView(child, 0, params);
         } else {
             super.addView(child, index, params);
         }

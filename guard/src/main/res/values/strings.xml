@@ -1,5 +1,5 @@
 <resources>
-    <string name="authing_account_edit_text_hint">Please input </string>
+    <string name="authing_account_edit_text_hint">Please input&#160;</string>
     <string name="authing_username">User Name</string>
     <string name="authing_email">Email</string>
     <string name="authing_phone">Phone</string>

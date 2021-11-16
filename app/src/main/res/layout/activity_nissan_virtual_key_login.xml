@@ -7,93 +7,102 @@
     android:paddingLeft="@dimen/authing_form_start_end_margin"
     android:paddingRight="@dimen/authing_form_start_end_margin"
     android:background="#13172c">
-    
-    <ImageView
-        android:layout_width="144dp"
-        android:layout_height="144dp"
-        android:layout_marginTop="56dp"
-        android:layout_gravity="center_horizontal"
-        android:src="@drawable/nissan_logo"
-        android:scaleType="fitCenter"/>
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
-        android:text="Nissan Virtual Key"
-        android:textColor="@color/white"
-        android:textSize="16sp"
-        android:layout_gravity="center_horizontal"/>
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
-        android:text="Email"
-        android:textColor="@color/white"/>
-
-    <cn.authing.guard.AccountEditText
-        android:background="@drawable/nissan_edit_text_bg"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:paddingLeft="16dp"
-        android:paddingRight="16dp"
-        app:textColor="@color/white"
-        app:hintColor="#949494"
-        app:hint="Your email"/>
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+            <ImageView
+                android:layout_width="144dp"
+                android:layout_height="144dp"
+                android:layout_marginTop="56dp"
+                android:layout_gravity="center_horizontal"
+                android:src="@drawable/nissan_logo"
+                android:scaleType="fitCenter"/>
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:text="Password"
-        android:textColor="@color/white"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="32dp"
+                android:text="Nissan Virtual Key"
+                android:textColor="@color/white"
+                android:textSize="16sp"
+                android:layout_gravity="center_horizontal"/>
 
-    <cn.authing.guard.PasswordEditText
-        android:background="@drawable/nissan_edit_text_bg"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:paddingLeft="16dp"
-        android:paddingRight="16dp"
-        app:textColor="@color/white"
-        app:hintColor="#949494"
-        app:hint="Your password"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="32dp"
+                android:text="Email"
+                android:textColor="@color/white"/>
 
-    <TextView
-        android:id="@+id/tv_reset"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:text="Password help >"
-        android:textColor="#7ACAFF"/>
+            <cn.authing.guard.AccountEditText
+                android:background="@drawable/nissan_edit_text_bg"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp"
+                app:textColor="@color/white"
+                app:hintColor="#949494"
+                app:hint="Your email"/>
 
-    <cn.authing.guard.LoginButton
-        android:id="@+id/btn_login"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
-        android:text="Sign in"
-        android:textAllCaps="false"
-        android:background="@drawable/nissan_btn_bg"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="Password"
+                android:textColor="@color/white"/>
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:layout_gravity="center_horizontal"
-        android:text="Don't have an account?"
-        android:textColor="@color/white"/>
+            <cn.authing.guard.PasswordEditText
+                android:background="@drawable/nissan_edit_text_bg"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp"
+                app:textColor="@color/white"
+                app:hintColor="#949494"
+                app:hint="Your password"/>
 
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/btn_goto_signup"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:text="Sign up"
-        android:textAllCaps="false"
-        android:textColor="#7ACAFF"
-        android:background="@drawable/nissan_btn_outline_bg"/>
+            <TextView
+                android:id="@+id/tv_reset"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="Password help >"
+                android:textColor="#7ACAFF"/>
+
+            <cn.authing.guard.LoginButton
+                android:id="@+id/btn_login"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="32dp"
+                android:text="Sign in"
+                android:textAllCaps="false"
+                android:background="@drawable/nissan_btn_bg"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:layout_gravity="center_horizontal"
+                android:text="Don't have an account?"
+                android:textColor="@color/white"/>
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btn_goto_signup"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="Sign up"
+                android:textAllCaps="false"
+                android:textColor="#7ACAFF"
+                android:background="@drawable/nissan_btn_outline_bg"/>
+        </LinearLayout>
+    </ScrollView>
 
 </LinearLayout>
