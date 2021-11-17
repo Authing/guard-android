@@ -6,7 +6,9 @@ import com.tencent.mm.opensdk.modelmsg.SendAuth;
 import com.tencent.mm.opensdk.openapi.IWXAPI;
 import com.tencent.mm.opensdk.openapi.WXAPIFactory;
 
-import cn.authing.guard.Callback;
+import org.jetbrains.annotations.NotNull;
+
+import cn.authing.guard.AuthCallback;
 import cn.authing.guard.data.UserInfo;
 import cn.authing.guard.wxapi.WXEntryActivity;
 
@@ -16,7 +18,7 @@ public class Wechat extends SocialAuthenticator {
     public static String appId;
 
     @Override
-    public void login(Context context, Callback<UserInfo> callback) {
+    public void login(Context context, @NotNull AuthCallback<UserInfo> callback) {
         api = WXAPIFactory.createWXAPI(context, appId, true);
         api.registerApp(appId);
 

@@ -136,6 +136,7 @@
         android:layout_marginBottom="48dp" />
 
     <cn.authing.guard.social.SocialLoginListView
+        android:id="@+id/lv_social"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="64dp"

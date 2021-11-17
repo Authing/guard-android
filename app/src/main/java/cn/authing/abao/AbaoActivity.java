@@ -14,6 +14,7 @@ import cn.authing.guard.GlobalStyle;
 import cn.authing.guard.PhoneNumberEditText;
 import cn.authing.guard.activity.BaseLoginActivity;
 import cn.authing.guard.data.Country;
+import cn.authing.guard.network.AuthClient;
 import cn.authing.guard.network.Guardian;
 import cn.authing.guard.network.Response;
 import cn.authing.guard.social.SocialLoginListView;
@@ -63,7 +64,7 @@ public class AbaoActivity extends BaseLoginActivity {
                 }
 
                 Util.setErrorText(editText, null);
-                Guardian.post("https://core.authing.cn/api/v2/sms/send", body, this::handleSMSResult);
+                AuthClient.sendSms(phoneNumber, this::handleSMSResult);
             });
         }
 
@@ -80,9 +81,9 @@ public class AbaoActivity extends BaseLoginActivity {
         }
     }
 
-    private void handleSMSResult(Response data) {
+    private void handleSMSResult(int code, String message, Object o) {
         runOnUiThread(() -> {
-            if (data != null && data.getCode() == 200) {
+            if (code == 200) {
                 next();
             } else {
                 Util.setErrorText(editText, getString(cn.authing.guard.R.string.authing_get_verify_code_failed));

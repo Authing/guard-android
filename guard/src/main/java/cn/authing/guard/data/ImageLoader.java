@@ -42,7 +42,7 @@ public class ImageLoader extends AsyncTask<String, Void, Drawable> {
         try {
             String imageURL=urls[0];
             if (imageURL.endsWith(".svg")) {
-                return AppCompatResources.getDrawable(context, R.drawable.ic_default_logo);
+                return AppCompatResources.getDrawable(context, R.drawable.ic_authing_default_logo);
             } else {
                 InputStream in = new java.net.URL(imageURL).openStream();
                 return new BitmapDrawable(context.getResources(), BitmapFactory.decodeStream(in));

@@ -136,8 +136,8 @@
                 android:layout_marginTop="24dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:uncheckColor="#7ACAFF"
-                app:checkColor="#7ACAFF"
+                app:uncheckedColor="#7ACAFF"
+                app:checkedColor="#7ACAFF"
                 app:linkTextColor="#3071b9"
                 app:textColor="@color/white"/>
 

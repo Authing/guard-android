@@ -10,8 +10,8 @@ import org.json.JSONObject;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
+import cn.authing.guard.analyze.Analyzer;
 import cn.authing.guard.data.Config;
-import cn.authing.guard.network.AuthClient;
 import cn.authing.guard.network.Guardian;
 
 public class Authing {
@@ -19,6 +19,7 @@ public class Authing {
     private final static String TAG = "Authing";
 
     private static Context sAppContext;
+    private static String sHost = "authing.cn"; // for private deployment
     private static String sAppId;
     private static boolean isGettingConfig;
     private static Config publicConfig;
@@ -29,10 +30,19 @@ public class Authing {
         sAppContext = context.getApplicationContext();
         sAppId = appId;
         requestPublicConfig();
+        Analyzer.reportSDKUsage();
     }
 
     public static Context getAppContext() {
         return sAppContext;
+    }
+
+    public static String getsHost() {
+        return sHost;
+    }
+
+    public static void setsHost(String sHost) {
+        Authing.sHost = sHost;
     }
 
     public static String getAppId() {
@@ -70,7 +80,7 @@ public class Authing {
     }
 
     private static void _requestPublicConfig() {
-        String url = "https://console.authing.cn/api/v2/applications/" + sAppId + "/public-config";
+        String url = "https://console." + sHost + "/api/v2/applications/" + sAppId + "/public-config";
         Guardian.request(null, url, "get", null, (response)->{
             try {
                 if (response.getCode() == 200) {
@@ -103,9 +113,5 @@ public class Authing {
         if (callback != null) {
             callback.call(true, null);
         }
-    }
-
-    public static void loginByAccount(String account, String password, AuthCallback callback) {
-        AuthClient.loginByAccount(account, password, callback);
     }
 }

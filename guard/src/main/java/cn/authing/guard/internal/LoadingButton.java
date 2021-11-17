@@ -17,6 +17,7 @@ public class LoadingButton extends Button {
     protected AnimatedVectorDrawable loading;
 
     protected boolean showLoading;
+    protected int loadingLocation; // 0 left; 1 over;
 
     public LoadingButton(@NonNull Context context) {
         this(context, null);
@@ -53,20 +54,48 @@ public class LoadingButton extends Button {
 
     @Override
     protected void onDraw(Canvas canvas) {
-        super.onDraw(canvas);
-
-        if (showLoading) {
-            int ch = getHeight();
-            int p = (int) Util.dp2px(getContext(), 4);
-            int length = ch - 2 * p;
-            loading.setBounds(0, 0, length, length);
-            canvas.save();
-            canvas.translate((getWidth() - length) / 2, (ch - length) / 2);
-            loading.draw(canvas);
-            canvas.restore();
-
-            // continue onDraw while loading
-            invalidate();
+        if (loadingLocation == 0) {
+            drawLoading(canvas);
+            super.onDraw(canvas);
+        } else {
+            super.onDraw(canvas);
+            drawLoading(canvas);
         }
+    }
+
+    private void drawLoading(Canvas canvas) {
+        if (!showLoading) {
+            return;
+        }
+
+        int cw = getWidth();
+        int ch = getHeight();
+        int p = (int) Util.dp2px(getContext(), 4);
+        int length = ch - 2 * p;
+        loading.setBounds(0, 0, length, length);
+
+        float x;
+        float deltaX = 0;
+        if (loadingLocation == 0) {
+            float textWidth = getPaint().measureText(getText().toString());
+            x = (cw - (length + p + textWidth)) / 2;
+            float tx = x + length + p;
+            float originalTextX = (cw - textWidth) / 2;
+            deltaX = tx - originalTextX;
+        } else {
+            x = (cw - length) / 2;
+        }
+
+        canvas.save();
+        canvas.translate(x, (ch - length) / 2);
+        loading.draw(canvas);
+        canvas.restore();
+
+        if (loadingLocation == 0) {
+            canvas.translate(deltaX, 0);
+        }
+
+        // continue onDraw while loading
+        invalidate();
     }
 }

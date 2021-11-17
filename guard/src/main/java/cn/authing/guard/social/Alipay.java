@@ -3,28 +3,20 @@ package cn.authing.guard.social;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
-import android.util.Log;
 
 import com.alipay.sdk.app.OpenAuthTask;
 
-import org.json.JSONException;
-import org.json.JSONObject;
+import org.jetbrains.annotations.NotNull;
 
 import java.lang.ref.WeakReference;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
-import cn.authing.guard.Authing;
-import cn.authing.guard.Callback;
-import cn.authing.guard.data.Config;
-import cn.authing.guard.data.SocialConfig;
+import cn.authing.guard.AuthCallback;
 import cn.authing.guard.data.UserInfo;
-import cn.authing.guard.network.Guardian;
+import cn.authing.guard.network.AuthClient;
 
-public class Alipay extends SocialAuthenticator{
-
-    private static final String TAG = "Alipay";
+public class Alipay extends SocialAuthenticator {
 
     public static String appId;
 
@@ -32,7 +24,7 @@ public class Alipay extends SocialAuthenticator{
      * 通用跳转授权业务 Demo
      */
     @Override
-    public void login(Context context, Callback<UserInfo> callback) {
+    public void login(Context context, @NotNull AuthCallback<UserInfo> callback) {
 
         Activity activity = (Activity) context;
 
@@ -64,66 +56,18 @@ public class Alipay extends SocialAuthenticator{
                 },true); // 是否需要在用户未安装支付宝 App 时，使用 H5 中间页中转。建议设置为 true。
     }
 
-    private static void handleResult(Bundle bundle, Callback<UserInfo> callback) {
+    private static void handleResult(Bundle bundle, @NotNull AuthCallback<UserInfo> callback) {
         if (bundle == null) {
-            fireCallback(callback, null);
+            callback.call(500, "alipay error", null);
             return;
         }
 
         if (!"SUCCESS".equals(bundle.get("result_code"))) {
-            fireCallback(callback, null);
+            callback.call(500, "alipay auth error", null);
             return;
         }
 
-        Authing.getPublicConfig(config -> _handleResult(config, bundle, callback));
-    }
-
-    private static void _handleResult(Config config, Bundle bundle, Callback<UserInfo> callback) {
-        if (config == null) {
-            fireCallback(callback, null);
-            return;
-        }
-
-        String connId = "";
-        List<SocialConfig> configs = config.getSocialConfigs();
-        for (SocialConfig c : configs) {
-            String provider = c.getProvider();
-            if ("alipay".equals(provider)) {
-                connId = c.getId();
-                break;
-            }
-        }
-
-        try {
-            String code = bundle.get("auth_code").toString();
-            JSONObject body = new JSONObject();
-            body.put("connId", connId);
-            body.put(" s", code);
-            String url = "https://" + config.getIdentifier() + ".authing.cn/api/v2/ecConn/alipay/authByCode";
-            Guardian.post(url, body, (response) -> {
-                if (response != null && response.getCode() == 200) {
-                    try {
-                        UserInfo userInfo = UserInfo.createUserInfo(response.getData());
-                        Log.d(TAG, "Got user info by alipay:" + userInfo.toString());
-                        fireCallback(callback, userInfo);
-                    } catch (JSONException e) {
-                        Log.d(TAG, "Cannot get user info by alipay with exception:" + e);
-                        e.printStackTrace();
-                        fireCallback(callback, null);
-                    }
-                } else {
-                    Log.d(TAG, "Cannot get user info by alipay");
-                    fireCallback(callback, null);
-                }
-            });
-        } catch (Exception e) {
-            fireCallback(callback, null);
-        }
-    }
-
-    private static void fireCallback(Callback<UserInfo> callback, UserInfo info) {
-        if (callback != null) {
-            callback.call(true, info);
-        }
+        String code = bundle.get("auth_code").toString();
+        AuthClient.loginByAlipay(code, callback);
     }
 }

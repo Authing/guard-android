@@ -7,14 +7,14 @@ import android.graphics.drawable.AnimatedVectorDrawable;
 import android.util.AttributeSet;
 import android.widget.ImageButton;
 
-import cn.authing.guard.Callback;
+import cn.authing.guard.AuthCallback;
 import cn.authing.guard.R;
 import cn.authing.guard.data.UserInfo;
 
 public abstract class SocialLoginButton extends ImageButton {
 
     protected SocialAuthenticator authenticator;
-    protected Callback<UserInfo> callback;
+    protected AuthCallback<UserInfo> callback;
     protected AnimatedVectorDrawable backgroundDrawable;
 
     public SocialLoginButton(Context context) {
@@ -23,18 +23,14 @@ public abstract class SocialLoginButton extends ImageButton {
 
     protected abstract SocialAuthenticator createAuthenticator();
 
-    private void loginDone(UserInfo userInfo) {
+    private void loginDone(int code, String message, UserInfo userInfo) {
         post(()->{
             backgroundDrawable.stop();
-            setBackgroundResource(R.drawable.authing_social_button_background);
+            setBackgroundResource(R.drawable.ic_authing_circle);
         });
 
         if (callback != null) {
-            if (userInfo == null) {
-                callback.call(false, null);
-            } else {
-                callback.call(true, userInfo);
-            }
+            callback.call(code, message, userInfo);
         }
     }
 
@@ -46,19 +42,19 @@ public abstract class SocialLoginButton extends ImageButton {
         super(context, attrs, defStyleAttr);
         authenticator = createAuthenticator();
         if (attrs == null || attrs.getAttributeValue(NS_ANDROID, "background") == null) {
-            setBackgroundResource(R.drawable.authing_social_button_background);
+            setBackgroundResource(R.drawable.ic_authing_circle);
         }
         backgroundDrawable = (AnimatedVectorDrawable)context.getDrawable(R.drawable.ic_authing_animated_loading_blue);
         setOnClickListener((v -> {
             setBackground(backgroundDrawable);
             backgroundDrawable.start();
             if (authenticator != null) {
-                authenticator.login(context, (ok, data) -> loginDone(data));
+                authenticator.login(context, this::loginDone);
             }
         }));
     }
 
-    public void setOnLoginListener(Callback<UserInfo> callback) {
+    public void setOnLoginListener(AuthCallback<UserInfo> callback) {
         this.callback = callback;
     }
 }

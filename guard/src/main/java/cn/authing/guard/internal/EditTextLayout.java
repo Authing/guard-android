@@ -88,7 +88,7 @@ public class EditTextLayout extends LinearLayout implements TextWatcher, View.On
 
         setWillNotDraw(false);
 
-        root = new LinearLayout(context);
+        root = new RootContainer(context);
         addView(root);
         root.setOrientation(HORIZONTAL);
         if (hintMode == ENormal) {
@@ -258,45 +258,6 @@ public class EditTextLayout extends LinearLayout implements TextWatcher, View.On
     }
 
     @Override
-    protected void onDraw(Canvas canvas) {
-        super.onDraw(canvas);
-        if (hintMode == EAnimated) {
-            hintText = editText.getHint();
-            if (TextUtils.isEmpty(hintText)) {
-                return;
-            }
-
-            hintPaint.setTextSize(editText.getTextSize());
-            hintPaint.setTypeface(editText.getTypeface());
-
-            canvas.save();
-
-            canvas.translate(leftIcon.getRight(), 0);
-
-            if (hintYAnimator != null && hintYAnimator.isRunning()) {
-                hintPaint.setTextSize((float)hintSizeAnimator.getAnimatedValue());
-                float y = (float) hintYAnimator.getAnimatedValue();
-                canvas.drawText(hintText.toString(), leftPaddingPx, y, hintPaint);
-                invalidate();
-            } else {
-                int h = getHeight();
-                float a = hintPaint.ascent();
-                float d = hintPaint.descent();
-                float th = d - a;
-                if (isUp) {
-                    hintPaint.setTextSize(hintUpSize);
-                    canvas.drawText(hintText.toString(), leftPaddingPx, hintUpY, hintPaint);
-                } else if (TextUtils.isEmpty(getText())) {
-                    float y = (h + th) / 2 - d;
-                    canvas.drawText(hintText.toString(), leftPaddingPx, y, hintPaint);
-                }
-            }
-
-            canvas.restore();
-        }
-    }
-
-    @Override
     public void onFocusChange(View v, boolean hasFocus) {
         this.setPressed(hasFocus);
         if (hintMode == EAnimated && TextUtils.isEmpty(getText())) {
@@ -331,6 +292,7 @@ public class EditTextLayout extends LinearLayout implements TextWatcher, View.On
         hintSizeAnimator.setDuration(DURATION);
         hintSizeAnimator.setInterpolator(new DecelerateInterpolator());
         hintSizeAnimator.start();
+        invalidate();
     }
 
     private void moveHintDown() {
@@ -350,5 +312,63 @@ public class EditTextLayout extends LinearLayout implements TextWatcher, View.On
         hintSizeAnimator.setDuration(DURATION);
         hintSizeAnimator.setInterpolator(new AccelerateInterpolator());
         hintSizeAnimator.start();
+    }
+
+    private class RootContainer extends LinearLayout {
+
+        public RootContainer(Context context) {
+            this(context, null);
+        }
+
+        public RootContainer(Context context, @Nullable AttributeSet attrs) {
+            this(context, attrs, 0);
+        }
+
+        public RootContainer(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
+            this(context, attrs, defStyleAttr, 0);
+        }
+
+        public RootContainer(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
+            super(context, attrs, defStyleAttr, defStyleRes);
+        }
+
+        @Override
+        protected void onDraw(Canvas canvas) {
+            super.onDraw(canvas);
+            if (hintMode == EAnimated) {
+                hintText = editText.getHint();
+                if (TextUtils.isEmpty(hintText)) {
+                    return;
+                }
+
+                hintPaint.setTextSize(editText.getTextSize());
+                hintPaint.setTypeface(editText.getTypeface());
+
+                canvas.save();
+
+                canvas.translate(leftIcon.getRight(), 0);
+
+                if (hintYAnimator != null && hintYAnimator.isRunning()) {
+                    hintPaint.setTextSize((float)hintSizeAnimator.getAnimatedValue());
+                    float y = (float) hintYAnimator.getAnimatedValue();
+                    canvas.drawText(hintText.toString(), leftPaddingPx, y, hintPaint);
+                    invalidate();
+                } else {
+                    int h = getHeight();
+                    float a = hintPaint.ascent();
+                    float d = hintPaint.descent();
+                    float th = d - a;
+                    if (isUp) {
+                        hintPaint.setTextSize(hintUpSize);
+                        canvas.drawText(hintText.toString(), leftPaddingPx, hintUpY, hintPaint);
+                    } else if (TextUtils.isEmpty(getText())) {
+                        float y = (h + th) / 2 - d;
+                        canvas.drawText(hintText.toString(), leftPaddingPx, y, hintPaint);
+                    }
+                }
+
+                canvas.restore();
+            }
+        }
     }
 }

@@ -12,19 +12,16 @@ import com.tencent.mm.opensdk.modelmsg.SendAuth;
 import com.tencent.mm.opensdk.openapi.IWXAPIEventHandler;
 import com.tencent.mm.opensdk.openapi.WXAPIFactory;
 
-import org.json.JSONException;
-
-import cn.authing.guard.Authing;
-import cn.authing.guard.Callback;
+import cn.authing.guard.AuthCallback;
 import cn.authing.guard.data.UserInfo;
-import cn.authing.guard.network.Guardian;
+import cn.authing.guard.network.AuthClient;
 import cn.authing.guard.social.Wechat;
 
 public class WXEntryActivity extends AppCompatActivity implements IWXAPIEventHandler {
 
     public static final String TAG = WXEntryActivity.class.getSimpleName();
 
-    private static Callback<UserInfo> callback;
+    private static AuthCallback<UserInfo> callback;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,7 +47,7 @@ public class WXEntryActivity extends AppCompatActivity implements IWXAPIEventHan
         switch (resp.errCode) {
             case BaseResp.ErrCode.ERR_OK:
                 Log.d(TAG, "Got wechat code: " + ((SendAuth.Resp) resp).code);
-                getUserInfo(((SendAuth.Resp) resp).code);
+                AuthClient.loginByWechat(((SendAuth.Resp) resp).code, callback);
                 break;
             case BaseResp.ErrCode.ERR_USER_CANCEL:
                 break;
@@ -70,32 +67,7 @@ public class WXEntryActivity extends AppCompatActivity implements IWXAPIEventHan
         Wechat.api.handleIntent(intent, this);
     }
 
-    public static void setCallback(Callback<UserInfo> callback) {
+    public static void setCallback(AuthCallback<UserInfo> callback) {
         WXEntryActivity.callback = callback;
-    }
-
-    private void getUserInfo(String code) {
-        Authing.getPublicConfig((config -> {
-            String poolId = config.getUserPoolId();
-            String url = "https://core.authing.cn/connection/social/wechat:mobile/" + poolId + "/callback?code=" + code;
-            Guardian.get(url, (response)->{
-                if (response != null && response.getCode() == 200) {
-                    try {
-                        UserInfo userInfo = UserInfo.createUserInfo(response.getData());
-                        fireCallback(userInfo);
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                } else {
-                    fireCallback(null);
-                }
-            });
-        }));
-    }
-
-    private void fireCallback(UserInfo info) {
-        if (callback != null) {
-            callback.call(true, info);
-        }
     }
 }

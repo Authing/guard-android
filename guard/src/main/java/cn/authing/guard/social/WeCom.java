@@ -7,7 +7,9 @@ import com.tencent.wework.api.IWWAPI;
 import com.tencent.wework.api.WWAPIFactory;
 import com.tencent.wework.api.model.WWAuthMessage;
 
-import cn.authing.guard.Callback;
+import org.jetbrains.annotations.NotNull;
+
+import cn.authing.guard.AuthCallback;
 import cn.authing.guard.data.UserInfo;
 
 public class WeCom extends SocialAuthenticator {
@@ -19,7 +21,7 @@ public class WeCom extends SocialAuthenticator {
     public static String corpId;
 
     @Override
-    public void login(Context context, Callback<UserInfo> callback) {
+    public void login(Context context, @NotNull AuthCallback<UserInfo> callback) {
         // TODO get from authing server
 
         IWWAPI iwwapi = WWAPIFactory.createWWAPI(context);
@@ -47,9 +49,9 @@ public class WeCom extends SocialAuthenticator {
         });
     }
 
-    private static void fireCallback(Callback<UserInfo> callback, UserInfo info) {
+    private static void fireCallback(AuthCallback<UserInfo> callback, UserInfo info) {
         if (callback != null) {
-            callback.call(true, info);
+            callback.call(0, "", info);
         }
     }
 }

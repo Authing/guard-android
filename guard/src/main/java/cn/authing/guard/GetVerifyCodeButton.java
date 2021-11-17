@@ -11,12 +11,8 @@ import android.view.View;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import cn.authing.guard.internal.LoadingButton;
-import cn.authing.guard.network.Guardian;
-import cn.authing.guard.network.Response;
+import cn.authing.guard.network.AuthClient;
 import cn.authing.guard.util.Util;
 
 public class GetVerifyCodeButton extends LoadingButton {
@@ -38,6 +34,7 @@ public class GetVerifyCodeButton extends LoadingButton {
         super(context, attrs, defStyleAttr);
 
         loading = (AnimatedVectorDrawable)context.getDrawable(R.drawable.ic_authing_animated_loading_blue);
+        loadingLocation = 1; // over on top since this butter is usually small
 
         countDownTip = context.getString(R.string.authing_resend_after);
 
@@ -72,22 +69,17 @@ public class GetVerifyCodeButton extends LoadingButton {
         }
 
         String phoneNumber = phoneNumberEditText.getText().toString();
-        JSONObject body = new JSONObject();
-        try {
-            body.put("phone", phoneNumber);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
 
         startLoadingVisualEffect();
         Util.setErrorText(this, null);
-        Guardian.post("https://core.authing.cn/api/v2/sms/send", body, this::handleSMSResult);
+
+        AuthClient.sendSms(phoneNumber, this::handleSMSResult);
     }
 
-    private void handleSMSResult(Response data) {
+    private void handleSMSResult(int code, String message, Object ignore) {
         post(()->{
             stopLoadingVisualEffect();
-            if (data != null && data.getCode() == 200) {
+            if (code == 200) {
                 countDown = 60;
                 countDown();
             } else {

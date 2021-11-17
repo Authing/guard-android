@@ -76,9 +76,11 @@
     <declare-styleable name="PrivacyConfirmBox">
         <attr name="textColor" />
         <attr name="textSize" />
+        <attr name="button" format="reference" />
         <attr name="linkTextColor" format="reference|color" />
-        <attr name="uncheckColor" format="reference|color" />
-        <attr name="checkColor" format="reference|color" />
+        <attr name="uncheckedColor" format="reference|color" />
+        <attr name="checkedColor" format="reference|color" />
+        <attr name="isRound" format="boolean" />
     </declare-styleable>
 
     <declare-styleable name="MandatoryField">

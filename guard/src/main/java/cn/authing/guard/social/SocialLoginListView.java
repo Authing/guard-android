@@ -5,6 +5,7 @@ import android.content.res.TypedArray;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.Gravity;
+import android.view.View;
 import android.widget.LinearLayout;
 
 import androidx.annotation.Nullable;
@@ -15,8 +16,6 @@ import cn.authing.guard.data.UserInfo;
 import cn.authing.guard.util.Util;
 
 public class SocialLoginListView extends LinearLayout {
-
-    protected AuthCallback<UserInfo> callback;
 
     public SocialLoginListView(Context context) {
         this(context, null);
@@ -74,21 +73,14 @@ public class SocialLoginListView extends LinearLayout {
             lp.setMargins(m, 0, m, 0);
             button.setLayoutParams(lp);
             addView(button);
-            button.setOnLoginListener((ok, data) -> fireCallback(data, src));
         }
     }
 
     public void setOnLoginListener(AuthCallback<UserInfo> callback) {
-        this.callback = callback;
-    }
-
-    private void fireCallback(UserInfo info, String src) {
-        if (callback != null) {
-            if (info == null) {
-                callback.call(500, "error when login", null);
-            } else {
-                info.setThirdPartySource(src);
-                callback.call(200, "", info);
+        for (int i = 0;i < getChildCount();++i) {
+            View child = getChildAt(i);
+            if (child instanceof SocialLoginButton) {
+                ((SocialLoginButton)child).setOnLoginListener(callback);
             }
         }
     }

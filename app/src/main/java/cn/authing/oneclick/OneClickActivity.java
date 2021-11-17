@@ -161,7 +161,7 @@ public class OneClickActivity extends AppCompatActivity {
     }
 
     private void config(QuickLogin quickLogin) {
-        Drawable authingLogo = getDrawable(R.drawable.ic_default_logo);
+        Drawable authingLogo = getDrawable(R.drawable.ic_authing_default_logo);
         Drawable authingMainColor = getDrawable(R.color.authing_main);
 
         int bottomMargin = 300;

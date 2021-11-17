@@ -77,8 +77,6 @@
 
 [SocialLoginListView](./../hc_social_login_list_view.md)
 
-[SocialLoginActionSheet](./../hc_social_login_action_sheet.md)
-
 
 所以用户期望点击微信后能跳转到微信，点一下“确认”就能登录抖音？事情没有那么简单。对一些流量较小的 App，可能会将微信的 OpenID（或者 UnionID）作为自己的用户标识，但抖音以及众多流量较大的 App 不会，他们仍然会要求用户绑定用户手机号。理由是：
 

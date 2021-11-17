@@ -5,6 +5,7 @@ import static cn.authing.guard.util.Util.getThemeAccentColor;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
+import android.graphics.drawable.Drawable;
 import android.text.Html;
 import android.text.Spannable;
 import android.text.SpannableString;
@@ -60,10 +61,17 @@ public class PrivacyConfirmBox extends LinearLayout {
         TypedArray array = context.obtainStyledAttributes(attrs, R.styleable.PrivacyConfirmBox);
         textView.setTextColor(array.getColor(R.styleable.PrivacyConfirmBox_textColor, 0xff000000));
         int linkColor = array.getColor(R.styleable.PrivacyConfirmBox_linkTextColor, 0xff396aff);
-        int uncheckColor = array.getColor(R.styleable.PrivacyConfirmBox_uncheckColor, getThemeAccentColor(context));
-        int checkColor = array.getColor(R.styleable.PrivacyConfirmBox_uncheckColor, getThemeAccentColor(context));
+        int uncheckColor = array.getColor(R.styleable.PrivacyConfirmBox_uncheckedColor, getThemeAccentColor(context));
+        int checkColor = array.getColor(R.styleable.PrivacyConfirmBox_uncheckedColor, getThemeAccentColor(context));
+        boolean round = array.getBoolean(R.styleable.PrivacyConfirmBox_isRound, false);
+        Drawable checkBoxDrawable = array.getDrawable(R.styleable.PrivacyConfirmBox_button);
         array.recycle();
 
+        if (checkBoxDrawable != null) {
+            checkBox.setButtonDrawable(checkBoxDrawable);
+        } else if (round) {
+            checkBox.setButtonDrawable(R.drawable.authing_round_checkbox);
+        }
         ColorStateList colorStateList = new ColorStateList(new int[][] {
                 new int[] { -android.R.attr.state_checked },
                 new int[] { android.R.attr.state_checked } },

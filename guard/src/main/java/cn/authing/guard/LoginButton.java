@@ -14,23 +14,16 @@ import android.view.View;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import cn.authing.guard.data.Config;
 import cn.authing.guard.data.UserInfo;
 import cn.authing.guard.internal.LoadingButton;
 import cn.authing.guard.network.AuthClient;
-import cn.authing.guard.network.Guardian;
-import cn.authing.guard.network.Response;
-import cn.authing.guard.util.Const;
 import cn.authing.guard.util.Util;
 
 public class LoginButton extends LoadingButton {
 
     private String phoneNumber;
     private String phoneCode;
-    private String identifier;
     protected AuthCallback<UserInfo> callback;
 
     public LoginButton(@NonNull Context context) {
@@ -94,8 +87,6 @@ public class LoginButton extends LoadingButton {
             return;
         }
 
-        identifier = config.getIdentifier();
-
         View phoneNumberET = Util.findViewByClass(this, PhoneNumberEditText.class);
         View phoneCodeET = Util.findViewByClass(this, VerifyCodeEditText.class);
         if (phoneNumberET != null && phoneNumberET.isShown()) {
@@ -158,17 +149,15 @@ public class LoginButton extends LoadingButton {
         return ((PrivacyConfirmBox)box).require(true);
     }
 
-    private void loginByPhoneCode(String phone, String code) {
-        try {
-            JSONObject body = new JSONObject();
-            body.put("phone", phone);
-            body.put("code", code);
-            String url = "https://" + identifier + ".authing.cn/api/v2/login/phone-code";
-            getUserInfo(url, body);
-        } catch (Exception e) {
-            e.printStackTrace();
-            fireCallback("Exception when login by phone code");
-        }
+    private void loginByPhoneCode(String phone, String verifyCode) {
+        AuthClient.loginByPhoneCode(phone, verifyCode, (code, message, data)->{
+            if (code == 200) {
+                fireCallback(200, "", data);
+            } else {
+                Util.setErrorText(this, message);
+                fireCallback(code, message, null);
+            }
+        });
     }
 
     private void loginByAccount(String account, String password) {
@@ -182,35 +171,16 @@ public class LoginButton extends LoadingButton {
         });
     }
 
-    private void getUserInfo(String url, JSONObject body) {
-        Guardian.post(url, body, (data)->{
-            if (data.getCode() != 200) {
-                handleError(data);
-                fireCallback(data.getCode(), data.getMessage(), null);
-                return;
-            }
-
-            UserInfo userInfo;
-            try {
-                userInfo = UserInfo.createUserInfo(data.getData());
-                fireCallback(200, "", userInfo);
-            } catch (JSONException e) {
-                e.printStackTrace();
-                fireCallback("Exception parsing User");
-            }
-        });
-    }
-
-    private void handleError(Response response) {
-        int code = response.getCode();
-        if (code == Const.EC_INCORRECT_VERIFY_CODE) {
-            Util.setErrorText(this, getContext().getString(R.string.authing_incorrect_verify_code));
-        } else if (code == Const.EC_INCORRECT_CREDENTIAL) {
-            Util.setErrorText(this, getContext().getString(R.string.authing_incorrect_credential));
-        } else {
-            Util.setErrorText(this, response.getMessage());
-        }
-    }
+//    private void handleError(Response response) {
+//        int code = response.getCode();
+//        if (code == Const.EC_INCORRECT_VERIFY_CODE) {
+//            Util.setErrorText(this, getContext().getString(R.string.authing_incorrect_verify_code));
+//        } else if (code == Const.EC_INCORRECT_CREDENTIAL) {
+//            Util.setErrorText(this, getContext().getString(R.string.authing_incorrect_credential));
+//        } else {
+//            Util.setErrorText(this, response.getMessage());
+//        }
+//    }
 
     private void fireCallback(String message) {
         fireCallback(500, message, null);
