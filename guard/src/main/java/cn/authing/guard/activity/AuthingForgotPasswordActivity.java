@@ -42,13 +42,15 @@ public class AuthingForgotPasswordActivity extends BaseLoginActivity {
                 btn.setEnabled(false);
                 btn.startLoadingVisualEffect();
                 AuthClient.resetPasswordByEmail(s, (code, message, data)->{
-                    btn.stopLoadingVisualEffect();
-                    btn.setEnabled(true);
-                    if (code == 200) {
-                        next(true);
-                    } else {
-                        tvError.setText(message);
-                    }
+                    runOnUiThread(()->{
+                        btn.stopLoadingVisualEffect();
+                        btn.setEnabled(true);
+                        if (code == 200) {
+                            next(true);
+                        } else {
+                            tvError.setText(message);
+                        }
+                    });
                 });
             } else if (Validator.isValidPhoneNumber(s)) {
                 btn.setEnabled(false);
