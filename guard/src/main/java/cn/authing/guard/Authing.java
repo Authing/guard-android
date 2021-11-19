@@ -37,11 +37,11 @@ public class Authing {
         return sAppContext;
     }
 
-    public static String getsHost() {
+    public static String getHost() {
         return sHost;
     }
 
-    public static void setsHost(String sHost) {
+    public static void setHost(String sHost) {
         Authing.sHost = sHost;
     }
 

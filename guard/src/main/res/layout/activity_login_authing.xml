@@ -108,12 +108,19 @@
         android:layout_marginEnd="@dimen/authing_form_start_end_margin"
         android:layout_marginTop="12dp" >
         <TextView
+            android:id="@+id/tv_reset_password"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:textColor="@color/authing_main"
+            android:text="@string/authing_forgot_password" />
         <Space
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/authing_tip_no_account" />
         <TextView
             android:id="@+id/tv_register"
             android:layout_width="wrap_content"

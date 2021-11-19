@@ -18,7 +18,7 @@ public class AuthClient {
             try {
                 JSONObject body = new JSONObject();
                 body.put("phone", phone);
-                String url = "https://" + config.getIdentifier() + "." + Authing.getsHost() + "/api/v2/sms/send";
+                String url = "https://" + config.getIdentifier() + "." + Authing.getHost() + "/api/v2/sms/send";
                 Guardian.post(url, body, (data)-> callback.call(data.getCode(), data.getMessage(), null));
             } catch (Exception e) {
                 e.printStackTrace();
@@ -33,7 +33,7 @@ public class AuthClient {
                 JSONObject body = new JSONObject();
                 body.put("phone", phone);
                 body.put("code", code);
-                String url = "https://" + config.getIdentifier() + "." + Authing.getsHost() + "/api/v2/login/phone-code";
+                String url = "https://" + config.getIdentifier() + "." + Authing.getHost() + "/api/v2/login/phone-code";
                 Guardian.post(url, body, (data)-> createUserInfoFromResponse(data, callback));
             } catch (Exception e) {
                 e.printStackTrace();
@@ -49,7 +49,7 @@ public class AuthClient {
                 JSONObject body = new JSONObject();
                 body.put("account", account);
                 body.put("password", encryptPassword);
-                String url = "https://" + config.getIdentifier() + "." + Authing.getsHost() + "/api/v2/login/account";
+                String url = "https://" + config.getIdentifier() + "." + Authing.getHost() + "/api/v2/login/account";
                 Guardian.post(url, body, (data)-> createUserInfoFromResponse(data, callback));
             } catch (Exception e) {
                 e.printStackTrace();
@@ -65,7 +65,7 @@ public class AuthClient {
                 JSONObject body = new JSONObject();
                 body.put("email", email);
                 body.put("password", encryptPassword);
-                String url = "https://" + config.getIdentifier() + "." + Authing.getsHost() + "/api/v2/register/email";
+                String url = "https://" + config.getIdentifier() + "." + Authing.getHost() + "/api/v2/register/email";
                 Guardian.post(url, body, (data)-> createUserInfoFromResponse(data, callback));
             } catch (Exception e) {
                 e.printStackTrace();
@@ -82,7 +82,7 @@ public class AuthClient {
                 body.put("phone", phone);
                 body.put("password", encryptPassword);
                 body.put("code", code);
-                String url = "https://" + config.getIdentifier() + "." + Authing.getsHost() + "/api/v2/register/phone-code";
+                String url = "https://" + config.getIdentifier() + "." + Authing.getHost() + "/api/v2/register/phone-code";
                 Guardian.post(url, body, (data)-> createUserInfoFromResponse(data, callback));
             } catch (Exception e) {
                 e.printStackTrace();
@@ -101,7 +101,7 @@ public class AuthClient {
                 JSONObject body = new JSONObject();
                 body.put("email", emailAddress);
                 body.put("scene", scene);
-                String url = "https://" + config.getIdentifier() + "." + Authing.getsHost() + "/api/v2/email/send";
+                String url = "https://" + config.getIdentifier() + "." + Authing.getHost() + "/api/v2/email/send";
                 Guardian.post(url, body, (data)-> callback.call(data.getCode(), data.getMessage(), data.getData()));
             } catch (Exception e) {
                 e.printStackTrace();
@@ -117,7 +117,23 @@ public class AuthClient {
                 body.put("email", emailAddress);
                 body.put("code", code);
                 body.put("newPassword", Util.encryptPassword(newPassword));
-                String url = "https://" + config.getIdentifier()  + "." + Authing.getsHost() + "/api/v2/password/reset/email";
+                String url = "https://" + config.getIdentifier()  + "." + Authing.getHost() + "/api/v2/password/reset/email";
+                Guardian.post(url, body, (data)-> callback.call(data.getCode(), data.getMessage(), data.getData()));
+            } catch (Exception e) {
+                e.printStackTrace();
+                callback.call(500, "Exception", null);
+            }
+        }));
+    }
+
+    public static void resetPasswordByPhoneCode(String phone, String code, String newPassword, @NotNull AuthCallback<JSONObject> callback) {
+        Authing.getPublicConfig((config -> {
+            try {
+                JSONObject body = new JSONObject();
+                body.put("phone", phone);
+                body.put("code", code);
+                body.put("newPassword", Util.encryptPassword(newPassword));
+                String url = "https://" + config.getIdentifier()  + "." + Authing.getHost() + "/api/v2/password/reset/sms";
                 Guardian.post(url, body, (data)-> callback.call(data.getCode(), data.getMessage(), data.getData()));
             } catch (Exception e) {
                 e.printStackTrace();
@@ -130,7 +146,7 @@ public class AuthClient {
         Authing.getPublicConfig((config -> {
             try {
                 String poolId = config.getUserPoolId();
-                String url = "https://core." + Authing.getsHost() + "/connection/social/wechat:mobile/" + poolId + "/callback?code=" + authCode;
+                String url = "https://core." + Authing.getHost() + "/connection/social/wechat:mobile/" + poolId + "/callback?code=" + authCode;
                 Guardian.get(url, (data)-> createUserInfoFromResponse(data, callback));
             } catch (Exception e) {
                 e.printStackTrace();
@@ -154,7 +170,7 @@ public class AuthClient {
                 JSONObject body = new JSONObject();
                 body.put("connId", connId);
                 body.put("code", authCode);
-                String url = "https://" + config.getIdentifier() + "." + Authing.getsHost() + "/api/v2/ecConn/alipay/authByCode";
+                String url = "https://" + config.getIdentifier() + "." + Authing.getHost() + "/api/v2/ecConn/alipay/authByCode";
                 Guardian.post(url, body, (data)-> createUserInfoFromResponse(data, callback));
             } catch (Exception e) {
                 e.printStackTrace();

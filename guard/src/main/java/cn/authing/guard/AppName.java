@@ -23,34 +23,37 @@ public class AppName extends AppCompatTextView {
 
     public AppName(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
+
+        if (attrs == null || attrs.getAttributeValue(NS_ANDROID, "textColor") == null) {
+            setTextColor(getResources().getColor(R.color.authing_app_name, null));
+        }
+
+        if (attrs == null || attrs.getAttributeValue(NS_ANDROID, "textSize") == null) {
+            setTextSize(TypedValue.COMPLEX_UNIT_DIP, 24);
+        }
+
+        if (attrs == null || attrs.getAttributeValue(NS_ANDROID, "textStyle") == null) {
+            setTypeface(Typeface.DEFAULT_BOLD);
+        }
+
+        TypedArray array = context.obtainStyledAttributes(attrs, R.styleable.AppName);
+        int type = array.getInt(R.styleable.AppName_pageType,0);
         Authing.getPublicConfig((config -> {
             if (config != null) {
                 CharSequence s = getText();
                 if (s == null || s.length() == 0) {
                     String pre = "";
-                    TypedArray array = context.obtainStyledAttributes(attrs, R.styleable.AppName);
-                    int t = array.getInt(R.styleable.AppName_pageType,0);
-                    if (t == 0) {
+                    if (type == 0) {
                         pre = getResources().getString(R.string.authing_login);
-                    } else if (t == 1) {
+                    } else if (type == 1) {
                         pre = getResources().getString(R.string.authing_welcome_to);
                     }
-                    array.recycle();
+
                     setText(pre + " " + config.getName());
                 }
             }
-
-            if (attrs == null || attrs.getAttributeValue(NS_ANDROID, "textColor") == null) {
-                setTextColor(getResources().getColor(R.color.authing_app_name, null));
-            }
-
-            if (attrs == null || attrs.getAttributeValue(NS_ANDROID, "textSize") == null) {
-                setTextSize(TypedValue.COMPLEX_UNIT_DIP, 24);
-            }
-
-            if (attrs == null || attrs.getAttributeValue(NS_ANDROID, "textStyle") == null) {
-                setTypeface(Typeface.DEFAULT_BOLD);
-            }
         }));
+
+        array.recycle();
     }
 }

@@ -10,13 +10,10 @@ import org.json.JSONObject;
 import cn.authing.MainActivity;
 import cn.authing.R;
 import cn.authing.guard.CountryCodePicker;
-import cn.authing.guard.GlobalStyle;
 import cn.authing.guard.PhoneNumberEditText;
 import cn.authing.guard.activity.BaseLoginActivity;
 import cn.authing.guard.data.Country;
 import cn.authing.guard.network.AuthClient;
-import cn.authing.guard.network.Guardian;
-import cn.authing.guard.network.Response;
 import cn.authing.guard.social.SocialLoginListView;
 import cn.authing.guard.util.Util;
 
@@ -31,9 +28,6 @@ public class AbaoActivity extends BaseLoginActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        // remove EditText's default underline
-        GlobalStyle.setEditTextBackground(0);
 
         setContentView(R.layout.abao_login);
 

@@ -103,7 +103,8 @@ public class EditTextLayout extends LinearLayout implements TextWatcher, View.On
 
         // Intrinsically, setting background of *EditText should set our root's background
         // which includes left icon, input box, right icon, clear all button while excludes error text
-        root.setBackground(getBackground());
+        Drawable bgParent = getBackground();
+        root.setBackground(bgParent);
         setBackground(null);
 
         if (GlobalStyle.isIsEditTextLayoutBackgroundSet()) {
@@ -131,6 +132,10 @@ public class EditTextLayout extends LinearLayout implements TextWatcher, View.On
         }
 
         editText = new AppCompatEditText(context);
+        if (bgParent != null) {
+            // use parent's background as root's. clear EditText's bg
+            editText.setBackground(null);
+        }
         editText.setTextSize(TypedValue.COMPLEX_UNIT_PX, textSize);
         editText.setHint(hintText);
         editText.setHintTextColor(array.getColor(R.styleable.EditTextLayout_hintColor, 0xff808080));
@@ -197,6 +202,10 @@ public class EditTextLayout extends LinearLayout implements TextWatcher, View.On
 
     public Editable getText() {
         return editText.getText();
+    }
+
+    public String getErrorText() {
+        return errorText;
     }
 
     public void showError(String error) {

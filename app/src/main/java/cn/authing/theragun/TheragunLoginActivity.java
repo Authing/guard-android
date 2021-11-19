@@ -7,7 +7,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import cn.authing.R;
-import cn.authing.guard.GlobalStyle;
 import cn.authing.guard.PhoneNumberEditText;
 import cn.authing.guard.activity.BaseLoginActivity;
 import cn.authing.guard.internal.LoadingButton;
@@ -22,9 +21,6 @@ public class TheragunLoginActivity extends BaseLoginActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        // remove EditText's default underline
-        GlobalStyle.setEditTextBackground(0);
 
         setContentView(R.layout.theragun_login);
 

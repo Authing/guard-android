@@ -17,9 +17,17 @@
     <string name="authing_login_by_password">密码登录</string>
     <string name="authing_register_by_phone_code">手机号注册</string>
     <string name="authing_register_by_email">邮箱注册</string>
-    <string name="authing_go_login">去登录</string>
+    <string name="authing_go_login">立即登录</string>
+    <string name="authing_tip_no_account">没有帐号？</string>
     <string name="authing_register_now">立即注册</string>
     <string name="authing_3rd_login">第三方帐号登录</string>
+    <string name="authing_forgot_password">忘记密码？</string>
+    <string name="authing_find_password_back">找回密码</string>
+    <string name="authing_reset_password">重置密码</string>
+    <string name="authing_input_phone_or_email">请输入手机号或邮箱</string>
+    <string name="authing_login_by_other_account">其他帐号登录</string>
+    <string name="authing_reset_password_by_email_tip">密码重置邮件已发送至 %1$s, 有效期为 5 分钟</string>
+    <string name="authing_resend_password_reset_email">重新发送密码重置邮件</string>
 
     <!--error messages-->
     <string name="authing_password_error_1">至少 6 位</string>
@@ -38,4 +46,5 @@
     <string name="authing_invalid_email">邮箱格式不正确</string>
     <string name="authing_invalid_phone">电话号码格式不正确</string>
     <string name="authing_invalid_input">输入格式不正确</string>
+    <string name="authing_invalid_phone_or_email">请输入正确的手机号码或邮箱</string>
 </resources>

@@ -6,6 +6,7 @@ import androidx.core.app.ActivityCompat;
 import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
@@ -13,6 +14,7 @@ import android.util.Log;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -44,6 +46,9 @@ public class OneClickActivity extends AppCompatActivity {
     int width; //px
     int screenWidth; // dp
 
+    EditText etBizId;
+    EditText etUrl;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,30 +58,37 @@ public class OneClickActivity extends AppCompatActivity {
 
         ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_PHONE_STATE}, 0);
 
-        btn = findViewById(R.id.btn_one_click);
-        btn.startLoadingVisualEffect();
-        btn.setOnClickListener((v)->startLogin());
-
         tvTip = findViewById(R.id.tv_tip);
 
-        quickLogin = QuickLogin.getInstance(this, "74ae90bd84f74b69a88b578bbbbcdcfd");
-        quickLogin.prefetchMobileNumber(new QuickLoginPreMobileListener() {
-            @Override
-            public void onGetMobileNumberSuccess(String YDToken, String mobileNumber) {
-                //预取号成功
-                Log.d(TAG, "Got phone:" + mobileNumber);
-                btn.postDelayed(()-> {
-                    startLogin();
-                }, 1000);
-            }
+        etBizId = findViewById(R.id.et_biz_id);
+        etUrl = findViewById(R.id.et_url);
+        getInfo();
 
-            @Override
-            public void onGetMobileNumberError(String YDToken, String msg) {
-                Log.e(TAG, "Got phone error:" + msg);
-                runOnUiThread(()-> {
-                    tvTip.setText(msg);
-                });
-            }
+        btn = findViewById(R.id.btn_one_click);
+        btn.setOnClickListener((v)->{
+            btn.startLoadingVisualEffect();
+            String bizId = etBizId.getText().toString();
+            saveInfo();
+            quickLogin = QuickLogin.getInstance(this, bizId);
+            quickLogin.prefetchMobileNumber(new QuickLoginPreMobileListener() {
+                @Override
+                public void onGetMobileNumberSuccess(String YDToken, String mobileNumber) {
+                    //预取号成功
+                    Log.d(TAG, "Got phone:" + mobileNumber);
+                    btn.postDelayed(()-> {
+                        startLogin();
+                    }, 1000);
+                }
+
+                @Override
+                public void onGetMobileNumberError(String YDToken, String msg) {
+                    Log.e(TAG, "Got phone error:" + msg);
+                    btn.stopLoadingVisualEffect();
+                    runOnUiThread(()-> {
+                        tvTip.setText(msg);
+                    });
+                }
+            });
         });
     }
 
@@ -89,7 +101,7 @@ public class OneClickActivity extends AppCompatActivity {
                 //一键登录成功 运营商token：accessCode获取成功
                 //拿着获取到的运营商token二次校验（建议放在自己的服务端）
                 Log.e(TAG, "onGetTokenSuccess:" + accessCode);
-
+                btn.stopLoadingVisualEffect();
                 getAuthingToken(YDToken, accessCode);
             }
 
@@ -107,29 +119,53 @@ public class OneClickActivity extends AppCompatActivity {
     }
 
     private void getAuthingToken(String t, String ac) {
-        String url = "https://developer-beta.authing.cn/stats/ydtoken?token=" + t + "&accessToken=" + ac;
-        Guardian.get(url, (response -> {
-            if (response != null && response.getCode() == 200) {
-                JSONObject data = response.getData();
+        try {
+            String url = etUrl.getText().toString();
+            JSONObject body = new JSONObject();
+            body.put("token", t);
+            body.put("accessToken", ac);
+            Guardian.post(url, body, (response -> {
+                if (response != null && response.getCode() == 200) {
+                    JSONObject data = response.getData();
 
-                String phone = null;
-                try {
-                    phone = data.getString("phone");
-                } catch (JSONException e) {
-                    e.printStackTrace();
+                    String phone = null;
+                    try {
+                        phone = data.getString("phone");
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                    UserInfo userInfo = new UserInfo();
+                    userInfo.setPhone_number(phone);
+                    gotoMain(userInfo);
+                } else {
+                    runOnUiThread(() -> {
+                        tvTip.setText("用易盾 token 换取 authing token 失败");
+                    });
                 }
-                UserInfo userInfo = new UserInfo();
-                userInfo.setPhone_number(phone);
-                gotoMain(userInfo);
-            } else {
-                runOnUiThread(()-> {
-                    tvTip.setText("用易盾 token 换取 authing token 失败");
+                runOnUiThread(() -> {
+                    btn.stopLoadingVisualEffect();
                 });
-            }
-            runOnUiThread(()-> {
-                btn.stopLoadingVisualEffect();
-            });
-        }));
+            }));
+        } catch (Exception e) {
+
+        }
+    }
+
+    private void getInfo() {
+        SharedPreferences sp = getSharedPreferences("SP_AUTHING_GUARD", 0);
+        String bizId = sp.getString("BIZID", "74ae90bd84f74b69a88b578bbbbcdcfd");
+        String url = sp.getString("URL", "https://developer-beta.authing.cn/stats/ydtoken");
+        etBizId.setText(bizId);
+        etUrl.setText(url);
+    }
+
+    private void saveInfo() {
+        String bizId = etBizId.getText().toString();
+        String url = etUrl.getText().toString();
+        SharedPreferences sp = getSharedPreferences("SP_AUTHING_GUARD", 0);
+        sp.edit().putString("BIZID", bizId);
+        sp.edit().putString("URL", url);
+        sp.edit().commit();
     }
 
     private void gotoMain(UserInfo data) {
