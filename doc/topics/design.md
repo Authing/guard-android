@@ -75,9 +75,9 @@ TwoPixelRoundedCornerWithTextOf_GOTOMARS_WithRedColorWith10LeftPaddingAndWhenCli
 
 * 所有可交互组件语义化（Semanticalize all interactive widgets)
 * 上下文感知（Context aware）
-* 事件驱动（Event driven）
-* 可嵌入（Embeddable）
+* 声明式编程（Declarative Programming）
 * 数据实时同步（Realtime Data Syncing）
+* 可嵌入（Embeddable）
 
 接下来我们逐一介绍。
 
@@ -85,16 +85,16 @@ TwoPixelRoundedCornerWithTextOf_GOTOMARS_WithRedColorWith10LeftPaddingAndWhenCli
 
 * **所有可交互组件语义化**
 
-语义化编程的第一步是将所有可交互的组件语义化。我们通过一个典型的认证流程来说明（以 Android 为例，其他平台类似）
+语义化编程的第一步是将所有可交互的组件语义化。我们将语义化后的组件称为 **Hyper-Component**。我们通过一个典型的认证流程来说明（以 Android 为例，其他平台类似）
 
 ![](./../images/authing_login_small.png) ![](./../images/authing_register_small.png)
 ![](./../images/authing_forgot_password_small.png) ![](./../images/authing_reset_password_small.png)
 
 这里的 “可交互” 包括：
-1. 内容可以动态改变，如顶部的 Logo，它其实是可以在控制台配置的，所以它算是一个可交互的控件，需要被语义化
+1. 内容可以动态改变，如顶部的 Logo，它其实是可以在控制台配置的，所以它算是一个可交互的控件，需要被语义化。如 AppLogo
 2. 用户可以操作。如按钮。虽然按钮的文字，背景都是固定的，但用户可以点击，所以它也算是可交互控件。
 
-所以上面例子中的登录界面，包括“忘记密码”，“立即注册”这样的小按钮也需要被语义化为：ForgotPasswordButton, GotoRegisterButton
+所以上面例子中的登录界面，包括“忘记密码”，“立即注册”这样的小按钮也需要被语义化为：ForgotPasswordButton, GoRegisterButton
 
 哪些不是可交互的呢？如下面灰色的“第三方帐号登录”文字，就不是可交互的，这样的控件不需要语义化，可以用平台自带的通用控件实现。
 
@@ -114,7 +114,7 @@ TwoPixelRoundedCornerWithTextOf_GOTOMARS_WithRedColorWith10LeftPaddingAndWhenCli
 
 然而事实上，这只是一个开端，我们发现即使使用了这些第三方库，还是有大量繁琐的，重复的工作要做。我们必须更进一步。
 
-我们在语义化这条路上走得很远，语义化真正的力量是需要和下面几个思想相结合才能爆发出来。当然前提是，所有可交互的控件都已经被我们自定义了，不能有漏网之鱼。
+我们在语义化这条路上走得很远，语义化真正的力量是需要和下面几个思想相结合才能爆发出来。当然前提是，所有可交互的控件都已经被我们语义化了，不能有漏网之鱼。
 
 <br>
 
@@ -164,35 +164,62 @@ TwoPixelRoundedCornerWithTextOf_GOTOMARS_WithRedColorWith10LeftPaddingAndWhenCli
 
 这样的组合一下就改变了整个编程思路。我们不再需要 ID 了。我们从 *通用类型+ID* 的思维模式转为 *具体类型*。这样的好处是，对于 LoginButton 来说，它就可以直接去找当前页面类型为 PhoneNumberEditText, PasswordEditText 的控件，从而拿到数据。这在之前是做不到的，ID 是在具体业务开发的时候才能确定，我们无法提前开发一个能感知上下文的 LoginButton。另外一个好处是，LoginButton 可以通过查找当前可见区域是包含 PhoneNumberEditText, PasswordEditText 的组合还是包含 PhoneNumberEditText, VerifyCodeEditText 的组合，从而确定调用哪个网络请求做认证。这是不是和上面人类的思维模式更贴切了？
 
-另外一方面，从业务角度出发，应用只关心认证结果，所以只需要一个回调就够了：onAuth。而不是去监听登录按钮的点击事件。原因在于，登录按钮只发起了电话+密码认证，事实上，中间用户可能新注册了帐号，可能弹到系统设置里面去了（如 Sign with Apple），或者触发了 MFA（Multi-Factor Authentication），这就要求应用侧需要对整个认证细节非常了解，并花很多时间去处理各种逻辑。代码会写成这样：
+小结一下，通过组件语义化，我们一方面提供了给定业务的常见功能从而避免重复造轮子，另一方面我们使组件拥有了感知上下文的可能。通过上下文感知，我们又进一步避免了发明无用的 ID，绑定数据，区分网络接口等繁琐工作。到这里我们的代码已经简化到只需要监听认证结果。
 
-```java
-button.setOnClickListener((view)->{
-    AuthClient.loginByPhonePassword(result->{
-        if (result.loginBySystemAccount) {
-            // goto system account login
-            systemAccount.auth(r->{
-
-            })
-        } else if (result.gotoFaceMFA) {
-            // handle facial auth
-            face.auth(r->{
-
-            })
-        } else if (result.gotoCapchaMFA) {
-            // open capcha
-            capcha.auth(r->{
-
-            })
-        }
-    });
-});
-```
-
-小结一下，通过组件语义化，我们一方面提供了给定业务的常见功能从而避免重复造轮子，另一方面我们使组件拥有了感知上下文的可能。通过上下文感知，我们又进一步避免了发明无用的 ID，绑定数据，区分网络接口等繁琐工作。到这里我们的代码已经简化到只需要监听 onAuth 事件。
-
-但真正彻底颠覆开发模式的，是下面介绍的事件驱动。
+但真正彻底颠覆开发模式的，是下面介绍的声明式编程。
 
 <br>
 
-* **事件驱动**
+* **声明式编程**
+
+首先看 [wiki](https://en.wikipedia.org/wiki/Declarative_programming) 对声明式编程的解释。如 wiki 所说，声明式编程适合于解决领域相对确定的问题，这些问题不需要图灵完整。整个开发过程就是逐渐减少逻辑空间可能性，最终完成特定业务需求。领域特有语言 DSL（Domain-Specific Language）是非常好的声明式编程例子。
+
+一般编程模式叫做 [命令式编程](https://en.wikipedia.org/wiki/Imperative_programming)。Guard 当然支持这种模式。在这种模式下，开发人员对所有逻辑有绝对的控制权，但同时也意味着需要写更多**冗余**的代码。这些冗余的代码是没有价值的，写它们的唯一原因是 Android 是个通用平台，它不知道认证的领域模型。
+
+如果你的认证流程是比较标准的，建议使用我们提供的声明式编程模型，会极大提高开发效率。
+
+回到上面的例子，如果使用声明式编程模式，我们应该如何写？
+
+如果应用能接受 Authing 风格界面，在需要启动认证流程的控制器（如闪屏）上，调用：
+
+```java
+AuthFlow.start(this); // 'this' is current activity
+```
+
+然后通过 onActivityResult 拿到认证数据：
+
+```java
+@Override
+protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+    super.onActivityResult(requestCode, resultCode, data);
+    if (requestCode == RC_LOGIN && resultCode == OK && data != null) {
+        Intent intent = new Intent(this, MainActivity.class);
+        UserInfo userInfo = (UserInfo) data.getSerializableExtra("user");
+        intent.putExtra("user", userInfo);
+        startActivity(intent);
+    }
+}
+```
+
+然而在移动端，几乎每个 App 的界面都是定制化的，认证流程也稍有不同。那么，首先需要用我们提供的 Hyper Component 定义好界面。这一步是必不可少的，虽然业界有 pix2code 这样的工具尝试从原型直接生成代码，但目前看起来还没有达到生产环境标准。
+
+有了界面后，接下来只需要 **声明流程** 就可以了：
+
+```java
+// replace layouts with your customized layouts
+AuthFlow.start(this, R.layout.activity_login_authing)
+        .setRegisterLayoutId(R.layout.activity_register_authing)
+        .setForgotPasswordLayoutId(R.layout.activity_authing_forgot_password)
+        .setResetPasswordByEmailLayoutId(R.layout.activity_authing_reset_password_by_email)
+        .setResetPasswordByPhoneLayoutId(R.layout.activity_authing_reset_password_by_phone);
+```
+
+这就是业务开发人员需要写的全部代码！
+
+得益于比较确切的领域，我们可以提供 setResetPasswordByEmailLayoutId 这样非常具体的接口。整个框架的内部实现使用了前面讲到的 **上下文感知** 以及下面会谈到的 **数据实时同步**。
+
+从原生开发角度看，我们认为这几乎就是最少代码了，少得不能再少了。
+
+通过转变开发模式（从命令式转为声明式），我们打下了一个坚实的基础。只有在这样的基础上，低代码/0代码才能真正落地。上面的代码很容易转换为某种流程配置文件，而这些文件是通过某种低代码平台，由非开发人员在界面上拖拉拽生成的。
+
+语义化编程思想也是我们 Authing 提出的，针对低代码/0代码平台的理论依据。只有满足语义化编程特征的场景才能实现低代码/0代码。而由于语义化编程特征的第一点：**所有可交互组件语义化（Hyper-Component）**，决定了只有相对确切的领域能才实现低代码/0代码。幸运的是，认证领域就是相对确切的领域。
