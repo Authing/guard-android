@@ -30,7 +30,7 @@ public class AuthingRegisterActivity extends BaseLoginActivity {
             if (code == 200 && user != null) {
                 Intent intent = new Intent();
                 intent.putExtra("user", user);
-                setResult(AuthingLoginActivity.OK, intent);
+                setResult(AuthActivity.OK, intent);
                 finish();
             }
         });

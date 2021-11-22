@@ -1,5 +1,8 @@
 package cn.authing.guard.activity;
 
+import static cn.authing.guard.activity.AuthActivity.OK;
+import static cn.authing.guard.activity.AuthActivity.RC_LOGIN;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.TextView;
@@ -12,10 +15,6 @@ import cn.authing.guard.R;
 import cn.authing.guard.data.UserInfo;
 
 public class AuthingLoginActivity extends BaseLoginActivity {
-
-    public static final int RC_LOGIN = 1024;
-
-    public static final int OK = 42;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

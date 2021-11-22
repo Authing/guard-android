@@ -37,10 +37,12 @@
             android:layout_marginEnd="@dimen/authing_form_start_end_margin"
             android:layout_marginTop="16dp">
             <cn.authing.guard.PhoneNumberEditText
+                android:background="@drawable/authing_edit_text_layout_background"
                 app:leftIconDrawable="@drawable/ic_authing_cellphone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
             <cn.authing.guard.PasswordEditText
+                android:background="@drawable/authing_edit_text_layout_background"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:leftIconDrawable="@drawable/ic_authing_password"
@@ -49,6 +51,7 @@
             <cn.authing.guard.PasswordConfirmEditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:background="@drawable/authing_edit_text_layout_background"
                 app:leftIconDrawable="@drawable/ic_authing_password"
                 app:clearAllEnabled="false"
                 android:layout_marginTop="@dimen/authing_form_top_margin"/>
@@ -61,6 +64,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:background="@drawable/authing_edit_text_layout_background"
                     app:leftIconDrawable="@drawable/ic_authing_shield_check"/>
                 <cn.authing.guard.GetVerifyCodeButton
                     android:layout_width="wrap_content"
@@ -80,10 +84,12 @@
             android:layout_marginTop="16dp">
             <cn.authing.guard.AccountEditText
                 app:pageType="register"
+                android:background="@drawable/authing_edit_text_layout_background"
                 app:leftIconDrawable="@drawable/ic_authing_user"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
             <cn.authing.guard.PasswordEditText
+                android:background="@drawable/authing_edit_text_layout_background"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:leftIconDrawable="@drawable/ic_authing_password"
@@ -93,6 +99,7 @@
             <cn.authing.guard.PasswordConfirmEditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:background="@drawable/authing_edit_text_layout_background"
                 app:leftIconDrawable="@drawable/ic_authing_password"
                 app:clearAllEnabled="false"
                 app:errorEnabled="true"

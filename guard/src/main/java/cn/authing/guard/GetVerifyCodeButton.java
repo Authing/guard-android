@@ -33,8 +33,7 @@ public class GetVerifyCodeButton extends LoadingButton {
     public GetVerifyCodeButton(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
 
-        loading = (AnimatedVectorDrawable)context.getDrawable(R.drawable.ic_authing_animated_loading_blue);
-        loadingLocation = 1; // over on top since this butter is usually small
+        loadingLocation = OVER; // over on top since this button is usually small
 
         countDownTip = context.getString(R.string.authing_resend_after);
 

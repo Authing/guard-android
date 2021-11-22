@@ -1,5 +1,9 @@
 package cn.authing;
 
+import static cn.authing.guard.activity.AuthActivity.OK;
+import static cn.authing.guard.activity.AuthActivity.RC_LOGIN;
+
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -9,7 +13,8 @@ import android.widget.ListView;
 
 import cn.authing.abao.AbaoActivity;
 import cn.authing.appauth.AppAuthActivity;
-import cn.authing.guard.activity.AuthingLoginActivity;
+import cn.authing.guard.data.UserInfo;
+import cn.authing.guard.flow.AuthFlow;
 import cn.authing.nissan.NissanVirtualKeyLoginActivity;
 import cn.authing.oneclick.OneClickActivity;
 import cn.authing.theragun.TheragunLoginActivity;
@@ -39,15 +44,14 @@ public class SampleListActivity extends AppCompatActivity {
 
         ListView listView = findViewById(R.id.lv_samples);
 
-        final ArrayAdapter adapter = new ArrayAdapter(this,
+        final ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
                 R.layout.sample_list_item, from);
 
         listView.setAdapter(adapter);
 
         listView.setOnItemClickListener((arg0, arg1, arg2, pos) -> {
             if (pos == AUTHING_LOGIN) {
-                Intent intent = new Intent(SampleListActivity.this, AuthingDemoLoginActivity.class);
-                startActivity(intent);
+                AuthFlow.start(this);
             } else if (pos == 1) {
                 Intent intent = new Intent(SampleListActivity.this, AndroidLoginActivity.class);
                 startActivity(intent);
@@ -75,4 +79,26 @@ public class SampleListActivity extends AppCompatActivity {
             }
         });
     }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == RC_LOGIN && resultCode == OK) {
+            Intent intent = new Intent(this, MainActivity.class);
+            if (data != null) {
+                UserInfo userInfo = (UserInfo) data.getSerializableExtra("user");
+                intent.putExtra("user", userInfo);
+                startActivity(intent);
+            }
+        }
+    }
+
+//    private static void gotoMain(Context context, int code, String message, UserInfo data) {
+//        if (code != 200) {
+//            return;
+//        }
+//        Intent intent = new Intent(context, MainActivity.class);
+//        intent.putExtra("user", data);
+//        context.startActivity(intent);
+//    }
 }

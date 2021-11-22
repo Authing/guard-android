@@ -47,4 +47,5 @@
     <string name="authing_invalid_phone">Phone number is invalid</string>
     <string name="authing_invalid_input">Input is invalid</string>
     <string name="authing_invalid_phone_or_email">Enter correct phone number or email address</string>
+    <string name="authing_get_email_code_failed">Send email code failed</string>
 </resources>

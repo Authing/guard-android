@@ -28,20 +28,13 @@ public class AuthingForgotPasswordActivity extends BaseLoginActivity {
         editText = findViewById(R.id.et_phone_or_email);
         tvError = findViewById(R.id.tv_error);
 
-        TextView tv = findViewById(R.id.tv_goto_login);
-        tv.setOnClickListener((v)->{
-            Intent intent = new Intent(AuthingForgotPasswordActivity.this, AuthingLoginActivity.class);
-            startActivity(intent);
-            finish();
-        });
-
         LoadingButton btn = findViewById(R.id.btn_reset);
         btn.setOnClickListener((v)->{
             String s = editText.getText().toString();
             if (Validator.isValidEmail(s)) {
                 btn.setEnabled(false);
                 btn.startLoadingVisualEffect();
-                AuthClient.resetPasswordByEmail(s, (code, message, data)->{
+                AuthClient.sendResetPasswordEmail(s, (code, message, data)->{
                     runOnUiThread(()->{
                         btn.stopLoadingVisualEffect();
                         btn.setEnabled(true);

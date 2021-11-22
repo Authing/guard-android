@@ -24,7 +24,6 @@ public class AuthingResetPasswordByPhoneActivity extends BaseLoginActivity {
         String account = intent.getStringExtra("account");
 
         PhoneNumberEditText phoneNumberEditText = findViewById(R.id.et_phone);
-        phoneNumberEditText.getEditText().setEnabled(false);
         phoneNumberEditText.getEditText().setText(account);
 
         VerifyCodeEditText codeEditText = findViewById(R.id.et_code);

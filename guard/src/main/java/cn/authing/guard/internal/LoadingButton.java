@@ -1,23 +1,29 @@
 package cn.authing.guard.internal;
 
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.drawable.AnimatedVectorDrawable;
 import android.util.AttributeSet;
-import android.widget.Button;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.AppCompatButton;
 
 import cn.authing.guard.R;
 import cn.authing.guard.util.Util;
 
-public class LoadingButton extends Button {
+public class LoadingButton extends AppCompatButton {
+
+    public static final int LEFT = 0;
+    public static final int RIGHT = 1;
+    public static final int OVER = 2;
+    public static final int COVER = 3;
 
     protected AnimatedVectorDrawable loading;
 
     protected boolean showLoading;
-    protected int loadingLocation; // 0 left; 1 over;
+    protected int loadingLocation;
 
     public LoadingButton(@NonNull Context context) {
         this(context, null);
@@ -32,6 +38,13 @@ public class LoadingButton extends Button {
 
         loading = (AnimatedVectorDrawable)context.getDrawable(R.drawable.ic_authing_animated_loading_blue);
         loading.setVisible(false, true);
+
+        TypedArray array = context.obtainStyledAttributes(attrs, R.styleable.LoadingButton);
+        int color = array.getInt(R.styleable.LoadingButton_loadingColor,getResources().getColor(R.color.authing_main));
+        loadingLocation = array.getInt(R.styleable.LoadingButton_loadingLocation, 0);
+        array.recycle();
+
+        loading.setTint(color);
     }
 
     public void startLoadingVisualEffect() {
@@ -54,11 +67,13 @@ public class LoadingButton extends Button {
 
     @Override
     protected void onDraw(Canvas canvas) {
-        if (loadingLocation == 0) {
+        if (loadingLocation == LEFT || loadingLocation == RIGHT) {
             drawLoading(canvas);
             super.onDraw(canvas);
         } else {
-            super.onDraw(canvas);
+            if (loadingLocation != COVER || !showLoading) {
+                super.onDraw(canvas);
+            }
             drawLoading(canvas);
         }
     }
@@ -68,19 +83,23 @@ public class LoadingButton extends Button {
             return;
         }
 
-        int cw = getWidth();
-        int ch = getHeight();
+        float cw = getWidth();
+        float ch = getHeight();
         int p = (int) Util.dp2px(getContext(), 4);
-        int length = ch - 2 * p;
+        int length = (int)(ch - 2 * p);
         loading.setBounds(0, 0, length, length);
 
         float x;
         float deltaX = 0;
-        if (loadingLocation == 0) {
-            float textWidth = getPaint().measureText(getText().toString());
+        float textWidth = getPaint().measureText(getText().toString());
+        float originalTextX = (cw - textWidth) / 2;
+        if (loadingLocation == LEFT) {
             x = (cw - (length + p + textWidth)) / 2;
             float tx = x + length + p;
-            float originalTextX = (cw - textWidth) / 2;
+            deltaX = tx - originalTextX;
+        } else if (loadingLocation == RIGHT) {
+            x = (cw - (length - p - textWidth)) / 2;
+            float tx = (cw - (length + p + textWidth)) / 2;
             deltaX = tx - originalTextX;
         } else {
             x = (cw - length) / 2;
@@ -91,9 +110,7 @@ public class LoadingButton extends Button {
         loading.draw(canvas);
         canvas.restore();
 
-        if (loadingLocation == 0) {
-            canvas.translate(deltaX, 0);
-        }
+        canvas.translate(deltaX, 0);
 
         // continue onDraw while loading
         invalidate();

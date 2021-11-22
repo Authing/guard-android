@@ -93,7 +93,7 @@
                 android:text="Don't have an account?"
                 android:textColor="@color/white"/>
 
-            <androidx.appcompat.widget.AppCompatButton
+            <cn.authing.guard.GoRegisterButton
                 android:id="@+id/btn_goto_signup"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

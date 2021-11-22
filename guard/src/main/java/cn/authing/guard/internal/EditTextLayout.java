@@ -85,6 +85,7 @@ public class EditTextLayout extends LinearLayout implements TextWatcher, View.On
         errorEnabled = array.getBoolean(R.styleable.EditTextLayout_errorEnabled, false);
         float textSize = array.getDimension(R.styleable.EditTextLayout_textSize, Util.dp2px(context, 16));
         hintText = array.getString(R.styleable.EditTextLayout_hint);
+        boolean enabled = array.getBoolean(R.styleable.EditTextLayout_enabled, true);
 
         setWillNotDraw(false);
 
@@ -142,6 +143,7 @@ public class EditTextLayout extends LinearLayout implements TextWatcher, View.On
         editText.setTextColor(array.getColor(R.styleable.EditTextLayout_textColor, 0xff000000));
         editText.setMaxLines(1);
         editText.setSingleLine(true);
+        editText.setEnabled(enabled);
         editText.setOnFocusChangeListener(this);
         LayoutParams lp = new LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, 1f);
         editText.setLayoutParams(lp);

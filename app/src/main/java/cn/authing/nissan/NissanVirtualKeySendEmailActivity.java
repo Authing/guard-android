@@ -29,7 +29,7 @@ public class NissanVirtualKeySendEmailActivity extends BaseLoginActivity {
             if (Validator.isValidEmail(etEmail.getText())) {
                 btn.startLoadingVisualEffect();
 
-                AuthClient.resetPasswordByEmail(etEmail.getText().toString(), (code, message, data)->{
+                AuthClient.sendResetPasswordEmail(etEmail.getText().toString(), (code, message, data)->{
                     runOnUiThread(()->{
                         if (code == 200) {
                             Toast.makeText(getApplicationContext(), "Password reset code sent", Toast.LENGTH_LONG).show();

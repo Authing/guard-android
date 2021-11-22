@@ -22,8 +22,13 @@ import java.util.Objects;
 
 import javax.crypto.Cipher;
 
+import cn.authing.guard.AccountEditText;
 import cn.authing.guard.ErrorTextView;
+import cn.authing.guard.PasswordEditText;
+import cn.authing.guard.PhoneNumberEditText;
 import cn.authing.guard.R;
+import cn.authing.guard.VerifyCodeEditText;
+import cn.authing.guard.flow.AuthFlow;
 
 public class Util {
 
@@ -100,6 +105,37 @@ public class Util {
             if (child.getClass().equals(T)) {
                 return child;
             }
+        }
+        return null;
+    }
+
+    public static String getAccount(View current) {
+        String account = null;
+        View v = findViewByClass(current, AccountEditText.class);
+        if (v != null) {
+            AccountEditText editText = (AccountEditText)v;
+            account = editText.getText().toString();
+        }
+        if (TextUtils.isEmpty(account)) {
+            account = AuthFlow.get(current.getContext(), AuthFlow.KEY_ACCOUNT);
+        }
+        return account;
+    }
+
+    public static String getPassword(View current) {
+        View v = findViewByClass(current, PasswordEditText.class);
+        if (v != null) {
+            PasswordEditText editText = (PasswordEditText)v;
+            return editText.getText().toString();
+        }
+        return null;
+    }
+
+    public static String getVerifyCode(View current) {
+        View v = findViewByClass(current, VerifyCodeEditText.class);
+        if (v != null) {
+            VerifyCodeEditText editText = (VerifyCodeEditText)v;
+            return editText.getText().toString();
         }
         return null;
     }

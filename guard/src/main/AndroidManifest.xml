@@ -35,6 +35,21 @@
             </intent-filter>
         </activity>
         <activity
+            android:name=".activity.AuthActivity"
+            android:exported="false" >
+            <intent-filter tools:node="replace" >
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data android:scheme="__authing_guard__" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".activity.IndexAuthActivity"
+            android:launchMode="singleTask"
+            android:exported="false" >
+        </activity>
+        <activity
             android:name=".activity.AuthingLoginActivity"
             android:exported="false"
             android:launchMode="singleTask"

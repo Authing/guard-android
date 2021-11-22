@@ -3,6 +3,7 @@ package cn.authing.guard;
 import static cn.authing.guard.util.Const.NS_ANDROID;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffColorFilter;
@@ -14,8 +15,10 @@ import android.view.View;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import cn.authing.guard.activity.AuthActivity;
 import cn.authing.guard.data.Config;
 import cn.authing.guard.data.UserInfo;
+import cn.authing.guard.flow.AuthFlow;
 import cn.authing.guard.internal.LoadingButton;
 import cn.authing.guard.network.AuthClient;
 import cn.authing.guard.util.Util;
@@ -186,11 +189,25 @@ public class LoginButton extends LoadingButton {
         fireCallback(500, message, null);
     }
 
-    private void fireCallback(int code, String message, UserInfo info) {
+    private void fireCallback(int code, String message, UserInfo userInfo) {
         stopLoadingVisualEffect();
 
         if (callback != null) {
-            post(()-> callback.call(code, message, info));
+            post(()-> callback.call(code, message, userInfo));
+        } else if (code == 200) {
+            if (getContext() instanceof AuthActivity) {
+                AuthActivity activity = (AuthActivity) getContext();
+                AuthFlow flow = (AuthFlow) activity.getIntent().getSerializableExtra(AuthActivity.AUTH_FLOW);
+                AuthFlow.Callback<UserInfo> cb = flow.getAuthCallback();
+                if (cb != null) {
+                    cb.call(getContext(), code, message, userInfo);
+                }
+
+                Intent intent = new Intent();
+                intent.putExtra("user", userInfo);
+                activity.setResult(AuthActivity.OK, intent);
+                activity.finish();
+            }
         }
     }
 }

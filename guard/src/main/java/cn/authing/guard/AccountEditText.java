@@ -10,6 +10,7 @@ import android.view.inputmethod.EditorInfo;
 import java.util.List;
 
 import cn.authing.guard.data.Config;
+import cn.authing.guard.flow.AuthFlow;
 import cn.authing.guard.internal.EditTextLayout;
 import cn.authing.guard.util.Validator;
 
@@ -38,6 +39,11 @@ public class AccountEditText extends EditTextLayout {
             CharSequence s = getEditText().getHint();
             if (s == null) {
                 getEditText().setHint(getHintByConfig(config, context));
+            }
+
+            String account = AuthFlow.get(context, AuthFlow.KEY_ACCOUNT);
+            if (account != null) {
+                getEditText().setText(account);
             }
 
             setup(config);

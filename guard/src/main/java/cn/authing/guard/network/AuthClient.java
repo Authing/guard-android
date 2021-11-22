@@ -91,7 +91,7 @@ public class AuthClient {
         }));
     }
 
-    public static void resetPasswordByEmail(String emailAddress, @NotNull AuthCallback<JSONObject> callback) {
+    public static void sendResetPasswordEmail(String emailAddress, @NotNull AuthCallback<JSONObject> callback) {
         sendEmail(emailAddress, "RESET_PASSWORD", callback);
     }
 

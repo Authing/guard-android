@@ -16,11 +16,12 @@ import androidx.annotation.Nullable;
 
 import java.util.List;
 
+import cn.authing.guard.flow.AuthFlow;
 import cn.authing.guard.internal.EditTextLayout;
 import cn.authing.guard.util.SpaceOnTheLeftSpan;
 import cn.authing.guard.util.Util;
 
-public class PhoneNumberEditText extends EditTextLayout implements TextWatcher {
+public class PhoneNumberEditText extends AccountEditText implements TextWatcher {
 
     private final List<Integer> dividerPattern;
     private final float padding;
@@ -35,11 +36,11 @@ public class PhoneNumberEditText extends EditTextLayout implements TextWatcher {
 
     public PhoneNumberEditText(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        editText.setInputType(InputType.TYPE_CLASS_PHONE);
+        getEditText().setInputType(InputType.TYPE_CLASS_PHONE);
 
-        CharSequence s = editText.getHint();
+        CharSequence s = getEditText().getHint();
         if (s == null) {
-            editText.setHint(context.getString(R.string.authing_account_edit_text_hint) + context.getString(R.string.authing_phone));
+            getEditText().setHint(context.getString(R.string.authing_account_edit_text_hint) + context.getString(R.string.authing_phone));
         }
 
         TypedArray array = context.obtainStyledAttributes(attrs, R.styleable.PhoneNumberEditText);

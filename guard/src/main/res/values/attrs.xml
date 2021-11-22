@@ -20,6 +20,20 @@
         <attr name="pageType" />
     </declare-styleable>
 
+    <declare-styleable name="LoadingButton">
+        <attr name="loadingColor" format="reference|color" />
+        <attr name="loadingLocation" format="enum">
+            <enum name="left" value="0"/>
+            <enum name="right" value="1"/>
+            <enum name="over" value="2"/>
+            <enum name="cover" value="3"/>
+        </attr>
+    </declare-styleable>
+
+    <declare-styleable name="GetEmailCodeButton">
+        <attr name="android:text" />
+    </declare-styleable>
+
     <declare-styleable name="LoginContainer">
         <attr name="type" />
     </declare-styleable>
@@ -42,6 +56,7 @@
         <attr name="hint" format="string" />
         <attr name="hintColor" format="reference|color" />
         <attr name="errorEnabled" format="boolean" />
+        <attr name="enabled" format="boolean" />
     </declare-styleable>
 
     <declare-styleable name="BasePasswordEditText">
