@@ -93,9 +93,9 @@
                 <category android:name="android.intent.category.BROWSABLE" />
 
                 <data
-                    android:host="guard.authing"
+                    android:host="authing.cn"
                     android:path="/redirect"
-                    android:scheme="https" />
+                    android:scheme="cn.guard" />
             </intent-filter>
         </activity>
         <activity

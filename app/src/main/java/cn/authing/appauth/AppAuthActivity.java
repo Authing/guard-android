@@ -67,7 +67,7 @@ public class AppAuthActivity extends AppCompatActivity {
                         serviceConfig, // the authorization service configuration
                         Authing.getAppId(), // the client ID, typically pre-registered and static
                         ResponseTypeValues.CODE, // the response_type value: we want a code
-                        Uri.parse("https://guard.authing/redirect")); // the redirect URI to which the auth response is sent
+                        Uri.parse("cn.guard://authing.cn/redirect")); // the redirect URI to which the auth response is sent
 
         AuthorizationRequest authRequest = authRequestBuilder
                 .setScope("openid profile email phone address offline_access role")

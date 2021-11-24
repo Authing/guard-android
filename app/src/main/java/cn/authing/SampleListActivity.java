@@ -83,13 +83,11 @@ public class SampleListActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == RC_LOGIN && resultCode == OK) {
+        if (requestCode == RC_LOGIN && resultCode == OK && data != null) {
             Intent intent = new Intent(this, MainActivity.class);
-            if (data != null) {
-                UserInfo userInfo = (UserInfo) data.getSerializableExtra("user");
-                intent.putExtra("user", userInfo);
-                startActivity(intent);
-            }
+            UserInfo userInfo = (UserInfo) data.getSerializableExtra("user");
+            intent.putExtra("user", userInfo);
+            startActivity(intent);
         }
     }
 
