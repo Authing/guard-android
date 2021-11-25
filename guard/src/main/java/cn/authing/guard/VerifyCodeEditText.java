@@ -68,7 +68,7 @@ public class VerifyCodeEditText extends EditTextLayout implements TextWatcher {
             editText.setFilters(new InputFilter[]{new InputFilter.LengthFilter(maxLength)});
             editText.addTextChangedListener(this);
         } else {
-            removeAllViews();
+            root.removeAllViews();
 
             int bw = (int)array.getDimension(R.styleable.VerifyCodeEditText_boxWidth, 128);
             int bh = (int)array.getDimension(R.styleable.VerifyCodeEditText_boxHeight, 150);
@@ -88,7 +88,7 @@ public class VerifyCodeEditText extends EditTextLayout implements TextWatcher {
 
                 EditText et = new EditText(context);
                 editTextList.add(et);
-                addView(et);
+                root.addView(et);
 
                 et.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 20);
                 et.setInputType(InputType.TYPE_CLASS_NUMBER);

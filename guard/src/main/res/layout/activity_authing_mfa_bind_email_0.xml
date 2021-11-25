@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingStart="@dimen/authing_form_start_end_margin"
+    android:paddingEnd="@dimen/authing_form_start_end_margin">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="64dp"
+        android:textSize="24sp"
+        android:textColor="#000"
+        android:text="@string/authing_bind_email" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="8dp"
+        android:text="@string/authing_bind_email_tip" />
+
+    <cn.authing.guard.EmailEditText
+        android:background="@drawable/authing_edit_text_layout_background"
+        app:leftIconDrawable="@drawable/ic_authing_user"
+        app:errorEnabled="true"
+        android:layout_marginTop="16dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <cn.authing.guard.BindEmailButton
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/authing_button_background"
+        android:textColor="#FFF"
+        android:layout_marginTop="32dp"/>
+
+</LinearLayout>

@@ -1,5 +1,7 @@
 package cn.authing.guard.network;
 
+import static cn.authing.guard.util.Const.SDK_VERSION;
+
 import android.util.Log;
 
 import org.jetbrains.annotations.NotNull;
@@ -21,6 +23,8 @@ public class Guardian {
 
     private static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
     private static final String TAG = "Guardian";
+
+    public static String TOKEN;
 
     public interface GuardianCallback {
         void call(@NotNull Response response);
@@ -48,6 +52,10 @@ public class Guardian {
         if (config != null && config.getUserPoolId() != null) {
             builder.addHeader("x-authing-userpool-id", config.getUserPoolId());
         }
+        builder.addHeader("x-authing-app-id", Authing.getAppId());
+        builder.addHeader("x-authing-request-from", "Guard@Android@" + SDK_VERSION);
+        if (TOKEN != null)
+            builder.addHeader("Authorization", "Bearer " + TOKEN);
         if (method.equals("post")) {
             RequestBody requestBody = RequestBody.create(body.toString(), JSON);
             builder.post(requestBody);
@@ -80,11 +88,11 @@ public class Guardian {
                 }
 
                 try {
-                    if (code == 200) {
+                    if (json.has("data")) {
                         JSONObject data = json.getJSONObject("data");
                         resp.setData(data);
                     } else {
-                        Log.i(TAG, "Post failed for:" + url + " msg:" + json);
+                        Log.w(TAG, "Response has no data:" + url + " msg:" + json);
                     }
                 } catch (JSONException ignored) {
                 }

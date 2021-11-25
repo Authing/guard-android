@@ -19,6 +19,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Random;
 
 import javax.crypto.Cipher;
 
@@ -28,6 +29,7 @@ import cn.authing.guard.PasswordEditText;
 import cn.authing.guard.PhoneNumberEditText;
 import cn.authing.guard.R;
 import cn.authing.guard.VerifyCodeEditText;
+import cn.authing.guard.data.Safe;
 import cn.authing.guard.flow.AuthFlow;
 
 public class Util {
@@ -119,16 +121,23 @@ public class Util {
         if (TextUtils.isEmpty(account)) {
             account = AuthFlow.get(current.getContext(), AuthFlow.KEY_ACCOUNT);
         }
+        if (TextUtils.isEmpty(account)) {
+            account = Safe.loadAccount();
+        }
         return account;
     }
 
     public static String getPassword(View current) {
+        String password = null;
         View v = findViewByClass(current, PasswordEditText.class);
         if (v != null) {
             PasswordEditText editText = (PasswordEditText)v;
-            return editText.getText().toString();
+            password = editText.getText().toString();
         }
-        return null;
+        if (TextUtils.isEmpty(password)) {
+            password = Safe.loadPassword();
+        }
+        return password;
     }
 
     public static String getVerifyCode(View current) {
@@ -175,5 +184,21 @@ public class Util {
         final TypedValue value = new TypedValue ();
         context.getTheme ().resolveAttribute (R.attr.colorAccent, value, true);
         return value.data;
+    }
+
+    public static String randomString(int length) {
+        String seed;
+        Random rand = new Random();
+        int seedLength;
+        String asciiUpperCase = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        String asciiLowerCase = asciiUpperCase.toLowerCase();
+        String digits = "1234567890";
+        seed = asciiUpperCase + asciiLowerCase + digits;
+        seedLength = seed.length();
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0;i < length;++i) {
+            sb.append(seed.charAt(rand.nextInt(seedLength)));
+        }
+        return sb.toString();
     }
 }

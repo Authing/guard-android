@@ -21,6 +21,7 @@ import cn.authing.guard.data.UserInfo;
 import cn.authing.guard.flow.AuthFlow;
 import cn.authing.guard.internal.LoadingButton;
 import cn.authing.guard.network.AuthClient;
+import cn.authing.guard.util.Const;
 import cn.authing.guard.util.Util;
 
 public class LoginButton extends LoadingButton {
@@ -110,7 +111,6 @@ public class LoginButton extends LoadingButton {
                 && phoneCodeET != null && phoneCodeET.isShown()) {
             PhoneNumberEditText phoneNumberEditText = (PhoneNumberEditText)phoneNumberET;
             if (!phoneNumberEditText.isContentValid()) {
-                Util.setErrorText(this, getContext().getString(R.string.authing_invalid_phone_number));
                 fireCallback(getContext().getString(R.string.authing_invalid_phone_number));
                 return;
             }
@@ -118,7 +118,6 @@ public class LoginButton extends LoadingButton {
             final String phone = phoneNumberEditText.getText().toString();
             final String code = ((VerifyCodeEditText) phoneCodeET).getText().toString();
             if (TextUtils.isEmpty(code)) {
-                Util.setErrorText(this, getContext().getString(R.string.authing_incorrect_verify_code));
                 fireCallback(getContext().getString(R.string.authing_incorrect_verify_code));
                 return;
             }
@@ -153,25 +152,11 @@ public class LoginButton extends LoadingButton {
     }
 
     private void loginByPhoneCode(String phone, String verifyCode) {
-        AuthClient.loginByPhoneCode(phone, verifyCode, (code, message, data)->{
-            if (code == 200) {
-                fireCallback(200, "", data);
-            } else {
-                Util.setErrorText(this, message);
-                fireCallback(code, message, null);
-            }
-        });
+        AuthClient.loginByPhoneCode(phone, verifyCode, this::fireCallback);
     }
 
     private void loginByAccount(String account, String password) {
-        AuthClient.loginByAccount(account, password, (code, message, data)->{
-            if (code == 200) {
-                fireCallback(200, "", data);
-            } else {
-                Util.setErrorText(this, message);
-                fireCallback(code, message, null);
-            }
-        });
+        AuthClient.loginByAccount(account, password, this::fireCallback);
     }
 
 //    private void handleError(Response response) {
@@ -208,6 +193,18 @@ public class LoginButton extends LoadingButton {
                 activity.setResult(AuthActivity.OK, intent);
                 activity.finish();
             }
+        } else if (code == Const.EC_MFA_REQUIRED) {
+            if (getContext() instanceof AuthActivity) {
+                AuthActivity activity = (AuthActivity) getContext();
+                AuthFlow flow = activity.getFlow();
+                flow.getData().put(AuthFlow.KEY_MFA_EMAIL, "");
+                Intent intent = new Intent(activity, AuthActivity.class);
+                intent.putExtra(AuthActivity.AUTH_FLOW, flow);
+                intent.putExtra(AuthActivity.CONTENT_LAYOUT_ID, flow.getMfaBindEmailLayoutIds()[0]);
+                activity.startActivity(intent);
+            }
+        } else {
+            Util.setErrorText(this, message);
         }
     }
 }

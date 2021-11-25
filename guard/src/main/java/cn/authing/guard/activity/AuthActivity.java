@@ -21,6 +21,8 @@ public class AuthActivity extends AppCompatActivity {
     public static final String AUTH_FLOW = "auth_flow";
     public static final String CONTENT_LAYOUT_ID = "content_layout_id";
 
+    protected AuthFlow flow;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -30,7 +32,7 @@ public class AuthActivity extends AppCompatActivity {
         getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
 
         Intent intent = getIntent();
-        AuthFlow flow = (AuthFlow) intent.getSerializableExtra(AUTH_FLOW);
+        flow = (AuthFlow) intent.getSerializableExtra(AUTH_FLOW);
         if (flow != null) {
             int layoutId = intent.getIntExtra(CONTENT_LAYOUT_ID, 0);
             if (layoutId == 0) {
@@ -45,12 +47,20 @@ public class AuthActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == RC_LOGIN && resultCode == OK) {
+        if (requestCode == RC_LOGIN && resultCode == OK && data != null) {
             UserInfo userInfo = (UserInfo)data.getSerializableExtra("user");
             Intent intent = new Intent();
             intent.putExtra("user", userInfo);
             setResult(OK, intent);
             finish();
         }
+    }
+
+    public AuthFlow getFlow() {
+        return flow;
+    }
+
+    public void setFlow(AuthFlow flow) {
+        this.flow = flow;
     }
 }

@@ -72,6 +72,7 @@ public class UserInfo implements Serializable {
     private String accessToken;
     private String idToken;
     private String thirdPartySource;
+    private MFAData mfaData;
 
     public String getId() {
         return id == null ? getSub() : id;
@@ -263,6 +264,14 @@ public class UserInfo implements Serializable {
 
     public void setThirdPartySource(String thirdPartySource) {
         this.thirdPartySource = thirdPartySource;
+    }
+
+    public MFAData getMfaData() {
+        return mfaData;
+    }
+
+    public void setMfaData(MFAData mfaData) {
+        this.mfaData = mfaData;
     }
 
     public static UserInfo createUserInfo(JSONObject data) throws JSONException {

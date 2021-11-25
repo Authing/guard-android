@@ -10,20 +10,20 @@ import android.view.inputmethod.EditorInfo;
 import java.util.List;
 
 import cn.authing.guard.data.Config;
-import cn.authing.guard.flow.AuthFlow;
 import cn.authing.guard.internal.EditTextLayout;
+import cn.authing.guard.util.Util;
 import cn.authing.guard.util.Validator;
 
 public class AccountEditText extends EditTextLayout {
 
-    private final static String LOGIN_METHOD_UN = "username-password";
-    private final static String LOGIN_METHOD_EMAIL = "email-password";
-    private final static String LOGIN_METHOD_PHONE = "phone-password";
+    protected final static String LOGIN_METHOD_UN = "username-password";
+    protected final static String LOGIN_METHOD_EMAIL = "email-password";
+    protected final static String LOGIN_METHOD_PHONE = "phone-password";
 
-    private final static int EMAIL_VALIDATOR = 1;
-    private final static int PHONE_VALIDATOR = 2;
+    protected final static int EMAIL_VALIDATOR = 1;
+    protected final static int PHONE_VALIDATOR = 2;
 
-    private int validator;
+    protected int validator;
 
     public AccountEditText(Context context) {
         this(context, null);
@@ -41,7 +41,7 @@ public class AccountEditText extends EditTextLayout {
                 getEditText().setHint(getHintByConfig(config, context));
             }
 
-            String account = AuthFlow.get(context, AuthFlow.KEY_ACCOUNT);
+            String account = Util.getAccount(this);
             if (account != null) {
                 getEditText().setText(account);
             }

@@ -20,6 +20,9 @@ public class AuthFlow implements Serializable {
 //    public static final String KEY_PHONE_NUMBER = "phoneNumber";
     public static final String KEY_ACCOUNT = "account";
 
+    public static final String KEY_BIND_EMAIL = "bind_email";
+    public static final String KEY_MFA_EMAIL = "mfa_email";
+
     private Map<String, String> data = new HashMap();
 
     private int indexLayoutId;
@@ -27,6 +30,9 @@ public class AuthFlow implements Serializable {
     private int forgotPasswordLayoutId;
     private int resetPasswordByEmailLayoutId;
     private int resetPasswordByPhoneLayoutId;
+
+    private int[] mfaBindEmailLayoutIds;
+    private int mfaBindEmailCurrentStep; // index starting from 0
 
     public interface Callback<T> extends Serializable {
         void call(Context context, int code, String message, T userInfo);
@@ -53,10 +59,18 @@ public class AuthFlow implements Serializable {
         return flow;
     }
 
+    public Map<String, String> getData() {
+        return data;
+    }
+
+    public void setData(Map<String, String> data) {
+        this.data = data;
+    }
+
     public static void put(Context context, String key, String value) {
         if (context instanceof AuthActivity) {
             AuthActivity activity = (AuthActivity) context;
-            AuthFlow flow = (AuthFlow) activity.getIntent().getSerializableExtra(AuthActivity.AUTH_FLOW);
+            AuthFlow flow = activity.getFlow();
             flow.data.put(key, value);
         }
     }
@@ -64,7 +78,7 @@ public class AuthFlow implements Serializable {
     public static String get(Context context, String key) {
         if (context instanceof AuthActivity) {
             AuthActivity activity = (AuthActivity) context;
-            AuthFlow flow = (AuthFlow) activity.getIntent().getSerializableExtra(AuthActivity.AUTH_FLOW);
+            AuthFlow flow = activity.getFlow();
             if (flow != null) {
                 return flow.data.get(key);
             }
@@ -130,6 +144,29 @@ public class AuthFlow implements Serializable {
     public AuthFlow setResetPasswordByPhoneLayoutId(int resetPasswordByPhoneLayoutId) {
         this.resetPasswordByPhoneLayoutId = resetPasswordByPhoneLayoutId;
         return this;
+    }
+
+    public int[] getMfaBindEmailLayoutIds() {
+        if (mfaBindEmailLayoutIds == null) {
+            return new int[]{R.layout.activity_authing_mfa_bind_email_0, R.layout.activity_authing_mfa_bind_email_1};
+        }
+        return mfaBindEmailLayoutIds;
+    }
+
+    public void setMfaBindEmailLayoutIds(int[] mfaBindEmailLayoutIds) {
+        this.mfaBindEmailLayoutIds = mfaBindEmailLayoutIds;
+    }
+
+    public void setMfaBindEmailLayoutId(int mfaBindEmailLayoutId) {
+        this.mfaBindEmailLayoutIds = new int[mfaBindEmailLayoutId];
+    }
+
+    public int getMfaBindEmailCurrentStep() {
+        return mfaBindEmailCurrentStep;
+    }
+
+    public void setMfaBindEmailCurrentStep(int mfaBindEmailCurrentStep) {
+        this.mfaBindEmailCurrentStep = mfaBindEmailCurrentStep;
     }
 
     public Callback<UserInfo> getAuthCallback() {
