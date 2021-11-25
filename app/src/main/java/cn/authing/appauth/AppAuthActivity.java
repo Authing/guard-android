@@ -16,10 +16,12 @@ import net.openid.appauth.AuthorizationResponse;
 import net.openid.appauth.AuthorizationService;
 import net.openid.appauth.AuthorizationServiceConfiguration;
 import net.openid.appauth.ResponseTypeValues;
+import net.openid.appauth.TokenRequest;
 
 import cn.authing.R;
 import cn.authing.guard.Authing;
 import cn.authing.guard.internal.LoadingButton;
+import cn.authing.guard.util.Util;
 
 public class AppAuthActivity extends AppCompatActivity {
 
@@ -72,6 +74,7 @@ public class AppAuthActivity extends AppCompatActivity {
         AuthorizationRequest authRequest = authRequestBuilder
                 .setScope("openid profile email phone address offline_access role")
                 .setPrompt("consent")
+                .setCodeVerifier(Util.randomString(43))
                 .build();
 
         authService = new AuthorizationService(this);
@@ -87,8 +90,9 @@ public class AppAuthActivity extends AppCompatActivity {
             AuthorizationException ex = AuthorizationException.fromIntent(data);
             // ... process the response or exception ...
 
+            TokenRequest request = resp.createTokenExchangeRequest();
             authService.performTokenRequest(
-                    resp.createTokenExchangeRequest(),
+                    request,
                     (resp1, ex1) -> {
                         if (resp1 != null) {
                             // exchange succeeded
