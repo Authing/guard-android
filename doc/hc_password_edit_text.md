@@ -54,6 +54,6 @@ EditText editText = passwordEditText.getEditText();
 
 | 属性名                     | 类型 | 说明 | 默认值 |
 | ----------------------- |:--------:| :------:| :-----: |
-|  hintMode（建设中）     |    string    |  normal/animated/fixed   |    normal   |
+|  hintMode     |    string    |  normal/animated   |    normal   |
 |  leftIconDrawable     |    reference    |   输入框左边图标   |    @drawable/ic_authing_password   |
 |  toggleEnabled     |    boolean    |   当值为 true 且输入框有内容时，<br>输入框右侧会出现一个显示/隐藏密码明文的按钮   |    true   |

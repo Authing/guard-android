@@ -69,7 +69,7 @@ frame 和 underLine 模式下，可以通过 boxWidth，boxHeight，boxSpacing �
 
 | 属性名                     | 类型 | 说明 | 默认值 |
 | ----------------------- |:--------:| :------:| :-----: |
-|  hintMode（建设中）     |    string    |  normal/animated/fixed   |    normal   |
+|  hintMode     |    string    |  normal/animated   |    normal   |
 |  leftIconDrawable     |    reference    |   输入框左边图标   |    @drawable/ic_authing_user   |
 |  codeMode     |    string    |  normal/frame/underLine   |    normal   |
 |  boxWidth     |    string    |  frame/underLine 模式下单个输入框的宽   |    128 px   |

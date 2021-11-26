@@ -65,6 +65,6 @@ EditText editText = accountEditText.getEditText();
 
 | 属性名                     | 类型 | 说明 | 默认值 |
 | ----------------------- |:--------:| :------:| :-----: |
-|  hintMode (建设中)     |    string    |  normal/animated/fixed   |    normal   |
+|  hintMode     |    string    |  normal/animated   |    normal   |
 |  leftIconDrawable     |    reference    |   输入框左边图标   |    @drawable/ic_authing_shield_check   |
 |  clearAllEnabled     |    boolean    |   若为 false，则不显示全部删除按钮   |    true   |

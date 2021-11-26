@@ -4,15 +4,6 @@ Authing android guard 是一个面向身份认证领域的业务组件库，该�
 
 <br>
 
-
-
-## 适用场景
-
-* 初创。需要快速搭建 App MVP，不想为认证功能投入太多资源
-* 长期演进。认证模块的复杂性内置到我们组件里面，由我们负责和业界的持续对标，业务 App 只需要聚焦业务功能
-
-<br>
-
 ## 快速开始
 
 1. 引入依赖
@@ -63,13 +54,7 @@ AuthFlow.start(this, R.layout.activity_login_authing)
         .setResetPasswordByPhoneLayoutId(R.layout.activity_authing_reset_password_by_phone);
 ```
 
-这就是所有代码！之所以能如此简单，是因为 Guard 内部使用了 [基于语义化思想的编程模型](./topics/design.md)
-
-通过该模型，我们只需要 **声明** 认证流程就可以了。现在，主要的工作就只剩下开发布局。
-
-这里先预告一下，我们正在研究一种革命性的 UI 布局开发方式，我们的目标是在 10 分钟内完成全量自定义认证流程的开发（包含所有 UI 和逻辑），并达到生产环境标准，而不只是 Demo。
-
-预计 2022 年中发布，敬请期待！
+这就是所有代码！之所以能如此简单，是因为 Guard 内部使用了 [基于语义化思想的编程模型](./topics/design.md)。通过该模型，我们只需要 **声明** 认证流程就可以了。
 
 <br>
 
