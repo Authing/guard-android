@@ -23,7 +23,7 @@ public class AuthingLoginActivity extends BaseLoginActivity {
         GlobalStyle.setEditTextBackground(0);
         GlobalStyle.setEditTextLayoutBackground((R.drawable.authing_edit_text_layout_background));
 
-        setContentView(R.layout.activity_login_authing);
+        setContentView(R.layout.activity_authing_login);
 
         TextView tvForgotPassword = findViewById(R.id.tv_reset_password);
         tvForgotPassword.setOnClickListener((v)->{

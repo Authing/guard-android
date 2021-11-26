@@ -1,11 +1,7 @@
 package cn.authing.guard;
 
-import static cn.authing.guard.util.Const.NS_ANDROID;
-
 import android.content.Context;
-import android.content.res.TypedArray;
 import android.util.AttributeSet;
-import android.util.TypedValue;
 import android.view.View;
 
 import androidx.annotation.NonNull;
@@ -29,12 +25,6 @@ public class GetEmailCodeButton extends LoadingButton {
 
     public GetEmailCodeButton(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-
-        TypedArray array = context.obtainStyledAttributes(attrs, R.styleable.GetEmailCodeButton);
-        String text = array.getString(R.styleable.GetEmailCodeButton_android_text);
-        array.recycle();
-
-        setText(text);
 
         setOnClickListener((v -> getEmailCode()));
     }
@@ -63,8 +53,7 @@ public class GetEmailCodeButton extends LoadingButton {
     private void handleResult(int code, String message, Object ignore) {
         post(()->{
             stopLoadingVisualEffect();
-            if (code == 200) {
-            } else {
+            if (code != 200) {
                 Util.setErrorText(this, getContext().getString(R.string.authing_get_email_code_failed));
             }
         });

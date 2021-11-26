@@ -83,8 +83,8 @@ public class EditTextLayout extends LinearLayout implements TextWatcher, View.On
         Drawable leftDrawable = array.getDrawable(R.styleable.EditTextLayout_leftIconDrawable);
         boolean clearAllEnabled = array.getBoolean(R.styleable.EditTextLayout_clearAllEnabled, true);
         errorEnabled = array.getBoolean(R.styleable.EditTextLayout_errorEnabled, false);
-        float textSize = array.getDimension(R.styleable.EditTextLayout_textSize, Util.dp2px(context, 16));
-        hintText = array.getString(R.styleable.EditTextLayout_hint);
+        float textSize = array.getDimension(R.styleable.EditTextLayout_android_textSize, Util.dp2px(context, 16));
+        hintText = array.getString(R.styleable.EditTextLayout_android_hint);
         boolean enabled = array.getBoolean(R.styleable.EditTextLayout_enabled, true);
 
         setWillNotDraw(false);
@@ -140,7 +140,7 @@ public class EditTextLayout extends LinearLayout implements TextWatcher, View.On
         editText.setTextSize(TypedValue.COMPLEX_UNIT_PX, textSize);
         editText.setHint(hintText);
         editText.setHintTextColor(array.getColor(R.styleable.EditTextLayout_hintColor, 0xff808080));
-        editText.setTextColor(array.getColor(R.styleable.EditTextLayout_textColor, 0xff000000));
+        editText.setTextColor(array.getColor(R.styleable.EditTextLayout_android_textColor, 0xff000000));
         editText.setMaxLines(1);
         editText.setSingleLine(true);
         editText.setEnabled(enabled);
@@ -212,13 +212,15 @@ public class EditTextLayout extends LinearLayout implements TextWatcher, View.On
 
     public void showError(String error) {
         if (errorEnabled) {
-            errorText = error;
-            if (TextUtils.isEmpty(error)) {
-                errorTextView.setVisibility(View.GONE);
-            } else {
-                errorTextView.setText(errorText);
-                errorTextView.setVisibility(View.VISIBLE);
-            }
+            post(()->{
+                errorText = error;
+                if (TextUtils.isEmpty(error)) {
+                    errorTextView.setVisibility(View.GONE);
+                } else {
+                    errorTextView.setText(errorText);
+                    errorTextView.setVisibility(View.VISIBLE);
+                }
+            });
         }
     }
 

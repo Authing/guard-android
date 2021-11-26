@@ -21,6 +21,7 @@ import java.util.Map;
 import java.util.Objects;
 
 import cn.authing.guard.data.UserInfo;
+import cn.authing.guard.util.PKCE;
 import cn.authing.guard.util.Util;
 import okhttp3.Call;
 import okhttp3.MediaType;
@@ -35,6 +36,7 @@ public class WebAuthView extends WebView {
 
     private String host;
     private WebAuthViewCallback callback;
+    private String codeVerifier;
 
     public interface WebAuthViewCallback {
         void call(UserInfo userInfo);
@@ -58,9 +60,13 @@ public class WebAuthView extends WebView {
         WebSettings webSettings = getSettings();
         webSettings.setJavaScriptEnabled(true);
 
+        codeVerifier = PKCE.generateCodeVerifier();
+
         Authing.getPublicConfig(config -> {
             host = config.getIdentifier();
-            String url = "https://" + host + ".authing.cn/login?app_id=" + Authing.getAppId();
+            String url = "https://" + host + ".authing.cn/login?app_id=" + Authing.getAppId()
+                    + "&code_challenge=" + PKCE.generateCodeChallenge(codeVerifier)
+                    + "&code_challenge_method=" + PKCE.getCodeChallengeMethod();
             loadUrl(url);
         });
 
@@ -104,6 +110,7 @@ public class WebAuthView extends WebView {
         String body = "client_id="+Authing.getAppId()
                 + "&grant_type=authorization_code"
                 + "&code=" + code
+                + "&code_verifier=" + codeVerifier
                 + "&redirect_uri=" + REDIRECT_URL;
         RequestBody requestBody = RequestBody.create(body, FORM);
         builder.post(requestBody);

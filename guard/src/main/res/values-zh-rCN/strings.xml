@@ -32,6 +32,9 @@
     <string name="authing_bind_email">绑定电子邮箱</string>
     <string name="authing_bind_email_tip">验证码将发送至填入邮箱</string>
     <string name="authing_input_email_code">请输入邮箱验证码</string>
+    <string name="authing_bind_phone">绑定手机号</string>
+    <string name="authing_bind_phone_tip">您未绑定手机号，请输入手机号绑定</string>
+    <string name="authing_code_sent_to">验证码已发送至</string>
 
     <!--error messages-->
     <string name="authing_password_error_1">至少 6 位</string>
@@ -52,4 +55,7 @@
     <string name="authing_invalid_input">输入格式不正确</string>
     <string name="authing_invalid_phone_or_email">请输入正确的手机号码或邮箱</string>
     <string name="authing_get_email_code_failed">邮箱验证码获取失败</string>
+    <string name="authing_phone_number_already_bound">手机号码已经被绑定</string>
+    <string name="authing_email_already_bound">邮箱已经被绑定</string>
+    <string name="authing_sms_already_sent">在 60 秒内已发送短信验证码</string>
 </resources>

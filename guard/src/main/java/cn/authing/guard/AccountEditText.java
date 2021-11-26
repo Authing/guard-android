@@ -41,12 +41,8 @@ public class AccountEditText extends EditTextLayout {
                 getEditText().setHint(getHintByConfig(config, context));
             }
 
-            String account = Util.getAccount(this);
-            if (account != null) {
-                getEditText().setText(account);
-            }
-
             setup(config);
+            syncData();
         }));
     }
 
@@ -141,6 +137,13 @@ public class AccountEditText extends EditTextLayout {
             } else {
                 showError(getResources().getString(R.string.authing_invalid_input));
             }
+        }
+    }
+
+    protected void syncData() {
+        String account = Util.getAccount(this);
+        if (account != null) {
+            getEditText().setText(account);
         }
     }
 }

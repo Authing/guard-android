@@ -3,21 +3,20 @@ package cn.authing.guard;
 import static cn.authing.guard.util.Const.NS_ANDROID;
 
 import android.content.Context;
-import android.graphics.drawable.AnimatedVectorDrawable;
+import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.util.TypedValue;
-import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import cn.authing.guard.internal.LoadingButton;
 import cn.authing.guard.network.AuthClient;
+import cn.authing.guard.util.GlobalCountDown;
 import cn.authing.guard.util.Util;
 
 public class GetVerifyCodeButton extends LoadingButton {
 
-    private int countDown;
     private String countDownTip;
 
     private final String text;
@@ -52,34 +51,25 @@ public class GetVerifyCodeButton extends LoadingButton {
             setBackgroundResource(R.drawable.authing_verify_code_background);
         }
 
+        if (GlobalCountDown.countDown > 0) {
+            countDown();
+        }
         setOnClickListener((v -> getSMSCode()));
     }
 
     private void getSMSCode() {
-        View v = Util.findViewByClass(this, PhoneNumberEditText.class);
-        if (v == null) {
-            return;
+        String phoneNumber = Util.getPhoneNumber(this);
+        if (!TextUtils.isEmpty(phoneNumber)) {
+            startLoadingVisualEffect();
+            Util.setErrorText(this, null);
+            AuthClient.sendSms(phoneNumber, this::handleSMSResult);
         }
-
-        PhoneNumberEditText phoneNumberEditText = (PhoneNumberEditText)v;
-        if (!phoneNumberEditText.isContentValid()) {
-            Util.setErrorText(this, getContext().getString(R.string.authing_invalid_phone_number));
-            return;
-        }
-
-        String phoneNumber = phoneNumberEditText.getText().toString();
-
-        startLoadingVisualEffect();
-        Util.setErrorText(this, null);
-
-        AuthClient.sendSms(phoneNumber, this::handleSMSResult);
     }
 
     private void handleSMSResult(int code, String message, Object ignore) {
         post(()->{
             stopLoadingVisualEffect();
             if (code == 200) {
-                countDown = 60;
                 countDown();
             } else {
                 Util.setErrorText(this, getContext().getString(R.string.authing_get_verify_code_failed));
@@ -88,9 +78,9 @@ public class GetVerifyCodeButton extends LoadingButton {
     }
 
     private void countDown() {
-        if (countDown >= 0) {
+        if (GlobalCountDown.countDown > 0) {
+            updateCountDown();
             postDelayed(() -> {
-                updateCountDown();
                 countDown();
             }, 1000);
         } else {
@@ -101,17 +91,7 @@ public class GetVerifyCodeButton extends LoadingButton {
 
     private void updateCountDown() {
         setEnabled(false);
-        setText(String.format(countDownTip, countDown--));
-    }
-
-    public void startCountDown() {
-        startCountDown(60);
-    }
-
-    public void startCountDown(int cd) {
-        countDown = cd;
-        updateCountDown();
-        countDown();
+        setText(String.format(countDownTip, GlobalCountDown.countDown));
     }
 
     public void setCountDownTip(String format) {

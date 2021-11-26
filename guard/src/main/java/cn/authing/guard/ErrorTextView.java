@@ -23,7 +23,7 @@ public class ErrorTextView extends androidx.appcompat.widget.AppCompatTextView {
         super(context, attrs, defStyleAttr);
 
         // hide by default
-        setVisibility(View.GONE);
+        setVisibility(View.INVISIBLE);
 
         if (attrs == null || attrs.getAttributeValue(NS_ANDROID, "textColor") == null) {
             setTextColor(context.getColor(R.color.authing_error));

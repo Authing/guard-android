@@ -32,6 +32,9 @@
     <string name="authing_bind_email">Bind email</string>
     <string name="authing_bind_email_tip">Verify code will be sent to the email below</string>
     <string name="authing_input_email_code">Please input email code</string>
+    <string name="authing_bind_phone">Bind mobile phone number</string>
+    <string name="authing_bind_phone_tip">You have not bound your phone number, please enter your phone number to bind</string>
+    <string name="authing_code_sent_to">Code was sent to</string>
 
     <!--error messages-->
     <string name="authing_password_error_1">At least 6 characters</string>
@@ -52,4 +55,7 @@
     <string name="authing_invalid_input">Input is invalid</string>
     <string name="authing_invalid_phone_or_email">Enter correct phone number or email address</string>
     <string name="authing_get_email_code_failed">Send email code failed</string>
+    <string name="authing_phone_number_already_bound">The phone number has been bound</string>
+    <string name="authing_email_already_bound">The email has been bound</string>
+    <string name="authing_sms_already_sent">SMS already send within the last 60 seconds</string>
 </resources>

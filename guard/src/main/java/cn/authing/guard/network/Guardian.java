@@ -87,14 +87,21 @@ public class Guardian {
                 } catch (JSONException ignored) {
                 }
 
-                try {
-                    if (json.has("data")) {
+                if (json.has("data")) {
+                    try {
                         JSONObject data = json.getJSONObject("data");
                         resp.setData(data);
-                    } else {
-                        Log.w(TAG, "Response has no data:" + url + " msg:" + json);
+                    } catch(JSONException ignored){
                     }
-                } catch (JSONException ignored) {
+                    try {
+                        Boolean data = json.getBoolean("data");
+                        JSONObject booleanResult = new JSONObject();
+                        booleanResult.put("result", data);
+                        resp.setData(booleanResult);
+                    } catch(JSONException ignored){
+                    }
+                } else {
+                    Log.w(TAG, "Response has no data:" + url + " msg:" + json);
                 }
 
                 callback.call(resp);

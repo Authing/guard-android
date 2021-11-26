@@ -9,6 +9,7 @@ import android.text.InputFilter;
 import android.text.InputType;
 import android.text.SpannableStringBuilder;
 import android.text.Spanned;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.AttributeSet;
 import android.util.TypedValue;
@@ -16,6 +17,7 @@ import android.view.ActionMode;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 
 import androidx.annotation.NonNull;
@@ -24,6 +26,7 @@ import androidx.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
+import cn.authing.guard.activity.AuthActivity;
 import cn.authing.guard.data.Config;
 import cn.authing.guard.internal.EditTextLayout;
 import cn.authing.guard.util.Util;
@@ -152,9 +155,7 @@ public class VerifyCodeEditText extends EditTextLayout implements TextWatcher {
                     @Override
                     public void afterTextChanged(Editable s) {
                         if (s != null && s.toString().trim().length() != 0) {
-                            if (editTextList.get(maxLength - 1).hasFocus()) {
-                                login();
-                            } else {
+                            if (!editTextList.get(maxLength - 1).hasFocus()) {
                                 for (int i = 0;i < maxLength - 1;++i) {
                                     EditText cur = editTextList.get(i);
                                     if (cur.hasFocus()) {
@@ -166,6 +167,17 @@ public class VerifyCodeEditText extends EditTextLayout implements TextWatcher {
                                         break;
                                     }
                                 }
+                            }
+
+                            boolean ready = true;
+                            for (EditText et : editTextList) {
+                                if (TextUtils.isEmpty(et.getText().toString().trim())) {
+                                    ready = false;
+                                    break;
+                                }
+                            }
+                            if (ready) {
+                                codeEntered();
                             }
                         }
                     }
@@ -199,6 +211,14 @@ public class VerifyCodeEditText extends EditTextLayout implements TextWatcher {
                     et.setBackgroundResource(R.drawable.authing_verify_code_background_underline);
                 }
             }
+
+            if (editTextList.size() > 0) {
+                post(()->{
+                    editTextList.get(0).requestFocus();
+                    InputMethodManager imm = (InputMethodManager)getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_NOT_ALWAYS);
+                });
+            }
         }
 
         array.recycle();
@@ -217,14 +237,19 @@ public class VerifyCodeEditText extends EditTextLayout implements TextWatcher {
     public void afterTextChanged(Editable s) {
         // code mode is ENormal
         if (s.length() == maxLength) {
-            login();
+            codeEntered();
         }
     }
 
-    private void login() {
+    private void codeEntered() {
         LoginButton button = (LoginButton) Util.findViewByClass(this, LoginButton.class);
         if (button != null) {
             button.login();
+        }
+
+        if (getContext() instanceof AuthActivity) {
+            AuthActivity activity = (AuthActivity) getContext();
+            activity.fire(AuthActivity.EVENT_VERIFY_CODE_ENTERED, "");
         }
     }
 

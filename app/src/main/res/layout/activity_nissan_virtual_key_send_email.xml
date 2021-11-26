@@ -42,10 +42,10 @@
         android:layout_marginTop="8dp"
         android:paddingStart="16dp"
         app:pageType="register"
-        app:textColor="@color/white"
+        android:textColor="@color/white"
         app:hintColor="#949494"
         app:errorEnabled="true"
-        app:hint="Your email"/>
+        android:hint="Your email"/>
 
     <cn.authing.guard.internal.LoadingButton
         android:id="@+id/btn_reset"

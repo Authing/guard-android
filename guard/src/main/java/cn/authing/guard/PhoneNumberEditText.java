@@ -1,5 +1,7 @@
 package cn.authing.guard;
 
+import static cn.authing.guard.util.Const.NS_ANDROID;
+
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.text.Editable;
@@ -16,10 +18,9 @@ import androidx.annotation.Nullable;
 
 import java.util.List;
 
-import cn.authing.guard.flow.AuthFlow;
-import cn.authing.guard.internal.EditTextLayout;
 import cn.authing.guard.util.SpaceOnTheLeftSpan;
 import cn.authing.guard.util.Util;
+import cn.authing.guard.util.Validator;
 
 public class PhoneNumberEditText extends AccountEditText implements TextWatcher {
 
@@ -38,8 +39,7 @@ public class PhoneNumberEditText extends AccountEditText implements TextWatcher 
         super(context, attrs, defStyleAttr);
         getEditText().setInputType(InputType.TYPE_CLASS_PHONE);
 
-        CharSequence s = getEditText().getHint();
-        if (s == null) {
+        if (attrs == null || attrs.getAttributeValue(NS_ANDROID, "hint") == null) {
             getEditText().setHint(context.getString(R.string.authing_account_edit_text_hint) + context.getString(R.string.authing_phone));
         }
 
@@ -109,5 +109,13 @@ public class PhoneNumberEditText extends AccountEditText implements TextWatcher 
 //        if (text.length() != 11) {
 //            return false;
 //        }
+    }
+
+    @Override
+    protected void syncData() {
+        String account = Util.getAccount(this);
+        if (account != null && Validator.isValidPhoneNumber(account)) {
+            getEditText().setText(account);
+        }
     }
 }

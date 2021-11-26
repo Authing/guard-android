@@ -9,4 +9,7 @@ public class Const {
 
     public final static int EC_INCORRECT_VERIFY_CODE = 2001;
     public final static int EC_INCORRECT_CREDENTIAL = 2333;
+
+    public static final String MFA_POLICY_SMS = "SMS";
+    public static final String MFA_POLICY_EMAIL = "EMAIL";
 }

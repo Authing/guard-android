@@ -80,7 +80,7 @@ public class AbaoActivity extends BaseLoginActivity {
             if (code == 200) {
                 next();
             } else {
-                Util.setErrorText(editText, getString(cn.authing.guard.R.string.authing_get_verify_code_failed));
+                Util.setErrorText(editText, message);
             }
         });
     }

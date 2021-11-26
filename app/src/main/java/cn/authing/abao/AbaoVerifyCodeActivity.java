@@ -38,7 +38,6 @@ public class AbaoVerifyCodeActivity extends BaseLoginActivity {
 
         GetVerifyCodeButton gcb = findViewById(R.id.gcb);
         gcb.setCountDownTip("%1$d");
-        gcb.startCountDown();
 
         LoginButton btn = findViewById(R.id.btn_login);
         btn.setPhoneNumber(phone);

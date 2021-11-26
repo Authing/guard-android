@@ -35,7 +35,6 @@
                 android:id="@+id/nvk_et_pwd"
                 android:layout_marginTop="8dp"
                 android:background="@drawable/nissan_edit_text_bg"
-                android:hint="First name"
                 android:textColorHint="#949494"
                 android:textColor="@color/white"
                 android:paddingLeft="16dp"
@@ -43,8 +42,7 @@
                 android:textSize="16sp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:textColor="@color/white"
-                app:hint="Enter password"/>
+                android:hint="Enter password"/>
 
             <LinearLayout
                 android:background="@drawable/nissan_info_text_bg"
@@ -109,7 +107,6 @@
                 android:id="@+id/nvk_et_pwd_confirm"
                 android:layout_marginTop="8dp"
                 android:background="@drawable/nissan_edit_text_bg"
-                android:hint="First name"
                 android:textColorHint="#949494"
                 android:textColor="@color/white"
                 android:paddingLeft="16dp"
@@ -117,8 +114,7 @@
                 android:textSize="16sp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:textColor="@color/white"
-                app:hint="Confirm password"/>
+                android:hint="Confirm password"/>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -139,7 +135,7 @@
                 app:uncheckedColor="#7ACAFF"
                 app:checkedColor="#7ACAFF"
                 app:linkTextColor="#3071b9"
-                app:textColor="@color/white"/>
+                android:textColor="@color/white"/>
 
             <cn.authing.guard.RegisterButton
                 android:id="@+id/btn_signup"

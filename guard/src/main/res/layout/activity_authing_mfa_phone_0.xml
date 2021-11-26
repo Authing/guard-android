@@ -14,33 +14,35 @@
         android:layout_marginTop="64dp"
         android:textSize="24sp"
         android:textColor="#000"
-        android:text="@string/authing_input_email_code" />
+        android:text="@string/authing_bind_phone" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="8dp"
-        android:text="@string/authing_bind_email_tip" />
+        android:gravity="center_horizontal"
+        android:text="@string/authing_bind_phone_tip" />
 
-    <cn.authing.guard.VerifyCodeEditText
+    <cn.authing.guard.PhoneNumberEditText
+        android:background="@drawable/authing_edit_text_layout_background"
+        app:leftIconDrawable="@drawable/ic_authing_user"
+        app:errorEnabled="true"
         android:layout_marginTop="16dp"
-        android:layout_gravity="center_horizontal"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:codeMode="frame"/>
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
 
     <cn.authing.guard.ErrorTextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="16dp"
         android:textColor="@color/authing_error" />
 
-    <cn.authing.guard.BindEmailButton
+    <cn.authing.guard.MFAPhoneButton
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/authing_button_background"
         android:textColor="#FFF"
-        android:layout_marginTop="32dp"/>
+        android:layout_marginTop="16dp"/>
 
 </LinearLayout>

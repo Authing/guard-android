@@ -127,6 +127,28 @@ public class Util {
         return account;
     }
 
+    public static String getPhoneNumber(View current) {
+        String phone = null;
+        View v = findViewByClass(current, PhoneNumberEditText.class);
+        if (v != null) {
+            PhoneNumberEditText editText = (PhoneNumberEditText)v;
+            phone = editText.getText().toString();
+        }
+        if (TextUtils.isEmpty(phone)) {
+            phone = AuthFlow.get(current.getContext(), AuthFlow.KEY_MFA_PHONE);
+        }
+        if (TextUtils.isEmpty(phone)) {
+            String account = AuthFlow.get(current.getContext(), AuthFlow.KEY_ACCOUNT);
+            if (Validator.isValidPhoneNumber(account)) {
+                phone = account;
+            }
+        }
+        if (TextUtils.isEmpty(phone)) {
+            phone = Safe.loadAccount();
+        }
+        return phone;
+    }
+
     public static String getPassword(View current) {
         String password = null;
         View v = findViewByClass(current, PasswordEditText.class);
@@ -158,7 +180,7 @@ public class Util {
             ErrorTextView errorView = (ErrorTextView)v;
             errorView.setText(text);
             if (TextUtils.isEmpty(text)) {
-                v.setVisibility(View.GONE);
+                v.setVisibility(View.INVISIBLE);
             } else {
                 v.setVisibility(View.VISIBLE);
             }

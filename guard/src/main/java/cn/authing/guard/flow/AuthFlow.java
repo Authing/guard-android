@@ -20,10 +20,10 @@ public class AuthFlow implements Serializable {
 //    public static final String KEY_PHONE_NUMBER = "phoneNumber";
     public static final String KEY_ACCOUNT = "account";
 
-    public static final String KEY_BIND_EMAIL = "bind_email";
+    public static final String KEY_MFA_PHONE = "mfa_phone";
     public static final String KEY_MFA_EMAIL = "mfa_email";
 
-    private Map<String, String> data = new HashMap();
+    private Map<String, String> data = new HashMap<>();
 
     private int indexLayoutId;
     private int registerLayoutId;
@@ -31,8 +31,10 @@ public class AuthFlow implements Serializable {
     private int resetPasswordByEmailLayoutId;
     private int resetPasswordByPhoneLayoutId;
 
-    private int[] mfaBindEmailLayoutIds;
-    private int mfaBindEmailCurrentStep; // index starting from 0
+    private int[] mfaPhoneLayoutIds;
+    private int mfaPhoneCurrentStep;
+    private int[] mfaEmailLayoutIds;
+    private int mfaEmailCurrentStep; // index starting from 0
 
     public interface Callback<T> extends Serializable {
         void call(Context context, int code, String message, T userInfo);
@@ -40,7 +42,7 @@ public class AuthFlow implements Serializable {
     private Callback<UserInfo> authCallback;
 
     public static AuthFlow start(Activity context) {
-        return start(context, R.layout.activity_login_authing);
+        return start(context, R.layout.activity_authing_login);
     }
 
     public static AuthFlow start(Activity activity, int layoutId) {
@@ -88,7 +90,7 @@ public class AuthFlow implements Serializable {
 
     public int getIndexLayoutId() {
         if (indexLayoutId == 0) {
-            return R.layout.activity_login_authing;
+            return R.layout.activity_authing_login;
         } else {
             return indexLayoutId;
         }
@@ -96,7 +98,7 @@ public class AuthFlow implements Serializable {
 
     public int getRegisterLayoutId() {
         if (registerLayoutId == 0) {
-            return R.layout.activity_register_authing;
+            return R.layout.activity_authing_register;
         } else {
             return registerLayoutId;
         }
@@ -146,27 +148,50 @@ public class AuthFlow implements Serializable {
         return this;
     }
 
-    public int[] getMfaBindEmailLayoutIds() {
-        if (mfaBindEmailLayoutIds == null) {
-            return new int[]{R.layout.activity_authing_mfa_bind_email_0, R.layout.activity_authing_mfa_bind_email_1};
+    public int[] getMfaPhoneLayoutIds() {
+        if (mfaPhoneLayoutIds == null) {
+            return new int[]{R.layout.activity_authing_mfa_phone_0, R.layout.activity_authing_mfa_phone_1};
         }
-        return mfaBindEmailLayoutIds;
+        return mfaPhoneLayoutIds;
     }
 
-    public void setMfaBindEmailLayoutIds(int[] mfaBindEmailLayoutIds) {
-        this.mfaBindEmailLayoutIds = mfaBindEmailLayoutIds;
+    public void setMfaPhoneLayoutIds(int[] mfaPhoneLayoutIds) {
+        this.mfaPhoneLayoutIds = mfaPhoneLayoutIds;
+    }
+
+    public void setMfaPhoneLayoutId(int mfaPhoneLayoutId) {
+        this.mfaPhoneLayoutIds = new int[mfaPhoneLayoutId];
+    }
+
+    public int getMfaPhoneCurrentStep() {
+        return mfaPhoneCurrentStep;
+    }
+
+    public void setMfaPhoneCurrentStep(int mfaPhoneCurrentStep) {
+        this.mfaPhoneCurrentStep = mfaPhoneCurrentStep;
+    }
+
+    public int[] getMfaEmailLayoutIds() {
+        if (mfaEmailLayoutIds == null) {
+            return new int[]{R.layout.activity_authing_mfa_email_0, R.layout.activity_authing_mfa_email_1};
+        }
+        return mfaEmailLayoutIds;
+    }
+
+    public void setMfaEmailLayoutIds(int[] mfaEmailLayoutIds) {
+        this.mfaEmailLayoutIds = mfaEmailLayoutIds;
     }
 
     public void setMfaBindEmailLayoutId(int mfaBindEmailLayoutId) {
-        this.mfaBindEmailLayoutIds = new int[mfaBindEmailLayoutId];
+        this.mfaEmailLayoutIds = new int[mfaBindEmailLayoutId];
     }
 
-    public int getMfaBindEmailCurrentStep() {
-        return mfaBindEmailCurrentStep;
+    public int getMfaEmailCurrentStep() {
+        return mfaEmailCurrentStep;
     }
 
-    public void setMfaBindEmailCurrentStep(int mfaBindEmailCurrentStep) {
-        this.mfaBindEmailCurrentStep = mfaBindEmailCurrentStep;
+    public void setMfaEmailCurrentStep(int mfaEmailCurrentStep) {
+        this.mfaEmailCurrentStep = mfaEmailCurrentStep;
     }
 
     public Callback<UserInfo> getAuthCallback() {

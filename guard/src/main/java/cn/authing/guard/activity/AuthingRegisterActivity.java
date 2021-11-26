@@ -17,7 +17,7 @@ public class AuthingRegisterActivity extends BaseLoginActivity {
         GlobalStyle.setEditTextBackground(0);
         GlobalStyle.setEditTextLayoutBackground((R.drawable.authing_edit_text_layout_background));
 
-        setContentView(R.layout.activity_register_authing);
+        setContentView(R.layout.activity_authing_register);
 
         TextView tvRegister = findViewById(R.id.tv_login);
         tvRegister.setOnClickListener((v)->{

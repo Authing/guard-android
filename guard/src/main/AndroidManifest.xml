@@ -47,8 +47,8 @@
         <activity
             android:name=".activity.IndexAuthActivity"
             android:launchMode="singleTask"
-            android:exported="false" >
-        </activity>
+            android:exported="false"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".activity.AuthingLoginActivity"
             android:exported="false"

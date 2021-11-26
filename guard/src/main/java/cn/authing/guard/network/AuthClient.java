@@ -1,5 +1,7 @@
 package cn.authing.guard.network;
 
+import static cn.authing.guard.util.Const.EC_MFA_REQUIRED;
+
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -8,21 +10,33 @@ import java.util.List;
 
 import cn.authing.guard.AuthCallback;
 import cn.authing.guard.Authing;
+import cn.authing.guard.R;
 import cn.authing.guard.data.MFAData;
 import cn.authing.guard.data.Safe;
 import cn.authing.guard.data.SocialConfig;
 import cn.authing.guard.data.UserInfo;
 import cn.authing.guard.util.Const;
+import cn.authing.guard.util.GlobalCountDown;
 import cn.authing.guard.util.Util;
 
 public class AuthClient {
     public static void sendSms(String phone, @NotNull AuthCallback<?> callback) {
+        if (GlobalCountDown.countDown != 0) {
+            callback.call(500, Authing.getAppContext().getString(R.string.authing_sms_already_sent), null);
+            return;
+        }
+
         Authing.getPublicConfig((config -> {
             try {
                 JSONObject body = new JSONObject();
                 body.put("phone", phone);
                 String url = "https://" + config.getIdentifier() + "." + Authing.getHost() + "/api/v2/sms/send";
-                Guardian.post(url, body, (data)-> callback.call(data.getCode(), data.getMessage(), null));
+                Guardian.post(url, body, (data)-> {
+                    if (data.getCode() == 200) {
+                        GlobalCountDown.start();
+                    }
+                    callback.call(data.getCode(), data.getMessage(), null);
+                });
             } catch (Exception e) {
                 e.printStackTrace();
                 callback.call(500, "Exception", null);
@@ -37,7 +51,12 @@ public class AuthClient {
                 body.put("phone", phone);
                 body.put("code", code);
                 String url = "https://" + config.getIdentifier() + "." + Authing.getHost() + "/api/v2/login/phone-code";
-                Guardian.post(url, body, (data)-> createUserInfoFromResponse(data, callback));
+                Guardian.post(url, body, (data)-> {
+                    if (data.getCode() == 200 || data.getCode() == EC_MFA_REQUIRED) {
+                        Safe.saveAccount(phone);
+                    }
+                    createUserInfoFromResponse(data, callback);
+                });
             } catch (Exception e) {
                 e.printStackTrace();
                 callback.call(500, "Exception", null);
@@ -54,7 +73,7 @@ public class AuthClient {
                 body.put("password", encryptPassword);
                 String url = "https://" + config.getIdentifier() + "." + Authing.getHost() + "/api/v2/login/account";
                 Guardian.post(url, body, (data)-> {
-                    if (data.getCode() == 200) {
+                    if (data.getCode() == 200 || data.getCode() == EC_MFA_REQUIRED) {
                         Safe.saveAccount(account);
 //                        Safe.savePassword(password);
                     }
@@ -207,6 +226,38 @@ public class AuthClient {
         }));
     }
 
+    public static void mfaCheck(String phone, String email, @NotNull AuthCallback<JSONObject> callback) {
+        Authing.getPublicConfig((config -> {
+            try {
+                JSONObject body = new JSONObject();
+                if (phone != null)
+                    body.put("phone", phone);
+                if (email != null)
+                    body.put("email", email);
+                String url = "https://" + config.getIdentifier() + "." + Authing.getHost() + "/api/v2/applications/mfa/check";
+                Guardian.post(url, body, (data)-> callback.call(data.getCode(), data.getMessage(), data.getData()));
+            } catch (Exception e) {
+                e.printStackTrace();
+                callback.call(500, "Exception", null);
+            }
+        }));
+    }
+
+    public static void mfaVerifyByPhone(String phone, String code, @NotNull AuthCallback<JSONObject> callback) {
+        Authing.getPublicConfig((config -> {
+            try {
+                JSONObject body = new JSONObject();
+                body.put("phone", phone);
+                body.put("code", code);
+                String url = "https://" + config.getIdentifier() + "." + Authing.getHost() + "/api/v2/applications/mfa/sms/verify";
+                Guardian.post(url, body, (data)-> callback.call(data.getCode(), data.getMessage(), data.getData()));
+            } catch (Exception e) {
+                e.printStackTrace();
+                callback.call(500, "Exception", null);
+            }
+        }));
+    }
+
     public static void mfaVerifyByEmail(String email, String code, @NotNull AuthCallback<JSONObject> callback) {
         Authing.getPublicConfig((config -> {
             try {
@@ -233,7 +284,7 @@ public class AuthClient {
                 e.printStackTrace();
                 callback.call(500, "Cannot parse data into UserInfo", null);
             }
-        } else if (code == Const.EC_MFA_REQUIRED) {
+        } else if (code == EC_MFA_REQUIRED) {
             MFAData mfaData = MFAData.create(data.getData());
             UserInfo userInfo = new UserInfo();
             userInfo.setMfaData(mfaData);

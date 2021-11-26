@@ -2,12 +2,17 @@ package cn.authing.guard.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.WindowManager;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 import cn.authing.guard.data.UserInfo;
@@ -21,7 +26,15 @@ public class AuthActivity extends AppCompatActivity {
     public static final String AUTH_FLOW = "auth_flow";
     public static final String CONTENT_LAYOUT_ID = "content_layout_id";
 
+    public static final String EVENT_VERIFY_CODE_ENTERED = "verify_code_entered";
+
     protected AuthFlow flow;
+
+    private Map<String, List<EventListener>> eventMap = new HashMap<>();
+
+    public interface EventListener {
+        void happened(String what);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,5 +75,27 @@ public class AuthActivity extends AppCompatActivity {
 
     public void setFlow(AuthFlow flow) {
         this.flow = flow;
+    }
+
+    public void subscribe(String channel, EventListener listener) {
+        if (!TextUtils.isEmpty(channel) && listener != null) {
+            List<EventListener> fans = eventMap.get(channel);
+            if (fans == null) {
+                fans = new ArrayList<>();
+                eventMap.put(channel, fans);
+            }
+            fans.add(listener);
+        }
+    }
+
+    public void fire(String channel, String what) {
+        if (TextUtils.isEmpty(channel)) {
+            return;
+        }
+
+        List<EventListener> fans = eventMap.get(channel);
+        for (EventListener listener : fans) {
+            listener.happened(what);
+        }
     }
 }

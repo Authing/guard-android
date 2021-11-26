@@ -19,6 +19,7 @@ import cn.authing.guard.activity.AuthActivity;
 import cn.authing.guard.data.Config;
 import cn.authing.guard.data.UserInfo;
 import cn.authing.guard.flow.AuthFlow;
+import cn.authing.guard.flow.FlowHelper;
 import cn.authing.guard.internal.LoadingButton;
 import cn.authing.guard.network.AuthClient;
 import cn.authing.guard.util.Const;
@@ -194,15 +195,7 @@ public class LoginButton extends LoadingButton {
                 activity.finish();
             }
         } else if (code == Const.EC_MFA_REQUIRED) {
-            if (getContext() instanceof AuthActivity) {
-                AuthActivity activity = (AuthActivity) getContext();
-                AuthFlow flow = activity.getFlow();
-                flow.getData().put(AuthFlow.KEY_MFA_EMAIL, "");
-                Intent intent = new Intent(activity, AuthActivity.class);
-                intent.putExtra(AuthActivity.AUTH_FLOW, flow);
-                intent.putExtra(AuthActivity.CONTENT_LAYOUT_ID, flow.getMfaBindEmailLayoutIds()[0]);
-                activity.startActivity(intent);
-            }
+            FlowHelper.handleMFA(this, userInfo.getMfaData());
         } else {
             Util.setErrorText(this, message);
         }

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <attr name="background" format="reference" />
     <attr name="textColor" format="reference|color" />
+    <attr name="text" format="reference|string" />
     <attr name="textSize" format="dimension" />
     <attr name="type" format="enum" >
         <enum name="phoneCode" value="0"/>
@@ -30,10 +30,6 @@
         </attr>
     </declare-styleable>
 
-    <declare-styleable name="GetEmailCodeButton">
-        <attr name="android:text" />
-    </declare-styleable>
-
     <declare-styleable name="LoginContainer">
         <attr name="type" />
     </declare-styleable>
@@ -50,10 +46,9 @@
             <enum name="animated" value="1"/>
         </attr>
         <attr name="clearAllEnabled" format="boolean" />
-        <attr name="background" />
-        <attr name="textSize" />
-        <attr name="textColor" />
-        <attr name="hint" format="string" />
+        <attr name="android:textSize" />
+        <attr name="android:textColor" />
+        <attr name="android:hint" format="string" />
         <attr name="hintColor" format="reference|color" />
         <attr name="errorEnabled" format="boolean" />
         <attr name="enabled" format="boolean" />
@@ -89,8 +84,9 @@
     </declare-styleable>
 
     <declare-styleable name="PrivacyConfirmBox">
-        <attr name="textColor" />
-        <attr name="textSize" />
+        <attr name="android:textColor" />
+        <attr name="android:text" />
+        <attr name="android:textSize" />
         <attr name="button" format="reference" />
         <attr name="linkTextColor" format="reference|color" />
         <attr name="uncheckedColor" format="reference|color" />
@@ -103,6 +99,10 @@
             <enum name="left" value="0"/>
             <enum name="right" value="1"/>
         </attr>
+    </declare-styleable>
+
+    <declare-styleable name="MaskLabel">
+        <attr name="maskLength" format="integer" />
     </declare-styleable>
 
 </resources>

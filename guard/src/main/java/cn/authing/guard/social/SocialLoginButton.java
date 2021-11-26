@@ -3,12 +3,16 @@ package cn.authing.guard.social;
 import static cn.authing.guard.util.Const.NS_ANDROID;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.drawable.AnimatedVectorDrawable;
 import android.util.AttributeSet;
 import android.widget.ImageButton;
 
+import org.json.JSONException;
+
 import cn.authing.guard.AuthCallback;
 import cn.authing.guard.R;
+import cn.authing.guard.activity.AuthActivity;
 import cn.authing.guard.data.UserInfo;
 
 public abstract class SocialLoginButton extends ImageButton {
@@ -31,6 +35,14 @@ public abstract class SocialLoginButton extends ImageButton {
 
         if (callback != null) {
             callback.call(code, message, userInfo);
+        } else if (getContext() instanceof AuthActivity) {
+            if (userInfo != null) {
+                AuthActivity activity = (AuthActivity) getContext();
+                Intent intent = new Intent();
+                intent.putExtra("user", userInfo);
+                activity.setResult(AuthActivity.OK, intent);
+                activity.finish();
+            }
         }
     }
 

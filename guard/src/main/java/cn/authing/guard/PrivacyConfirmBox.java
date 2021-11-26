@@ -10,6 +10,7 @@ import android.text.Html;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.Spanned;
+import android.text.TextUtils;
 import android.text.method.LinkMovementMethod;
 import android.text.style.URLSpan;
 import android.util.AttributeSet;
@@ -59,7 +60,10 @@ public class PrivacyConfirmBox extends LinearLayout {
         animShake = AnimationUtils.loadAnimation(context, R.anim.authing_shake);
 
         TypedArray array = context.obtainStyledAttributes(attrs, R.styleable.PrivacyConfirmBox);
-        textView.setTextColor(array.getColor(R.styleable.PrivacyConfirmBox_textColor, 0xff000000));
+        textView.setTextColor(array.getColor(R.styleable.PrivacyConfirmBox_android_textColor, 0xff000000));
+        String text = array.getString(R.styleable.PrivacyConfirmBox_android_text);
+        float textSize = array.getDimension(R.styleable.PrivacyConfirmBox_android_textSize, 14);
+        textView.setTextSize(textSize);
         int linkColor = array.getColor(R.styleable.PrivacyConfirmBox_linkTextColor, 0xff396aff);
         int uncheckColor = array.getColor(R.styleable.PrivacyConfirmBox_uncheckedColor, getThemeAccentColor(context));
         int checkColor = array.getColor(R.styleable.PrivacyConfirmBox_uncheckedColor, getThemeAccentColor(context));
@@ -107,6 +111,10 @@ public class PrivacyConfirmBox extends LinearLayout {
                         break;
                     }
                 }
+            }
+
+            if (!TextUtils.isEmpty(text)) {
+                textView.setText(text);
             }
         }));
     }

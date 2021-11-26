@@ -1,5 +1,7 @@
 package cn.authing.guard.data;
 
+import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -41,6 +43,10 @@ public class MFAData {
             if (data.has("totpMfaEnabled")) {
                 boolean v = data.getBoolean("totpMfaEnabled");
                 mfaData.setTotpMfaEnabled(v);
+            }
+            if (data.has("applicationMfa")) {
+                List<String> options = toMfaOptions(data.getJSONArray("applicationMfa"));
+                mfaData.setApplicationMfa(options);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -95,5 +101,18 @@ public class MFAData {
 
     public void setApplicationMfa(List<String> applicationMfa) {
         this.applicationMfa = applicationMfa;
+    }
+
+    private static List<String> toMfaOptions(JSONArray array) throws JSONException {
+        List<String> list = new ArrayList<>();
+        int size = array.length();
+        for (int i = 0; i < size; i++) {
+            JSONObject obj = array.getJSONObject(i);
+            if (obj.has("mfaPolicy")) {
+                String policy = obj.getString("mfaPolicy");
+                list.add(policy);
+            }
+        }
+        return list;
     }
 }

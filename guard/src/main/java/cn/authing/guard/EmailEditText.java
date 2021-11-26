@@ -8,6 +8,9 @@ import android.util.AttributeSet;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import cn.authing.guard.util.Util;
+import cn.authing.guard.util.Validator;
+
 public class EmailEditText extends AccountEditText implements TextWatcher {
 
     public EmailEditText(@NonNull Context context) {
@@ -27,6 +30,14 @@ public class EmailEditText extends AccountEditText implements TextWatcher {
         CharSequence s = getEditText().getHint();
         if (s == null) {
             getEditText().setHint(context.getString(R.string.authing_account_edit_text_hint) + context.getString(R.string.authing_email));
+        }
+    }
+
+    @Override
+    protected void syncData() {
+        String account = Util.getAccount(this);
+        if (account != null && Validator.isValidEmail(account)) {
+            getEditText().setText(account);
         }
     }
 }
