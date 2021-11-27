@@ -27,10 +27,10 @@ import com.netease.nis.quicklogin.listener.QuickLoginTokenListener;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import cn.authing.AuthingDemoLoginActivity;
 import cn.authing.MainActivity;
 import cn.authing.R;
 import cn.authing.guard.data.UserInfo;
+import cn.authing.guard.flow.AuthFlow;
 import cn.authing.guard.internal.LoadingButton;
 import cn.authing.guard.network.Guardian;
 import cn.authing.guard.social.SocialLoginListView;
@@ -224,8 +224,7 @@ public class OneClickActivity extends AppCompatActivity {
         other.setMinimumWidth((int)Util.dp2px(this, screenWidth - 24*2));
         other.setMinimumHeight((int)Util.dp2px(this, 48));
         other.setOnClickListener((v)->{
-            Intent intent = new Intent(OneClickActivity.this, AuthingDemoLoginActivity.class);
-            startActivity(intent);
+            AuthFlow.start(OneClickActivity.this);
         });
 
         RelativeLayout socialRel = new RelativeLayout(this);

@@ -11,20 +11,6 @@
 
     <application>
         <activity
-            android:name=".activity.AuthingResetPasswordByPhoneActivity"
-            android:exported="false" />
-        <activity
-            android:name=".activity.AuthingResetPasswordByEmailActivity"
-            android:exported="false" />
-        <activity
-            android:name=".activity.AuthingForgotPasswordActivity"
-            android:exported="false" />
-        <activity
-            android:name=".activity.AuthingRegisterActivity"
-            android:exported="false"
-            android:launchMode="singleTask"
-            android:screenOrientation="portrait" />
-        <activity
             android:name=".activity.BaseLoginActivity"
             android:exported="false" >
             <intent-filter tools:node="replace" >
@@ -48,11 +34,6 @@
             android:name=".activity.IndexAuthActivity"
             android:launchMode="singleTask"
             android:exported="false"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".activity.AuthingLoginActivity"
-            android:exported="false"
-            android:launchMode="singleTask"
             android:screenOrientation="portrait" />
         <activity
             android:name=".wxapi.WXEntryActivity"
