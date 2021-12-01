@@ -45,7 +45,7 @@ public class MFAPhoneButton extends LoadingButton {
             setOnClickListener(this::click);
             AuthActivity activity = (AuthActivity) context;
             AuthFlow flow = activity.getFlow();
-            String phone = flow.getData().get(AuthFlow.KEY_MFA_PHONE);
+            String phone = (String) flow.getData().get(AuthFlow.KEY_MFA_PHONE);
             if (!TextUtils.isEmpty(phone)) {
                 startLoadingVisualEffect();
                 AuthClient.sendSms(phone, (code, message, data)-> activity.runOnUiThread(this::stopLoadingVisualEffect));
@@ -63,7 +63,7 @@ public class MFAPhoneButton extends LoadingButton {
 
         View v = Util.findViewByClass(this, VerifyCodeEditText.class);
         if (v != null) {
-            String phone = flow.getData().get(AuthFlow.KEY_MFA_PHONE);
+            String phone = (String) flow.getData().get(AuthFlow.KEY_MFA_PHONE);
             VerifyCodeEditText editText = (VerifyCodeEditText)v;
             String verifyCode = editText.getText().toString();
             startLoadingVisualEffect();
@@ -120,7 +120,7 @@ public class MFAPhoneButton extends LoadingButton {
             intent.putExtra(AuthActivity.CONTENT_LAYOUT_ID, ids[step]);
         } else {
             // fallback to our default
-            intent.putExtra(AuthActivity.CONTENT_LAYOUT_ID, R.layout.activity_authing_mfa_phone_1);
+            intent.putExtra(AuthActivity.CONTENT_LAYOUT_ID, R.layout.authing_mfa_phone_1);
         }
         activity.startActivityForResult(intent, AuthActivity.RC_LOGIN);
     }

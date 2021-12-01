@@ -26,6 +26,8 @@ public class Config {
     private List<SocialConfig> socialConfigs;
     private List<Agreement> agreements;
     private int passwordStrength;
+    private List<String> completeFieldsPlace;
+    private List<ExtendedField> extendedFields;
 
     public static Config parse(JSONObject data) throws JSONException {
         Config config = new Config();
@@ -56,6 +58,14 @@ public class Config {
 
         JSONArray agreements = data.getJSONArray("agreements");
         config.agreements = toAgreementList(agreements);
+
+        if (data.has("complateFiledsPlace")) {
+            config.setCompleteFieldsPlace(toStringList(data.getJSONArray("complateFiledsPlace")));
+        }
+
+        if (data.has("extendsFields")) {
+            config.setExtendedFields(toExtendedFields(data.getJSONArray("extendsFields")));
+        }
         return config;
     }
 
@@ -155,6 +165,22 @@ public class Config {
         this.passwordStrength = passwordStrength;
     }
 
+    public List<String> getCompleteFieldsPlace() {
+        return completeFieldsPlace;
+    }
+
+    public void setCompleteFieldsPlace(List<String> completeFieldsPlace) {
+        this.completeFieldsPlace = completeFieldsPlace;
+    }
+
+    public List<ExtendedField> getExtendedFields() {
+        return extendedFields;
+    }
+
+    public void setExtendedFields(List<ExtendedField> extendedFields) {
+        this.extendedFields = extendedFields;
+    }
+
     private static List<String> toStringList(JSONArray array) throws JSONException {
         List<String> list = new ArrayList<>();
         int size = array.length();
@@ -192,6 +218,56 @@ public class Config {
             agreement.setLang(lang);
             agreement.setRequired(isRequired);
             list.add(agreement);
+        }
+        return list;
+    }
+
+    private static List<ExtendedField> toExtendedFields(JSONArray array) throws JSONException {
+        List<ExtendedField> list = new ArrayList<>();
+        int size = array.length();
+        for (int i = 0; i < size; i++) {
+            ExtendedField extendedField = new ExtendedField();
+            JSONObject obj = array.getJSONObject(i);
+            if (obj.has("type")) {
+                extendedField.setType(obj.getString("type"));
+            }
+            if (obj.has("inputType")) {
+                extendedField.setInputType(obj.getString("inputType"));
+            }
+            if (obj.has("name")) {
+                extendedField.setName(obj.getString("name"));
+            }
+            if (obj.has("label")) {
+                extendedField.setLabel(obj.getString("label"));
+            }
+            if (obj.has("required")) {
+                extendedField.setRequired(obj.getBoolean("required"));
+            }
+            if (obj.has("validateRules")) {
+                extendedField.setValidateRule(toValidateRules(obj.getJSONArray("validateRules")));
+            }
+
+            list.add(extendedField);
+        }
+        return list;
+    }
+
+    private static List<ExtendedField.ValidateRule> toValidateRules(JSONArray array) throws JSONException {
+        List<ExtendedField.ValidateRule> list = new ArrayList<>();
+        int size = array.length();
+        for (int i = 0; i < size; i++) {
+            ExtendedField.ValidateRule rule = new ExtendedField.ValidateRule();
+            JSONObject obj = array.getJSONObject(i);
+            if (obj.has("type")) {
+                rule.setType(obj.getString("type"));
+            }
+            if (obj.has("content")) {
+                rule.setContent(obj.getString("content"));
+            }
+            if (obj.has("error")) {
+                rule.setError(obj.getString("error"));
+            }
+            list.add(rule);
         }
         return list;
     }

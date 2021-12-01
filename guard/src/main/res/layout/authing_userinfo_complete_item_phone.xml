@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<cn.authing.guard.UserInfoFieldForm xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="8dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <cn.authing.guard.MandatoryField
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:asteriskPosition="left"
+        android:textColor="#000"/>
+    <cn.authing.guard.PhoneNumberEditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:paddingStart="8dp"
+        android:paddingEnd="8dp"
+        android:background="@drawable/authing_edit_text_layout_background" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+        <cn.authing.guard.VerifyCodeEditText
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:paddingStart="8dp"
+            android:paddingEnd="8dp"
+            android:background="@drawable/authing_edit_text_layout_background"
+            android:layout_weight="1" />
+        <cn.authing.guard.GetVerifyCodeButton
+            android:text="@string/authing_get_verify_code"
+            android:layout_marginLeft="4dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+</cn.authing.guard.UserInfoFieldForm>

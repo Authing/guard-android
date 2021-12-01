@@ -35,6 +35,9 @@
     <string name="authing_bind_phone">Bind mobile phone number</string>
     <string name="authing_bind_phone_tip">You have not bound your phone number, please enter your phone number to bind</string>
     <string name="authing_code_sent_to">Code was sent to</string>
+    <string name="authing_user_info_complete">Fill up information</string>
+    <string name="authing_complete_tip">in order to have a better experience, please improve your information first</string>
+    <string name="authing_submit">Submit</string>
 
     <!--error messages-->
     <string name="authing_password_error_1">At least 6 characters</string>
@@ -58,4 +61,5 @@
     <string name="authing_phone_number_already_bound">The phone number has been bound</string>
     <string name="authing_email_already_bound">The email has been bound</string>
     <string name="authing_sms_already_sent">SMS already send within the last 60 seconds</string>
+    <string name="authing_field_cannot_be_empty">%1$s cannot be empty</string>
 </resources>

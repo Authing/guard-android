@@ -15,7 +15,6 @@ import cn.authing.guard.data.MFAData;
 import cn.authing.guard.data.Safe;
 import cn.authing.guard.data.SocialConfig;
 import cn.authing.guard.data.UserInfo;
-import cn.authing.guard.util.Const;
 import cn.authing.guard.util.GlobalCountDown;
 import cn.authing.guard.util.Util;
 
@@ -226,6 +225,21 @@ public class AuthClient {
         }));
     }
 
+    public static void bindPhone(String phone, String code, @NotNull AuthCallback<JSONObject> callback) {
+        Authing.getPublicConfig((config -> {
+            try {
+                JSONObject body = new JSONObject();
+                body.put("phone", phone);
+                body.put("phoneCode", code);
+                String url = "https://" + config.getIdentifier() + "." + Authing.getHost() + "/api/v2/users/phone/bind";
+                Guardian.post(url, body, (data)-> callback.call(data.getCode(), data.getMessage(), data.getData()));
+            } catch (Exception e) {
+                e.printStackTrace();
+                callback.call(500, "Exception", null);
+            }
+        }));
+    }
+
     public static void mfaCheck(String phone, String email, @NotNull AuthCallback<JSONObject> callback) {
         Authing.getPublicConfig((config -> {
             try {
@@ -273,13 +287,68 @@ public class AuthClient {
         }));
     }
 
+    public static void updateUser(JSONObject body, @NotNull AuthCallback<JSONObject> callback) {
+        Authing.getPublicConfig((config -> {
+            try {
+                String url = "https://" + config.getIdentifier() + "." + Authing.getHost() + "/api/v2/users/profile/update";
+                Guardian.post(url, body, (data)-> callback.call(data.getCode(), data.getMessage(), data.getData()));
+            } catch (Exception e) {
+                e.printStackTrace();
+                callback.call(500, "Exception", null);
+            }
+        }));
+    }
+
+    public static void updateCustomUserInfo(UserInfo userInfo, JSONObject customData, @NotNull AuthCallback<JSONObject> callback) {
+        Authing.getPublicConfig((config -> {
+            try {
+                JSONObject body = new JSONObject();
+                body.put("targetType", "USER");
+                body.put("targetId", userInfo.getId());
+                body.put("data", customData);
+                String url = "https://" + config.getIdentifier() + "." + Authing.getHost() + "/api/v2/udvs/set";
+                Guardian.post(url, body, (data)-> callback.call(data.getCode(), data.getMessage(), data.getData()));
+            } catch (Exception e) {
+                e.printStackTrace();
+                callback.call(500, "Exception", null);
+            }
+        }));
+    }
+
+    public static void getUserDefinedData(UserInfo userInfo, @NotNull AuthCallback<UserInfo> callback) {
+        Authing.getPublicConfig((config -> {
+            try {
+                JSONObject body = new JSONObject();
+                body.put("targetType", "USER");
+                body.put("targetId", userInfo.getId());
+                String url = "https://" + config.getIdentifier() + "." + Authing.getHost() + "/api/v2/udvs/get";
+                Guardian.post(url, body, (data)-> {
+                    if (data.getCode() == 200) {
+                        JSONObject obj = data.getData();
+                        try {
+                            userInfo.parseCustomData(obj.getJSONArray("result"));
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    callback.call(data.getCode(), data.getMessage(), userInfo);
+                });
+            } catch (Exception e) {
+                e.printStackTrace();
+                callback.call(500, "Exception", null);
+            }
+        }));
+    }
+
     private static void createUserInfoFromResponse(Response data, @NotNull AuthCallback<UserInfo> callback) {
         int code = data.getCode();
         if (code == 200) {
             UserInfo userInfo;
             try {
                 userInfo = UserInfo.createUserInfo(data.getData());
-                callback.call(code, data.getMessage(), userInfo);
+                Guardian.ACCESS_TOKEN = userInfo.getAccessToken();
+                getUserDefinedData(userInfo, callback);
+//                callback.call(code, data.getMessage(), userInfo);
             } catch (JSONException e) {
                 e.printStackTrace();
                 callback.call(500, "Cannot parse data into UserInfo", null);

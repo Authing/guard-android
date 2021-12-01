@@ -1,9 +1,14 @@
 package cn.authing.guard.data;
 
+import android.text.TextUtils;
+
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.Serializable;
+import java.util.HashMap;
+import java.util.Map;
 
 public class UserInfo implements Serializable {
     private static final long serialVersionUID = -5986447815199326409L;
@@ -55,6 +60,7 @@ public class UserInfo implements Serializable {
     private String given_name;
     private String locale;
     private String middle_name;
+    private String username;
     private String name;
     private String nickname;
     private String picture;
@@ -68,6 +74,7 @@ public class UserInfo implements Serializable {
     private Address address;
     private String phone_number;
     private boolean phone_number_verified;
+    private Map<String, String> extended = new HashMap<>();
 
     private String accessToken;
     private String idToken;
@@ -136,6 +143,14 @@ public class UserInfo implements Serializable {
 
     public void setMiddle_name(String middle_name) {
         this.middle_name = middle_name;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getName() {
@@ -242,6 +257,14 @@ public class UserInfo implements Serializable {
         this.phone_number_verified = phone_number_verified;
     }
 
+    public Map<String, String> getExtended() {
+        return extended;
+    }
+
+    public void setExtended(Map<String, String> extended) {
+        this.extended = extended;
+    }
+
     public String getAccessToken() {
         return accessToken;
     }
@@ -296,6 +319,82 @@ public class UserInfo implements Serializable {
             String token = data.getString("token");
             userInfo.setAccessToken(token);
         }
+        if (data.has("name")) {
+            String s = data.getString("name");
+            userInfo.setName(s);
+        }
+        if (data.has("username")) {
+            String s = data.getString("username");
+            userInfo.setUsername(s);
+        }
+        if (data.has("gender")) {
+            String s = data.getString("gender");
+            userInfo.setGender(s);
+        }
+        if (data.has("givenName")) {
+            String s = data.getString("givenName");
+            userInfo.setGiven_name(s);
+        }
+        if (data.has("middleName")) {
+            String s = data.getString("middleName");
+            userInfo.setMiddle_name(s);
+        }
+        if (data.has("familyName")) {
+            String s = data.getString("familyName");
+            userInfo.setFamily_name(s);
+        }
+        if (data.has("nickname")) {
+            String s = data.getString("nickname");
+            userInfo.setNickname(s);
+        }
         return userInfo;
+    }
+
+    public String getMappedData(String key) {
+        if (TextUtils.isEmpty(key)) {
+            return "";
+        }
+
+        if ("name".equals(key)) {
+            return getName();
+        }
+        if ("username".equals(key)) {
+            return getUsername();
+        }
+        if ("nickname".equals(key)) {
+            return getNickname();
+        }
+        if ("email".equals(key)) {
+            return getEmail();
+        }
+        if ("phone".equals(key)) {
+            return getPhone_number();
+        }
+        return extended.get(key);
+    }
+
+    public void parseCustomData(JSONArray array) {
+        if (array == null) {
+            return;
+        }
+
+        for (int i = 0, n = array.length(); i < n; i++) {
+            try {
+                JSONObject obj = array.getJSONObject(i);
+                String key = null;
+                if (obj.has("key")) {
+                    key = obj.getString("key");
+                }
+                String value = null;
+                if (obj.has("value")) {
+                    value = obj.getString("value");
+                }
+                if (!TextUtils.isEmpty(key) && !TextUtils.isEmpty(value)) {
+                    extended.put(key, value);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
     }
 }

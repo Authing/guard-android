@@ -1,5 +1,7 @@
 package cn.authing.guard;
 
+import static cn.authing.guard.util.Const.NS_ANDROID;
+
 import android.content.Context;
 import android.text.InputType;
 import android.text.TextWatcher;
@@ -27,8 +29,7 @@ public class EmailEditText extends AccountEditText implements TextWatcher {
         getEditText().setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
         validator = EMAIL_VALIDATOR;
 
-        CharSequence s = getEditText().getHint();
-        if (s == null) {
+        if (attrs == null || attrs.getAttributeValue(NS_ANDROID, "hint") == null) {
             getEditText().setHint(context.getString(R.string.authing_account_edit_text_hint) + context.getString(R.string.authing_email));
         }
     }

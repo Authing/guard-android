@@ -19,7 +19,7 @@ public class GetVerifyCodeButton extends LoadingButton {
 
     private String countDownTip;
 
-    private final String text;
+    private String text;
 
     public GetVerifyCodeButton(@NonNull Context context) {
         this(context, null);
@@ -38,10 +38,8 @@ public class GetVerifyCodeButton extends LoadingButton {
 
         if (attrs == null || attrs.getAttributeValue(NS_ANDROID, "text") == null) {
             text = getContext().getString(R.string.authing_get_verify_code);
-        } else {
-            text = attrs.getAttributeValue(NS_ANDROID, "text");
+            setText(text);
         }
-        setText(text);
 
         if (attrs == null || attrs.getAttributeValue(NS_ANDROID, "textSize") == null) {
             setTextSize(TypedValue.COMPLEX_UNIT_DIP, 12);
@@ -80,9 +78,7 @@ public class GetVerifyCodeButton extends LoadingButton {
     private void countDown() {
         if (GlobalCountDown.countDown > 0) {
             updateCountDown();
-            postDelayed(() -> {
-                countDown();
-            }, 1000);
+            postDelayed(this::countDown, 1000);
         } else {
             setText(text);
             setEnabled(true);

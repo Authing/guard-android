@@ -90,21 +90,25 @@ public class Util {
     }
 
     public static View findViewByClass(View current, Class<?> T) {
-        View view = current.getRootView();
-        return _findViewByClass((ViewGroup)view, T);
+        return findViewByClass(current, T, true);
     }
 
-    private static View _findViewByClass(ViewGroup parent, Class<?> T) {
+    public static View findViewByClass(View current, Class<?> T, boolean onlyVisible) {
+        View view = current.getRootView();
+        return findChildViewByClass((ViewGroup)view, T, onlyVisible);
+    }
+
+    public static View findChildViewByClass(ViewGroup parent, Class<?> T, boolean onlyVisible) {
         for (int i = 0; i < parent.getChildCount(); i++) {
             View child = parent.getChildAt(i);
-            if (child instanceof ViewGroup && child.isShown()) {
-                View result = _findViewByClass((ViewGroup)child, T);
+            if (child instanceof ViewGroup && (!onlyVisible || child.isShown())) {
+                View result = findChildViewByClass((ViewGroup)child, T, onlyVisible);
                 if (result != null) {
                     return result;
                 }
             }
 
-            if (child.getClass().equals(T)) {
+            if (T.isInstance(child)) {
                 return child;
             }
         }
@@ -119,7 +123,7 @@ public class Util {
             account = editText.getText().toString();
         }
         if (TextUtils.isEmpty(account)) {
-            account = AuthFlow.get(current.getContext(), AuthFlow.KEY_ACCOUNT);
+            account = AuthFlow.getAccount(current.getContext());
         }
         if (TextUtils.isEmpty(account)) {
             account = Safe.loadAccount();
@@ -135,10 +139,10 @@ public class Util {
             phone = editText.getText().toString();
         }
         if (TextUtils.isEmpty(phone)) {
-            phone = AuthFlow.get(current.getContext(), AuthFlow.KEY_MFA_PHONE);
+            phone = (String) AuthFlow.get(current.getContext(), AuthFlow.KEY_MFA_PHONE);
         }
         if (TextUtils.isEmpty(phone)) {
-            String account = AuthFlow.get(current.getContext(), AuthFlow.KEY_ACCOUNT);
+            String account = AuthFlow.getAccount(current.getContext());
             if (Validator.isValidPhoneNumber(account)) {
                 phone = account;
             }
@@ -222,5 +226,9 @@ public class Util {
             sb.append(seed.charAt(rand.nextInt(seedLength)));
         }
         return sb.toString();
+    }
+
+    public static boolean isNull(String s) {
+        return TextUtils.isEmpty(s) || "null".equals(s);
     }
 }

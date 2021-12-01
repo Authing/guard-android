@@ -8,10 +8,14 @@ import android.content.Intent;
 import android.text.TextUtils;
 import android.view.View;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import cn.authing.guard.activity.AuthActivity;
+import cn.authing.guard.data.Config;
+import cn.authing.guard.data.ExtendedField;
 import cn.authing.guard.data.MFAData;
+import cn.authing.guard.data.UserInfo;
 import cn.authing.guard.util.Util;
 
 public class FlowHelper {
@@ -87,6 +91,40 @@ public class FlowHelper {
             int step = ids.length > 1 ? ids.length - 1 : 0;
             intent.putExtra(AuthActivity.CONTENT_LAYOUT_ID, ids[step]);
         }
+        intent.putExtra(AuthActivity.AUTH_FLOW, flow);
+        activity.startActivityForResult(intent, AuthActivity.RC_LOGIN);
+    }
+
+    public static List<ExtendedField> missingFields(Config config, UserInfo userInfo) {
+        List<ExtendedField> missingFields = new ArrayList<>();
+        List<ExtendedField> fields = config.getExtendedFields();
+        for (ExtendedField field : fields) {
+            String value = userInfo.getMappedData(field.getName());
+            if (Util.isNull(value)) {
+                missingFields.add(field);
+            }
+        }
+
+        return missingFields;
+    }
+
+    public static void handleUserInfoComplete(View currentView, List<ExtendedField> extendedFields) {
+        Context context = currentView.getContext();
+        if (!(context instanceof AuthActivity)) {
+            return;
+        }
+
+        AuthActivity activity = (AuthActivity) context;
+        AuthFlow flow = activity.getFlow();
+        int[] ids = flow.getUserInfoCompleteLayoutIds();
+        if (ids == null || ids.length == 0) {
+            Util.setErrorText(currentView, "UserInfoCompleteLayoutIds has no layout. please call AuthFlow.setUserInfoCompleteLayoutIds");
+            return;
+        }
+
+        flow.getData().put(AuthFlow.KEY_EXTENDED_FIELDS, extendedFields);
+        Intent intent = new Intent(activity, AuthActivity.class);
+        intent.putExtra(AuthActivity.CONTENT_LAYOUT_ID, flow.getUserInfoCompleteLayoutIds()[0]);
         intent.putExtra(AuthActivity.AUTH_FLOW, flow);
         activity.startActivityForResult(intent, AuthActivity.RC_LOGIN);
     }

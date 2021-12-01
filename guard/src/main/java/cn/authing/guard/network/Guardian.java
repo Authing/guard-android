@@ -5,6 +5,7 @@ import static cn.authing.guard.util.Const.SDK_VERSION;
 import android.util.Log;
 
 import org.jetbrains.annotations.NotNull;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -24,7 +25,8 @@ public class Guardian {
     private static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
     private static final String TAG = "Guardian";
 
-    public static String TOKEN;
+    public static String ACCESS_TOKEN;
+    public static String MFA_TOKEN;
 
     public interface GuardianCallback {
         void call(@NotNull Response response);
@@ -54,8 +56,11 @@ public class Guardian {
         }
         builder.addHeader("x-authing-app-id", Authing.getAppId());
         builder.addHeader("x-authing-request-from", "Guard@Android@" + SDK_VERSION);
-        if (TOKEN != null)
-            builder.addHeader("Authorization", "Bearer " + TOKEN);
+        if (ACCESS_TOKEN != null) {
+            builder.addHeader("Authorization", "Bearer " + ACCESS_TOKEN);
+        } else if (MFA_TOKEN != null) {
+            builder.addHeader("Authorization", "Bearer " + MFA_TOKEN);
+        }
         if (method.equals("post")) {
             RequestBody requestBody = RequestBody.create(body.toString(), JSON);
             builder.post(requestBody);
@@ -70,11 +75,23 @@ public class Guardian {
             if (response.code() == 201 || response.code() == 200) {
                 Response resp = new Response();
                 String s = new String(Objects.requireNonNull(response.body()).bytes(), StandardCharsets.UTF_8);
-                JSONObject json = new JSONObject(s);
-                int code = 0;
+                JSONObject json;
                 try {
-                    code = json.getInt("code");
-                    resp.setCode(code);
+                    json = new JSONObject(s);
+                } catch (JSONException e) {
+                    // some api returns array directly
+                    json = new JSONObject();
+                    json.put("result", new JSONArray(s));
+                    resp.setCode(200);
+                    resp.setData(json);
+                }
+
+                int code;
+                try {
+                    if (json.has("code")) {
+                        code = json.getInt("code");
+                        resp.setCode(code);
+                    }
                 } catch (JSONException je) {
                     // when success for some api, there is no 'code' field
                     resp.setCode(200);

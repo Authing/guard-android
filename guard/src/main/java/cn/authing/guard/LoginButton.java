@@ -15,8 +15,12 @@ import android.view.View;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import cn.authing.guard.activity.AuthActivity;
 import cn.authing.guard.data.Config;
+import cn.authing.guard.data.ExtendedField;
 import cn.authing.guard.data.UserInfo;
 import cn.authing.guard.flow.AuthFlow;
 import cn.authing.guard.flow.FlowHelper;
@@ -181,23 +185,36 @@ public class LoginButton extends LoadingButton {
         if (callback != null) {
             post(()-> callback.call(code, message, userInfo));
         } else if (code == 200) {
-            if (getContext() instanceof AuthActivity) {
-                AuthActivity activity = (AuthActivity) getContext();
-                AuthFlow flow = (AuthFlow) activity.getIntent().getSerializableExtra(AuthActivity.AUTH_FLOW);
-                AuthFlow.Callback<UserInfo> cb = flow.getAuthCallback();
-                if (cb != null) {
-                    cb.call(getContext(), code, message, userInfo);
-                }
+            Authing.getPublicConfig((config)->{
+                if (getContext() instanceof AuthActivity) {
+                    AuthActivity activity = (AuthActivity) getContext();
+                    AuthFlow flow = (AuthFlow) activity.getIntent().getSerializableExtra(AuthActivity.AUTH_FLOW);
+                    List<ExtendedField> missingFields = FlowHelper.missingFields(config, userInfo);
+                    if (shouldCompleteAfterLogin(config) && (missingFields != null && missingFields.size() > 0)) {
+                        flow.getData().put(AuthFlow.KEY_USER_INFO, userInfo);
+                        FlowHelper.handleUserInfoComplete(this, missingFields);
+                    } else {
+                        AuthFlow.Callback<UserInfo> cb = flow.getAuthCallback();
+                        if (cb != null) {
+                            cb.call(getContext(), code, message, userInfo);
+                        }
 
-                Intent intent = new Intent();
-                intent.putExtra("user", userInfo);
-                activity.setResult(AuthActivity.OK, intent);
-                activity.finish();
-            }
+                        Intent intent = new Intent();
+                        intent.putExtra("user", userInfo);
+                        activity.setResult(AuthActivity.OK, intent);
+                        activity.finish();
+                    }
+                }
+            });
         } else if (code == Const.EC_MFA_REQUIRED) {
             FlowHelper.handleMFA(this, userInfo.getMfaData());
         } else {
             Util.setErrorText(this, message);
         }
+    }
+
+    private boolean shouldCompleteAfterLogin(Config config) {
+        List<String> complete = config.getCompleteFieldsPlace();
+        return complete != null && complete.contains("login");
     }
 }

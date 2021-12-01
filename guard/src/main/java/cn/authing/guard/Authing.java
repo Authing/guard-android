@@ -88,7 +88,7 @@ public class Authing {
                     publicConfig = Config.parse(data);
                     fireCallback(publicConfig);
                 } else {
-                    Log.d(TAG, "Get public config failed for appId: " + sAppId + " Msg:" + response.getMessage());
+                    Log.e(TAG, "Get public config failed for appId: " + sAppId + " Msg:" + response.getMessage());
                     fireCallback(null);
                 }
             } catch (Exception e) {

@@ -35,6 +35,9 @@
     <string name="authing_bind_phone">绑定手机号</string>
     <string name="authing_bind_phone_tip">您未绑定手机号，请输入手机号绑定</string>
     <string name="authing_code_sent_to">验证码已发送至</string>
+    <string name="authing_user_info_complete">用户信息完善</string>
+    <string name="authing_complete_tip">为了更好的使用体验，请先完善您的资料信息</string>
+    <string name="authing_submit">提交</string>
 
     <!--error messages-->
     <string name="authing_password_error_1">至少 6 位</string>
@@ -58,4 +61,5 @@
     <string name="authing_phone_number_already_bound">手机号码已经被绑定</string>
     <string name="authing_email_already_bound">邮箱已经被绑定</string>
     <string name="authing_sms_already_sent">在 60 秒内已发送短信验证码</string>
+    <string name="authing_field_cannot_be_empty">%1$s不能为空</string>
 </resources>

@@ -40,7 +40,7 @@ public class LoadingButton extends AppCompatButton {
         loading.setVisible(false, true);
 
         TypedArray array = context.obtainStyledAttributes(attrs, R.styleable.LoadingButton);
-        int color = array.getInt(R.styleable.LoadingButton_loadingColor,getResources().getColor(R.color.authing_main));
+        int color = array.getInt(R.styleable.LoadingButton_android_tint,getResources().getColor(R.color.authing_main));
         loadingLocation = array.getInt(R.styleable.LoadingButton_loadingLocation, 0);
         array.recycle();
 

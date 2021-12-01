@@ -94,8 +94,10 @@ public class AuthActivity extends AppCompatActivity {
         }
 
         List<EventListener> fans = eventMap.get(channel);
-        for (EventListener listener : fans) {
-            listener.happened(what);
+        if (fans != null) {
+            for (EventListener listener : fans) {
+                listener.happened(what);
+            }
         }
     }
 }

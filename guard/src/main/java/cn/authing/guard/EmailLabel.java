@@ -29,7 +29,7 @@ public class EmailLabel extends MaskLabel {
         if (context instanceof AuthActivity) {
             AuthActivity activity = (AuthActivity) context;
             AuthFlow flow = activity.getFlow();
-            String email = flow.getData().get(AuthFlow.KEY_MFA_EMAIL);
+            String email = (String) flow.getData().get(AuthFlow.KEY_MFA_EMAIL);
             if (!TextUtils.isEmpty(email)) {
                 setTextWithMask(email);
             }

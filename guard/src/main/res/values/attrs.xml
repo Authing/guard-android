@@ -16,12 +16,8 @@
         <enum name="register" value="1"/>
     </attr>
 
-    <declare-styleable name="AppName">
-        <attr name="pageType" />
-    </declare-styleable>
-
     <declare-styleable name="LoadingButton">
-        <attr name="loadingColor" format="reference|color" />
+        <attr name="android:tint" format="reference|color" />
         <attr name="loadingLocation" format="enum">
             <enum name="left" value="0"/>
             <enum name="right" value="1"/>
@@ -96,8 +92,9 @@
 
     <declare-styleable name="MandatoryField">
         <attr name="asteriskPosition" format="enum">
-            <enum name="left" value="0"/>
+            <enum name="none" value="0"/>
             <enum name="right" value="1"/>
+            <enum name="left" value="2"/>
         </attr>
     </declare-styleable>
 

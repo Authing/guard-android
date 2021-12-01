@@ -20,10 +20,14 @@ public class AuthFlow implements Serializable {
 //    public static final String KEY_PHONE_NUMBER = "phoneNumber";
     public static final String KEY_ACCOUNT = "account";
 
+    public static final String KEY_USER_INFO = "user_info";
+
     public static final String KEY_MFA_PHONE = "mfa_phone";
     public static final String KEY_MFA_EMAIL = "mfa_email";
 
-    private Map<String, String> data = new HashMap<>();
+    public static final String KEY_EXTENDED_FIELDS = "extended_fields";
+
+    private Map<String, Object> data = new HashMap<>();
 
     private int indexLayoutId;
     private int registerLayoutId;
@@ -31,10 +35,18 @@ public class AuthFlow implements Serializable {
     private int resetPasswordByEmailLayoutId;
     private int resetPasswordByPhoneLayoutId;
 
+    // MFA
     private int[] mfaPhoneLayoutIds;
     private int mfaPhoneCurrentStep;
     private int[] mfaEmailLayoutIds;
     private int mfaEmailCurrentStep; // index starting from 0
+
+    // user info complete
+    private int[] userInfoCompleteLayoutIds;
+    private int userInfoCompleteItemNormal;
+    private int userInfoCompleteItemEmail;
+    private int userInfoCompleteItemPhone;
+    private int userInfoCompleteItemSelect;
 
     public interface Callback<T> extends Serializable {
         void call(Context context, int code, String message, T userInfo);
@@ -42,7 +54,7 @@ public class AuthFlow implements Serializable {
     private Callback<UserInfo> authCallback;
 
     public static AuthFlow start(Activity context) {
-        return start(context, R.layout.activity_authing_login);
+        return start(context, R.layout.authing_login);
     }
 
     public static AuthFlow start(Activity activity, int layoutId) {
@@ -61,11 +73,11 @@ public class AuthFlow implements Serializable {
         return flow;
     }
 
-    public Map<String, String> getData() {
+    public Map<String, Object> getData() {
         return data;
     }
 
-    public void setData(Map<String, String> data) {
+    public void setData(Map<String, Object> data) {
         this.data = data;
     }
 
@@ -77,7 +89,7 @@ public class AuthFlow implements Serializable {
         }
     }
 
-    public static String get(Context context, String key) {
+    public static Object get(Context context, String key) {
         if (context instanceof AuthActivity) {
             AuthActivity activity = (AuthActivity) context;
             AuthFlow flow = activity.getFlow();
@@ -88,9 +100,13 @@ public class AuthFlow implements Serializable {
         return null;
     }
 
+    public static String getAccount(Context context) {
+        return (String)get(context, KEY_ACCOUNT);
+    }
+
     public int getIndexLayoutId() {
         if (indexLayoutId == 0) {
-            return R.layout.activity_authing_login;
+            return R.layout.authing_login;
         } else {
             return indexLayoutId;
         }
@@ -98,7 +114,7 @@ public class AuthFlow implements Serializable {
 
     public int getRegisterLayoutId() {
         if (registerLayoutId == 0) {
-            return R.layout.activity_authing_register;
+            return R.layout.authing_register;
         } else {
             return registerLayoutId;
         }
@@ -111,7 +127,7 @@ public class AuthFlow implements Serializable {
 
     public int getForgotPasswordLayoutId() {
         if (forgotPasswordLayoutId == 0) {
-            return R.layout.activity_authing_forgot_password;
+            return R.layout.authing_forgot_password;
         } else {
             return forgotPasswordLayoutId;
         }
@@ -124,7 +140,7 @@ public class AuthFlow implements Serializable {
 
     public int getResetPasswordByEmailLayoutId() {
         if (resetPasswordByPhoneLayoutId == 0) {
-            return R.layout.activity_authing_reset_password_by_email;
+            return R.layout.authing_reset_password_by_email;
         } else {
             return resetPasswordByEmailLayoutId;
         }
@@ -137,7 +153,7 @@ public class AuthFlow implements Serializable {
 
     public int getResetPasswordByPhoneLayoutId() {
         if (resetPasswordByPhoneLayoutId == 0) {
-            return R.layout.activity_authing_reset_password_by_phone;
+            return R.layout.authing_reset_password_by_phone;
         } else {
             return resetPasswordByPhoneLayoutId;
         }
@@ -150,7 +166,7 @@ public class AuthFlow implements Serializable {
 
     public int[] getMfaPhoneLayoutIds() {
         if (mfaPhoneLayoutIds == null) {
-            return new int[]{R.layout.activity_authing_mfa_phone_0, R.layout.activity_authing_mfa_phone_1};
+            return new int[]{R.layout.authing_mfa_phone_0, R.layout.authing_mfa_phone_1};
         }
         return mfaPhoneLayoutIds;
     }
@@ -173,7 +189,7 @@ public class AuthFlow implements Serializable {
 
     public int[] getMfaEmailLayoutIds() {
         if (mfaEmailLayoutIds == null) {
-            return new int[]{R.layout.activity_authing_mfa_email_0, R.layout.activity_authing_mfa_email_1};
+            return new int[]{R.layout.authing_mfa_email_0, R.layout.authing_mfa_email_1};
         }
         return mfaEmailLayoutIds;
     }
@@ -192,6 +208,65 @@ public class AuthFlow implements Serializable {
 
     public void setMfaEmailCurrentStep(int mfaEmailCurrentStep) {
         this.mfaEmailCurrentStep = mfaEmailCurrentStep;
+    }
+
+    public int[] getUserInfoCompleteLayoutIds() {
+        if (userInfoCompleteLayoutIds == null) {
+            return new int[]{R.layout.authing_userinfo_complete};
+        }
+        return userInfoCompleteLayoutIds;
+    }
+
+    public void setUserInfoCompleteLayoutIds(int[] userInfoCompleteLayoutIds) {
+        this.userInfoCompleteLayoutIds = userInfoCompleteLayoutIds;
+    }
+
+    public void setUserInfoCompleteLayoutId(int userInfoCompleteLayoutId) {
+        this.userInfoCompleteLayoutIds = new int[userInfoCompleteLayoutId];
+    }
+
+    public int getUserInfoCompleteItemNormal() {
+        if (userInfoCompleteItemNormal == 0) {
+            return R.layout.authing_userinfo_complete_item_normal;
+        }
+        return userInfoCompleteItemNormal;
+    }
+
+    public void setUserInfoCompleteItemNormal(int userInfoCompleteItemNormal) {
+        this.userInfoCompleteItemNormal = userInfoCompleteItemNormal;
+    }
+
+    public int getUserInfoCompleteItemEmail() {
+        if (userInfoCompleteItemEmail == 0) {
+            return R.layout.authing_userinfo_complete_item_email;
+        }
+        return userInfoCompleteItemEmail;
+    }
+
+    public void setUserInfoCompleteItemEmail(int userInfoCompleteItemEmail) {
+        this.userInfoCompleteItemEmail = userInfoCompleteItemEmail;
+    }
+
+    public int getUserInfoCompleteItemPhone() {
+        if (userInfoCompleteItemPhone == 0) {
+            return R.layout.authing_userinfo_complete_item_phone;
+        }
+        return userInfoCompleteItemPhone;
+    }
+
+    public void setUserInfoCompleteItemPhone(int userInfoCompleteItemPhone) {
+        this.userInfoCompleteItemPhone = userInfoCompleteItemPhone;
+    }
+
+    public int getUserInfoCompleteItemSelect() {
+        if (userInfoCompleteItemSelect == 0) {
+            return R.layout.authing_userinfo_complete_item_select;
+        }
+        return userInfoCompleteItemSelect;
+    }
+
+    public void setUserInfoCompleteItemSelect(int userInfoCompleteItemSelect) {
+        this.userInfoCompleteItemSelect = userInfoCompleteItemSelect;
     }
 
     public Callback<UserInfo> getAuthCallback() {

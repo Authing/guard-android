@@ -3,7 +3,6 @@ package cn.authing.guard;
 import static cn.authing.guard.util.Const.NS_ANDROID;
 
 import android.content.Context;
-import android.content.res.TypedArray;
 import android.graphics.Typeface;
 import android.util.AttributeSet;
 import android.util.TypedValue;
@@ -36,24 +35,13 @@ public class AppName extends AppCompatTextView {
             setTypeface(Typeface.DEFAULT_BOLD);
         }
 
-        TypedArray array = context.obtainStyledAttributes(attrs, R.styleable.AppName);
-        int type = array.getInt(R.styleable.AppName_pageType,0);
         Authing.getPublicConfig((config -> {
             if (config != null) {
                 CharSequence s = getText();
                 if (s == null || s.length() == 0) {
-                    String pre = "";
-                    if (type == 0) {
-                        pre = getResources().getString(R.string.authing_login);
-                    } else if (type == 1) {
-                        pre = getResources().getString(R.string.authing_welcome_to);
-                    }
-
-                    setText(pre + " " + config.getName());
+                    setText(config.getName());
                 }
             }
         }));
-
-        array.recycle();
     }
 }

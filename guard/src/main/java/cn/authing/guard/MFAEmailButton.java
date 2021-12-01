@@ -46,7 +46,7 @@ public class MFAEmailButton extends LoadingButton implements AuthActivity.EventL
             setOnClickListener(this::click);
             AuthActivity activity = (AuthActivity) getContext();
             AuthFlow flow = activity.getFlow();
-            String email = flow.getData().get(AuthFlow.KEY_MFA_EMAIL);
+            String email = (String) flow.getData().get(AuthFlow.KEY_MFA_EMAIL);
             if (!TextUtils.isEmpty(email)) {
                 startLoadingVisualEffect();
                 AuthClient.sendMFAEmail(email, (code, message, data) -> activity.runOnUiThread(this::stopLoadingVisualEffect));
@@ -119,7 +119,7 @@ public class MFAEmailButton extends LoadingButton implements AuthActivity.EventL
             intent.putExtra(AuthActivity.CONTENT_LAYOUT_ID, ids[step]);
         } else {
             // fallback to our default
-            intent.putExtra(AuthActivity.CONTENT_LAYOUT_ID, R.layout.activity_authing_mfa_email_1);
+            intent.putExtra(AuthActivity.CONTENT_LAYOUT_ID, R.layout.authing_mfa_email_1);
         }
         activity.startActivityForResult(intent, AuthActivity.RC_LOGIN);
     }
@@ -127,7 +127,7 @@ public class MFAEmailButton extends LoadingButton implements AuthActivity.EventL
     private void doMFA(View v) {
         AuthActivity activity = (AuthActivity) getContext();
         AuthFlow flow = activity.getFlow();
-        String email = flow.getData().get(AuthFlow.KEY_MFA_EMAIL);
+        String email = (String) flow.getData().get(AuthFlow.KEY_MFA_EMAIL);
         VerifyCodeEditText editText = (VerifyCodeEditText)v;
         String verifyCode = editText.getText().toString();
         startLoadingVisualEffect();

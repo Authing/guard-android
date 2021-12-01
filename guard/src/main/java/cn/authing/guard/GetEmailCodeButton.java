@@ -1,7 +1,10 @@
 package cn.authing.guard;
 
+import static cn.authing.guard.util.Const.NS_ANDROID;
+
 import android.content.Context;
 import android.util.AttributeSet;
+import android.util.TypedValue;
 import android.view.View;
 
 import androidx.annotation.NonNull;
@@ -26,6 +29,19 @@ public class GetEmailCodeButton extends LoadingButton {
     public GetEmailCodeButton(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
 
+        if (attrs == null || attrs.getAttributeValue(NS_ANDROID, "text") == null) {
+            String text = getContext().getString(R.string.authing_get_verify_code);
+            setText(text);
+        }
+
+        if (attrs == null || attrs.getAttributeValue(NS_ANDROID, "textSize") == null) {
+            setTextSize(TypedValue.COMPLEX_UNIT_DIP, 12);
+        }
+
+        if (attrs == null || attrs.getAttributeValue(NS_ANDROID, "background") == null) {
+            setBackgroundResource(R.drawable.authing_verify_code_background);
+        }
+
         setOnClickListener((v -> getEmailCode()));
     }
 
@@ -36,7 +52,7 @@ public class GetEmailCodeButton extends LoadingButton {
             AccountEditText editText = (AccountEditText)v;
             email = editText.getText().toString();
         } else {
-            email = AuthFlow.get(getContext(), AuthFlow.KEY_ACCOUNT);
+            email = (String) AuthFlow.get(getContext(), AuthFlow.KEY_ACCOUNT);
         }
 
         if (!Validator.isValidEmail(email)) {

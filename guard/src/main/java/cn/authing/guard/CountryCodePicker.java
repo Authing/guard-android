@@ -10,15 +10,10 @@ import android.widget.ListView;
 
 import androidx.annotation.Nullable;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 
 import cn.authing.guard.data.Country;
@@ -64,7 +59,7 @@ public class CountryCodePicker extends androidx.appcompat.widget.AppCompatTextVi
             loadData();
 
             Dialog dialog = new Dialog(getContext());
-            dialog.setContentView(R.layout.country_code_picker);
+            dialog.setContentView(R.layout.authing_country_code_picker);
 
             ListView lv = dialog.findViewById(R.id.lv);
             CountryCodeAdapter adapter = new CountryCodeAdapter(getContext(), countries);

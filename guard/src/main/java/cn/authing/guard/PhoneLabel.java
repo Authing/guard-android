@@ -29,7 +29,7 @@ public class PhoneLabel extends MaskLabel {
         if (context instanceof AuthActivity) {
             AuthActivity activity = (AuthActivity) context;
             AuthFlow flow = activity.getFlow();
-            String s = flow.getData().get(AuthFlow.KEY_MFA_PHONE);
+            String s = (String) flow.getData().get(AuthFlow.KEY_MFA_PHONE);
             if (!TextUtils.isEmpty(s)) {
                 setTextWithMask(s);
             }

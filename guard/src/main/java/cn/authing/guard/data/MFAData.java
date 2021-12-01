@@ -25,7 +25,7 @@ public class MFAData {
         try {
             if (data.has("mfaToken")) {
                 String v = data.getString("mfaToken");
-                Guardian.TOKEN = v;
+                Guardian.MFA_TOKEN = v;
                 mfaData.setMfaToken(v);
             }
             if (data.has("email")) {
