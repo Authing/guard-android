@@ -1,5 +1,7 @@
 package cn.authing.guard.data;
 
+import androidx.annotation.NonNull;
+
 import java.io.Serializable;
 
 public class Country implements Serializable {
@@ -45,5 +47,10 @@ public class Country implements Serializable {
 
     public void setEmoji(String emoji) {
         this.emoji = emoji;
+    }
+
+    @NonNull
+    public String toString() {
+        return name;
     }
 }

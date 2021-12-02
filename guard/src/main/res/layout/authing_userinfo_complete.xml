@@ -9,14 +9,18 @@
         android:paddingStart="@dimen/authing_form_start_end_margin"
         android:paddingEnd="@dimen/authing_form_start_end_margin">
 
+        <cn.authing.guard.AppLogo
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_marginTop="64dp" />
+
         <TextView
-            android:layout_marginTop="64dp"
+            android:layout_marginTop="8dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/authing_user_info_complete"
             android:textColor="#000"
-            android:textSize="24sp"
-            android:layout_gravity="center_horizontal" />
+            android:textSize="24sp" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -40,7 +44,7 @@
 
         <cn.authing.guard.UserInfoCompleteContainer
             android:layout_weight="1"
-            android:layout_marginTop="32dp"
+            android:layout_marginTop="24dp"
             android:layout_width="match_parent"
             android:layout_height="0dp" />
 

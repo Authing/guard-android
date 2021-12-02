@@ -7,7 +7,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import cn.authing.guard.R;
 import cn.authing.guard.data.Country;
@@ -19,7 +19,7 @@ public class CountryCodeAdapter extends ArrayAdapter<Country> {
         TextView code;
     }
 
-    public CountryCodeAdapter(Context context, ArrayList<Country> users) {
+    public CountryCodeAdapter(Context context, List<Country> users) {
         super(context, 0, users);
     }
 

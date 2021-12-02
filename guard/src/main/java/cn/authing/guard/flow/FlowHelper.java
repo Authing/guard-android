@@ -2,6 +2,7 @@ package cn.authing.guard.flow;
 
 import static cn.authing.guard.util.Const.MFA_POLICY_EMAIL;
 import static cn.authing.guard.util.Const.MFA_POLICY_SMS;
+import static cn.authing.guard.util.Util.isNull;
 
 import android.content.Context;
 import android.content.Intent;
@@ -37,10 +38,10 @@ public class FlowHelper {
 
         // try to find a more convenient way
         for (String option : options) {
-            if (MFA_POLICY_SMS.equals(option) && !isEmpty(data.getPhone())) {
+            if (MFA_POLICY_SMS.equals(option) && !isNull(data.getPhone())) {
                 handleSMSMFA((AuthActivity) context, currentView, data.getPhone());
                 return;
-            } else if (MFA_POLICY_EMAIL.equals(option) && !isEmpty(data.getEmail())) {
+            } else if (MFA_POLICY_EMAIL.equals(option) && !isNull(data.getEmail())) {
                 handleEmailMFA((AuthActivity) context, currentView, data.getEmail());
                 return;
             }
@@ -64,7 +65,7 @@ public class FlowHelper {
         }
 
         Intent intent = new Intent(activity, AuthActivity.class);
-        if (isEmpty(phone)) {
+        if (isNull(phone)) {
             intent.putExtra(AuthActivity.CONTENT_LAYOUT_ID, flow.getMfaPhoneLayoutIds()[0]);
         } else {
             flow.getData().put(AuthFlow.KEY_MFA_PHONE, phone);
@@ -84,7 +85,7 @@ public class FlowHelper {
         }
 
         Intent intent = new Intent(activity, AuthActivity.class);
-        if (isEmpty(email)) {
+        if (isNull(email)) {
             intent.putExtra(AuthActivity.CONTENT_LAYOUT_ID, flow.getMfaEmailLayoutIds()[0]);
         } else {
             flow.getData().put(AuthFlow.KEY_MFA_EMAIL, email);
@@ -100,7 +101,9 @@ public class FlowHelper {
         List<ExtendedField> fields = config.getExtendedFields();
         for (ExtendedField field : fields) {
             String value = userInfo.getMappedData(field.getName());
-            if (Util.isNull(value)) {
+            if (isNull(value)) {
+                missingFields.add(field);
+            } else if ("gender".equals(field.getName()) && value.equals("U")) {
                 missingFields.add(field);
             }
         }
@@ -129,7 +132,23 @@ public class FlowHelper {
         activity.startActivityForResult(intent, AuthActivity.RC_LOGIN);
     }
 
-    private static boolean isEmpty(String s) {
-        return TextUtils.isEmpty(s) || s.equals("null");
+    public static void handleFirstTimeLogin(View currentView, UserInfo userInfo) {
+        if (userInfo == null || isNull(userInfo.getFirstTimeLoginToken())) {
+            Util.setErrorText(currentView, "First time login data is null");
+            return;
+        }
+
+        Context context = currentView.getContext();
+        if (!(context instanceof AuthActivity)) {
+            return;
+        }
+
+        AuthActivity activity = (AuthActivity) context;
+        AuthFlow flow = activity.getFlow();
+        flow.getData().put(AuthFlow.KEY_USER_INFO, userInfo);
+        Intent intent = new Intent(activity, AuthActivity.class);
+        intent.putExtra(AuthActivity.CONTENT_LAYOUT_ID, flow.getResetPasswordFirstLoginLayoutId());
+        intent.putExtra(AuthActivity.AUTH_FLOW, flow);
+        activity.startActivityForResult(intent, AuthActivity.RC_LOGIN);
     }
 }

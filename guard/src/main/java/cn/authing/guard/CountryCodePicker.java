@@ -10,21 +10,17 @@ import android.widget.ListView;
 
 import androidx.annotation.Nullable;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.util.ArrayList;
+import java.util.List;
 
 import cn.authing.guard.data.Country;
 import cn.authing.guard.internal.CountryCodeAdapter;
+import cn.authing.guard.util.Util;
 
 public class CountryCodePicker extends androidx.appcompat.widget.AppCompatTextView {
 
-    private boolean showFlag;
-    private boolean showCountryName;
-    private boolean showRightArrow;
-    private ArrayList<Country> countries;
+    private final boolean showFlag;
+    private final boolean showCountryName;
+    private List<Country> countries;
     private Country selected;
 
     public CountryCodePicker(Context context) {
@@ -43,7 +39,7 @@ public class CountryCodePicker extends androidx.appcompat.widget.AppCompatTextVi
         TypedArray array = context.obtainStyledAttributes(attrs, R.styleable.CountryCodePicker);
         showFlag = array.getBoolean(R.styleable.CountryCodePicker_showFlag, false);
         showCountryName = array.getBoolean(R.styleable.CountryCodePicker_showCountryName, false);
-        showRightArrow = array.getBoolean(R.styleable.CountryCodePicker_showRightArrow, true);
+        boolean showRightArrow = array.getBoolean(R.styleable.CountryCodePicker_showRightArrow, true);
         array.recycle();
 
         if (showRightArrow) {
@@ -92,12 +88,9 @@ public class CountryCodePicker extends androidx.appcompat.widget.AppCompatTextVi
     }
 
     private void loadData() {
-        if (countries != null) {
-            return;
+        if (countries == null) {
+            countries = Util.loadCountries(getContext());
         }
-
-        countries = new ArrayList<>();
-        try {
 //            JSONArray array = new JSONArray(getFromRaw());
 //            for (int i = 0;i < array.length();++i) {
 //                JSONObject obj = array.getJSONObject(i);
@@ -107,21 +100,6 @@ public class CountryCodePicker extends androidx.appcompat.widget.AppCompatTextVi
 //                Country country = new Country(abbrev, name, code, obj.getString("emoji"));
 //                countries.add(country);
 //            }
-
-            InputStream inputStream = getResources().openRawResource(R.raw.country);
-            BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
-            String line;
-            do {
-                line = reader.readLine();
-                if (line != null) {
-                    String[] data = line.split(",");
-                    Country country = new Country(data[0], data[3], data[2], data[1]);
-                    countries.add(country);
-                }
-            } while (line != null);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 
 //    private String getFromRaw() {

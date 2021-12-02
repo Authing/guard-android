@@ -2,12 +2,12 @@
 <cn.authing.guard.UserInfoFieldForm xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginTop="8dp"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <cn.authing.guard.MandatoryField
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:asteriskPosition="left"
+        android:layout_marginTop="16dp"
         android:textColor="#000"/>
     <cn.authing.guard.PhoneNumberEditText
         android:layout_width="match_parent"

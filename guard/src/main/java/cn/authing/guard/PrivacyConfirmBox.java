@@ -14,6 +14,7 @@ import android.text.TextUtils;
 import android.text.method.LinkMovementMethod;
 import android.text.style.URLSpan;
 import android.util.AttributeSet;
+import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.CheckBox;
@@ -31,7 +32,7 @@ import cn.authing.guard.internal.CustomURLSpan;
 
 public class PrivacyConfirmBox extends LinearLayout {
 
-    private boolean isRequired = true;
+    private boolean isRequired;
     private final CheckBox checkBox;
     private final TextView textView;
     private final Animation animShake;
@@ -88,7 +89,7 @@ public class PrivacyConfirmBox extends LinearLayout {
             }
 
             List<Agreement> agreements = config.getAgreements();
-            if (agreements != null) {
+            if (agreements != null && agreements.size() > 0) {
                 String lang = Locale.getDefault().getLanguage();
                 for (Agreement agreement : config.getAgreements()) {
                     if (agreement.getLang().startsWith(lang)) {
@@ -111,6 +112,8 @@ public class PrivacyConfirmBox extends LinearLayout {
                         break;
                     }
                 }
+            } else {
+                setVisibility(View.GONE);
             }
 
             if (!TextUtils.isEmpty(text)) {

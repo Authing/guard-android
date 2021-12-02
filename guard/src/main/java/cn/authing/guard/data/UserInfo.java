@@ -69,6 +69,7 @@ public class UserInfo implements Serializable {
     private String updated_at;
     private String website;
     private String zoneinfo;
+    private String country;
     private String email;
     private boolean email_verified;
     private Address address;
@@ -80,6 +81,7 @@ public class UserInfo implements Serializable {
     private String idToken;
     private String thirdPartySource;
     private MFAData mfaData;
+    private String firstTimeLoginToken;
 
     public String getId() {
         return id == null ? getSub() : id;
@@ -217,6 +219,14 @@ public class UserInfo implements Serializable {
         this.zoneinfo = zoneinfo;
     }
 
+    public String getCountry() {
+        return country;
+    }
+
+    public void setCountry(String country) {
+        this.country = country;
+    }
+
     public String getEmail() {
         return email;
     }
@@ -297,6 +307,14 @@ public class UserInfo implements Serializable {
         this.mfaData = mfaData;
     }
 
+    public String getFirstTimeLoginToken() {
+        return firstTimeLoginToken;
+    }
+
+    public void setFirstTimeLoginToken(String firstTimeLoginToken) {
+        this.firstTimeLoginToken = firstTimeLoginToken;
+    }
+
     public static UserInfo createUserInfo(JSONObject data) throws JSONException {
         UserInfo userInfo = new UserInfo();
         if (data.has("id")) {
@@ -347,6 +365,10 @@ public class UserInfo implements Serializable {
             String s = data.getString("nickname");
             userInfo.setNickname(s);
         }
+        if (data.has("country")) {
+            String s = data.getString("country");
+            userInfo.setCountry(s);
+        }
         return userInfo;
     }
 
@@ -369,6 +391,12 @@ public class UserInfo implements Serializable {
         }
         if ("phone".equals(key)) {
             return getPhone_number();
+        }
+        if ("gender".equals(key)) {
+            return getGender();
+        }
+        if ("country".equals(key)) {
+            return getCountry();
         }
         return extended.get(key);
     }

@@ -44,8 +44,7 @@ public class PasswordConfirmEditText extends BasePasswordEditText {
                 Editable s = et.getText();
                 Editable s1 = editText.getText();
                 if (s != null && s1 != null && !s.toString().equals(s1.toString())) {
-                    errorTextView.setText(R.string.authing_password_not_match);
-                    errorTextView.setVisibility(View.VISIBLE);
+                    showError(getContext().getString(R.string.authing_password_not_match));
                 }
             }
         }

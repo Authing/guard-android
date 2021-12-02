@@ -212,7 +212,7 @@ public class EditTextLayout extends LinearLayout implements TextWatcher, View.On
 
     public void showError(String error) {
         if (errorEnabled) {
-            post(()->{
+//            post(()->{
                 errorText = error;
                 if (TextUtils.isEmpty(error)) {
                     errorTextView.setVisibility(View.GONE);
@@ -220,7 +220,7 @@ public class EditTextLayout extends LinearLayout implements TextWatcher, View.On
                     errorTextView.setText(errorText);
                     errorTextView.setVisibility(View.VISIBLE);
                 }
-            });
+//            });
         }
     }
 

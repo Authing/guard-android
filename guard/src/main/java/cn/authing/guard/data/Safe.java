@@ -31,7 +31,11 @@ public class Safe {
     }
 
     public static String loadPassword() {
-        SharedPreferences sp = Authing.getAppContext().getSharedPreferences(SP_NAME, 0);
-        return sp.getString(SP_KEY_PASSWORD, "");
+        if (Authing.getAppContext() != null) {
+            SharedPreferences sp = Authing.getAppContext().getSharedPreferences(SP_NAME, 0);
+            return sp.getString(SP_KEY_PASSWORD, "");
+        } else {
+            return "";
+        }
     }
 }

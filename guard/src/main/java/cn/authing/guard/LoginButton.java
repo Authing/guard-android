@@ -208,6 +208,8 @@ public class LoginButton extends LoadingButton {
             });
         } else if (code == Const.EC_MFA_REQUIRED) {
             FlowHelper.handleMFA(this, userInfo.getMfaData());
+        }  else if (code == Const.EC_FIRST_TIME_LOGIN) {
+            FlowHelper.handleFirstTimeLogin(this, userInfo);
         } else {
             Util.setErrorText(this, message);
         }

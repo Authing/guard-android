@@ -6,6 +6,7 @@ public class Const {
     public static final String SDK_VERSION = "1.0.6";
 
     public final static int EC_MFA_REQUIRED = 1636;
+    public final static int EC_FIRST_TIME_LOGIN = 1639;
 
     public final static int EC_INCORRECT_VERIFY_CODE = 2001;
     public final static int EC_INCORRECT_CREDENTIAL = 2333;

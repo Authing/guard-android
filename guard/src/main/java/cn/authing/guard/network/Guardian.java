@@ -119,6 +119,10 @@ public class Guardian {
                     }
                 } else {
                     Log.w(TAG, "Response has no data:" + url + " msg:" + json);
+                    if (!json.has("code")) {
+                        resp.setCode(200);
+                        resp.setData(json);
+                    }
                 }
 
                 callback.call(resp);

@@ -38,6 +38,10 @@
     <string name="authing_user_info_complete">Fill up information</string>
     <string name="authing_complete_tip">in order to have a better experience, please improve your information first</string>
     <string name="authing_submit">Submit</string>
+    <string name="authing_male">Male</string>
+    <string name="authing_female">Female</string>
+    <string name="authing_first_time_login_tip">To secure your account, please reset password</string>
+    <string name="authing_first_time_login_count_down">Please reset password within 10 minutes</string>
 
     <!--error messages-->
     <string name="authing_password_error_1">At least 6 characters</string>

@@ -1,5 +1,6 @@
 package cn.authing.guard.network;
 
+import static cn.authing.guard.util.Const.EC_FIRST_TIME_LOGIN;
 import static cn.authing.guard.util.Const.EC_MFA_REQUIRED;
 
 import org.jetbrains.annotations.NotNull;
@@ -93,7 +94,24 @@ public class AuthClient {
                 body.put("email", email);
                 body.put("password", encryptPassword);
                 String url = "https://" + config.getIdentifier() + "." + Authing.getHost() + "/api/v2/register/email";
-                Guardian.post(url, body, (data)-> createUserInfoFromResponse(data, callback));
+                Guardian.post(url, body, (data)-> {
+                    if (data.getCode() == 200) {
+                        // after register, login immediately to get access token
+                        JSONObject loginBody = new JSONObject();
+                        try {
+                            loginBody.put("account", email);
+                            loginBody.put("password", encryptPassword);
+                        } catch (JSONException je) {
+                            je.printStackTrace();
+                        }
+                        String loginUrl = "https://" + config.getIdentifier() + "." + Authing.getHost() + "/api/v2/login/account";
+                        Guardian.post(loginUrl, loginBody, (loginData) -> {
+                            createUserInfoFromResponse(loginData, callback);
+                        });
+                    } else {
+                        callback.call(data.getCode(), data.getMessage(), null);
+                    }
+                });
             } catch (Exception e) {
                 e.printStackTrace();
                 callback.call(500, "Exception", null);
@@ -165,6 +183,21 @@ public class AuthClient {
                 body.put("code", code);
                 body.put("newPassword", Util.encryptPassword(newPassword));
                 String url = "https://" + config.getIdentifier()  + "." + Authing.getHost() + "/api/v2/password/reset/sms";
+                Guardian.post(url, body, (data)-> callback.call(data.getCode(), data.getMessage(), data.getData()));
+            } catch (Exception e) {
+                e.printStackTrace();
+                callback.call(500, "Exception", null);
+            }
+        }));
+    }
+
+    public static void resetPasswordByFirstTimeLoginToken(String token, String newPassword, @NotNull AuthCallback<JSONObject> callback) {
+        Authing.getPublicConfig((config -> {
+            try {
+                JSONObject body = new JSONObject();
+                body.put("token", token);
+                body.put("password", Util.encryptPassword(newPassword));
+                String url = "https://" + config.getIdentifier()  + "." + Authing.getHost() + "/api/v2/users/password/reset-by-first-login-token";
                 Guardian.post(url, body, (data)-> callback.call(data.getCode(), data.getMessage(), data.getData()));
             } catch (Exception e) {
                 e.printStackTrace();
@@ -342,24 +375,37 @@ public class AuthClient {
 
     private static void createUserInfoFromResponse(Response data, @NotNull AuthCallback<UserInfo> callback) {
         int code = data.getCode();
-        if (code == 200) {
-            UserInfo userInfo;
-            try {
+        try {
+            if (code == 200) {
+                UserInfo userInfo;
                 userInfo = UserInfo.createUserInfo(data.getData());
                 Guardian.ACCESS_TOKEN = userInfo.getAccessToken();
-                getUserDefinedData(userInfo, callback);
-//                callback.call(code, data.getMessage(), userInfo);
-            } catch (JSONException e) {
-                e.printStackTrace();
-                callback.call(500, "Cannot parse data into UserInfo", null);
+                if (Util.isNull(Guardian.ACCESS_TOKEN)) {
+                    callback.call(code, data.getMessage(), userInfo);
+                } else {
+                    getUserDefinedData(userInfo, callback);
+                }
+            } else if (code == EC_MFA_REQUIRED) {
+                MFAData mfaData = MFAData.create(data.getData());
+                UserInfo userInfo = new UserInfo();
+                userInfo.setMfaData(mfaData);
+                callback.call(code, data.getMessage(), userInfo);
+            } else if (code == EC_FIRST_TIME_LOGIN) {
+                JSONObject o = data.getData();
+                if (o.has("token")) {
+                    String token = o.getString("token");
+                    UserInfo userInfo = new UserInfo();
+                    userInfo.setFirstTimeLoginToken(token);
+                    callback.call(code, data.getMessage(), userInfo);
+                } else {
+                    callback.call(code, data.getMessage(), null);
+                }
+            } else {
+                callback.call(code, data.getMessage(), null);
             }
-        } else if (code == EC_MFA_REQUIRED) {
-            MFAData mfaData = MFAData.create(data.getData());
-            UserInfo userInfo = new UserInfo();
-            userInfo.setMfaData(mfaData);
-            callback.call(code, data.getMessage(), userInfo);
-        } else {
-            callback.call(code, data.getMessage(), null);
+        } catch (JSONException e) {
+            e.printStackTrace();
+            callback.call(500, "Cannot parse data into UserInfo", null);
         }
     }
 }

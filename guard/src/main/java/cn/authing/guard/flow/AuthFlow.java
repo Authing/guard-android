@@ -47,6 +47,9 @@ public class AuthFlow implements Serializable {
     private int userInfoCompleteItemEmail;
     private int userInfoCompleteItemPhone;
     private int userInfoCompleteItemSelect;
+    private int userInfoCompleteItemDatePicker;
+
+    private int resetPasswordFirstLoginLayoutId;
 
     public interface Callback<T> extends Serializable {
         void call(Context context, int code, String message, T userInfo);
@@ -267,6 +270,28 @@ public class AuthFlow implements Serializable {
 
     public void setUserInfoCompleteItemSelect(int userInfoCompleteItemSelect) {
         this.userInfoCompleteItemSelect = userInfoCompleteItemSelect;
+    }
+
+    public int getUserInfoCompleteItemDatePicker() {
+        if (userInfoCompleteItemDatePicker == 0) {
+            return R.layout.authing_userinfo_complete_item_datepicker;
+        }
+        return userInfoCompleteItemDatePicker;
+    }
+
+    public void setUserInfoCompleteItemDatePicker(int userInfoCompleteItemDatePicker) {
+        this.userInfoCompleteItemDatePicker = userInfoCompleteItemDatePicker;
+    }
+
+    public int getResetPasswordFirstLoginLayoutId() {
+        if (resetPasswordFirstLoginLayoutId == 0) {
+            resetPasswordFirstLoginLayoutId = R.layout.authing_reset_password_first_login;
+        }
+        return resetPasswordFirstLoginLayoutId;
+    }
+
+    public void setResetPasswordFirstLoginLayoutId(int resetPasswordFirstLoginLayoutId) {
+        this.resetPasswordFirstLoginLayoutId = resetPasswordFirstLoginLayoutId;
     }
 
     public Callback<UserInfo> getAuthCallback() {

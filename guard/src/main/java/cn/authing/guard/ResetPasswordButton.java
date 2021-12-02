@@ -16,6 +16,7 @@ import androidx.annotation.Nullable;
 
 import cn.authing.guard.activity.AuthActivity;
 import cn.authing.guard.activity.IndexAuthActivity;
+import cn.authing.guard.data.UserInfo;
 import cn.authing.guard.flow.AuthFlow;
 import cn.authing.guard.internal.LoadingButton;
 import cn.authing.guard.network.AuthClient;
@@ -56,7 +57,7 @@ public class ResetPasswordButton extends LoadingButton {
         if (v != null) {
             String password = Util.getPassword(this);
             if (!TextUtils.isEmpty(password)) {
-                handleResetPassword(password);
+                handleResetPassword(flow, password);
             }
         } else {
             View view = Util.findViewByClass(this, PhoneNumberEditText.class);
@@ -91,7 +92,16 @@ public class ResetPasswordButton extends LoadingButton {
         }
     }
 
-    private void handleResetPassword(String password) {
+    private void handleResetPassword(AuthFlow flow, String password) {
+        Object o = flow.getData().get(AuthFlow.KEY_USER_INFO);
+        if (o instanceof UserInfo) {
+            UserInfo userInfo = (UserInfo) o;
+            if (!Util.isNull(userInfo.getFirstTimeLoginToken())) {
+                resetPasswordByFirstTimeLoginToken(userInfo.getFirstTimeLoginToken(), password);
+                return;
+            }
+        }
+
         String account = Util.getAccount(this);
         if (Validator.isValidEmail(account)) {
             resetPasswordByEmail(account, password);
@@ -100,12 +110,26 @@ public class ResetPasswordButton extends LoadingButton {
         }
     }
 
+    private void resetPasswordByFirstTimeLoginToken(String token, String password) {
+        setEnabled(false);
+        startLoadingVisualEffect();
+        AuthActivity activity = (AuthActivity) getContext();
+        AuthFlow flow = (AuthFlow) activity.getIntent().getSerializableExtra(AuthActivity.AUTH_FLOW);
+        AuthClient.resetPasswordByFirstTimeLoginToken(token, password, (code, message, data)-> activity.runOnUiThread(()->{
+            if (code == 200) {
+                gotoLogin(flow);
+            } else {
+                Util.setErrorText(this, message);
+            }
+            stopLoadingVisualEffect();
+        }));
+    }
+
     private void resetPasswordByPhone(String phone, String password) {
         setEnabled(false);
         startLoadingVisualEffect();
         AuthActivity activity = (AuthActivity) getContext();
         AuthFlow flow = (AuthFlow) activity.getIntent().getSerializableExtra(AuthActivity.AUTH_FLOW);
-        gotoLogin(flow);
         String vCode = Util.getVerifyCode(this);
         AuthClient.resetPasswordByPhoneCode(phone, vCode, password, (code, message, data)-> activity.runOnUiThread(()->{
             if (code == 200) {

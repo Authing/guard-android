@@ -7,6 +7,10 @@ import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.net.URL;
 import java.net.URLDecoder;
@@ -29,6 +33,7 @@ import cn.authing.guard.PasswordEditText;
 import cn.authing.guard.PhoneNumberEditText;
 import cn.authing.guard.R;
 import cn.authing.guard.VerifyCodeEditText;
+import cn.authing.guard.data.Country;
 import cn.authing.guard.data.Safe;
 import cn.authing.guard.flow.AuthFlow;
 
@@ -61,7 +66,7 @@ public class Util {
 
     public static List<Integer> intDigits(int i) {
         int temp = i;
-        ArrayList<Integer> array = new ArrayList<Integer>();
+        ArrayList<Integer> array = new ArrayList<>();
         do{
             array.add(0, temp % 10);
             temp /= 10;
@@ -230,5 +235,25 @@ public class Util {
 
     public static boolean isNull(String s) {
         return TextUtils.isEmpty(s) || "null".equals(s);
+    }
+
+    public static List<Country> loadCountries(Context context) {
+        List<Country> countries = new ArrayList<>();
+        try {
+            InputStream inputStream = context.getResources().openRawResource(R.raw.country);
+            BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
+            String line;
+            do {
+                line = reader.readLine();
+                if (line != null) {
+                    String[] data = line.split(",");
+                    Country country = new Country(data[0], data[3], data[2], data[1]);
+                    countries.add(country);
+                }
+            } while (line != null);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return countries;
     }
 }
