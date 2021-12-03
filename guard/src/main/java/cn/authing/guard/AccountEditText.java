@@ -134,8 +134,6 @@ public class AccountEditText extends EditTextLayout {
                 showError(getResources().getString(R.string.authing_invalid_email));
             } else if (validator == PHONE_VALIDATOR) {
                 showError(getResources().getString(R.string.authing_invalid_phone));
-            } else {
-                showError(getResources().getString(R.string.authing_invalid_input));
             }
         }
     }

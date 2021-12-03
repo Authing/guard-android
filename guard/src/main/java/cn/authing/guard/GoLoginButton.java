@@ -51,7 +51,6 @@ public class GoLoginButton extends androidx.appcompat.widget.AppCompatButton {
                 AuthActivity activity = (AuthActivity)context;
                 AuthFlow flow = (AuthFlow) activity.getIntent().getSerializableExtra(AuthActivity.AUTH_FLOW);
                 Intent intent = new Intent(getContext(), IndexAuthActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 intent.putExtra(AuthActivity.AUTH_FLOW, flow);
                 intent.putExtra(AuthActivity.CONTENT_LAYOUT_ID, flow.getIndexLayoutId());
                 activity.startActivityForResult(intent, AuthActivity.RC_LOGIN);

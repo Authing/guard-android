@@ -74,7 +74,7 @@ public class LoginMethodTabItem extends LinearLayout {
                 if (container.getType() == type) {
                     container.setVisibility(View.VISIBLE);
                 } else {
-                    container.setVisibility(View.INVISIBLE);
+                    container.setVisibility(View.GONE);
                 }
             }
         });

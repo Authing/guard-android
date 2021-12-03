@@ -21,8 +21,8 @@ import cn.authing.guard.util.Util;
 
 public class RegisterMethodTabItem extends LinearLayout {
 
-    private Button button;
-    private View underLine;
+    private final Button button;
+    private final View underLine;
     private RegisterContainer.RegisterType type;
 
     public RegisterMethodTabItem(Context context) {
@@ -74,7 +74,7 @@ public class RegisterMethodTabItem extends LinearLayout {
                 if (container.getType() == type) {
                     container.setVisibility(View.VISIBLE);
                 } else {
-                    container.setVisibility(View.INVISIBLE);
+                    container.setVisibility(View.GONE);
                 }
             }
         });
