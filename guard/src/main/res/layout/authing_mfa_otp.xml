@@ -14,30 +14,22 @@
         android:layout_marginTop="64dp"
         android:textSize="24sp"
         android:textColor="#000"
-        android:text="@string/authing_input_email_code" />
-
-    <LinearLayout
-        android:layout_marginTop="8dp"
-        android:layout_gravity="center_horizontal"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-
-            android:text="@string/authing_code_sent_to" />
-        <cn.authing.guard.EmailLabel
-            android:layout_marginStart="8dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
-    </LinearLayout>
-
-    <cn.authing.guard.VerifyCodeEditText
-        android:layout_marginTop="16dp"
-        android:layout_gravity="center_horizontal"
+        android:text="@string/authing_account_login_verify" />
+    <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:codeMode="frame"/>
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="8dp"
+        android:text="@string/authing_security_code_tip" />
+
+    <cn.authing.guard.VerifyCodeEditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="32dp"
+        app:codeMode="frame"
+        app:digit="6"
+        app:hyphen="true" />
 
     <cn.authing.guard.ErrorTextView
         android:layout_width="match_parent"
@@ -45,13 +37,29 @@
         android:layout_marginTop="16dp"
         android:textColor="@color/authing_error" />
 
-    <cn.authing.guard.mfa.MFAEmailButton
+    <cn.authing.guard.mfa.MFAOTPButton
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
         android:background="@drawable/authing_button_background"
-        android:textColor="#FFF"
-        android:text="@string/authing_login"
-        android:layout_marginTop="16dp"/>
+        android:textColor="#FFF" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp" >
+        <Space
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/authing_lost_security_code" />
+        <cn.authing.guard.mfa.GoRecoveryButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
 
     <TextView
         android:layout_width="wrap_content"

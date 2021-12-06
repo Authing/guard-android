@@ -125,6 +125,12 @@ public class Guardian {
                     }
                 }
 
+                // TODO
+                if (json.has("recoveryCode")) {
+                    String rc = json.getString("recoveryCode");
+                    resp.getData().put("recoveryCode", rc);
+                }
+
                 callback.call(resp);
             } else {
                 Log.w(TAG, response.code() + " Guardian failed for:" + url);

@@ -84,7 +84,6 @@ public class ResetPasswordButton extends LoadingButton {
                         }
                     }));
                 } else if (Validator.isValidPhoneNumber(s)) {
-                    startLoadingVisualEffect();
                     AuthFlow.put(getContext(), AuthFlow.KEY_ACCOUNT, s);
                     next(flow, flow.getResetPasswordByPhoneLayoutId());
                 }

@@ -22,7 +22,6 @@
         </activity>
         <activity
             android:name=".activity.AuthActivity"
-            android:windowSoftInputMode="adjustPan|stateHidden"
             android:exported="false" >
             <intent-filter tools:node="replace" >
                 <category android:name="android.intent.category.DEFAULT" />

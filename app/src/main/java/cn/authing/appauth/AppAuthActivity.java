@@ -72,7 +72,7 @@ public class AppAuthActivity extends AppCompatActivity {
                         Uri.parse("cn.guard://authing.cn/redirect")); // the redirect URI to which the auth response is sent
 
         AuthorizationRequest authRequest = authRequestBuilder
-                .setScope("openid profile email phone address offline_access role")
+                .setScope("openid profile email phone address offline_access role extended_fields")
                 .setPrompt("consent")
                 .setCodeVerifier(Util.randomString(43))
                 .build();

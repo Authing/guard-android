@@ -86,6 +86,9 @@ public class EditTextLayout extends LinearLayout implements TextWatcher, View.On
         float textSize = array.getDimension(R.styleable.EditTextLayout_android_textSize, Util.dp2px(context, 16));
         hintText = array.getString(R.styleable.EditTextLayout_android_hint);
         boolean enabled = array.getBoolean(R.styleable.EditTextLayout_enabled, true);
+        int maxLines = array.getInt(R.styleable.EditTextLayout_android_maxLines, 1);
+        boolean singleLine = array.getBoolean(R.styleable.EditTextLayout_android_singleLine, true);
+//        int inputType = array.getInt(R.styleable.EditTextLayout_android_inputType, 0x00000001);
 
         setWillNotDraw(false);
 
@@ -141,9 +144,10 @@ public class EditTextLayout extends LinearLayout implements TextWatcher, View.On
         editText.setHint(hintText);
         editText.setHintTextColor(array.getColor(R.styleable.EditTextLayout_hintColor, 0xff808080));
         editText.setTextColor(array.getColor(R.styleable.EditTextLayout_android_textColor, 0xff000000));
-        editText.setMaxLines(1);
-        editText.setSingleLine(true);
+        editText.setMaxLines(maxLines);
+        editText.setSingleLine(singleLine);
         editText.setEnabled(enabled);
+//        editText.setInputType(inputType);
         editText.setOnFocusChangeListener(this);
         LayoutParams lp = new LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, 1f);
         editText.setLayoutParams(lp);

@@ -13,7 +13,7 @@ import java.util.Map;
 public class UserInfo implements Serializable {
     private static final long serialVersionUID = -5986447815199326409L;
 
-    public static class Address {
+    public static class Address implements Serializable {
         private String country;
         private String postal_code;
         private String region;
@@ -82,6 +82,7 @@ public class UserInfo implements Serializable {
     private String thirdPartySource;
     private MFAData mfaData;
     private String firstTimeLoginToken;
+    private String recoveryCode;
 
     public String getId() {
         return id == null ? getSub() : id;
@@ -315,6 +316,14 @@ public class UserInfo implements Serializable {
         this.firstTimeLoginToken = firstTimeLoginToken;
     }
 
+    public String getRecoveryCode() {
+        return recoveryCode;
+    }
+
+    public void setRecoveryCode(String recoveryCode) {
+        this.recoveryCode = recoveryCode;
+    }
+
     public static UserInfo createUserInfo(JSONObject data) throws JSONException {
         UserInfo userInfo = new UserInfo();
         if (data.has("id")) {
@@ -368,6 +377,10 @@ public class UserInfo implements Serializable {
         if (data.has("country")) {
             String s = data.getString("country");
             userInfo.setCountry(s);
+        }
+        if (data.has("recoveryCode")) {
+            String s = data.getString("recoveryCode");
+            userInfo.setRecoveryCode(s);
         }
         return userInfo;
     }

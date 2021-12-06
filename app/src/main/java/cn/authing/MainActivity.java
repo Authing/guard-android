@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import cn.authing.guard.Authing;
 import cn.authing.guard.data.UserInfo;
+import cn.authing.guard.util.Util;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -18,15 +19,28 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         UserInfo userInfo = (UserInfo) getIntent().getSerializableExtra("user");
-        TextView tv = findViewById(R.id.tv_name);
-        String name = userInfo.getName();
-        if (name == null || name.equals("null")) {
-            name = userInfo.getPhone_number();
-        }
-        if (name == null || name.equals("null")) {
-            name = userInfo.getEmail();
-        }
-        tv.setText("你好，" + name);
+        TextView tv = findViewById(R.id.tv_nick_name);
+        setText(tv, userInfo.getNickname());
+
+        tv = findViewById(R.id.tv_name);
+        setText(tv, userInfo.getName());
+
+        tv = findViewById(R.id.tv_username);
+        setText(tv, userInfo.getUsername());
+
+        tv = findViewById(R.id.tv_phone);
+        setText(tv, userInfo.getPhone_number());
+
+        tv = findViewById(R.id.tv_email);
+        setText(tv, userInfo.getEmail());
+
+
+        TextView tvChangePassword = findViewById(R.id.tv_change_password);
+        tvChangePassword.setOnClickListener((v)->{
+            Intent intent = new Intent(this, ChangePasswordActivity.class);
+            startActivity(intent);
+            finish();
+        });
 
         Button btn = findViewById(R.id.btn_logout);
         btn.setOnClickListener(v -> logout());
@@ -40,5 +54,13 @@ public class MainActivity extends AppCompatActivity {
                 finish();
             }
         });
+    }
+
+    private void setText(TextView tv, String s) {
+        if (Util.isNull(s)) {
+            tv.setText("Unspecified");
+        } else {
+            tv.setText(s);
+        }
     }
 }

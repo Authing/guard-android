@@ -207,6 +207,11 @@ public class LoginButton extends LoadingButton {
                 }
             });
         } else if (code == Const.EC_MFA_REQUIRED) {
+            if (getContext() instanceof AuthActivity) {
+                AuthActivity activity = (AuthActivity) getContext();
+                AuthFlow flow = (AuthFlow) activity.getIntent().getSerializableExtra(AuthActivity.AUTH_FLOW);
+                flow.getData().put(AuthFlow.KEY_USER_INFO, userInfo);
+            }
             FlowHelper.handleMFA(this, userInfo.getMfaData());
         }  else if (code == Const.EC_FIRST_TIME_LOGIN) {
             FlowHelper.handleFirstTimeLogin(this, userInfo);

@@ -4,12 +4,13 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 import cn.authing.guard.network.Guardian;
 
-public class MFAData {
+public class MFAData implements Serializable {
 
     private String mfaToken;
     private String email;

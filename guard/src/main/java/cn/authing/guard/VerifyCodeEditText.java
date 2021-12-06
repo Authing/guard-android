@@ -17,6 +17,7 @@ import android.view.ActionMode;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 
@@ -51,16 +52,18 @@ public class VerifyCodeEditText extends EditTextLayout implements TextWatcher {
 
     public VerifyCodeEditText(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        Authing.getPublicConfig(config -> init(config, context, attrs, defStyleAttr));
+        Authing.getPublicConfig(config -> init(config, context, attrs));
     }
 
-    private void init(Config config, Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
+    private void init(Config config, Context context, @Nullable AttributeSet attrs) {
         if (config != null) {
             maxLength = config.getVerifyCodeLength();
         }
 
         TypedArray array = context.obtainStyledAttributes(attrs, R.styleable.VerifyCodeEditText);
         codeMode = array.getInt(R.styleable.VerifyCodeEditText_codeMode, 0);
+        maxLength = array.getInt(R.styleable.VerifyCodeEditText_digit, maxLength);
+        boolean hyphen = array.getBoolean(R.styleable.VerifyCodeEditText_hyphen, false);
 
         if (codeMode == ENormal) {
             CharSequence s = getEditText().getHint();
@@ -73,9 +76,9 @@ public class VerifyCodeEditText extends EditTextLayout implements TextWatcher {
         } else {
             root.removeAllViews();
 
-            int bw = (int)array.getDimension(R.styleable.VerifyCodeEditText_boxWidth, 128);
-            int bh = (int)array.getDimension(R.styleable.VerifyCodeEditText_boxHeight, 150);
-            int space = (int)array.getDimension(R.styleable.VerifyCodeEditText_boxSpacing, 48);
+            int bw = (int)array.getDimension(R.styleable.VerifyCodeEditText_boxWidth, 108);
+            int bh = (int)array.getDimension(R.styleable.VerifyCodeEditText_boxHeight, 128);
+            int space = (int)array.getDimension(R.styleable.VerifyCodeEditText_boxSpacing, 36);
             int p = space / 2;
             for (int i = 0;i < maxLength;++i) {
                 LayoutParams lp = new LayoutParams(bw, bh);
@@ -93,7 +96,11 @@ public class VerifyCodeEditText extends EditTextLayout implements TextWatcher {
                 editTextList.add(et);
                 root.addView(et);
 
-                et.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 20);
+                if (hyphen && i == maxLength / 2 - 1) {
+                    addHyphenView(bw);
+                }
+
+                et.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 18);
                 et.setInputType(InputType.TYPE_CLASS_NUMBER);
                 et.setTextAlignment(TEXT_ALIGNMENT_CENTER);
                 et.setText(" "); // when text is empty & cursor is hidden, menu will not show on long click
@@ -222,6 +229,15 @@ public class VerifyCodeEditText extends EditTextLayout implements TextWatcher {
         }
 
         array.recycle();
+    }
+
+    private void addHyphenView(int bw) {
+        View hyphenView = new View(getContext());
+        hyphenView.setBackgroundColor(0xFFDDDDDD);
+        int h = (int)Util.dp2px(getContext(), 2);
+        LayoutParams lp = new LayoutParams(bw/3, h);
+        hyphenView.setLayoutParams(lp);
+        root.addView(hyphenView);
     }
 
     @Override

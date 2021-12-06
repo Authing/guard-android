@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.View;
+import android.view.WindowManager;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -50,6 +51,12 @@ public class UserInfoCompleteButton extends LoadingButton {
 
     public UserInfoCompleteButton(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
+        if (!(getContext() instanceof AuthActivity)) {
+            return;
+        }
+        AuthActivity activity = (AuthActivity) getContext();
+        activity.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN
+                | WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
         setOnClickListener((v -> submit()));
     }
 
@@ -258,10 +265,7 @@ public class UserInfoCompleteButton extends LoadingButton {
         }
 
         String[] splits = v.split(":");
-        if (splits.length < 2) {
-            return true;
-        }
-        return false;
+        return splits.length < 2;
     }
 
     private void error(String message) {

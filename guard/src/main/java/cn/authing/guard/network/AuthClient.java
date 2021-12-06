@@ -105,9 +105,7 @@ public class AuthClient {
                             je.printStackTrace();
                         }
                         String loginUrl = "https://" + config.getIdentifier() + "." + Authing.getHost() + "/api/v2/login/account";
-                        Guardian.post(loginUrl, loginBody, (loginData) -> {
-                            createUserInfoFromResponse(loginData, callback);
-                        });
+                        Guardian.post(loginUrl, loginBody, (loginData) -> createUserInfoFromResponse(loginData, callback));
                     } else {
                         callback.call(data.getCode(), data.getMessage(), null);
                     }
@@ -210,7 +208,7 @@ public class AuthClient {
         Authing.getPublicConfig((config -> {
             try {
                 String poolId = config.getUserPoolId();
-                String url = "https://core." + Authing.getHost() + "/connection/social/wechat:mobile/" + poolId + "/callback?code=" + authCode;
+                String url = "https://core." + Authing.getHost() + "/connection/social/wechat:mobile/" + poolId + "/callback?code=" + authCode + "&app_id=" + Authing.getAppId();
                 Guardian.get(url, (data)-> createUserInfoFromResponse(data, callback));
             } catch (Exception e) {
                 e.printStackTrace();
@@ -312,6 +310,51 @@ public class AuthClient {
                 body.put("email", email);
                 body.put("code", code);
                 String url = "https://" + config.getIdentifier() + "." + Authing.getHost() + "/api/v2/applications/mfa/email/verify";
+                Guardian.post(url, body, (data)-> callback.call(data.getCode(), data.getMessage(), data.getData()));
+            } catch (Exception e) {
+                e.printStackTrace();
+                callback.call(500, "Exception", null);
+            }
+        }));
+    }
+
+    public static void mfaVerifyByOTP(String code, @NotNull AuthCallback<JSONObject> callback) {
+        Authing.getPublicConfig((config -> {
+            try {
+                JSONObject body = new JSONObject();
+                body.put("authenticatorType", "totp");
+                body.put("totp", code);
+                String url = "https://" + config.getIdentifier() + "." + Authing.getHost() + "/api/v2/mfa/totp/verify";
+                Guardian.post(url, body, (data)-> callback.call(data.getCode(), data.getMessage(), data.getData()));
+            } catch (Exception e) {
+                e.printStackTrace();
+                callback.call(500, "Exception", null);
+            }
+        }));
+    }
+
+    public static void mfaVerifyByRecoveryCode(String code, @NotNull AuthCallback<JSONObject> callback) {
+        Authing.getPublicConfig((config -> {
+            try {
+                JSONObject body = new JSONObject();
+                body.put("authenticatorType", "totp");
+                body.put("recoveryCode", code);
+                String url = "https://" + config.getIdentifier() + "." + Authing.getHost() + "/api/v2/mfa/totp/recovery";
+                Guardian.post(url, body, (data)-> callback.call(data.getCode(), data.getMessage(), data.getData()));
+            } catch (Exception e) {
+                e.printStackTrace();
+                callback.call(500, "Exception", null);
+            }
+        }));
+    }
+
+    public static void changePassword(String oldPassword, String newPassword, @NotNull AuthCallback<JSONObject> callback) {
+        Authing.getPublicConfig((config -> {
+            try {
+                JSONObject body = new JSONObject();
+                body.put("oldPassword", Util.encryptPassword(oldPassword));
+                body.put("newPassword", Util.encryptPassword(newPassword));
+                String url = "https://" + config.getIdentifier() + "." + Authing.getHost() + "/api/v2/password/update";
                 Guardian.post(url, body, (data)-> callback.call(data.getCode(), data.getMessage(), data.getData()));
             } catch (Exception e) {
                 e.printStackTrace();

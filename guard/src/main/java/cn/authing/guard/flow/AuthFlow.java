@@ -24,6 +24,7 @@ public class AuthFlow implements Serializable {
 
     public static final String KEY_MFA_PHONE = "mfa_phone";
     public static final String KEY_MFA_EMAIL = "mfa_email";
+    public static final String KEY_MFA_RECOVERY_CODE = "mfa_recovery_code";
 
     public static final String KEY_EXTENDED_FIELDS = "extended_fields";
 
@@ -40,6 +41,9 @@ public class AuthFlow implements Serializable {
     private int mfaPhoneCurrentStep;
     private int[] mfaEmailLayoutIds;
     private int mfaEmailCurrentStep; // index starting from 0
+    private int mfaOTPLayoutId;
+    private int[] mfaRecoveryLayoutIds;
+    private int mfaRecoveryCurrentStep;
 
     // user info complete
     private int[] userInfoCompleteLayoutIds;
@@ -218,6 +222,36 @@ public class AuthFlow implements Serializable {
             return new int[]{R.layout.authing_userinfo_complete};
         }
         return userInfoCompleteLayoutIds;
+    }
+
+    public int getMfaOTPLayoutId() {
+        if (mfaOTPLayoutId == 0) {
+            return R.layout.authing_mfa_otp;
+        }
+        return mfaOTPLayoutId;
+    }
+
+    public void setMfaOTPLayoutId(int mfaOTPLayoutId) {
+        this.mfaOTPLayoutId = mfaOTPLayoutId;
+    }
+
+    public int[] getMfaRecoveryLayoutIds() {
+        if (mfaRecoveryLayoutIds == null) {
+            return new int[]{R.layout.authing_mfa_otp_recovery_0, R.layout.authing_mfa_otp_recovery_1};
+        }
+        return mfaRecoveryLayoutIds;
+    }
+
+    public void setMfaRecoveryLayoutIds(int[] mfaRecoveryLayoutIds) {
+        this.mfaRecoveryLayoutIds = mfaRecoveryLayoutIds;
+    }
+
+    public int getMfaRecoveryCurrentStep() {
+        return mfaRecoveryCurrentStep;
+    }
+
+    public void setMfaRecoveryCurrentStep(int mfaRecoveryCurrentStep) {
+        this.mfaRecoveryCurrentStep = mfaRecoveryCurrentStep;
     }
 
     public void setUserInfoCompleteLayoutIds(int[] userInfoCompleteLayoutIds) {

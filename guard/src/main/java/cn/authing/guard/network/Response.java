@@ -7,6 +7,9 @@ public class Response {
     private String message;
     private JSONObject data;
 
+    // work-around. should move this to data
+    private String recoveryCode;
+
     public Response() {}
 
     public Response(int code, String message, JSONObject obj) {
@@ -37,5 +40,13 @@ public class Response {
 
     public void setData(JSONObject data) {
         this.data = data;
+    }
+
+    public String getRecoveryCode() {
+        return recoveryCode;
+    }
+
+    public void setRecoveryCode(String recoveryCode) {
+        this.recoveryCode = recoveryCode;
     }
 }

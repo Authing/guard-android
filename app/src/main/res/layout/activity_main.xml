@@ -1,42 +1,198 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <TextView
-        android:id="@+id/tv_name"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginTop="64dp"
-        android:textColor="@color/authing_main"
-        android:textSize="32sp"
-        android:text=""/>
-
-    <TextView
-        android:id="@+id/tv_welcome"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tv_name"
         android:layout_marginTop="16dp"
-        android:textColor="@color/black"
-        android:textSize="18sp"
-        android:text="欢迎来到 Authing Demo App 主页"/>
+        android:orientation="vertical">
 
-    <Button
-        android:id="@+id/btn_logout"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tv_welcome"
-        android:layout_marginTop="16dp"
-        android:textColor="@color/white"
-        android:textSize="18sp"
-        android:text="登出"/>
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <TextView
+            android:id="@+id/tv_welcome"
+            android:layout_width="wrap_content"
+            android:layout_height="48dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_name"
+            android:textColor="@color/black"
+            android:textSize="18sp"
+            android:layout_gravity="center_horizontal"
+            android:paddingStart="16dp"
+            android:text="欢迎来到 Authing Demo App 主页"/>
+
+        <LinearLayout
+            android:paddingStart="@dimen/authing_form_start_end_margin"
+            android:paddingEnd="@dimen/authing_form_start_end_margin"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="48dp"
+                android:textSize="16sp"
+                android:gravity="center_vertical"
+                android:text="昵称"/>
+            <Space
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
+            <TextView
+                android:id="@+id/tv_nick_name"
+                android:layout_width="wrap_content"
+                android:layout_height="48dp"
+                android:textSize="16sp"
+                android:gravity="center_vertical"
+                android:text=""/>
+        </LinearLayout>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:layout_marginStart="@dimen/authing_form_start_end_margin"
+            android:background="#DDD" />
+
+        <LinearLayout
+            android:paddingStart="@dimen/authing_form_start_end_margin"
+            android:paddingEnd="@dimen/authing_form_start_end_margin"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="48dp"
+                android:textSize="16sp"
+                android:gravity="center_vertical"
+                android:text="姓名"/>
+            <Space
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
+            <TextView
+                android:id="@+id/tv_name"
+                android:layout_width="wrap_content"
+                android:layout_height="48dp"
+                android:textSize="16sp"
+                android:gravity="center_vertical"
+                android:text=""/>
+        </LinearLayout>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:layout_marginStart="@dimen/authing_form_start_end_margin"
+            android:background="#DDD" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:paddingStart="@dimen/authing_form_start_end_margin"
+            android:paddingEnd="@dimen/authing_form_start_end_margin"
+            android:layout_height="wrap_content">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="48dp"
+                android:textSize="16sp"
+                android:gravity="center_vertical"
+                android:text="用户名"/>
+            <Space
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
+            <TextView
+                android:id="@+id/tv_username"
+                android:layout_width="wrap_content"
+                android:layout_height="48dp"
+                android:textSize="16sp"
+                android:gravity="center_vertical"
+                android:text=""/>
+        </LinearLayout>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:layout_marginStart="@dimen/authing_form_start_end_margin"
+            android:background="#DDD" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:paddingStart="@dimen/authing_form_start_end_margin"
+            android:paddingEnd="@dimen/authing_form_start_end_margin"
+            android:layout_height="wrap_content">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="48dp"
+                android:textSize="16sp"
+                android:gravity="center_vertical"
+                android:text="电话"/>
+            <Space
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
+            <TextView
+                android:id="@+id/tv_phone"
+                android:layout_width="wrap_content"
+                android:layout_height="48dp"
+                android:textSize="16sp"
+                android:gravity="center_vertical"
+                android:text=""/>
+        </LinearLayout>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:layout_marginStart="@dimen/authing_form_start_end_margin"
+            android:background="#DDD" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:paddingStart="@dimen/authing_form_start_end_margin"
+            android:paddingEnd="@dimen/authing_form_start_end_margin"
+            android:layout_height="wrap_content">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="48dp"
+                android:textSize="16sp"
+                android:gravity="center_vertical"
+                android:text="邮箱"/>
+            <Space
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
+            <TextView
+                android:id="@+id/tv_email"
+                android:layout_width="wrap_content"
+                android:layout_height="48dp"
+                android:textSize="16sp"
+                android:gravity="center_vertical"
+                android:text=""/>
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:layout_marginStart="@dimen/authing_form_start_end_margin"
+            android:background="#DDD" />
+
+        <TextView
+            android:id="@+id/tv_change_password"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:gravity="center_vertical"
+            android:paddingStart="@dimen/authing_form_start_end_margin"
+            android:textSize="16sp"
+            android:text="修改密码"/>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:layout_marginStart="@dimen/authing_form_start_end_margin"
+            android:background="#DDD" />
+
+        <Button
+            android:id="@+id/btn_logout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/authing_form_start_end_margin"
+            android:layout_marginEnd="@dimen/authing_form_start_end_margin"
+            android:background="@drawable/authing_button_background"
+            android:layout_marginTop="32dp"
+            android:textColor="@color/white"
+            android:text="登出"/>
+    </LinearLayout>
+</ScrollView>

@@ -96,6 +96,16 @@ public class FlowHelper {
         activity.startActivityForResult(intent, AuthActivity.RC_LOGIN);
     }
 
+    public static void handleOTPMFA(AuthActivity activity) {
+        AuthFlow flow = activity.getFlow();
+        int id = flow.getMfaOTPLayoutId();
+
+        Intent intent = new Intent(activity, AuthActivity.class);
+        intent.putExtra(AuthActivity.CONTENT_LAYOUT_ID, id);
+        intent.putExtra(AuthActivity.AUTH_FLOW, flow);
+        activity.startActivityForResult(intent, AuthActivity.RC_LOGIN);
+    }
+
     public static List<ExtendedField> missingFields(Config config, UserInfo userInfo) {
         List<ExtendedField> missingFields = new ArrayList<>();
         List<ExtendedField> fields = config.getExtendedFields();

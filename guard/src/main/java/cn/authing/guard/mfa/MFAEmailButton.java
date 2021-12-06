@@ -1,5 +1,6 @@
-package cn.authing.guard;
+package cn.authing.guard.mfa;
 
+import static cn.authing.guard.activity.AuthActivity.EVENT_VERIFY_CODE_ENTERED;
 import static cn.authing.guard.util.Const.NS_ANDROID;
 
 import android.content.Context;
@@ -15,6 +16,9 @@ import androidx.annotation.Nullable;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import cn.authing.guard.EmailEditText;
+import cn.authing.guard.R;
+import cn.authing.guard.VerifyCodeEditText;
 import cn.authing.guard.activity.AuthActivity;
 import cn.authing.guard.data.UserInfo;
 import cn.authing.guard.flow.AuthFlow;
@@ -22,17 +26,17 @@ import cn.authing.guard.internal.LoadingButton;
 import cn.authing.guard.network.AuthClient;
 import cn.authing.guard.util.Util;
 
-public class MFAPhoneButton extends LoadingButton {
+public class MFAEmailButton extends LoadingButton implements AuthActivity.EventListener {
 
-    public MFAPhoneButton(@NonNull Context context) {
+    public MFAEmailButton(@NonNull Context context) {
         this(context, null);
     }
 
-    public MFAPhoneButton(@NonNull Context context, @Nullable AttributeSet attrs) {
+    public MFAEmailButton(@NonNull Context context, @Nullable AttributeSet attrs) {
         this(context, attrs, R.attr.buttonStyle);
     }
 
-    public MFAPhoneButton(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
+    public MFAEmailButton(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
 
         if (attrs == null || attrs.getAttributeValue(NS_ANDROID, "text") == null) {
@@ -43,13 +47,15 @@ public class MFAPhoneButton extends LoadingButton {
 
         if (context instanceof AuthActivity) {
             setOnClickListener(this::click);
-            AuthActivity activity = (AuthActivity) context;
+            AuthActivity activity = (AuthActivity) getContext();
             AuthFlow flow = activity.getFlow();
-            String phone = (String) flow.getData().get(AuthFlow.KEY_MFA_PHONE);
-            if (!TextUtils.isEmpty(phone)) {
+            String email = (String) flow.getData().get(AuthFlow.KEY_MFA_EMAIL);
+            if (!TextUtils.isEmpty(email)) {
                 startLoadingVisualEffect();
-                AuthClient.sendSms(phone, (code, message, data)-> activity.runOnUiThread(this::stopLoadingVisualEffect));
+                AuthClient.sendMFAEmail(email, (code, message, data) -> activity.runOnUiThread(this::stopLoadingVisualEffect));
             }
+
+            activity.subscribe(EVENT_VERIFY_CODE_ENTERED, this);
         }
     }
 
@@ -63,27 +69,23 @@ public class MFAPhoneButton extends LoadingButton {
 
         View v = Util.findViewByClass(this, VerifyCodeEditText.class);
         if (v != null) {
-            String phone = (String) flow.getData().get(AuthFlow.KEY_MFA_PHONE);
-            VerifyCodeEditText editText = (VerifyCodeEditText)v;
-            String verifyCode = editText.getText().toString();
-            startLoadingVisualEffect();
-            AuthClient.mfaVerifyByPhone(phone, verifyCode, (code, message, data)-> activity.runOnUiThread(()-> mfaDone(code, message, data)));
+            doMFA(v);
         } else {
-            v = Util.findViewByClass(this, PhoneNumberEditText.class);
+            v = Util.findViewByClass(this, EmailEditText.class);
             if (v != null) {
-                PhoneNumberEditText editText = (PhoneNumberEditText) v;
-                String phone = editText.getText().toString();
-                flow.getData().put(AuthFlow.KEY_MFA_PHONE, phone);
+                EmailEditText editText = (EmailEditText) v;
+                String email = editText.getText().toString();
+                flow.getData().put(AuthFlow.KEY_MFA_EMAIL, email);
                 startLoadingVisualEffect();
-                AuthClient.mfaCheck(phone, null, (code, message, data) -> {
+                AuthClient.mfaCheck(null, email, (code, message, data) -> {
                     if (code == 200) {
                         try {
                             boolean ok = data.getBoolean("result");
                             if (ok) {
-                                sendSms(flow, phone);
+                                sendEmail(flow, email);
                             } else {
                                 stopLoadingVisualEffect();
-                                editText.showError(activity.getString(R.string.authing_phone_number_already_bound));
+                                post(()-> editText.showError(activity.getString(R.string.authing_email_already_bound)));
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -99,9 +101,9 @@ public class MFAPhoneButton extends LoadingButton {
         }
     }
 
-    private void sendSms(AuthFlow flow, String phone) {
+    private void sendEmail(AuthFlow flow, String email) {
         AuthActivity activity = (AuthActivity) getContext();
-        AuthClient.sendSms(phone, (code, message, data)-> activity.runOnUiThread(()->{
+        AuthClient.sendMFAEmail(email, (code, message, data)-> activity.runOnUiThread(()->{
             stopLoadingVisualEffect();
             next(flow);
         }));
@@ -110,19 +112,29 @@ public class MFAPhoneButton extends LoadingButton {
     private void next(AuthFlow flow) {
         AuthActivity activity = (AuthActivity) getContext();
 
-        int step = flow.getMfaPhoneCurrentStep();
-        flow.setMfaPhoneCurrentStep(step++);
+        int step = flow.getMfaEmailCurrentStep();
+        flow.setMfaEmailCurrentStep(step++);
 
         Intent intent = new Intent(getContext(), AuthActivity.class);
         intent.putExtra(AuthActivity.AUTH_FLOW, flow);
-        int[] ids = flow.getMfaPhoneLayoutIds();
+        int[] ids = flow.getMfaEmailLayoutIds();
         if (step < ids.length) {
             intent.putExtra(AuthActivity.CONTENT_LAYOUT_ID, ids[step]);
         } else {
             // fallback to our default
-            intent.putExtra(AuthActivity.CONTENT_LAYOUT_ID, R.layout.authing_mfa_phone_1);
+            intent.putExtra(AuthActivity.CONTENT_LAYOUT_ID, R.layout.authing_mfa_email_1);
         }
         activity.startActivityForResult(intent, AuthActivity.RC_LOGIN);
+    }
+
+    private void doMFA(View v) {
+        AuthActivity activity = (AuthActivity) getContext();
+        AuthFlow flow = activity.getFlow();
+        String email = (String) flow.getData().get(AuthFlow.KEY_MFA_EMAIL);
+        VerifyCodeEditText editText = (VerifyCodeEditText)v;
+        String verifyCode = editText.getText().toString();
+        startLoadingVisualEffect();
+        AuthClient.mfaVerifyByEmail(email, verifyCode, (code, message, data)-> activity.runOnUiThread(()-> mfaDone(code, message, data)));
     }
 
     private void mfaDone(int code, String message, JSONObject data) {
@@ -138,10 +150,14 @@ public class MFAPhoneButton extends LoadingButton {
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-        } else if (code == 500 && message.startsWith("duplicate key value violates unique constraint")) {
-            Util.setErrorText(this, "Phone number already bound by another user");
         } else {
             Util.setErrorText(this, message);
         }
+    }
+
+    @Override
+    public void happened(String what) {
+        View v = Util.findViewByClass(this, VerifyCodeEditText.class);
+        doMFA(v);
     }
 }
