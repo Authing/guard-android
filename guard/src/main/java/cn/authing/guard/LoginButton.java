@@ -4,18 +4,13 @@ import static cn.authing.guard.util.Const.NS_ANDROID;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.PorterDuff;
-import android.graphics.PorterDuffColorFilter;
 import android.text.TextUtils;
 import android.util.AttributeSet;
-import android.util.TypedValue;
 import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import cn.authing.guard.activity.AuthActivity;
@@ -24,12 +19,12 @@ import cn.authing.guard.data.ExtendedField;
 import cn.authing.guard.data.UserInfo;
 import cn.authing.guard.flow.AuthFlow;
 import cn.authing.guard.flow.FlowHelper;
-import cn.authing.guard.internal.LoadingButton;
+import cn.authing.guard.internal.PrimaryButton;
 import cn.authing.guard.network.AuthClient;
 import cn.authing.guard.util.Const;
 import cn.authing.guard.util.Util;
 
-public class LoginButton extends LoadingButton {
+public class LoginButton extends PrimaryButton {
 
     private String phoneNumber;
     private String phoneCode;
@@ -49,22 +44,6 @@ public class LoginButton extends LoadingButton {
         if (attrs == null || attrs.getAttributeValue(NS_ANDROID, "text") == null) {
             setText(R.string.authing_login);
         }
-
-        if (attrs == null || attrs.getAttributeValue(NS_ANDROID, "textColor") == null) {
-            setTextColor(0xffffffff);
-        }
-
-        if (attrs == null || attrs.getAttributeValue(NS_ANDROID, "background") == null) {
-            setBackgroundResource(R.drawable.authing_button_background);
-        }
-
-        if (attrs == null || attrs.getAttributeValue(NS_ANDROID, "textSize") == null) {
-            setTextSize(TypedValue.COMPLEX_UNIT_DIP, 16);
-        }
-
-        PorterDuffColorFilter porterDuffColorFilter = new PorterDuffColorFilter(Color.WHITE,
-                PorterDuff.Mode.SRC_ATOP);
-        loading.setColorFilter(porterDuffColorFilter);
 
         setOnClickListener((v -> login()));
     }
@@ -190,7 +169,7 @@ public class LoginButton extends LoadingButton {
                     AuthActivity activity = (AuthActivity) getContext();
                     AuthFlow flow = (AuthFlow) activity.getIntent().getSerializableExtra(AuthActivity.AUTH_FLOW);
                     List<ExtendedField> missingFields = FlowHelper.missingFields(config, userInfo);
-                    if (shouldCompleteAfterLogin(config) && (missingFields != null && missingFields.size() > 0)) {
+                    if (shouldCompleteAfterLogin(config) && missingFields.size() > 0) {
                         flow.getData().put(AuthFlow.KEY_USER_INFO, userInfo);
                         FlowHelper.handleUserInfoComplete(this, missingFields);
                     } else {

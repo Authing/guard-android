@@ -1,5 +1,6 @@
 package cn.authing.guard.data;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
@@ -14,13 +15,15 @@ import java.io.InputStream;
 import cn.authing.guard.R;
 
 public class ImageLoader extends AsyncTask<String, Void, Drawable> {
+    @SuppressLint("StaticFieldLeak")
     private final Context context;
 
     private String url;
+    @SuppressLint("StaticFieldLeak")
     private ImageView imageView;
 
     public ImageLoader(Context context) {
-        this.context = context;
+        this.context = context.getApplicationContext();
     }
 
     public static ImageLoader with(Context context) {

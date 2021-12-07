@@ -14,6 +14,7 @@ import java.util.Objects;
 
 import cn.authing.guard.Authing;
 import cn.authing.guard.data.Config;
+import cn.authing.guard.util.Util;
 import okhttp3.Call;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
@@ -56,6 +57,7 @@ public class Guardian {
         }
         builder.addHeader("x-authing-app-id", Authing.getAppId());
         builder.addHeader("x-authing-request-from", "Guard@Android@" + SDK_VERSION);
+        builder.addHeader("x-authing-lang", Util.getLangHeader());
         if (ACCESS_TOKEN != null) {
             builder.addHeader("Authorization", "Bearer " + ACCESS_TOKEN);
         } else if (MFA_TOKEN != null) {

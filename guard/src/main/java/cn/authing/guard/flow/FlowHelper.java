@@ -6,7 +6,6 @@ import static cn.authing.guard.util.Util.isNull;
 
 import android.content.Context;
 import android.content.Intent;
-import android.text.TextUtils;
 import android.view.View;
 
 import java.util.ArrayList;
@@ -39,7 +38,7 @@ public class FlowHelper {
         // try to find a more convenient way
         for (String option : options) {
             if (MFA_POLICY_SMS.equals(option) && !isNull(data.getPhone())) {
-                handleSMSMFA((AuthActivity) context, currentView, data.getPhone());
+                handleSMSMFA((AuthActivity) context, currentView, data.getPhone(), false);
                 return;
             } else if (MFA_POLICY_EMAIL.equals(option) && !isNull(data.getEmail())) {
                 handleEmailMFA((AuthActivity) context, currentView, data.getEmail());
@@ -57,6 +56,10 @@ public class FlowHelper {
     }
 
     public static void handleSMSMFA(AuthActivity activity, View currentView, String phone) {
+        handleSMSMFA(activity, currentView, phone, false);
+    }
+
+    public static void handleSMSMFA(AuthActivity activity, View currentView, String phone, boolean forwardResult) {
         AuthFlow flow = activity.getFlow();
         int[] ids = flow.getMfaPhoneLayoutIds();
         if (ids == null || ids.length == 0) {
@@ -73,10 +76,19 @@ public class FlowHelper {
             intent.putExtra(AuthActivity.CONTENT_LAYOUT_ID, ids[step]);
         }
         intent.putExtra(AuthActivity.AUTH_FLOW, flow);
-        activity.startActivityForResult(intent, AuthActivity.RC_LOGIN);
+        if (forwardResult) {
+            intent.addFlags(Intent.FLAG_ACTIVITY_FORWARD_RESULT);
+            activity.startActivity(intent);
+        } else {
+            activity.startActivityForResult(intent, AuthActivity.RC_LOGIN);
+        }
     }
 
     public static void handleEmailMFA(AuthActivity activity, View currentView, String email) {
+        handleEmailMFA(activity, currentView, email, false);
+    }
+
+    public static void handleEmailMFA(AuthActivity activity, View currentView, String email, boolean forwardResult) {
         AuthFlow flow = activity.getFlow();
         int[] ids = flow.getMfaEmailLayoutIds();
         if (ids == null || ids.length == 0) {
@@ -93,7 +105,12 @@ public class FlowHelper {
             intent.putExtra(AuthActivity.CONTENT_LAYOUT_ID, ids[step]);
         }
         intent.putExtra(AuthActivity.AUTH_FLOW, flow);
-        activity.startActivityForResult(intent, AuthActivity.RC_LOGIN);
+        if (forwardResult) {
+            intent.addFlags(Intent.FLAG_ACTIVITY_FORWARD_RESULT);
+            activity.startActivity(intent);
+        } else {
+            activity.startActivityForResult(intent, AuthActivity.RC_LOGIN);
+        }
     }
 
     public static void handleOTPMFA(AuthActivity activity) {
@@ -103,7 +120,8 @@ public class FlowHelper {
         Intent intent = new Intent(activity, AuthActivity.class);
         intent.putExtra(AuthActivity.CONTENT_LAYOUT_ID, id);
         intent.putExtra(AuthActivity.AUTH_FLOW, flow);
-        activity.startActivityForResult(intent, AuthActivity.RC_LOGIN);
+        intent.addFlags(Intent.FLAG_ACTIVITY_FORWARD_RESULT);
+        activity.startActivity(intent);
     }
 
     public static List<ExtendedField> missingFields(Config config, UserInfo userInfo) {

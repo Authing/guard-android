@@ -13,6 +13,7 @@ import android.widget.ListView;
 
 import cn.authing.abao.AbaoActivity;
 import cn.authing.appauth.AppAuthActivity;
+import cn.authing.guard.Authing;
 import cn.authing.guard.data.UserInfo;
 import cn.authing.guard.flow.AuthFlow;
 import cn.authing.nissan.NissanVirtualKeyLoginActivity;
@@ -34,7 +35,9 @@ public class SampleListActivity extends AppCompatActivity {
             "阿宝说",
             "Nissan Virtual Key",
             "AppAuth",
-            "Authing WebView"
+            "Authing WebView",
+            "MFA",
+            "登录/注册后用户信息完善"
     };
 
     @Override
@@ -76,6 +79,12 @@ public class SampleListActivity extends AppCompatActivity {
             } else if (pos == 8) {
                 Intent intent = new Intent(SampleListActivity.this, AuthingWebViewActivity.class);
                 startActivity(intent);
+            } else if (pos == 9) {
+                Authing.init(SampleListActivity.this, "610932784e4bb719b5787ad7");
+                AuthFlow.start(this);
+            } else if (pos == 10) {
+                Authing.init(SampleListActivity.this, "61ae0c9807451d6f30226bd4");
+                AuthFlow.start(this);
             }
         });
     }

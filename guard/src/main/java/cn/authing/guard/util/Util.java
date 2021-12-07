@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Random;
@@ -255,5 +256,10 @@ public class Util {
             e.printStackTrace();
         }
         return countries;
+    }
+
+    public static String getLangHeader() {
+        String lang = Locale.getDefault().getLanguage();
+        return (!Util.isNull(lang) && lang.contains("zh")) ? "zh-CN" : "en-US";
     }
 }

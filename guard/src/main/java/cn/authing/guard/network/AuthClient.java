@@ -241,6 +241,22 @@ public class AuthClient {
         }));
     }
 
+    public static void loginByOneClick(String token, String accessToken, @NotNull AuthCallback<UserInfo> callback) {
+        Authing.getPublicConfig((config -> {
+            try {
+                JSONObject body = new JSONObject();
+                body.put("token", token);
+                body.put("accessToken", accessToken);
+//                String url = "https://core." + Authing.getHost() + "/";
+                String url = "https://developer-beta.authing.cn/stats/ydtoken";
+                Guardian.post(url, body, (data)-> createUserInfoFromResponse(data, callback));
+            } catch (Exception e) {
+                e.printStackTrace();
+                callback.call(500, "Exception", null);
+            }
+        }));
+    }
+
     public static void bindEmail(String email, String code, @NotNull AuthCallback<JSONObject> callback) {
         Authing.getPublicConfig((config -> {
             try {

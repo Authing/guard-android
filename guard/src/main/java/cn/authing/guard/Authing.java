@@ -64,6 +64,7 @@ public class Authing {
 
     private static void requestPublicConfig() {
         isGettingConfig = true;
+        publicConfig = null;
         new Thread() {
             public void run() {
                 _requestPublicConfig();

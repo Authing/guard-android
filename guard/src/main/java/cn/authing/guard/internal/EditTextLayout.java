@@ -1,10 +1,14 @@
 package cn.authing.guard.internal;
 
+import static cn.authing.guard.util.Const.NS_ANDROID;
+
 import android.animation.ValueAnimator;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.RectF;
 import android.graphics.drawable.Drawable;
 import android.text.Editable;
 import android.text.TextUtils;
@@ -16,6 +20,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.DecelerateInterpolator;
+import android.view.animation.Interpolator;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -45,6 +50,9 @@ public class EditTextLayout extends LinearLayout implements TextWatcher, View.On
     protected boolean errorEnabled;
     protected TextView errorTextView;
     protected String errorText = "";
+
+    protected ValueAnimator fadeInAnimator;
+    boolean clearEditTextBg = false;
 
     protected static final int ICON_LEFT_RIGHT_MARGIN = 8;
     protected static final int LEFT_PADDING = 4;
@@ -91,6 +99,7 @@ public class EditTextLayout extends LinearLayout implements TextWatcher, View.On
 //        int inputType = array.getInt(R.styleable.EditTextLayout_android_inputType, 0x00000001);
 
         setWillNotDraw(false);
+        setClipChildren(false);
 
         root = new RootContainer(context);
         addView(root);
@@ -108,7 +117,19 @@ public class EditTextLayout extends LinearLayout implements TextWatcher, View.On
         // Intrinsically, setting background of *EditText should set our root's background
         // which includes left icon, input box, right icon, clear all button while excludes error text
         Drawable bgParent = getBackground();
-        root.setBackground(bgParent);
+        if (attrs != null) {
+            String bgValue = attrs.getAttributeValue(NS_ANDROID, "background");
+            if ("@0".equals(bgValue)) {
+                // authing native mode
+                root.setBackground(null);
+                clearEditTextBg = true;
+            } else {
+                root.setBackground(bgParent);
+                if (bgParent != null) {
+                    clearEditTextBg = true;
+                }
+            }
+        }
         setBackground(null);
 
         if (GlobalStyle.isIsEditTextLayoutBackgroundSet()) {
@@ -136,8 +157,7 @@ public class EditTextLayout extends LinearLayout implements TextWatcher, View.On
         }
 
         editText = new AppCompatEditText(context);
-        if (bgParent != null) {
-            // use parent's background as root's. clear EditText's bg
+        if (clearEditTextBg) {
             editText.setBackground(null);
         }
         editText.setTextSize(TypedValue.COMPLEX_UNIT_PX, textSize);
@@ -288,6 +308,15 @@ public class EditTextLayout extends LinearLayout implements TextWatcher, View.On
                 moveHintDown();
             }
         }
+        if (root.getBackground() == null) {
+            if (hasFocus) {
+                fadeInAnimator = ValueAnimator.ofFloat(0, 1f);
+                fadeInAnimator.setDuration(200);
+                fadeInAnimator.setInterpolator(new DecelerateInterpolator());
+                fadeInAnimator.start();
+            }
+            root.invalidate();
+        }
     }
 
     private void moveHintUp() {
@@ -337,6 +366,10 @@ public class EditTextLayout extends LinearLayout implements TextWatcher, View.On
 
     private class RootContainer extends LinearLayout {
 
+        Paint bgPaint;
+        Paint outlinePaint;
+        int corner;
+
         public RootContainer(Context context) {
             this(context, null);
         }
@@ -351,11 +384,52 @@ public class EditTextLayout extends LinearLayout implements TextWatcher, View.On
 
         public RootContainer(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
             super(context, attrs, defStyleAttr, defStyleRes);
+            corner = (int) Util.dp2px(getContext(), 4);
+        }
+
+        private void drawAnimatedBackground(Canvas canvas) {
+            if (bgPaint == null) {
+                bgPaint = new Paint();
+                outlinePaint = new Paint();
+            }
+            if (editText.hasFocus()) {
+                bgPaint.setColor(Color.WHITE);
+            } else {
+                bgPaint.setColor(0xfff4f5f6);
+            }
+            canvas.drawRoundRect(0, 0, getRight(), getBottom(), corner, corner, bgPaint);
+
+            if (fadeInAnimator != null && fadeInAnimator.isRunning()) {
+                float v = (float) fadeInAnimator.getAnimatedValue();
+                drawFocusOutline(canvas, v);
+                invalidate();
+            } else if (editText.hasFocus()) {
+                drawFocusOutline(canvas, 1);
+            }
+        }
+
+        private void drawFocusOutline(Canvas canvas, float v) {
+            canvas.save();
+            int pix = (int) Util.dp2px(getContext(), 2 * v);
+            Paint p = outlinePaint;
+            p.setColor(0xffd2dbfc);
+            p.setStyle(Paint.Style.STROKE);
+            p.setStrokeWidth(pix);
+
+            p.setAlpha((int) (v * 255));
+            canvas.drawRoundRect(new RectF(-pix/2, -pix/2, getRight() + pix/2, getBottom() + pix/2), corner, corner, p);
+
+            p.setColor(getContext().getColor(R.color.authing_main));
+            p.setStrokeWidth((int) Util.dp2px(getContext(), 1));
+            canvas.drawRoundRect(new RectF(0, 0, getRight(), getBottom()), corner, corner, p);
+            canvas.restore();
         }
 
         @Override
-        protected void onDraw(Canvas canvas) {
-            super.onDraw(canvas);
+        protected void dispatchDraw(Canvas canvas) {
+            if (getBackground() == null && clearEditTextBg)
+                drawAnimatedBackground(canvas);
+
             if (hintMode == EAnimated) {
                 hintText = editText.getHint();
                 if (TextUtils.isEmpty(hintText)) {
@@ -390,6 +464,8 @@ public class EditTextLayout extends LinearLayout implements TextWatcher, View.On
 
                 canvas.restore();
             }
+
+            super.dispatchDraw(canvas);
         }
     }
 }

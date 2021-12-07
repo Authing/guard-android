@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:clipChildren="false"
     android:orientation="vertical">
 
     <cn.authing.guard.AppLogo
@@ -38,14 +39,15 @@
 
     <cn.authing.guard.LoginContainer
         app:type="phoneCode"
+        android:clipChildren="false"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/authing_form_start_end_margin"
         android:layout_marginEnd="@dimen/authing_form_start_end_margin"
         android:layout_marginTop="16dp">
         <cn.authing.guard.PhoneNumberEditText
-            android:background="@drawable/authing_edit_text_layout_background"
             app:leftIconDrawable="@drawable/ic_authing_cellphone"
+            android:background="@null"
             app:errorEnabled="true"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
@@ -53,24 +55,30 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
+            android:clipChildren="false"
             android:gravity="center_vertical">
             <cn.authing.guard.VerifyCodeEditText
-                android:background="@drawable/authing_edit_text_layout_background"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:background="@null"
                 app:errorEnabled="false"
                 app:leftIconDrawable="@drawable/ic_authing_shield_check"/>
             <cn.authing.guard.GetVerifyCodeButton
+                android:stateListAnimator="@null"
+                android:background="@drawable/authing_get_code_button_background"
                 android:layout_width="wrap_content"
                 android:layout_height="42dp"
                 android:layout_marginStart="4dp"
+                android:paddingStart="4dp"
+                android:paddingEnd="4dp"
                 android:textColor="@color/button_text" />
         </LinearLayout>
     </cn.authing.guard.LoginContainer>
 
     <cn.authing.guard.LoginContainer
         app:type="accountPassword"
+        android:clipChildren="false"
         android:visibility="invisible"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -78,15 +86,15 @@
         android:layout_marginEnd="@dimen/authing_form_start_end_margin"
         android:layout_marginTop="16dp">
         <cn.authing.guard.AccountEditText
-            android:background="@drawable/authing_edit_text_layout_background"
             app:leftIconDrawable="@drawable/ic_authing_user"
             app:errorEnabled="true"
+            android:background="@null"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
         <cn.authing.guard.PasswordEditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/authing_edit_text_layout_background"
+            android:background="@null"
             app:leftIconDrawable="@drawable/ic_authing_password"
             app:clearAllEnabled="false"
             app:errorEnabled="false"
@@ -118,6 +126,10 @@
             android:id="@+id/tv_reset_password"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:gravity="start|center_vertical"
+            android:paddingLeft="0dp"
+            android:paddingRight="0dp"
+            android:minWidth="0dp"
             android:textColor="@color/authing_main"
             android:text="@string/authing_forgot_password" />
         <Space
@@ -130,7 +142,11 @@
             android:text="@string/authing_tip_no_account" />
         <cn.authing.guard.GoRegisterButton
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:paddingLeft="8dp"
+            android:paddingRight="0dp"
+            android:minWidth="0dp"
+            android:gravity="end|center_vertical" />
     </LinearLayout>
 
     <Space

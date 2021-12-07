@@ -135,10 +135,10 @@ public class MFAListView extends LinearLayout implements View.OnClickListener {
         String option = (String) v.getTag();
         switch (option) {
             case MFA_POLICY_SMS:
-                FlowHelper.handleSMSMFA(activity, this, mfaData.getPhone());
+                FlowHelper.handleSMSMFA(activity, this, mfaData.getPhone(), true);
                 break;
             case MFA_POLICY_EMAIL:
-                FlowHelper.handleEmailMFA(activity, this, mfaData.getEmail());
+                FlowHelper.handleEmailMFA(activity, this, mfaData.getEmail(), true);
                 break;
             case MFA_POLICY_OTP:
                 FlowHelper.handleOTPMFA(activity);
@@ -147,6 +147,6 @@ public class MFAListView extends LinearLayout implements View.OnClickListener {
                 break;
         }
 
-//        activity.finish();
+        activity.finish();
     }
 }

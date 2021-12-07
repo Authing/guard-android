@@ -1,6 +1,7 @@
 package cn.authing;
 
 import cn.authing.guard.Authing;
+import cn.authing.guard.oneclick.OneClick;
 import cn.authing.guard.social.Alipay;
 import cn.authing.guard.social.WeCom;
 import cn.authing.guard.social.Wechat;
@@ -18,6 +19,9 @@ public class App extends android.app.Application {
         WeCom.corpId = "ww2fe68893d538b6c1";
         WeCom.agentId = "1000003";
         WeCom.schema = "wwauth2fe68893d538b6c1000003";
+
+        // one click
+        OneClick.bizId = "74ae90bd84f74b69a88b578bbbbcdcfd";
 
         Authing.init(getApplicationContext(), "60caaf41df670b771fd08937");
     }
