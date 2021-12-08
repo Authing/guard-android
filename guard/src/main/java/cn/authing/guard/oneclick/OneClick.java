@@ -4,6 +4,9 @@ import android.app.Activity;
 import android.content.Context;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
+import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -13,6 +16,8 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
+import androidx.annotation.NonNull;
+
 import com.netease.nis.quicklogin.QuickLogin;
 import com.netease.nis.quicklogin.helper.UnifyUiConfig;
 import com.netease.nis.quicklogin.listener.QuickLoginPreMobileListener;
@@ -20,6 +25,9 @@ import com.netease.nis.quicklogin.listener.QuickLoginTokenListener;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.io.Serializable;
+
+import cn.authing.guard.AuthCallback;
 import cn.authing.guard.Authing;
 import cn.authing.guard.R;
 import cn.authing.guard.data.ImageLoader;
@@ -29,43 +37,54 @@ import cn.authing.guard.network.AuthClient;
 import cn.authing.guard.social.SocialLoginListView;
 import cn.authing.guard.util.Util;
 
-public class OneClick {
+public class OneClick implements Serializable {
 
     private static final String TAG = "OneClickAuthButton";
+    private static final int MSG_LOGIN = 1;
 
     public static String bizId;
 
-    private OneClickCallback callback;
+    private final Context context;
+    private final Handler handler;
+    private UnifyUiConfig config;
+    private AuthCallback<UserInfo> callback;
     private QuickLogin quickLogin;
 
     private int screenWidth; // dp
 
-    public interface OneClickCallback {
-        void call(int code, String message, UserInfo userInfo);
+    public OneClick(Context context) {
+        this.context = context;
+        handler = new Handler(Looper.getMainLooper()) {
+            @Override
+            public void handleMessage(@NonNull Message msg) {
+                if (msg.what == MSG_LOGIN)
+                    startLogin();
+            }
+        };
     }
 
-    private Context getContext() {
-        return Authing.getAppContext();
+    public void start(@NotNull AuthCallback<UserInfo> callback) {
+        start(bizId, null, callback);
     }
 
-    public void start(String bid, @NotNull OneClickCallback callback) {
+    public void start(UnifyUiConfig config, @NotNull AuthCallback<UserInfo> callback) {
+        start(bizId, config, callback);
+    }
+
+    public void start(String bid, UnifyUiConfig config, @NotNull AuthCallback<UserInfo> callback) {
         String _bid = TextUtils.isEmpty(bid) ? bizId : bid;
+        this.config = config;
         this.callback = callback;
 
         getAndroidScreenProperty();
 
-        quickLogin = QuickLogin.getInstance(getContext(), _bid);
+        quickLogin = QuickLogin.getInstance(context, _bid);
         quickLogin.prefetchMobileNumber(new QuickLoginPreMobileListener() {
             @Override
             public void onGetMobileNumberSuccess(String YDToken, String mobileNumber) {
                 //预取号成功
                 Log.d(TAG, "Got phone:" + mobileNumber);
-                try {
-                    Thread.sleep(1000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-                startLogin();
+                handler.sendEmptyMessageDelayed(MSG_LOGIN, 1000);
             }
 
             @Override
@@ -77,35 +96,50 @@ public class OneClick {
     }
 
     private void startLogin() {
+        if (config != null) {
+            quickLogin.setUnifyUiConfig(config);
+            startOnePass();
+            return;
+        }
+
         Authing.getPublicConfig((config)->{
             if (config == null) {
                 return;
             }
 
             String url = config.getUserpoolLogo();
-            new ImageLoader(getContext()) {
+            new ImageLoader(context) {
                 @Override
                 public void onPostExecute(Drawable result) {
                     config(result);
-                    quickLogin.onePass(new QuickLoginTokenListener() {
-                        @Override
-                        public void onGetTokenSuccess(String YDToken, String accessCode) {
-                            quickLogin.quitActivity();
-                            //一键登录成功 运营商token：accessCode获取成功
-                            //拿着获取到的运营商token二次校验（建议放在自己的服务端）
-                            Log.e(TAG, "onGetTokenSuccess:" + accessCode);
-                            authingLogin(YDToken, accessCode);
-                        }
-
-                        @Override
-                        public void onGetTokenError(String YDToken, String msg) {
-                            quickLogin.quitActivity();
-                            Log.e(TAG, "onGetTokenError:" + msg);
-                            callback.call(500, msg, null);
-                        }
-                    });
+                    startOnePass();
                 }
             }.execute(url);
+        });
+    }
+
+    private void startOnePass() {
+        quickLogin.onePass(new QuickLoginTokenListener() {
+            @Override
+            public void onGetTokenSuccess(String YDToken, String accessCode) {
+                quickLogin.quitActivity();
+                //一键登录成功 运营商token：accessCode获取成功
+                //拿着获取到的运营商token二次校验（建议放在自己的服务端）
+                Log.e(TAG, "onGetTokenSuccess:" + accessCode);
+                authingLogin(YDToken, accessCode);
+            }
+
+            @Override
+            public void onGetTokenError(String YDToken, String msg) {
+                quickLogin.quitActivity();
+                Log.e(TAG, "onGetTokenError:" + msg);
+                callback.call(500, msg, null);
+            }
+
+            @Override
+            public void onCancelGetToken() {
+                callback.call(201, null, null);
+            }
         });
     }
 
@@ -114,7 +148,7 @@ public class OneClick {
     }
 
     private void getAndroidScreenProperty() {
-        WindowManager wm = (WindowManager) getContext().getSystemService(Context.WINDOW_SERVICE);
+        WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
         DisplayMetrics dm = new DisplayMetrics();
         wm.getDefaultDisplay().getMetrics(dm);
         //px
@@ -135,40 +169,45 @@ public class OneClick {
     }
 
     private void config(Drawable logo) {
-        Drawable mainColorDrawable = new ColorDrawable(Util.getThemeAccentColor(getContext()));
+        Drawable mainColorDrawable = new ColorDrawable(Util.getThemeAccentColor(context));
 
         int bottomMargin = 300;
-        int topMargin = 16;
-        RelativeLayout otherLoginRel = new RelativeLayout(getContext());
+        int topMargin = (int)Util.dp2px(context, 16);
+        RelativeLayout otherLoginRel = new RelativeLayout(context);
         RelativeLayout.LayoutParams layoutParamsOther = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
         layoutParamsOther.setMargins(0, topMargin, 0, 0);
         layoutParamsOther.addRule(RelativeLayout.CENTER_HORIZONTAL);
         layoutParamsOther.addRule(RelativeLayout.BELOW, R.id.oauth_login);
         otherLoginRel.setLayoutParams(layoutParamsOther);
 
-        Button other = new Button(getContext());
+        Button other = new Button(context);
         LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        int m = (int) Util.dp2px(getContext(), 24);
+        int m = (int) Util.dp2px(context, 24);
         lp.setMargins(m, 0, m, 0);
         other.setLayoutParams(lp);
         otherLoginRel.addView(other);
-//        int tpInDp = 320 + 48 + 8;
-//        int tp = (int)Util.dp2px(getContext(), tpInDp);
-//        ll.setPadding(m, tp, m, 0);
-        other.setText("其他方式登录");
+        other.setText(context.getString(R.string.authing_other_login));
+        other.setStateListAnimator(null);
         other.setTextColor(0xff545968);
         other.setBackgroundColor(0xffF5F6F7);
-        other.setMinimumWidth((int)Util.dp2px(getContext(), screenWidth - 24*2));
-        other.setMinimumHeight((int)Util.dp2px(getContext(), 48));
-        other.setOnClickListener((v)-> AuthFlow.start((Activity) getContext()));
+        other.setMinimumWidth((int)Util.dp2px(context, screenWidth - 24*2));
+        other.setMinimumHeight((int)Util.dp2px(context, 48));
+        other.setOnClickListener((v)-> {
+            quickLogin.quitActivity();
+            AuthFlow.start((Activity) context);
+        });
 
-        RelativeLayout socialRel = new RelativeLayout(getContext());
+        RelativeLayout socialRel = new RelativeLayout(context);
         RelativeLayout.LayoutParams layoutParamsSocial = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-        layoutParamsSocial.setMargins(0, 0, 0, (int)Util.dp2px(getContext(), 100));
+        layoutParamsSocial.setMargins(0, 0, 0, (int)Util.dp2px(context, 100));
         layoutParamsSocial.addRule(RelativeLayout.CENTER_HORIZONTAL);
         layoutParamsSocial.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
         socialRel.setLayoutParams(layoutParamsSocial);
-        SocialLoginListView slv = new SocialLoginListView(getContext());
+        SocialLoginListView slv = new SocialLoginListView(context);
+        slv.setOnLoginListener(((code, message, userInfo) -> {
+            quickLogin.quitActivity();
+            callback.call(code, message, userInfo);
+        }));
         socialRel.addView(slv);
 
         UnifyUiConfig c = new UnifyUiConfig.Builder()
@@ -178,7 +217,7 @@ public class OneClick {
                 .setMaskNumberTopYOffset(250)
                 .setSloganColor(0)
                 .setSloganBottomYOffset(1000)
-                .setLoginBtnText("本机号码一键登录")
+                .setLoginBtnText(context.getString(R.string.authing_current_phone_login))
                 .setLoginBtnTopYOffset(320)
                 .setLoginBtnWidth(screenWidth - 24*2)
                 .setLoginBtnHeight(48)
@@ -186,7 +225,7 @@ public class OneClick {
                 .addCustomView(otherLoginRel, "otherBtn", UnifyUiConfig.POSITION_IN_BODY, null)
                 .addCustomView(socialRel, "socialList", UnifyUiConfig.POSITION_IN_BODY, null)
                 .setPrivacyBottomYOffset(bottomMargin - 28 - 8)
-                .build(getContext());
+                .build(context);
         quickLogin.setUnifyUiConfig(c);
     }
 }

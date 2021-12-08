@@ -36,8 +36,8 @@ public class OneClickAuthButton extends PrimaryButton {
 
         setOnClickListener((v)->{
             startLoadingVisualEffect();
-            oneClick = new OneClick();
-            oneClick.start("", (code, message, userInfo)->{
+            oneClick = new OneClick(context);
+            oneClick.start((code, message, userInfo)->{
                 stopLoadingVisualEffect();
                 if (code == 200 && userInfo != null) {
                     Intent intent = new Intent();

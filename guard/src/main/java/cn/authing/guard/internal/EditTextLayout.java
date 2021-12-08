@@ -20,7 +20,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.DecelerateInterpolator;
-import android.view.animation.Interpolator;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -57,7 +56,8 @@ public class EditTextLayout extends LinearLayout implements TextWatcher, View.On
     protected static final int ICON_LEFT_RIGHT_MARGIN = 8;
     protected static final int LEFT_PADDING = 4;
     protected static final int TOP_PADDING = 4; // in dp
-    protected static final int DURATION = 167;
+    protected static final int HINT_ANIM_DURATION = 167;
+    protected static final int FOCUS_ANIM_DURATION = 300;
     protected float leftPaddingPx;
     protected float topPaddingPx;
     protected float hintUpY;
@@ -311,7 +311,7 @@ public class EditTextLayout extends LinearLayout implements TextWatcher, View.On
         if (root.getBackground() == null) {
             if (hasFocus) {
                 fadeInAnimator = ValueAnimator.ofFloat(0, 1f);
-                fadeInAnimator.setDuration(200);
+                fadeInAnimator.setDuration(FOCUS_ANIM_DURATION);
                 fadeInAnimator.setInterpolator(new DecelerateInterpolator());
                 fadeInAnimator.start();
             }
@@ -335,11 +335,11 @@ public class EditTextLayout extends LinearLayout implements TextWatcher, View.On
         hintUpY = topPaddingPx + th - d;
         hintDownY = (h + th)/2 - d;
         hintYAnimator = ValueAnimator.ofFloat(hintDownY, hintUpY);
-        hintYAnimator.setDuration(DURATION);
+        hintYAnimator.setDuration(HINT_ANIM_DURATION);
         hintYAnimator.start();
 
         hintSizeAnimator = ValueAnimator.ofFloat(editText.getTextSize(), hintUpSize);
-        hintSizeAnimator.setDuration(DURATION);
+        hintSizeAnimator.setDuration(HINT_ANIM_DURATION);
         hintSizeAnimator.setInterpolator(new DecelerateInterpolator());
         hintSizeAnimator.start();
         invalidate();
@@ -355,11 +355,11 @@ public class EditTextLayout extends LinearLayout implements TextWatcher, View.On
         hintUpY = topPaddingPx + th - d;
         hintDownY = (h + th)/2 - d;
         hintYAnimator = ValueAnimator.ofFloat(hintUpY, hintDownY);
-        hintYAnimator.setDuration(DURATION);
+        hintYAnimator.setDuration(HINT_ANIM_DURATION);
         hintYAnimator.start();
 
         hintSizeAnimator = ValueAnimator.ofFloat(hintUpSize, editText.getTextSize());
-        hintSizeAnimator.setDuration(DURATION);
+        hintSizeAnimator.setDuration(HINT_ANIM_DURATION);
         hintSizeAnimator.setInterpolator(new AccelerateInterpolator());
         hintSizeAnimator.start();
     }

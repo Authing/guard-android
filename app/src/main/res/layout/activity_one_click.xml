@@ -9,13 +9,13 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:paddingStart="@dimen/authing_form_start_end_margin"
         android:paddingEnd="@dimen/authing_form_start_end_margin"
-        android:layout_marginTop="56dp"
+        android:layout_gravity="center_vertical"
         android:orientation="vertical">
 
-        <TextView
+        <cn.authing.guard.ErrorTextView
             android:id="@+id/tv_tip"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -23,33 +23,10 @@
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toTopOf="parent"/>
 
-        <TextView
-            android:layout_marginTop="32dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Business ID"/>
-        <EditText
-            android:id="@+id/et_biz_id"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
-
-        <TextView
-            android:layout_marginTop="32dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Authing URL"/>
-        <EditText
-            android:id="@+id/et_url"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
-
-        <cn.authing.guard.LoginButton
-            android:id="@+id/btn_one_click"
-            android:layout_marginTop="16dp"
-            android:background="@color/authing_main"
+        <cn.authing.guard.oneclick.OneClickAuthButton
+            android:background="@drawable/authing_button_background"
             android:textColor="@color/white"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="手机号一键登录" />
+            android:layout_height="wrap_content" />
     </LinearLayout>
 </FrameLayout>

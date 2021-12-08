@@ -1,173 +1,183 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:clipChildren="false"
+    android:fillViewport="true"
     android:orientation="vertical">
-
-    <cn.authing.guard.AppLogo
-        android:layout_width="48dp"
-        android:layout_height="48dp"
-        android:layout_marginStart="@dimen/authing_form_start_end_margin"
-        android:layout_marginTop="64dp" />
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:layout_marginStart="@dimen/authing_form_start_end_margin">
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@color/authing_app_name"
-            android:textStyle="bold"
-            android:textSize="24sp"
-            android:text="@string/authing_welcome_to"/>
-        <cn.authing.guard.AppName
-            android:layout_marginStart="8dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-    </LinearLayout>
-
-    <cn.authing.guard.RegisterMethodTab
-        android:layout_width="match_parent"
-        android:layout_height="52dp"
-        android:layout_marginTop="32dp"
-        android:layout_marginStart="@dimen/authing_form_start_end_margin"
-        android:layout_marginEnd="@dimen/authing_form_start_end_margin" />
-
-    <cn.authing.guard.RegisterContainer
-        app:type="phoneCodePassword"
         android:clipChildren="false"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/authing_form_start_end_margin"
-        android:layout_marginEnd="@dimen/authing_form_start_end_margin"
-        android:layout_marginTop="16dp">
-        <cn.authing.guard.PhoneNumberEditText
-            android:background="@null"
-            app:leftIconDrawable="@drawable/ic_authing_cellphone"
-            app:errorEnabled="true"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
-        <cn.authing.guard.PasswordEditText
-            android:background="@null"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:leftIconDrawable="@drawable/ic_authing_password"
-            app:clearAllEnabled="false"
-            app:errorEnabled="true"
-            android:layout_marginTop="4dp"/>
-        <cn.authing.guard.PasswordConfirmEditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@null"
-            app:leftIconDrawable="@drawable/ic_authing_password"
-            app:clearAllEnabled="false"
-            app:errorEnabled="true"
-            android:layout_marginTop="4dp"/>
+        android:orientation="vertical">
+
+        <cn.authing.guard.AppLogo
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_marginStart="@dimen/authing_form_start_end_margin"
+            android:layout_marginTop="64dp" />
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginStart="@dimen/authing_form_start_end_margin">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/authing_app_name"
+                android:textStyle="bold"
+                android:textSize="24sp"
+                android:text="@string/authing_welcome_to"/>
+            <cn.authing.guard.AppName
+                android:layout_marginStart="8dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+
+        <cn.authing.guard.RegisterMethodTab
+            android:layout_width="match_parent"
+            android:layout_height="52dp"
+            android:layout_marginTop="32dp"
+            android:layout_marginStart="@dimen/authing_form_start_end_margin"
+            android:layout_marginEnd="@dimen/authing_form_start_end_margin" />
+
+        <cn.authing.guard.RegisterContainer
+            app:type="phoneCodePassword"
             android:clipChildren="false"
-            android:layout_marginTop="4dp"
-            android:gravity="center_vertical">
-            <cn.authing.guard.VerifyCodeEditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/authing_form_start_end_margin"
+            android:layout_marginEnd="@dimen/authing_form_start_end_margin"
+            android:layout_marginTop="16dp">
+            <cn.authing.guard.PhoneNumberEditText
+                android:background="@null"
+                app:leftIconDrawable="@drawable/ic_authing_cellphone"
+                app:errorEnabled="true"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+            <cn.authing.guard.PasswordEditText
+                android:background="@null"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:leftIconDrawable="@drawable/ic_authing_password"
+                app:clearAllEnabled="false"
+                app:errorEnabled="true"
+                android:layout_marginTop="4dp"/>
+            <cn.authing.guard.PasswordConfirmEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@null"
+                app:leftIconDrawable="@drawable/ic_authing_password"
+                app:clearAllEnabled="false"
+                app:errorEnabled="true"
+                android:layout_marginTop="4dp"/>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:clipChildren="false"
+                android:layout_marginTop="4dp"
+                android:gravity="center_vertical">
+                <cn.authing.guard.VerifyCodeEditText
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@null"
+                    app:errorEnabled="false"
+                    app:leftIconDrawable="@drawable/ic_authing_shield_check"/>
+                <cn.authing.guard.GetVerifyCodeButton
+                    android:stateListAnimator="@null"
+                    android:background="@drawable/authing_get_code_button_background"
+                    android:layout_width="wrap_content"
+                    android:layout_height="42dp"
+                    android:paddingStart="4dp"
+                    android:paddingEnd="4dp"
+                    android:layout_marginStart="4dp"
+                    android:textColor="@color/button_text" />
+            </LinearLayout>
+        </cn.authing.guard.RegisterContainer>
+
+        <cn.authing.guard.RegisterContainer
+            app:type="emailPassword"
+            android:clipChildren="false"
+            android:visibility="invisible"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/authing_form_start_end_margin"
+            android:layout_marginEnd="@dimen/authing_form_start_end_margin"
+            android:layout_marginTop="16dp">
+            <cn.authing.guard.EmailEditText
+                app:pageType="register"
+                app:errorEnabled="true"
+                android:background="@null"
+                app:leftIconDrawable="@drawable/ic_authing_user"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+            <cn.authing.guard.PasswordEditText
+                android:background="@null"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:leftIconDrawable="@drawable/ic_authing_password"
+                app:clearAllEnabled="false"
+                app:errorEnabled="true"
+                android:layout_marginTop="4dp"/>
+            <cn.authing.guard.PasswordConfirmEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@null"
+                app:leftIconDrawable="@drawable/ic_authing_password"
+                app:clearAllEnabled="false"
+                app:errorEnabled="true"
+                android:layout_marginTop="4dp"/>
+        </cn.authing.guard.RegisterContainer>
+
+        <cn.authing.guard.ErrorTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/authing_form_start_end_margin"
+            android:layout_marginEnd="@dimen/authing_form_start_end_margin"
+            android:layout_marginTop="8dp"/>
+
+        <cn.authing.guard.PrivacyConfirmBox
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/authing_form_start_end_margin"
+            android:layout_marginEnd="@dimen/authing_form_start_end_margin"
+            android:layout_marginTop="4dp" />
+
+        <cn.authing.guard.RegisterButton
+            android:id="@+id/btn_register"
+            android:layout_width="match_parent"
+            android:layout_height="44dp"
+            android:layout_marginStart="@dimen/authing_form_start_end_margin"
+            android:layout_marginEnd="@dimen/authing_form_start_end_margin"
+            android:layout_marginTop="16dp"
+            android:textStyle="bold" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/authing_form_start_end_margin"
+            android:layout_marginEnd="@dimen/authing_form_start_end_margin"
+            android:layout_marginTop="12dp" >
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+            <Space
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:background="@null"
-                app:errorEnabled="false"
-                app:leftIconDrawable="@drawable/ic_authing_shield_check"/>
-            <cn.authing.guard.GetVerifyCodeButton
-                android:stateListAnimator="@null"
-                android:background="@drawable/authing_get_code_button_background"
+                android:layout_weight="1" />
+            <cn.authing.guard.GoLoginButton
+                android:id="@+id/tv_login"
                 android:layout_width="wrap_content"
-                android:layout_height="42dp"
-                android:paddingStart="4dp"
-                android:paddingEnd="4dp"
-                android:layout_marginStart="4dp"
-                android:textColor="@color/button_text" />
+                android:layout_height="wrap_content"
+                android:textColor="@color/authing_main"
+                android:paddingLeft="8dp"
+                android:paddingRight="0dp"
+                android:gravity="end|center_vertical"
+                android:text="@string/authing_go_login" />
         </LinearLayout>
-    </cn.authing.guard.RegisterContainer>
 
-    <cn.authing.guard.RegisterContainer
-        app:type="emailPassword"
-        android:clipChildren="false"
-        android:visibility="invisible"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/authing_form_start_end_margin"
-        android:layout_marginEnd="@dimen/authing_form_start_end_margin"
-        android:layout_marginTop="16dp">
-        <cn.authing.guard.EmailEditText
-            app:pageType="register"
-            app:errorEnabled="true"
-            android:background="@null"
-            app:leftIconDrawable="@drawable/ic_authing_user"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
-        <cn.authing.guard.PasswordEditText
-            android:background="@null"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:leftIconDrawable="@drawable/ic_authing_password"
-            app:clearAllEnabled="false"
-            app:errorEnabled="true"
-            android:layout_marginTop="4dp"/>
-        <cn.authing.guard.PasswordConfirmEditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@null"
-            app:leftIconDrawable="@drawable/ic_authing_password"
-            app:clearAllEnabled="false"
-            app:errorEnabled="true"
-            android:layout_marginTop="4dp"/>
-    </cn.authing.guard.RegisterContainer>
-
-    <cn.authing.guard.ErrorTextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/authing_form_start_end_margin"
-        android:layout_marginEnd="@dimen/authing_form_start_end_margin"
-        android:layout_marginTop="8dp"/>
-
-    <cn.authing.guard.PrivacyConfirmBox
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/authing_form_start_end_margin"
-        android:layout_marginEnd="@dimen/authing_form_start_end_margin"
-        android:layout_marginTop="4dp" />
-
-    <cn.authing.guard.RegisterButton
-        android:id="@+id/btn_register"
-        android:layout_width="match_parent"
-        android:layout_height="44dp"
-        android:layout_marginStart="@dimen/authing_form_start_end_margin"
-        android:layout_marginEnd="@dimen/authing_form_start_end_margin"
-        android:layout_marginTop="16dp"
-        android:textStyle="bold" />
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/authing_form_start_end_margin"
-        android:layout_marginEnd="@dimen/authing_form_start_end_margin"
-        android:layout_marginTop="12dp" >
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-        <Space
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1" />
-        <cn.authing.guard.GoLoginButton
-            android:id="@+id/tv_login"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@color/authing_main"
-            android:text="@string/authing_go_login" />
     </LinearLayout>
-
-</LinearLayout>
+</ScrollView>

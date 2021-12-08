@@ -54,9 +54,9 @@
     <string name="authing_female">Female</string>
     <string name="authing_first_time_login_tip">To secure your account, please reset password</string>
     <string name="authing_first_time_login_count_down">Please reset password within 10 minutes</string>
-
-    <!--one click-->
     <string name="authing_one_click">Login with your phone number</string>
+    <string name="authing_current_phone_login">Login with current phone number</string>
+    <string name="authing_other_login">Other login methods</string>
 
     <!--error messages-->
     <string name="authing_password_error_1">At least 6 characters</string>

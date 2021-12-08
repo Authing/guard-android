@@ -54,9 +54,9 @@
     <string name="authing_female">女</string>
     <string name="authing_first_time_login_tip">为了保障帐号安全，请设置初始密码</string>
     <string name="authing_first_time_login_count_down">此页面的有效期为 10 分钟</string>
-
-    <!--one click-->
     <string name="authing_one_click">手机号一键登录</string>
+    <string name="authing_current_phone_login">本机号码一键登录</string>
+    <string name="authing_other_login">其他方式登录</string>
 
     <!--error messages-->
     <string name="authing_password_error_1">至少 6 位</string>

@@ -16,6 +16,7 @@ import cn.authing.appauth.AppAuthActivity;
 import cn.authing.guard.Authing;
 import cn.authing.guard.data.UserInfo;
 import cn.authing.guard.flow.AuthFlow;
+import cn.authing.guard.oneclick.OneClick;
 import cn.authing.nissan.NissanVirtualKeyLoginActivity;
 import cn.authing.oneclick.OneClickActivity;
 import cn.authing.theragun.TheragunLoginActivity;
@@ -28,8 +29,8 @@ public class SampleListActivity extends AppCompatActivity {
 
     String[] from = {
             "Authing 标准登录",
-            "Android 默认风格登录",
-            "手机号一键登录",
+            "手机号一键登录（Authing UI）",
+            "手机号一键登录（纯逻辑）",
             "微信",
             "Theragun",
             "阿宝说",
@@ -37,7 +38,8 @@ public class SampleListActivity extends AppCompatActivity {
             "AppAuth",
             "Authing WebView",
             "MFA",
-            "登录/注册后用户信息完善"
+            "登录/注册后用户信息完善",
+            "Android 默认风格登录",
     };
 
     @Override
@@ -56,11 +58,13 @@ public class SampleListActivity extends AppCompatActivity {
             if (pos == AUTHING_LOGIN) {
                 AuthFlow.start(this);
             } else if (pos == 1) {
-                Intent intent = new Intent(SampleListActivity.this, AndroidLoginActivity.class);
-                startActivity(intent);
-            } else if (pos == 2) {
                 Intent intent = new Intent(SampleListActivity.this, OneClickActivity.class);
-                startActivity(intent);
+                startActivityForResult(intent, RC_LOGIN);
+            } else if (pos == 2) {
+                OneClick oneClick = new OneClick(SampleListActivity.this);
+                oneClick.start(((code, message, userInfo) -> {
+                    gotoMain(userInfo);
+                }));
             } else if (pos == 3) {
                 Intent intent = new Intent(SampleListActivity.this, WechatLoginActivity.class);
                 startActivity(intent);
@@ -85,6 +89,9 @@ public class SampleListActivity extends AppCompatActivity {
             } else if (pos == 10) {
                 Authing.init(SampleListActivity.this, "61ae0c9807451d6f30226bd4");
                 AuthFlow.start(this);
+            } else if (pos == 11) {
+                Intent intent = new Intent(SampleListActivity.this, AndroidLoginActivity.class);
+                startActivity(intent);
             }
         });
     }
@@ -96,6 +103,14 @@ public class SampleListActivity extends AppCompatActivity {
             Intent intent = new Intent(this, MainActivity.class);
             UserInfo userInfo = (UserInfo) data.getSerializableExtra("user");
             intent.putExtra("user", userInfo);
+            startActivity(intent);
+        }
+    }
+
+    private void gotoMain(UserInfo data) {
+        if (data != null) {
+            Intent intent = new Intent(this, MainActivity.class);
+            intent.putExtra("user", data);
             startActivity(intent);
         }
     }
