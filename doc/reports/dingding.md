@@ -20,9 +20,9 @@
 
 该界面推荐使用以下 Guard 组件：
 
-[CountryCodePicker](./../hc_country_code_picker.md)
+[CountryCodePicker](./../components/hc_country_code_picker.md)
 
-[PhoneNumberEditText](./../hc_phone_number_edit_text.md)
+[PhoneNumberEditText](./../components/hc_phone_number_edit_text.md)
 
 <br>
 
@@ -32,7 +32,7 @@
 
 这里是钉钉和其他 App 不同的地方。一般 App 会将隐私确认放到登录首页，而钉钉将该操作独立出来了。可以通过隐私组件实现：
 
-[PrivacyConfirmBox](./doc/hc_privacy_confirm_box.md)
+[PrivacyConfirmBox](./../components/hc_privacy_confirm_box.md)
 
 同意隐私协议之后，就可以输入密码登录了：
 
@@ -51,7 +51,7 @@
 
 ## 支付宝登录
 
-跳转到支付宝登录，Authing 提供的第三方登录聚合能力包含支付宝登录。参考 [社会化登录](./../social.md)
+跳转到支付宝登录，Authing 提供的第三方登录聚合能力包含支付宝登录。参考 [社会化登录](./../social/social.md)
 
 <br>
 

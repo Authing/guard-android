@@ -42,7 +42,7 @@
             android:layout_height="wrap_content"
             android:text="@string/authing_complete_tip" />
 
-        <cn.authing.guard.UserInfoCompleteContainer
+        <cn.authing.guard.complete.UserInfoCompleteContainer
             android:layout_weight="1"
             android:layout_marginTop="24dp"
             android:layout_width="match_parent"
@@ -52,7 +52,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
-        <cn.authing.guard.UserInfoCompleteButton
+        <cn.authing.guard.complete.UserInfoCompleteButton
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"

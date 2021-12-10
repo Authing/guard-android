@@ -58,42 +58,18 @@ AuthFlow.start(this, R.layout.activity_login_authing)
 
 <br>
 
-## 组件使用指南
+## Hyper-Component
 
-### Widgets
+在语义化编程模型下，所有控件都是带有业务语义的，我们把这样的控件称为 Hyper-Component。
 
-[AppLogo](./hc_app_logo.md)
+在 Android 里面，Hyper-Component 的实质就是一些带有认证业务能力的自定义控件，所以可以按照通用的 Android 控件来使用。
 
-[AppName](./hc_app_name.md)
-
-[AccountEditText](./hc_account_edit_text.md)
-
-[PasswordEditText](./hc_password_edit_text.md)
-
-[LoginButton](./hc_login_button.md)
-
-[PhoneNumberEditText](./hc_phone_number_edit_text.md)
-
-[VerifyCodeEditText](./hc_verify_code_edit_text.md)
-
-[CountryCodePicker](./hc_country_code_picker.md)
-
-[ErrorTextView](./hc_error_text_view.md)
-
-### 聚合控件
-
-[LoginMethodTab](./hc_login_method_tab.md)
-
-[LoginContainer](./hc_login_container.md)
-
-[PrivacyConfirmBox](./hc_privacy_confirm_box.md)
-
-[SocialLoginListView](./hc_social_login_list_view.md)
+[组件使用指南](./components/components.md)
 
 <br>
 
 接下来，
 
-### [进一步了解 Guard 背后的计算哲学，以及其他高级功能](./topics/index.md)
+[进一步了解 Guard 背后的计算哲学，以及其他高级功能](./topics/index.md)
 
 

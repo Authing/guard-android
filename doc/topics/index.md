@@ -41,7 +41,7 @@ Authing 作为认证领域专家，将数年认证经验沉淀在 Guard 组件�
 3. 为什么不使用 TextInputLayout
 
 ## 四 更多认证方式
-1. [社会化登录](./../social.md)
+1. [社会化登录](./../social/social.md)
 2. 扫描二维码登录
 3. 通过 Biometric API 支持指纹登录
 4. 人脸识别登录

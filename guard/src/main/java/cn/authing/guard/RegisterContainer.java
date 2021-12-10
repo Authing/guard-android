@@ -32,7 +32,7 @@ public class RegisterContainer extends LinearLayout {
         super(context, attrs, defStyleAttr, defStyleRes);
         setOrientation(VERTICAL);
         TypedArray array = context.obtainStyledAttributes(attrs, R.styleable.RegisterContainer);
-        int t = array.getInt(R.styleable.RegisterContainer_type,0);
+        int t = array.getInt(R.styleable.RegisterContainer_type,2);
         if (t == 2) {
             type = RegisterType.EByPhoneCodePassword;
         } else if (t == 3) {

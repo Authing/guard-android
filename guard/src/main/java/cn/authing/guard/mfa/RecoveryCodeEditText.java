@@ -7,7 +7,6 @@ import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
-import android.text.InputType;
 import android.text.TextWatcher;
 import android.util.AttributeSet;
 import android.view.Gravity;
@@ -23,11 +22,8 @@ import androidx.annotation.Nullable;
 import cn.authing.guard.AccountEditText;
 import cn.authing.guard.R;
 import cn.authing.guard.util.Util;
-import cn.authing.guard.util.Validator;
 
 public class RecoveryCodeEditText extends AccountEditText implements TextWatcher {
-
-    private LinearLayout copyTouchArea;
 
     public RecoveryCodeEditText(@NonNull Context context) {
         this(context, null);
@@ -40,9 +36,6 @@ public class RecoveryCodeEditText extends AccountEditText implements TextWatcher
     public RecoveryCodeEditText(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
 
-        getEditText().setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
-        validator = EMAIL_VALIDATOR;
-
         if (attrs == null || attrs.getAttributeValue(NS_ANDROID, "hint") == null) {
             getEditText().setHint(context.getString(R.string.authing_account_edit_text_hint) + context.getString(R.string.authing_recovery_code));
         }
@@ -52,7 +45,7 @@ public class RecoveryCodeEditText extends AccountEditText implements TextWatcher
         array.recycle();
 
         if (copyEnabled) {
-            copyTouchArea = new LinearLayout(context);
+            LinearLayout copyTouchArea = new LinearLayout(context);
             copyTouchArea.setOrientation(HORIZONTAL);
             copyTouchArea.setGravity(Gravity.CENTER_VERTICAL);
             LayoutParams lp = new LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT);

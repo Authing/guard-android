@@ -4,6 +4,8 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:clipChildren="false"
+    android:clipToPadding="false"
     android:paddingStart="@dimen/authing_form_start_end_margin"
     android:paddingEnd="@dimen/authing_form_start_end_margin">
 
@@ -25,7 +27,7 @@
     <cn.authing.guard.mfa.RecoveryCodeEditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/authing_edit_text_layout_background"
+        android:background="@null"
         app:leftIconDrawable="@drawable/ic_authing_password"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="32dp" />

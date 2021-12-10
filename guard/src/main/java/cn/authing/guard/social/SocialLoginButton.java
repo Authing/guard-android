@@ -6,16 +6,13 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.AnimatedVectorDrawable;
 import android.util.AttributeSet;
-import android.widget.ImageButton;
-
-import org.json.JSONException;
 
 import cn.authing.guard.AuthCallback;
 import cn.authing.guard.R;
 import cn.authing.guard.activity.AuthActivity;
 import cn.authing.guard.data.UserInfo;
 
-public abstract class SocialLoginButton extends ImageButton {
+public abstract class SocialLoginButton extends androidx.appcompat.widget.AppCompatImageButton {
 
     protected SocialAuthenticator authenticator;
     protected AuthCallback<UserInfo> callback;

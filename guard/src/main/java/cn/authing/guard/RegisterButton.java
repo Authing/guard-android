@@ -25,8 +25,6 @@ import cn.authing.guard.flow.AuthFlow;
 import cn.authing.guard.flow.FlowHelper;
 import cn.authing.guard.internal.LoadingButton;
 import cn.authing.guard.network.AuthClient;
-import cn.authing.guard.network.Response;
-import cn.authing.guard.util.Const;
 import cn.authing.guard.util.Util;
 
 public class RegisterButton extends LoadingButton {
@@ -206,17 +204,6 @@ public class RegisterButton extends LoadingButton {
         });
     }
 
-    private void handleError(Response response) {
-        int code = response.getCode();
-        if (code == Const.EC_INCORRECT_VERIFY_CODE) {
-            Util.setErrorText(this, getContext().getString(R.string.authing_incorrect_verify_code));
-        } else if (code == Const.EC_INCORRECT_CREDENTIAL) {
-            Util.setErrorText(this, getContext().getString(R.string.authing_incorrect_credential));
-        } else {
-            Util.setErrorText(this, response.getMessage());
-        }
-    }
-
     private void fireCallback(String message) {
         fireCallback(500, message, null);
     }
@@ -232,7 +219,7 @@ public class RegisterButton extends LoadingButton {
                     AuthActivity activity = (AuthActivity) getContext();
                     AuthFlow flow = (AuthFlow) activity.getIntent().getSerializableExtra(AuthActivity.AUTH_FLOW);
                     List<ExtendedField> missingFields = FlowHelper.missingFields(config, userInfo);
-                    if (shouldCompleteAfterRegister(config) && (missingFields != null && missingFields.size() > 0)) {
+                    if (shouldCompleteAfterRegister(config) && missingFields.size() > 0) {
                         flow.getData().put(AuthFlow.KEY_USER_INFO, userInfo);
                         FlowHelper.handleUserInfoComplete(this, missingFields);
                     } else {
