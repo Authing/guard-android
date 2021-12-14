@@ -16,6 +16,7 @@ public class Config {
     private String userPoolId;
     private String identifier; // host
     private String name;
+    private String logo;
     private String userpoolLogo;
     private List<String> enabledLoginMethods;
     private List<String> loginTabList;
@@ -32,32 +33,50 @@ public class Config {
     public static Config parse(JSONObject data) throws JSONException {
         Config config = new Config();
 
-        config.setUserPoolId(data.getString("userPoolId"));
-        config.setIdentifier(data.getString("identifier"));
-        config.setName(data.getString("name"));
-        config.setUserpoolLogo(data.getString("userpoolLogo"));
-        config.setVerifyCodeLength(data.getInt("verifyCodeLength"));
-        config.setPasswordStrength(data.getInt("passwordStrength"));
+        if (data.has("userPoolId"))
+            config.setUserPoolId(data.getString("userPoolId"));
+        if (data.has("identifier"))
+            config.setIdentifier(data.getString("identifier"));
+        if (data.has("name"))
+            config.setName(data.getString("name"));
+        if (data.has("logo"))
+            config.setLogo(data.getString("logo"));
+        if (data.has("userpoolLogo"))
+            config.setUserpoolLogo(data.getString("userpoolLogo"));
+        if (data.has("verifyCodeLength"))
+            config.setVerifyCodeLength(data.getInt("verifyCodeLength"));
+        if (data.has("passwordStrength"))
+            config.setPasswordStrength(data.getInt("passwordStrength"));
 
-        JSONObject loginTabs = data.getJSONObject("loginTabs");
-        JSONArray loginTabList = loginTabs.getJSONArray("list");
-        config.setLoginTabList(toStringList(loginTabList));
-        config.setDefaultLoginMethod(loginTabs.getString("default"));
+        if (data.has("loginTabs")) {
+            JSONObject loginTabs = data.getJSONObject("loginTabs");
+            JSONArray loginTabList = loginTabs.getJSONArray("list");
+            config.setLoginTabList(toStringList(loginTabList));
+            config.setDefaultLoginMethod(loginTabs.getString("default"));
+        }
 
-        JSONObject registerTabs = data.getJSONObject("registerTabs");
-        JSONArray registerTabList = registerTabs.getJSONArray("list");
-        config.setRegisterTabList(toStringList(registerTabList));
-        config.setDefaultRegisterMethod(registerTabs.getString("default"));
+        if (data.has("registerTabs")) {
+            JSONObject registerTabs = data.getJSONObject("registerTabs");
+            JSONArray registerTabList = registerTabs.getJSONArray("list");
+            config.setRegisterTabList(toStringList(registerTabList));
+            config.setDefaultRegisterMethod(registerTabs.getString("default"));
+        }
 
-        JSONObject passwordTabConfig = data.getJSONObject("passwordTabConfig");
-        JSONArray enabledLoginMethods = passwordTabConfig.getJSONArray("enabledLoginMethods");
-        config.setEnabledLoginMethods(toStringList(enabledLoginMethods));
+        if (data.has("passwordTabConfig")) {
+            JSONObject passwordTabConfig = data.getJSONObject("passwordTabConfig");
+            JSONArray enabledLoginMethods = passwordTabConfig.getJSONArray("enabledLoginMethods");
+            config.setEnabledLoginMethods(toStringList(enabledLoginMethods));
+        }
 
-        JSONArray socialConnections = data.getJSONArray("socialConnections");
-        config.socialConfigs = toSocialList(socialConnections);
+        if (data.has("socialConnections")) {
+            JSONArray socialConnections = data.getJSONArray("socialConnections");
+            config.socialConfigs = toSocialList(socialConnections);
+        }
 
-        JSONArray agreements = data.getJSONArray("agreements");
-        config.agreements = toAgreementList(agreements);
+        if (data.has("agreements")) {
+            JSONArray agreements = data.getJSONArray("agreements");
+            config.agreements = toAgreementList(agreements);
+        }
 
         if (data.has("complateFiledsPlace")) {
             config.setCompleteFieldsPlace(toStringList(data.getJSONArray("complateFiledsPlace")));
@@ -91,6 +110,14 @@ public class Config {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getLogo() {
+        return logo;
+    }
+
+    public void setLogo(String logo) {
+        this.logo = logo;
     }
 
     public String getUserpoolLogo() {
