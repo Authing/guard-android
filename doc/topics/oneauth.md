@@ -1,5 +1,7 @@
 # 接入步骤
 
+> 安卓系统最低版本要求：7.0 （API Level 24）
+
 1. 添加依赖
 
 ```groovy
@@ -10,7 +12,6 @@ implementation 'io.github.yidun:quicklogin:3.1.1'
 2. 在应用启动（如 App.java）里面初始化易盾业务 ID 以及 Authing 应用 ID：
 
 ```java
-OneClick.bizId = "your_yidun_business_id";
 Authing.init(this, "your_authing_app_id"); // 'this' is your Application or initial activity
 ```
 
@@ -31,8 +32,7 @@ Authing.init(this, "your_authing_app_id"); // 'this' is your Application or init
 * 若需要自己处理逻辑，则可以调用：
 
 ```java
-OneClick oneClick = new OneClick(this); // 'this' is your current activity
-oneClick.start(((code, message, userInfo) -> {
+new oneClick(this).start("your_yidun_business_id", null, ((code, message, userInfo) -> {
     // logged in
 }));
 ```
@@ -43,8 +43,7 @@ oneClick.start(((code, message, userInfo) -> {
 UnifyUiConfig config = new UnifyUiConfig.Builder()
                  // build your config here
                 .build(this);
-OneClick oneClick = new OneClick(this); // 'this' is your current activity
-oneClick.start(config, ((code, message, userInfo) -> {
+new OneClick(this).start("your_yidun_business_id", config, ((code, message, userInfo) -> {
     // logged in
 }));
 ```
