@@ -12,6 +12,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import cn.authing.abao.AbaoActivity;
 import cn.authing.appauth.AppAuthActivity;
@@ -65,7 +66,11 @@ public class SampleListActivity extends AppCompatActivity {
             } else if (pos == 2) {
                 OneClick oneClick = new OneClick(SampleListActivity.this);
                 oneClick.start(((code, message, userInfo) -> {
-                    gotoMain(userInfo);
+                    if (code != 200) {
+                        Toast.makeText(Authing.getAppContext(), message, Toast.LENGTH_SHORT).show();
+                    } else {
+                        gotoMain(userInfo);
+                    }
                 }));
             } else if (pos == 3) {
                 Intent intent = new Intent(SampleListActivity.this, WechatLoginActivity.class);

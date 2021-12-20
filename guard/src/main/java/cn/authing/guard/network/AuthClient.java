@@ -247,7 +247,6 @@ public class AuthClient {
                 JSONObject body = new JSONObject();
                 body.put("token", token);
                 body.put("accessToken", accessToken);
-//                String url = "https://developer-beta.authing.cn/stats/ydtoken";
                 String url = "https://" + config.getIdentifier() + "." + Authing.getHost() + "/api/v2/ecConn/oneAuth/login";
                 Guardian.post(url, body, (data)-> createUserInfoFromResponse(data, callback));
             } catch (Exception e) {

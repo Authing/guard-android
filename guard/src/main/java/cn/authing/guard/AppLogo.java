@@ -26,10 +26,9 @@ public class AppLogo extends androidx.appcompat.widget.AppCompatImageView {
             }
 
             String url = config.getLogo();
-            if (url == null) {
-                url = config.getUserpoolLogo();
+            if (url != null) {
+                ImageLoader.with(context).load(url).into(this);
             }
-            ImageLoader.with(context).load(url).into(this);
         });
     }
 }

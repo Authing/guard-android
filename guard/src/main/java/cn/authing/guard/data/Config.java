@@ -1,5 +1,7 @@
 package cn.authing.guard.data;
 
+import android.text.TextUtils;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -113,7 +115,7 @@ public class Config {
     }
 
     public String getLogo() {
-        return logo;
+        return (TextUtils.isEmpty(logo)) ? userpoolLogo : logo;
     }
 
     public void setLogo(String logo) {

@@ -15,6 +15,7 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
@@ -144,7 +145,15 @@ public class OneClick implements Serializable {
     }
 
     private void authingLogin(String t, String ac) {
-        AuthClient.loginByOneClick(t, ac, (code, message, userInfo)-> callback.call(code, message, userInfo));
+        AuthClient.loginByOneClick(t, ac, (code, message, userInfo) -> {
+            Handler handler = new Handler(Looper.getMainLooper());
+            handler.post(()-> {
+                if (code != 200) {
+                    Toast.makeText(Authing.getAppContext(), message, Toast.LENGTH_SHORT).show();
+                }
+                callback.call(code, message, userInfo);
+            });
+        });
     }
 
     private void getAndroidScreenProperty() {
