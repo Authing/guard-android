@@ -45,7 +45,7 @@
 
 ## 手机号一键登录
 
-很多 App 都支持的方式，需要付费给运营商或者云厂商。可以参考 [抖音报告](./douyin.md) 以及 Authing 专题：[手机号一键登录](./../topics/onepass.md)
+很多 App 都支持的方式，需要付费给运营商或者云厂商。可以参考 [抖音报告](./douyin.md) 以及 Authing 专题：[手机号一键登录](./../topics/oneauth.md)
 
 <br>
 

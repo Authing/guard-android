@@ -14,7 +14,7 @@ public class Config {
     }
 
     private String userPoolId;
-    private String identifier; // host
+    private String identifier; // tenant domain
     private String name;
     private String logo;
     private String userpoolLogo;

@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:clipChildren="false"
+    android:clipToPadding="false"
+    android:paddingStart="@dimen/authing_form_start_end_margin"
+    android:paddingEnd="@dimen/authing_form_start_end_margin"
+    tools:context=".SettingActivity">
+
+    <TextView
+        android:layout_marginTop="64dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="App ID：" />
+
+    <cn.authing.guard.internal.EditTextLayout
+        android:layout_marginTop="8dp"
+        android:id="@+id/et_appid"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@null" />
+
+    <TextView
+        android:layout_marginTop="16dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Host：" />
+
+    <cn.authing.guard.internal.EditTextLayout
+        android:layout_marginTop="8dp"
+        android:id="@+id/et_host"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@null" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btn_save"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Save"
+        android:background="@drawable/authing_button_background"
+        android:textColor="@color/white"
+        android:textAllCaps="false"
+        android:layout_marginTop="32dp" />
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btn_restore"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Restore"
+        android:background="@drawable/authing_button_background_outline_normal"
+        android:textColor="@color/black"
+        android:textAllCaps="false"
+        android:layout_marginTop="16dp" />
+
+</LinearLayout>
