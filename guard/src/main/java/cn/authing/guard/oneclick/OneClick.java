@@ -180,7 +180,6 @@ public class OneClick implements Serializable {
     private void config(Drawable logo) {
         Drawable mainColorDrawable = new ColorDrawable(Util.getThemeAccentColor(context));
 
-        int bottomMargin = 300;
         int topMargin = (int)Util.dp2px(context, 16);
         RelativeLayout otherLoginRel = new RelativeLayout(context);
         RelativeLayout.LayoutParams layoutParamsOther = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
@@ -232,8 +231,8 @@ public class OneClick implements Serializable {
                 .setLoginBtnHeight(48)
                 .setLoginBtnBackgroundDrawable(mainColorDrawable)
                 .addCustomView(otherLoginRel, "otherBtn", UnifyUiConfig.POSITION_IN_BODY, null)
-                .addCustomView(socialRel, "socialList", UnifyUiConfig.POSITION_IN_BODY, null)
-                .setPrivacyBottomYOffset(bottomMargin - 28 - 8)
+//                .addCustomView(socialRel, "socialList", UnifyUiConfig.POSITION_IN_BODY, null)
+                .setPrivacyBottomYOffset(40)
                 .build(context);
         quickLogin.setUnifyUiConfig(c);
     }

@@ -91,7 +91,7 @@ public class SampleListActivity extends AppCompatActivity {
                 Intent intent = new Intent(SampleListActivity.this, AuthingWebViewActivity.class);
                 startActivity(intent);
             } else if (pos == 9) {
-                Authing.init(SampleListActivity.this, "610932784e4bb719b5787ad7");
+                Authing.init(SampleListActivity.this, "61c173ada0e3aec651b1a1d1");
                 AuthFlow.start(this);
             } else if (pos == 10) {
                 Authing.init(SampleListActivity.this, "61ae0c9807451d6f30226bd4");
