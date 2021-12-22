@@ -10,6 +10,7 @@ import android.os.Message;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.Button;
@@ -232,7 +233,17 @@ public class OneClick implements Serializable {
                 .setLoginBtnBackgroundDrawable(mainColorDrawable)
                 .addCustomView(otherLoginRel, "otherBtn", UnifyUiConfig.POSITION_IN_BODY, null)
 //                .addCustomView(socialRel, "socialList", UnifyUiConfig.POSITION_IN_BODY, null)
-                .setPrivacyBottomYOffset(40)
+                .setPrivacyBottomYOffset(80)
+                .setPrivacyMarginLeft(24)
+                .setPrivacyMarginRight(24)
+                .setPrivacyTextGravityCenter(false)
+                .setCheckBoxGravity(Gravity.TOP)
+                .setPrivacyCheckBoxWidth(21)
+                .setPrivacyProtocolColor(context.getColor(R.color.authing_main))
+                .setPrivacyCheckBoxHeight(18)
+                .setUnCheckedImageName("authing_checkbox")
+                .setCheckedImageName("authing_checked")
+                .setPrivacySize(14)
                 .build(context);
         quickLogin.setUnifyUiConfig(c);
     }
