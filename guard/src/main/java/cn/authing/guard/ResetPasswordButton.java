@@ -110,7 +110,6 @@ public class ResetPasswordButton extends LoadingButton {
     }
 
     private void resetPasswordByFirstTimeLoginToken(String token, String password) {
-        setEnabled(false);
         startLoadingVisualEffect();
         AuthActivity activity = (AuthActivity) getContext();
         AuthFlow flow = (AuthFlow) activity.getIntent().getSerializableExtra(AuthActivity.AUTH_FLOW);
@@ -125,7 +124,6 @@ public class ResetPasswordButton extends LoadingButton {
     }
 
     private void resetPasswordByPhone(String phone, String password) {
-        setEnabled(false);
         startLoadingVisualEffect();
         AuthActivity activity = (AuthActivity) getContext();
         AuthFlow flow = (AuthFlow) activity.getIntent().getSerializableExtra(AuthActivity.AUTH_FLOW);
@@ -141,7 +139,6 @@ public class ResetPasswordButton extends LoadingButton {
     }
 
     private void resetPasswordByEmail(String email, String password) {
-        setEnabled(false);
         startLoadingVisualEffect();
         AuthActivity activity = (AuthActivity) getContext();
         AuthFlow flow = (AuthFlow) activity.getIntent().getSerializableExtra(AuthActivity.AUTH_FLOW);

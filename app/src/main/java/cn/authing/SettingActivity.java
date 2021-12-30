@@ -16,38 +16,48 @@ public class SettingActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_setting);
 
-        EditTextLayout etAppId = findViewById(R.id.et_appid);
-        etAppId.getEditText().setText(Authing.getAppId());
+        EditTextLayout etSchema = findViewById(R.id.et_schema);
+        etSchema.getEditText().setText(App.loadSchema(this));
 
         EditTextLayout etHost = findViewById(R.id.et_host);
         etHost.getEditText().setText(Authing.getHost());
 
+        EditTextLayout etAppId = findViewById(R.id.et_appid);
+        etAppId.getEditText().setText(Authing.getAppId());
+
         Button btn = findViewById(R.id.btn_save);
         btn.setOnClickListener((v)->{
-            String appid = etAppId.getText().toString();
+            String schema = etSchema.getText().toString();
             String host = etHost.getText().toString();
-            Authing.init(this, appid);
-            Authing.setHost(host);
+            String appid = etAppId.getText().toString();
 
-            App.saveAppId(this, appid);
+            App.saveSchema(this, schema);
             App.saveHost(this, host);
+            App.saveAppId(this, appid);
+
+            Authing.setSchema(schema);
+            Authing.setHost(host);
+            Authing.init(this, appid);
 
             Toast.makeText(SettingActivity.this, "Saved", Toast.LENGTH_SHORT).show();
         });
 
         Button restore = findViewById(R.id.btn_restore);
         restore.setOnClickListener((v)->{
-            String appid = "60caaf41df670b771fd08937";
+            String schema = "https";
             String host = "authing.cn";
-            Authing.init(this, appid);
+            String appid = "60caaf41df670b771fd08937";
+            Authing.setSchema(schema);
             Authing.setHost(host);
+            Authing.init(this, appid);
 
-            etAppId.getEditText().setText(appid);
+            etSchema.getEditText().setText(schema);
             etHost.getEditText().setText(host);
+            etAppId.getEditText().setText(appid);
 
-
-            App.saveAppId(this, appid);
+            App.saveSchema(this, schema);
             App.saveHost(this, host);
+            App.saveAppId(this, appid);
 
             Toast.makeText(SettingActivity.this, "Restored", Toast.LENGTH_SHORT).show();
         });

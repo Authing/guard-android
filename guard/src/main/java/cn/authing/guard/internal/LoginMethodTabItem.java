@@ -21,8 +21,8 @@ import cn.authing.guard.util.Util;
 
 public class LoginMethodTabItem extends LinearLayout {
 
-    private Button button;
-    private View underLine;
+    private final Button button;
+    private final View underLine;
     private LoginContainer.LoginType type;
 
     public LoginMethodTabItem(Context context) {

@@ -19,6 +19,7 @@ public class Authing {
     private final static String TAG = "Authing";
 
     private static Context sAppContext;
+    private static String schema = "https";
     private static String sHost = "authing.cn"; // for private deployment
     private static String sAppId;
     private static boolean isGettingConfig;
@@ -35,6 +36,14 @@ public class Authing {
 
     public static Context getAppContext() {
         return sAppContext;
+    }
+
+    public static String getSchema() {
+        return schema;
+    }
+
+    public static void setSchema(String schema) {
+        Authing.schema = schema;
     }
 
     public static String getHost() {
@@ -81,7 +90,7 @@ public class Authing {
     }
 
     private static void _requestPublicConfig() {
-        String url = "https://console." + sHost + "/api/v2/applications/" + sAppId + "/public-config";
+        String url = schema + "://console." + sHost + "/api/v2/applications/" + sAppId + "/public-config";
         Guardian.request(null, url, "get", null, (response)->{
             try {
                 if (response.getCode() == 200) {

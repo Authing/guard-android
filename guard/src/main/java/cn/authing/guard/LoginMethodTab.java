@@ -103,7 +103,7 @@ public class LoginMethodTab extends LinearLayout {
 
     private void initDefaultLogins(ViewGroup container) {
         LoginMethodTabItem b = new LoginMethodTabItem(getContext());
-        b.setText("验证码登录");
+        b.setText(getResources().getString(R.string.authing_login_by_phone_code));
         container.addView(b);
         b.gainFocus();
         b.setType(LoginContainer.LoginType.EByPhoneCode);
@@ -111,7 +111,7 @@ public class LoginMethodTab extends LinearLayout {
         items.add(b);
 
         b = new LoginMethodTabItem(getContext());
-        b.setText("密码登录");
+        b.setText(getResources().getString(R.string.authing_login_by_password));
         b.setType(LoginContainer.LoginType.EByAccountPassword);
         container.addView(b);
         addClickListener(b);
