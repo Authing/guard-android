@@ -25,15 +25,19 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Random;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.crypto.Cipher;
 
 import cn.authing.guard.AccountEditText;
+import cn.authing.guard.Authing;
 import cn.authing.guard.ErrorTextView;
 import cn.authing.guard.PasswordEditText;
 import cn.authing.guard.PhoneNumberEditText;
 import cn.authing.guard.R;
 import cn.authing.guard.VerifyCodeEditText;
+import cn.authing.guard.data.Config;
 import cn.authing.guard.data.Country;
 import cn.authing.guard.data.Safe;
 import cn.authing.guard.flow.AuthFlow;
@@ -261,5 +265,34 @@ public class Util {
     public static String getLangHeader() {
         String lang = Locale.getDefault().getLanguage();
         return (!Util.isNull(lang) && lang.contains("zh")) ? "zh-CN" : "en-US";
+    }
+
+    public static boolean isIp(String name) {
+        if (name == null || name.length() == 0) {
+            return true;
+        }
+
+        // ip v6
+        if (name.contains(":")) {
+            return true;
+        }
+
+        // ip v4
+        String numRange = "(\\d{1,2}|(0|1)\\" + "d{2}|2[0-4]\\d|25[0-5])" + "\\."
+                + "(\\d{1,2}|(0|1)\\" + "d{2}|2[0-4]\\d|25[0-5])" + "\\."
+                + "(\\d{1,2}|(0|1)\\" + "d{2}|2[0-4]\\d|25[0-5])" + "\\."
+                + "(\\d{1,2}|(0|1)\\" + "d{2}|2[0-4]\\d|25[0-5])";
+
+        Pattern ip_pattern = Pattern.compile(numRange);
+        Matcher match= ip_pattern.matcher(name);
+        return match.matches();
+    }
+
+    public static String getHost(Config config) {
+        if (isIp(Authing.getHost())) {
+            return Authing.getHost();
+        } else {
+            return config.getIdentifier() + "." + Authing.getHost();
+        }
     }
 }

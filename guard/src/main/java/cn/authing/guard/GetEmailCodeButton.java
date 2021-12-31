@@ -74,5 +74,4 @@ public class GetEmailCodeButton extends LoadingButton {
             }
         });
     }
-
 }

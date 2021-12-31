@@ -13,6 +13,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 import cn.authing.guard.analyze.Analyzer;
 import cn.authing.guard.data.Config;
 import cn.authing.guard.network.Guardian;
+import cn.authing.guard.util.Util;
 
 public class Authing {
 
@@ -90,7 +91,11 @@ public class Authing {
     }
 
     private static void _requestPublicConfig() {
-        String url = schema + "://console." + sHost + "/api/v2/applications/" + sAppId + "/public-config";
+        String host = sHost;
+        if (!Util.isIp(sHost)) {
+            host = "console." + sHost;
+        }
+        String url = schema + "://" + host + "/api/v2/applications/" + sAppId + "/public-config";
         Guardian.request(null, url, "get", null, (response)->{
             try {
                 if (response.getCode() == 200) {
