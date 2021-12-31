@@ -1,10 +1,10 @@
-package cn.authing.guard.wxapi;
-
-import androidx.appcompat.app.AppCompatActivity;
+package cn.authing.guard.social.wechat;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.tencent.mm.opensdk.modelbase.BaseReq;
 import com.tencent.mm.opensdk.modelbase.BaseResp;
@@ -17,9 +17,9 @@ import cn.authing.guard.data.UserInfo;
 import cn.authing.guard.network.AuthClient;
 import cn.authing.guard.social.Wechat;
 
-public class WXEntryActivity extends AppCompatActivity implements IWXAPIEventHandler {
+public class WXCallbackActivity extends AppCompatActivity implements IWXAPIEventHandler {
 
-    public static final String TAG = WXEntryActivity.class.getSimpleName();
+    public static final String TAG = WXCallbackActivity.class.getSimpleName();
 
     private static AuthCallback<UserInfo> callback;
 
@@ -68,6 +68,6 @@ public class WXEntryActivity extends AppCompatActivity implements IWXAPIEventHan
     }
 
     public static void setCallback(AuthCallback<UserInfo> callback) {
-        WXEntryActivity.callback = callback;
+        WXCallbackActivity.callback = callback;
     }
 }

@@ -10,7 +10,7 @@ import org.jetbrains.annotations.NotNull;
 
 import cn.authing.guard.AuthCallback;
 import cn.authing.guard.data.UserInfo;
-import cn.authing.guard.wxapi.WXEntryActivity;
+import cn.authing.guard.social.wechat.WXCallbackActivity;
 
 public class Wechat extends SocialAuthenticator {
 
@@ -22,7 +22,7 @@ public class Wechat extends SocialAuthenticator {
         api = WXAPIFactory.createWXAPI(context, appId, true);
         api.registerApp(appId);
 
-        WXEntryActivity.setCallback(callback);
+        WXCallbackActivity.setCallback(callback);
 
         final SendAuth.Req req = new SendAuth.Req();
         req.scope = "snsapi_userinfo";

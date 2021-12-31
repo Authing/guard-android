@@ -112,6 +112,10 @@
                     android:scheme="guard" />
             </intent-filter>
         </activity>
+
+        <activity
+            android:name=".guard.wxapi.WXEntryActivity"
+            android:exported="true" />
     </application>
 
 </manifest>

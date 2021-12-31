@@ -35,9 +35,6 @@
             android:launchMode="singleTask"
             android:exported="false"
             android:screenOrientation="portrait" />
-        <activity
-            android:name=".wxapi.WXEntryActivity"
-            android:exported="true" />
     </application>
 
 </manifest>

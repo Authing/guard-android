@@ -60,6 +60,33 @@ Wechat.appId = "wx1cddb15e280c0f67";
 Authing.init(context, appId);
 ```
 
+4. 由于微信的限制，必须在应用包名所在的目录下创建一个 wxapi/WXEntryActivity。假设你的应用包名为：
+
+com.example.myapp
+
+则需要按照如下方式创建：
+
+![](./images/wechat/wxentry.png)
+
+其内容只需要继承我们的实现类：
+
+```java
+package com.example.myapp.wxapi;
+
+import cn.authing.guard.social.wechat.WXCallbackActivity;
+
+public class WXEntryActivity extends WXCallbackActivity {
+}
+```
+
+5. 在 Manifest 里面声明微信回调 Activity
+
+```xml
+<activity
+    android:name=".wxapi.WXEntryActivity"
+    android:exported="true" />
+```
+
 接下来，如果使用我们提供的微信登录按钮，则在布局文件里面加上（当然也可以用代码初始化）：
 
 ```xml
@@ -77,7 +104,7 @@ Authing.init(context, appId);
 WechatLoginButton button = findViewById(R.id.btn_wechat_login);
 button.setOnLoginListener((ok, data) -> {
     if (ok) {
-        // 登录成功，data 是用户信息，里面有 accessToken
+        // 登录成功，data 是用户信息
     } else {
         // 登录失败
     }
@@ -91,7 +118,7 @@ button.setOnLoginListener((ok, data) -> {
 ```java
 Wechat.login(appContext, ((ok, data) -> {
     if (ok) {
-        // 登录成功，data 是用户信息，里面有 accessToken
+        // 登录成功，data 是用户信息
     } else {
         // 登录失败
     }
