@@ -104,7 +104,7 @@ public class AuthClient {
                         } catch (JSONException je) {
                             je.printStackTrace();
                         }
-                        String loginUrl = "://" + Util.getHost(config) + "/api/v2/login/account";
+                        String loginUrl = Authing.getSchema() + "://" + Util.getHost(config) + "/api/v2/login/account";
                         Guardian.post(loginUrl, loginBody, (loginData) -> createUserInfoFromResponse(loginData, callback));
                     } else {
                         callback.call(data.getCode(), data.getMessage(), null);
