@@ -24,7 +24,7 @@ public class SplashActivity extends AppCompatActivity {
 
         new Handler().postDelayed(()-> next(1), 1000);
 
-        Authing.autoLogin(((code, message, userInfo) -> next(2)));
+        Authing.autoLogin((code, message, userInfo) -> next(2));
     }
 
     private void next(int f) {
