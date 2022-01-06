@@ -4,9 +4,11 @@ import static cn.authing.guard.util.Const.EC_FIRST_TIME_LOGIN;
 import static cn.authing.guard.util.Const.EC_MFA_REQUIRED;
 
 import org.jetbrains.annotations.NotNull;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.Iterator;
 import java.util.List;
 
 import cn.authing.guard.AuthCallback;
@@ -208,7 +210,7 @@ public class AuthClient {
         Authing.getPublicConfig((config -> {
             try {
                 String poolId = config.getUserPoolId();
-                String url = Authing.getSchema() + "://core." + Authing.getHost() + "/connection/social/wechat:mobile/" + poolId + "/callback?code=" + authCode + "&app_id=" + Authing.getAppId();
+                String url = Authing.getSchema() + "://" + Util.getHost(config) + "/connection/social/wechat:mobile/" + poolId + "/callback?code=" + authCode + "&app_id=" + Authing.getAppId();
                 Guardian.get(url, (data)-> createUserInfoFromResponse(data, callback));
             } catch (Exception e) {
                 e.printStackTrace();
@@ -378,6 +380,18 @@ public class AuthClient {
         }));
     }
 
+    public static void getCurrentUserInfo(@NotNull AuthCallback<UserInfo> callback) {
+        Authing.getPublicConfig((config -> {
+            try {
+                String url = Authing.getSchema() + "://" + Util.getHost(config) + "/api/v2/users/me";
+                Guardian.get(url, (data)-> createUserInfoFromResponse(data, callback));
+            } catch (Exception e) {
+                e.printStackTrace();
+                callback.call(500, "Exception", null);
+            }
+        }));
+    }
+
     public static void updateUser(JSONObject body, @NotNull AuthCallback<JSONObject> callback) {
         Authing.getPublicConfig((config -> {
             try {
@@ -390,14 +404,26 @@ public class AuthClient {
         }));
     }
 
-    public static void updateCustomUserInfo(UserInfo userInfo, JSONObject customData, @NotNull AuthCallback<JSONObject> callback) {
+    public static void updateCustomUserInfo(JSONObject customData, @NotNull AuthCallback<JSONObject> callback) {
+        UserInfo userInfo = Authing.getCurrentUser();
+        if (userInfo == null) {
+            callback.call(500, "no user logged in", null);
+            return;
+        }
+
         Authing.getPublicConfig((config -> {
             try {
+                JSONArray array = new JSONArray();
+                for (Iterator<String> it = customData.keys(); it.hasNext(); ) {
+                    Object key = it.next();
+                    JSONObject obj = new JSONObject();
+                    obj.put("definition", key);
+                    obj.put("value", customData.get((String) key));
+                    array.put(obj);
+                }
                 JSONObject body = new JSONObject();
-                body.put("targetType", "USER");
-                body.put("targetId", userInfo.getId());
-                body.put("data", customData);
-                String url = Authing.getSchema() + "://" + Util.getHost(config) + "/api/v2/udvs/set";
+                body.put("udfs", array);
+                String url = Authing.getSchema() + "://" + Util.getHost(config) + "/api/v2/udfs/values";
                 Guardian.post(url, body, (data)-> callback.call(data.getCode(), data.getMessage(), data.getData()));
             } catch (Exception e) {
                 e.printStackTrace();
@@ -431,14 +457,27 @@ public class AuthClient {
         }));
     }
 
+    public static void logout(UserInfo userInfo, @NotNull AuthCallback<JSONObject> callback) {
+        Authing.getPublicConfig((config -> {
+            try {
+                String url = Authing.getSchema() + "://" + Util.getHost(config) + "/api/v2/logout?app_id=" + Authing.getAppId();
+                Guardian.get(url, (data)-> callback.call(data.getCode(), data.getMessage(), data.getData()));
+            } catch (Exception e) {
+                e.printStackTrace();
+                callback.call(500, "Exception", null);
+            }
+        }));
+    }
+
     private static void createUserInfoFromResponse(Response data, @NotNull AuthCallback<UserInfo> callback) {
         int code = data.getCode();
         try {
             if (code == 200) {
                 UserInfo userInfo;
                 userInfo = UserInfo.createUserInfo(data.getData());
-                Guardian.ACCESS_TOKEN = userInfo.getAccessToken();
-                if (Util.isNull(Guardian.ACCESS_TOKEN)) {
+                Authing.saveUser(userInfo);
+                String token = userInfo.getIdToken();
+                if (Util.isNull(token)) {
                     callback.call(code, data.getMessage(), userInfo);
                 } else {
                     getUserDefinedData(userInfo, callback);

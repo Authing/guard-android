@@ -15,14 +15,20 @@
             android:id="@+id/tv_welcome"
             android:layout_width="wrap_content"
             android:layout_height="48dp"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tv_name"
             android:textColor="@color/black"
             android:textSize="18sp"
+            android:gravity="center_vertical"
             android:layout_gravity="center_horizontal"
-            android:paddingStart="16dp"
-            android:text="欢迎来到 Authing Demo App 主页"/>
+            android:text="个人中心"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:gravity="center_vertical"
+            android:textColor="@color/black"
+            android:paddingStart="@dimen/authing_form_start_end_margin"
+            android:textSize="18sp"
+            android:text="基本信息"/>
 
         <LinearLayout
             android:paddingStart="@dimen/authing_form_start_end_margin"
@@ -184,15 +190,33 @@
             android:layout_marginStart="@dimen/authing_form_start_end_margin"
             android:background="#DDD" />
 
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_marginTop="16dp"
+            android:gravity="center_vertical"
+            android:textColor="@color/black"
+            android:paddingStart="@dimen/authing_form_start_end_margin"
+            android:textSize="18sp"
+            android:text="扩展属性"/>
+
+        <LinearLayout
+            android:id="@+id/ll_custom_data"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+        </LinearLayout>
+
         <Button
             android:id="@+id/btn_logout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/authing_form_start_end_margin"
             android:layout_marginEnd="@dimen/authing_form_start_end_margin"
-            android:background="@drawable/authing_button_background"
+            android:backgroundTint="#EEE"
             android:layout_marginTop="32dp"
-            android:textColor="@color/white"
-            android:text="登出"/>
+            android:textColor="#FF3B30"
+            android:text="@string/authing_logout"/>
     </LinearLayout>
 </ScrollView>

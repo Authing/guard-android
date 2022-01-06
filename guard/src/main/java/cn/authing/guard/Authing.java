@@ -12,7 +12,11 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 
 import cn.authing.guard.analyze.Analyzer;
 import cn.authing.guard.data.Config;
+import cn.authing.guard.data.Safe;
+import cn.authing.guard.data.UserInfo;
+import cn.authing.guard.network.AuthClient;
 import cn.authing.guard.network.Guardian;
+import cn.authing.guard.util.ALog;
 import cn.authing.guard.util.Util;
 
 public class Authing {
@@ -25,8 +29,8 @@ public class Authing {
     private static String sAppId;
     private static boolean isGettingConfig;
     private static Config publicConfig;
-
     private static final Queue<Config.ConfigCallback> listeners = new ConcurrentLinkedQueue<>();
+    private static UserInfo sCurrentUser;
 
     public static void init(final Context context, String appId) {
         sAppContext = context.getApplicationContext();
@@ -49,6 +53,22 @@ public class Authing {
 
     public static String getHost() {
         return sHost;
+    }
+
+    public static void autoLogin(AuthCallback<UserInfo> callback) {
+        if (getCurrentUser() == null) {
+            callback.call(500, "no user logged in", null);
+        } else {
+            // TODO need to use refresh token to get latest access token
+            AuthClient.getCurrentUserInfo(((code, message, userInfo) -> {
+                if (code != 200) {
+                    ALog.d(TAG, "auto login token expired");
+                    Safe.logoutUser(sCurrentUser);
+                    sCurrentUser = null;
+                }
+                callback.call(code, message, userInfo);
+            }));
+        }
     }
 
     public static void setHost(String sHost) {
@@ -82,12 +102,26 @@ public class Authing {
         }.start();
     }
 
-    public static void logout(Callback<Object> callback) {
-        new Thread() {
-            public void run() {
-                _logout(callback);
+    public static UserInfo getCurrentUser() {
+        if (sCurrentUser == null) {
+            sCurrentUser = Safe.loadUser();
+        }
+        return sCurrentUser;
+    }
+
+    public static void saveUser(UserInfo user) {
+        sCurrentUser = user;
+        Safe.saveUser(user);
+    }
+
+    public static void logout(AuthCallback<JSONObject> callback) {
+        AuthClient.logout(sCurrentUser, ((code, message, data) -> {
+            if (code == 200) {
+                Safe.logoutUser(sCurrentUser);
+                sCurrentUser = null;
             }
-        }.start();
+            callback.call(code, message,data );
+        }));
     }
 
     private static void _requestPublicConfig() {
@@ -122,11 +156,5 @@ public class Authing {
             listeners.clear();
             isGettingConfig = false;
         });
-    }
-
-    private static void _logout(Callback<Object> callback) {
-        if (callback != null) {
-            callback.call(true, null);
-        }
     }
 }

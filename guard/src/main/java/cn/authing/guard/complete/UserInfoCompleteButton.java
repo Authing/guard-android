@@ -232,7 +232,7 @@ public class UserInfoCompleteButton extends LoadingButton {
     }
 
     private void updateCustom() {
-        AuthClient.updateCustomUserInfo(userInfo, customField, (code, message, data)->{
+        AuthClient.updateCustomUserInfo(customField, (code, message, data)->{
             if (code == 200) {
                 completeFlag &= ~CUSTOM;
                 try {

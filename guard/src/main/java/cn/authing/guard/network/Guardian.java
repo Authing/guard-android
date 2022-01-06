@@ -14,6 +14,8 @@ import java.util.Objects;
 
 import cn.authing.guard.Authing;
 import cn.authing.guard.data.Config;
+import cn.authing.guard.data.Safe;
+import cn.authing.guard.data.UserInfo;
 import cn.authing.guard.util.Util;
 import okhttp3.Call;
 import okhttp3.MediaType;
@@ -26,7 +28,6 @@ public class Guardian {
     private static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
     private static final String TAG = "Guardian";
 
-    public static String ACCESS_TOKEN;
     public static String MFA_TOKEN;
 
     public interface GuardianCallback {
@@ -58,8 +59,12 @@ public class Guardian {
         builder.addHeader("x-authing-app-id", Authing.getAppId());
         builder.addHeader("x-authing-request-from", "Guard@Android@" + SDK_VERSION);
         builder.addHeader("x-authing-lang", Util.getLangHeader());
-        if (ACCESS_TOKEN != null) {
-            builder.addHeader("Authorization", "Bearer " + ACCESS_TOKEN);
+        UserInfo currentUser = Authing.getCurrentUser();
+        if (currentUser != null) {
+            String token = currentUser.getIdToken();
+            if (!Util.isNull(token)) {
+                builder.addHeader("Authorization", "Bearer " + token);
+            }
         } else if (MFA_TOKEN != null) {
             builder.addHeader("Authorization", "Bearer " + MFA_TOKEN);
         }

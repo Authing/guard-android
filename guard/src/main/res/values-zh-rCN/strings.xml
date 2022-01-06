@@ -57,6 +57,7 @@
     <string name="authing_one_click">手机号一键登录</string>
     <string name="authing_current_phone_login">本机号码一键登录</string>
     <string name="authing_other_login">其他方式登录</string>
+    <string name="authing_logout">退出登录</string>
 
     <!--error messages-->
     <string name="authing_password_error_1">至少 6 位</string>

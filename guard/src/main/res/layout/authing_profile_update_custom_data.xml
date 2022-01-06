@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:clipChildren="false">
+
+    <cn.authing.guard.internal.EditTextLayout
+        android:id="@+id/et_value"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:layout_marginStart="@dimen/authing_form_start_end_margin"
+        android:layout_marginEnd="@dimen/authing_form_start_end_margin"
+        android:background="@null"/>
+
+    <cn.authing.guard.profile.UpdateCustomDataButton
+        android:id="@+id/btn_update_custom_data"
+        android:layout_marginStart="@dimen/authing_form_start_end_margin"
+        android:layout_marginEnd="@dimen/authing_form_start_end_margin"
+        android:layout_marginTop="16dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+</LinearLayout>

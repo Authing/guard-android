@@ -7,8 +7,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.Serializable;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 
 public class UserInfo implements Serializable {
     private static final long serialVersionUID = -5986447815199326409L;
@@ -75,7 +75,7 @@ public class UserInfo implements Serializable {
     private Address address;
     private String phone_number;
     private boolean phone_number_verified;
-    private Map<String, String> extended = new HashMap<>();
+    private List<CustomData> customData = new ArrayList<>();
 
     private String accessToken;
     private String idToken;
@@ -268,12 +268,21 @@ public class UserInfo implements Serializable {
         this.phone_number_verified = phone_number_verified;
     }
 
-    public Map<String, String> getExtended() {
-        return extended;
+    public List<CustomData> getCustomData() {
+        return customData;
     }
 
-    public void setExtended(Map<String, String> extended) {
-        this.extended = extended;
+    public void setCustomData(List<CustomData> data) {
+        this.customData = data;
+    }
+
+    public void setCustomData(String key, String value) {
+        for (CustomData d : customData) {
+            if (d.getKey().equals(key)) {
+                d.setValue(value);
+                break;
+            }
+        }
     }
 
     public String getAccessToken() {
@@ -344,6 +353,7 @@ public class UserInfo implements Serializable {
         }
         if (data.has("token")) {
             String token = data.getString("token");
+            userInfo.setIdToken(token);
             userInfo.setAccessToken(token);
         }
         if (data.has("name")) {
@@ -411,7 +421,52 @@ public class UserInfo implements Serializable {
         if ("country".equals(key)) {
             return getCountry();
         }
-        return extended.get(key);
+
+        for (CustomData field : customData) {
+            if (field.getKey().equals(key)) {
+                return field.getValue();
+            }
+        }
+        return "";
+    }
+
+    public static class CustomData implements Serializable {
+        private String key;
+        private String value;
+        private String dataType;
+        private String label;
+
+        public String getKey() {
+            return key;
+        }
+
+        public void setKey(String key) {
+            this.key = key;
+        }
+
+        public String getValue() {
+            return value;
+        }
+
+        public void setValue(String value) {
+            this.value = value;
+        }
+
+        public String getDataType() {
+            return dataType;
+        }
+
+        public void setDataType(String dataType) {
+            this.dataType = dataType;
+        }
+
+        public String getLabel() {
+            return label;
+        }
+
+        public void setLabel(String label) {
+            this.label = label;
+        }
     }
 
     public void parseCustomData(JSONArray array) {
@@ -421,18 +476,26 @@ public class UserInfo implements Serializable {
 
         for (int i = 0, n = array.length(); i < n; i++) {
             try {
+                CustomData data = new CustomData();
                 JSONObject obj = array.getJSONObject(i);
-                String key = null;
+                String s;
                 if (obj.has("key")) {
-                    key = obj.getString("key");
+                    s = obj.getString("key");
+                    data.setKey(s);
                 }
-                String value = null;
                 if (obj.has("value")) {
-                    value = obj.getString("value");
+                    s = obj.getString("value");
+                    data.setValue(s);
                 }
-                if (!TextUtils.isEmpty(key) && !TextUtils.isEmpty(value)) {
-                    extended.put(key, value);
+                if (obj.has("label")) {
+                    s = obj.getString("label");
+                    data.setLabel(s);
                 }
+                if (obj.has("dataType")) {
+                    s = obj.getString("dataType");
+                    data.setDataType(s);
+                }
+                customData.add(data);
             } catch (Exception e) {
                 e.printStackTrace();
             }
