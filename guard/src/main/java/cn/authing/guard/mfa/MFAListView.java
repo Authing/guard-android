@@ -45,13 +45,6 @@ public class MFAListView extends LinearLayout implements View.OnClickListener {
         setOrientation(VERTICAL);
         setGravity(Gravity.CENTER);
 
-//        TypedArray array = context.obtainStyledAttributes(attrs, R.styleable.SocialLoginListView);
-//        String src = array.getString(R.styleable.SocialLoginListView_src);
-//        if (TextUtils.isEmpty(src)) {
-//            src = "wechat";
-//        }
-//        array.recycle();
-
         if (!(context instanceof AuthActivity)) {
             return;
         }
@@ -61,9 +54,7 @@ public class MFAListView extends LinearLayout implements View.OnClickListener {
 
         UserInfo data = (UserInfo) flow.getData().get(AuthFlow.KEY_USER_INFO);
         if (data != null) {
-            post(()->{
-                setup(context, data.getMfaData().getApplicationMfa());
-            });
+            post(()-> setup(context, data.getMfaData().getApplicationMfa()));
         }
     }
 
@@ -130,6 +121,10 @@ public class MFAListView extends LinearLayout implements View.OnClickListener {
         AuthActivity activity = (AuthActivity) getContext();
         AuthFlow flow = activity.getFlow();
         UserInfo data = (UserInfo) flow.getData().get(AuthFlow.KEY_USER_INFO);
+        if (data == null) {
+            return;
+        }
+
         MFAData mfaData = data.getMfaData();
 
         String option = (String) v.getTag();

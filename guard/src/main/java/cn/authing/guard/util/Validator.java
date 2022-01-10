@@ -21,7 +21,7 @@ public class Validator {
     }
 
     public static boolean hasLowerCase(String s) {
-        for(int i=0;i < s.length();i++) {
+        for (int i=0;i < s.length();i++) {
             char ch = s.charAt(i);
             if (Character.isLowerCase(ch)) {
                 return true;
@@ -31,7 +31,7 @@ public class Validator {
     }
 
     public static boolean hasUpperCase(String s) {
-        for(int i=0;i < s.length();i++) {
+        for (int i=0;i < s.length();i++) {
             char ch = s.charAt(i);
             if (Character.isUpperCase(ch)) {
                 return true;
@@ -41,9 +41,9 @@ public class Validator {
     }
 
     public static boolean hasNumber(String s) {
-        for(int i=0;i < s.length();i++) {
+        for (int i=0;i < s.length();i++) {
             char ch = s.charAt(i);
-            if( Character.isDigit(ch)) {
+            if (Character.isDigit(ch)) {
                 return true;
             }
         }
@@ -51,7 +51,7 @@ public class Validator {
     }
 
     public static boolean hasSpecialCharacter(String s) {
-        Pattern special = Pattern.compile ("[!@#$%&*()_+=|<>?{}\\[\\]~-]");
+        Pattern special = Pattern.compile("[!@#$%&*()_+=|<>?{}\\[\\]~-]");
         Matcher hasSpecial = special.matcher(s);
         return hasSpecial.find();
     }

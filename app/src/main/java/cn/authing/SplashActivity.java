@@ -9,7 +9,6 @@ import android.os.Handler;
 import java.util.Objects;
 
 import cn.authing.guard.Authing;
-import cn.authing.guard.data.Safe;
 
 public class SplashActivity extends AppCompatActivity {
 

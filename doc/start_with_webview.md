@@ -16,7 +16,13 @@
 implementation 'cn.authing:guard:+'
 ```
 
-4.  在处理登录的布局文件里面使用我们封装的 WebAuthView：
+4. 在应用启动（如 App.java）里面调用：
+
+```java
+Authing.init(this, "your_authing_app_id"); // 'this' is your Application or initial activity
+```
+
+5. 在处理登录的布局文件里面使用我们封装的 WebAuthView：
 
 ```xml
 <cn.authing.guard.WebAuthView
@@ -25,7 +31,7 @@ implementation 'cn.authing:guard:+'
     android:layout_height="match_parent" />
 ```
 
-5. 设置认证回调，获取 id token：
+6. 设置认证回调，获取 id token：
 
 ```java
 public class AuthingWebViewActivity extends BaseLoginActivity {
