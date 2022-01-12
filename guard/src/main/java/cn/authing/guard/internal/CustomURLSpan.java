@@ -5,7 +5,7 @@ import android.text.style.URLSpan;
 
 public class CustomURLSpan extends URLSpan {
 
-    private int color;
+    private final int color;
 
     public CustomURLSpan(String url, int color) {
         super(url);

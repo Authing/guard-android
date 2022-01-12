@@ -95,7 +95,7 @@ public class PrivacyConfirmBox extends LinearLayout {
                     if (agreement.getLang().startsWith(lang)) {
                         Spanned htmlAsSpanned = Html.fromHtml(agreement.getTitle(), HtmlCompat.FROM_HTML_MODE_LEGACY);
 
-                        Spannable s = new SpannableString(htmlAsSpanned);
+                        Spannable s = new SpannableString(removeTrailingLineBreak(htmlAsSpanned));
 
                         URLSpan[] spans = s.getSpans(0, s.length(), URLSpan.class);
                         for (URLSpan span: spans) {
@@ -120,6 +120,13 @@ public class PrivacyConfirmBox extends LinearLayout {
                 textView.setText(text);
             }
         }));
+    }
+
+    private CharSequence removeTrailingLineBreak(CharSequence text) {
+        while (text.charAt(text.length() - 1) == '\n') {
+            text = text.subSequence(0, text.length() - 1);
+        }
+        return text;
     }
 
     public boolean require(boolean shake) {
