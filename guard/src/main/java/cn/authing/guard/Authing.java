@@ -95,11 +95,7 @@ public class Authing {
     private static void requestPublicConfig() {
         isGettingConfig = true;
         publicConfig = null;
-        new Thread() {
-            public void run() {
-                _requestPublicConfig();
-            }
-        }.start();
+        _requestPublicConfig();
     }
 
     public static UserInfo getCurrentUser() {
@@ -115,12 +111,12 @@ public class Authing {
     }
 
     public static void logout(AuthCallback<JSONObject> callback) {
-        AuthClient.logout(sCurrentUser, ((code, message, data) -> {
+        AuthClient.logout(((code, message, data) -> {
             if (code == 200) {
                 Safe.logoutUser(sCurrentUser);
                 sCurrentUser = null;
             }
-            callback.call(code, message,data );
+            callback.call(code, message,data);
         }));
     }
 

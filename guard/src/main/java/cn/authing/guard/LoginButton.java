@@ -14,6 +14,7 @@ import androidx.annotation.Nullable;
 import java.util.List;
 
 import cn.authing.guard.activity.AuthActivity;
+import cn.authing.guard.analyze.Analyzer;
 import cn.authing.guard.data.Config;
 import cn.authing.guard.data.ExtendedField;
 import cn.authing.guard.data.UserInfo;
@@ -40,6 +41,8 @@ public class LoginButton extends PrimaryButton {
 
     public LoginButton(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
+
+        Analyzer.report("LoginButton");
 
         if (attrs == null || attrs.getAttributeValue(NS_ANDROID, "text") == null) {
             setText(R.string.authing_login);

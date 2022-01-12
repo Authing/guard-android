@@ -141,10 +141,6 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1" />
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/authing_tip_no_account" />
             <cn.authing.guard.GoRegisterButton
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

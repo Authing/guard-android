@@ -10,29 +10,20 @@ import android.webkit.WebViewClient;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import org.json.JSONObject;
-
-import java.io.UnsupportedEncodingException;
-import java.net.MalformedURLException;
 import java.net.URL;
-import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 
 import cn.authing.guard.data.UserInfo;
+import cn.authing.guard.network.AuthClient;
+import cn.authing.guard.util.ALog;
+import cn.authing.guard.util.Const;
 import cn.authing.guard.util.PKCE;
 import cn.authing.guard.util.Util;
-import okhttp3.Call;
-import okhttp3.MediaType;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.RequestBody;
 
 public class WebAuthView extends WebView {
 
-    private static final String REDIRECT_URL = "https://guard.authing/redirect";
-    private static final MediaType FORM = MediaType.parse("application/x-www-form-urlencoded");
+    private static final String TAG = "WebAuthView";
 
     private String host;
     private WebAuthViewCallback callback;
@@ -43,20 +34,26 @@ public class WebAuthView extends WebView {
     }
 
     public WebAuthView(@NonNull Context context) {
-        this(context, null);
+        super(context);
+        init();
     }
 
     public WebAuthView(@NonNull Context context, @Nullable AttributeSet attrs) {
-        this(context, attrs, 0);
+        super(context, attrs);
+        init();
     }
 
     public WebAuthView(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
-        this(context, attrs, defStyleAttr, 0);
+        super(context, attrs, defStyleAttr);
+        init();
     }
 
     public WebAuthView(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
+        init();
+    }
 
+    private void init() {
         WebSettings webSettings = getSettings();
         webSettings.setJavaScriptEnabled(true);
 
@@ -74,18 +71,24 @@ public class WebAuthView extends WebView {
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
                 String url = request.getUrl().toString();
-                if (url.startsWith(REDIRECT_URL)) {
+                if (url.startsWith(Const.DEFAULT_REDIRECT_URL)) {
                     try {
                         URL u = new URL(url);
                         Map<String, List<String>> map = Util.splitQuery(u, "UTF-8");
-                        String code = map.get("code").get(0);
-                        code2Token(code);
-                    } catch (MalformedURLException | UnsupportedEncodingException e) {
+                        if (map.containsKey("code")) {
+                            String authCode = map.get("code").get(0);
+                            AuthClient.authByCode(authCode, codeVerifier, Const.DEFAULT_REDIRECT_URL, (code, message, userInfo) -> {
+                                fireCallback(userInfo);
+                            });
+                        } else {
+                            ALog.e(TAG, url);
+                            fireCallback(null);
+                        }
+                    } catch (Exception e) {
                         e.printStackTrace();
                     }
                     return true;
                 }
-                // WebView不加载该Url
                 return false;
             }
         });
@@ -93,50 +96,6 @@ public class WebAuthView extends WebView {
 
     public void setOnLoginCallback(WebAuthViewCallback callback) {
         this.callback = callback;
-    }
-
-    private void code2Token(String code) {
-        new Thread() {
-            public void run() {
-                _code2Token(code);
-            }
-        }.start();
-    }
-
-    private void _code2Token(String code) {
-        String url = "https://" + host + ".authing.cn/oidc/token";
-        Request.Builder builder = new Request.Builder();
-        builder.url(url);
-        String body = "client_id="+Authing.getAppId()
-                + "&grant_type=authorization_code"
-                + "&code=" + code
-                + "&code_verifier=" + codeVerifier
-                + "&redirect_uri=" + REDIRECT_URL;
-        RequestBody requestBody = RequestBody.create(body, FORM);
-        builder.post(requestBody);
-
-        Request request = builder.build();
-        OkHttpClient client = new OkHttpClient();
-        Call call = client.newCall(request);
-        okhttp3.Response response;
-        try {
-            response = call.execute();
-            if (response.code() == 201 || response.code() == 200) {
-                String s = new String(Objects.requireNonNull(response.body()).bytes(), StandardCharsets.UTF_8);
-                JSONObject json = new JSONObject(s);
-                UserInfo userInfo = new UserInfo();
-                String accessToken = json.getString("access_token");
-                String idToken = json.getString("id_token");
-                userInfo.setAccessToken(accessToken);
-                userInfo.setIdToken(idToken);
-                fireCallback(userInfo);
-            } else {
-                fireCallback(null);
-            }
-        } catch (Exception e){
-            e.printStackTrace();
-            fireCallback(null);
-        }
     }
 
     private void fireCallback(UserInfo userInfo) {

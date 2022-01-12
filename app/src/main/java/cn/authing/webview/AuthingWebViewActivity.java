@@ -1,10 +1,12 @@
 package cn.authing.webview;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import cn.authing.MainActivity;
 import cn.authing.R;
 import cn.authing.guard.WebAuthView;
 import cn.authing.guard.activity.BaseLoginActivity;
@@ -32,9 +34,12 @@ public class AuthingWebViewActivity extends BaseLoginActivity {
         runOnUiThread(()->{
             webView.setVisibility(View.GONE);
             llRes.setVisibility(View.VISIBLE);
-            if (userInfo != null)
-                tvIdToken.setText(userInfo.getIdToken());
-            else
+            if (userInfo != null) {
+                Intent intent = new Intent(this, MainActivity.class);
+                intent.putExtra("user", userInfo);
+                startActivity(intent);
+                finish();
+            } else
                 tvIdToken.setText("Auth failed");
         });
     }

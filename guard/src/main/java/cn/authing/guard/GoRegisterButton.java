@@ -2,6 +2,7 @@ package cn.authing.guard;
 
 import android.content.Context;
 import android.util.AttributeSet;
+import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -13,15 +14,21 @@ import cn.authing.guard.internal.GoSomewhereButton;
 public class GoRegisterButton extends GoSomewhereButton {
 
     public GoRegisterButton(@NonNull Context context) {
-        super(context);
+        this(context, null);
     }
 
     public GoRegisterButton(@NonNull Context context, @Nullable AttributeSet attrs) {
-        super(context, attrs);
+        this(context, attrs, R.attr.buttonStyle);
     }
 
     public GoRegisterButton(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
+
+        Authing.getPublicConfig((config)->{
+            if (config.getRegisterTabList() == null || config.getRegisterTabList().size() == 0) {
+                setVisibility(View.GONE);
+            }
+        });
     }
 
     protected String getDefaultText() {

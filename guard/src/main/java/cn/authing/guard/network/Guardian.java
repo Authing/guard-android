@@ -26,6 +26,7 @@ import okhttp3.RequestBody;
 public class Guardian {
 
     private static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
+    private static final MediaType FORM = MediaType.parse("application/x-www-form-urlencoded; charset=utf-8");
     private static final String TAG = "Guardian";
 
     public static String MFA_TOKEN;
@@ -39,10 +40,10 @@ public class Guardian {
     }
 
     public static void post(String url, JSONObject body, @NotNull GuardianCallback callback) {
-        request(url, "post", body, callback);
+        request(url, "post", body.toString(), callback);
     }
 
-    private static void request(String url, String method, JSONObject body, @NotNull GuardianCallback callback) {
+    private static void request(String url, String method, String body, @NotNull GuardianCallback callback) {
         Authing.getPublicConfig(config -> new Thread() {
             public void run() {
                  request(config, url, method, body, callback);
@@ -50,7 +51,15 @@ public class Guardian {
         }.start());
     }
 
-    public static void request(Config config, String url, String method, JSONObject body, @NotNull GuardianCallback callback) {
+    public static void request(Config config, String url, String method, String body, @NotNull GuardianCallback callback) {
+        new Thread() {
+            public void run() {
+                _request(config, url, method, body, callback);
+            }
+        }.start();
+    }
+
+    private static void _request(Config config, String url, String method, String body, @NotNull GuardianCallback callback) {
         Request.Builder builder = new Request.Builder();
         builder.url(url);
         if (config != null && config.getUserPoolId() != null) {
@@ -68,8 +77,9 @@ public class Guardian {
         } else if (MFA_TOKEN != null) {
             builder.addHeader("Authorization", "Bearer " + MFA_TOKEN);
         }
-        if (method.equals("post")) {
-            RequestBody requestBody = RequestBody.create(body.toString(), JSON);
+        if (method.equalsIgnoreCase("post")) {
+            MediaType type = (body.startsWith("{") || body.startsWith("[")) && (body.endsWith("]") || body.endsWith("}")) ? JSON : FORM;
+            RequestBody requestBody = RequestBody.create(body, type);
             builder.post(requestBody);
         }
 
@@ -138,6 +148,53 @@ public class Guardian {
                     resp.getData().put("recoveryCode", rc);
                 }
 
+                callback.call(resp);
+            } else {
+                Log.w(TAG, response.code() + " Guardian failed for:" + url);
+                callback.call(new Response(response.code(), "Network Error", null));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            callback.call(new Response(500, "Network Exception", null));
+        }
+    }
+
+    public static void authRequest(String url, String method, String body, @NotNull GuardianCallback callback) {
+        new Thread() {
+            public void run() {
+                _authRequest(url, method, body, callback);
+            }
+        }.start();
+    }
+
+    public static void _authRequest(String url, String method, String body, @NotNull GuardianCallback callback) {
+        Request.Builder builder = new Request.Builder();
+        builder.url(url);
+        builder.addHeader("x-authing-request-from", "Guard@Android@" + SDK_VERSION);
+        builder.addHeader("x-authing-lang", Util.getLangHeader());
+        if (method.equalsIgnoreCase("post")) {
+            MediaType type = (body.startsWith("{") || body.startsWith("[")) && (body.endsWith("]") || body.endsWith("}")) ? JSON : FORM;
+            RequestBody requestBody = RequestBody.create(body, type);
+            builder.post(requestBody);
+        }
+
+        Request request = builder.build();
+        OkHttpClient client = new OkHttpClient();
+        Call call = client.newCall(request);
+        okhttp3.Response response;
+        try {
+            response = call.execute();
+            if (response.code() == 201 || response.code() == 200) {
+                Response resp = new Response();
+                String s = new String(Objects.requireNonNull(response.body()).bytes(), StandardCharsets.UTF_8);
+                JSONObject json;
+                try {
+                    json = new JSONObject(s);
+                    resp.setCode(200);
+                    resp.setData(json);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
                 callback.call(resp);
             } else {
                 Log.w(TAG, response.code() + " Guardian failed for:" + url);

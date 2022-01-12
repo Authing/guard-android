@@ -392,6 +392,14 @@ public class UserInfo implements Serializable {
             String s = data.getString("recoveryCode");
             userInfo.setRecoveryCode(s);
         }
+        if (data.has("access_token")) {
+            String s = data.getString("access_token");
+            userInfo.setAccessToken(s);
+        }
+        if (data.has("id_token")) {
+            String s = data.getString("id_token");
+            userInfo.setIdToken(s);
+        }
         return userInfo;
     }
 

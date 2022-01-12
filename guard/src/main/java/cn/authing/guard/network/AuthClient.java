@@ -3,11 +3,14 @@ package cn.authing.guard.network;
 import static cn.authing.guard.util.Const.EC_FIRST_TIME_LOGIN;
 import static cn.authing.guard.util.Const.EC_MFA_REQUIRED;
 
+import android.text.TextUtils;
+
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.net.URLEncoder;
 import java.util.Iterator;
 import java.util.List;
 
@@ -226,7 +229,7 @@ public class AuthClient {
                 List<SocialConfig> configs = config.getSocialConfigs();
                 for (SocialConfig c : configs) {
                     String provider = c.getProvider();
-                    if ("alipay".equals(provider)) {
+                    if ("alipay".equalsIgnoreCase(provider)) {
                         connId = c.getId();
                         break;
                     }
@@ -415,10 +418,10 @@ public class AuthClient {
             try {
                 JSONArray array = new JSONArray();
                 for (Iterator<String> it = customData.keys(); it.hasNext(); ) {
-                    Object key = it.next();
+                    String key = it.next();
                     JSONObject obj = new JSONObject();
                     obj.put("definition", key);
-                    obj.put("value", customData.get((String) key));
+                    obj.put("value", customData.get(key));
                     array.put(obj);
                 }
                 JSONObject body = new JSONObject();
@@ -457,7 +460,7 @@ public class AuthClient {
         }));
     }
 
-    public static void logout(UserInfo userInfo, @NotNull AuthCallback<JSONObject> callback) {
+    public static void logout(@NotNull AuthCallback<JSONObject> callback) {
         Authing.getPublicConfig((config -> {
             try {
                 String url = Authing.getSchema() + "://" + Util.getHost(config) + "/api/v2/logout?app_id=" + Authing.getAppId();
@@ -469,12 +472,34 @@ public class AuthClient {
         }));
     }
 
+    public static void authByCode(String code, String codeVerifier, String redirectUrl, @NotNull AuthCallback<UserInfo> callback) {
+        Authing.getPublicConfig((config -> {
+            try {
+                String url = Authing.getSchema() + "://" + Util.getHost(config) + "/oidc/token";
+                String body = "client_id="+Authing.getAppId()
+                        + "&grant_type=authorization_code"
+                        + "&code=" + code
+                        + (TextUtils.isEmpty(codeVerifier) ? "" : "&code_verifier=" + codeVerifier)
+                        + "&redirect_uri=" + URLEncoder.encode(redirectUrl, "utf-8");
+                Guardian.authRequest(url, "post", body, (data)-> {
+                    if (data.getCode() == 200) {
+                        createUserInfoFromResponse(data, (c, m, info) -> AuthClient.getCurrentUserInfo(callback));
+                    } else {
+                        callback.call(data.getCode(), data.getMessage(), null);
+                    }
+                });
+            } catch (Exception e) {
+                e.printStackTrace();
+                callback.call(500, "Exception", null);
+            }
+        }));
+    }
+
     private static void createUserInfoFromResponse(Response data, @NotNull AuthCallback<UserInfo> callback) {
         int code = data.getCode();
         try {
             if (code == 200) {
-                UserInfo userInfo;
-                userInfo = UserInfo.createUserInfo(data.getData());
+                UserInfo userInfo = UserInfo.createUserInfo(data.getData());
                 Authing.saveUser(userInfo);
                 String token = userInfo.getIdToken();
                 if (Util.isNull(token)) {
