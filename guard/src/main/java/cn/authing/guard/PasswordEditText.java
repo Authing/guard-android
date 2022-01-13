@@ -4,6 +4,7 @@ import android.content.Context;
 import android.text.TextWatcher;
 import android.util.AttributeSet;
 
+import cn.authing.guard.analyze.Analyzer;
 import cn.authing.guard.data.Safe;
 import cn.authing.guard.internal.BasePasswordEditText;
 
@@ -19,7 +20,7 @@ public class PasswordEditText extends BasePasswordEditText implements TextWatche
 
     public PasswordEditText(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-
+        Analyzer.report("PasswordEditText");
 //        getEditText().setText(Safe.loadPassword());
     }
 

@@ -18,6 +18,7 @@ import androidx.annotation.Nullable;
 
 import java.util.List;
 
+import cn.authing.guard.analyze.Analyzer;
 import cn.authing.guard.util.SpaceOnTheLeftSpan;
 import cn.authing.guard.util.Util;
 import cn.authing.guard.util.Validator;
@@ -37,6 +38,9 @@ public class PhoneNumberEditText extends AccountEditText implements TextWatcher 
 
     public PhoneNumberEditText(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
+
+        Analyzer.report("PhoneNumberEditText");
+
         getEditText().setInputType(InputType.TYPE_CLASS_PHONE);
 
         if (attrs == null || attrs.getAttributeValue(NS_ANDROID, "hint") == null) {

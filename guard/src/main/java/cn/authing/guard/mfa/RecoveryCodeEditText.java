@@ -21,6 +21,7 @@ import androidx.annotation.Nullable;
 
 import cn.authing.guard.AccountEditText;
 import cn.authing.guard.R;
+import cn.authing.guard.analyze.Analyzer;
 import cn.authing.guard.util.Util;
 
 public class RecoveryCodeEditText extends AccountEditText implements TextWatcher {
@@ -35,6 +36,8 @@ public class RecoveryCodeEditText extends AccountEditText implements TextWatcher
 
     public RecoveryCodeEditText(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
+
+        Analyzer.report("RecoveryCodeEditText");
 
         if (attrs == null || attrs.getAttributeValue(NS_ANDROID, "hint") == null) {
             getEditText().setHint(context.getString(R.string.authing_account_edit_text_hint) + context.getString(R.string.authing_recovery_code));

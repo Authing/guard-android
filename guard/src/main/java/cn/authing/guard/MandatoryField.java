@@ -11,6 +11,8 @@ import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 
+import cn.authing.guard.analyze.Analyzer;
+
 public class MandatoryField extends TextView {
 
     // 0 none; 1. right; 2. left
@@ -30,6 +32,8 @@ public class MandatoryField extends TextView {
 
     public MandatoryField(Context context, @Nullable AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
+
+        Analyzer.report("MandatoryField");
 
         String text = getText().toString();
 

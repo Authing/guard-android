@@ -8,6 +8,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import cn.authing.guard.activity.AuthActivity;
+import cn.authing.guard.analyze.Analyzer;
 import cn.authing.guard.flow.AuthFlow;
 import cn.authing.guard.internal.GoSomewhereButton;
 
@@ -23,6 +24,8 @@ public class GoRegisterButton extends GoSomewhereButton {
 
     public GoRegisterButton(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
+
+        Analyzer.report("GoRegisterButton");
 
         Authing.getPublicConfig((config)->{
             if (config.getRegisterTabList() == null || config.getRegisterTabList().size() == 0) {

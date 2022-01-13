@@ -9,6 +9,8 @@ import android.view.View;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import cn.authing.guard.analyze.Analyzer;
+
 public class ErrorTextView extends androidx.appcompat.widget.AppCompatTextView {
 
     public ErrorTextView(@NonNull Context context) {
@@ -21,6 +23,8 @@ public class ErrorTextView extends androidx.appcompat.widget.AppCompatTextView {
 
     public ErrorTextView(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
+
+        Analyzer.report("ErrorTextView");
 
         // hide by default
         setVisibility(View.INVISIBLE);

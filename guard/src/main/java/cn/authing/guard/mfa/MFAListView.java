@@ -19,6 +19,7 @@ import java.util.List;
 
 import cn.authing.guard.R;
 import cn.authing.guard.activity.AuthActivity;
+import cn.authing.guard.analyze.Analyzer;
 import cn.authing.guard.data.MFAData;
 import cn.authing.guard.data.UserInfo;
 import cn.authing.guard.flow.AuthFlow;
@@ -41,6 +42,8 @@ public class MFAListView extends LinearLayout implements View.OnClickListener {
 
     public MFAListView(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
+
+        Analyzer.report("MFAListView");
 
         setOrientation(VERTICAL);
         setGravity(Gravity.CENTER);

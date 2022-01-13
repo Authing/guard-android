@@ -7,6 +7,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import cn.authing.guard.R;
+import cn.authing.guard.analyze.Analyzer;
 import cn.authing.guard.internal.PrimaryButton;
 
 public class UpdateCustomDataButton extends PrimaryButton {
@@ -20,6 +21,7 @@ public class UpdateCustomDataButton extends PrimaryButton {
 
     public UpdateCustomDataButton(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
+        Analyzer.report("UpdateCustomDataButton");
         setText(context.getString(R.string.authing_submit));
     }
 }

@@ -15,6 +15,7 @@ import java.util.List;
 
 import cn.authing.guard.R;
 import cn.authing.guard.VerifyCodeEditText;
+import cn.authing.guard.analyze.Analyzer;
 import cn.authing.guard.data.Country;
 import cn.authing.guard.data.ExtendedField;
 import cn.authing.guard.util.Util;
@@ -40,6 +41,9 @@ public class UserInfoFieldForm extends LinearLayout {
 
     public UserInfoFieldForm(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
+
+        Analyzer.report("UserInfoFieldForm");
+
         setOrientation(VERTICAL);
 
         GENDERS = new String[]{context.getString(R.string.authing_male), context.getString(R.string.authing_female)};

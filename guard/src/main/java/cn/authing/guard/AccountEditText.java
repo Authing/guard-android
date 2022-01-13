@@ -9,6 +9,7 @@ import android.view.inputmethod.EditorInfo;
 
 import java.util.List;
 
+import cn.authing.guard.analyze.Analyzer;
 import cn.authing.guard.data.Config;
 import cn.authing.guard.internal.EditTextLayout;
 import cn.authing.guard.util.Util;
@@ -35,6 +36,9 @@ public class AccountEditText extends EditTextLayout {
 
     public AccountEditText(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
+
+        Analyzer.report("AccountEditText");
+
         Authing.getPublicConfig((config -> {
             CharSequence s = getEditText().getHint();
             if (s == null) {

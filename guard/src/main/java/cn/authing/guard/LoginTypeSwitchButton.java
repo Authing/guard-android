@@ -10,6 +10,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatButton;
 
+import cn.authing.guard.analyze.Analyzer;
+
 public class LoginTypeSwitchButton extends AppCompatButton {
 
     private LoginContainer.LoginType targetLoginType = LoginContainer.LoginType.EByAccountPassword;
@@ -24,6 +26,9 @@ public class LoginTypeSwitchButton extends AppCompatButton {
 
     public LoginTypeSwitchButton(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
+
+        Analyzer.report("LoginTypeSwitchButton");
+
         setText(R.string.authing_login_by_account_and_password);
         setTextColor(context.getColor(R.color.authing_main));
         setGravity(Gravity.CENTER_VERTICAL | Gravity.START);

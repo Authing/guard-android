@@ -12,6 +12,7 @@ import androidx.annotation.Nullable;
 
 import cn.authing.guard.R;
 import cn.authing.guard.activity.AuthActivity;
+import cn.authing.guard.analyze.Analyzer;
 import cn.authing.guard.internal.PrimaryButton;
 import cn.authing.guard.util.Util;
 
@@ -29,6 +30,8 @@ public class OneClickAuthButton extends PrimaryButton {
 
     public OneClickAuthButton(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
+
+        Analyzer.report("OneClickAuthButton");
 
         if (attrs == null || attrs.getAttributeValue(NS_ANDROID, "text") == null) {
             setText(R.string.authing_one_click);

@@ -16,6 +16,7 @@ import androidx.annotation.Nullable;
 
 import cn.authing.guard.activity.AuthActivity;
 import cn.authing.guard.activity.IndexAuthActivity;
+import cn.authing.guard.analyze.Analyzer;
 import cn.authing.guard.data.UserInfo;
 import cn.authing.guard.flow.AuthFlow;
 import cn.authing.guard.internal.LoadingButton;
@@ -35,6 +36,8 @@ public class ResetPasswordButton extends LoadingButton {
 
     public ResetPasswordButton(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
+
+        Analyzer.report("ResetPasswordButton");
 
         if (attrs == null || attrs.getAttributeValue(NS_ANDROID, "text") == null) {
             setText(getResources().getString(R.string.authing_reset_password));

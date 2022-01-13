@@ -9,6 +9,7 @@ import androidx.annotation.Nullable;
 
 import cn.authing.guard.activity.AuthActivity;
 import cn.authing.guard.activity.IndexAuthActivity;
+import cn.authing.guard.analyze.Analyzer;
 import cn.authing.guard.flow.AuthFlow;
 import cn.authing.guard.internal.GoSomewhereButton;
 
@@ -24,6 +25,8 @@ public class GoLoginButton extends GoSomewhereButton {
 
     public GoLoginButton(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
+
+        Analyzer.report("GoLoginButton");
 
         // cannot use super onclick because we need to start IndexAuthActivity instead of AuthActivity
         setOnClickListener((v)->{

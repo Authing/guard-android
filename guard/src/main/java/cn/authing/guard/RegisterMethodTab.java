@@ -10,6 +10,7 @@ import android.widget.LinearLayout;
 import java.util.ArrayList;
 import java.util.List;
 
+import cn.authing.guard.analyze.Analyzer;
 import cn.authing.guard.data.Config;
 import cn.authing.guard.internal.RegisterMethodTabItem;
 import cn.authing.guard.util.Util;
@@ -32,6 +33,8 @@ public class RegisterMethodTab extends LinearLayout {
 
     public RegisterMethodTab(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
+
+        Analyzer.report("RegisterMethodTab");
 
         setOrientation(LinearLayout.VERTICAL);
         setBackgroundColor(0);

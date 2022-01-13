@@ -7,6 +7,7 @@ import android.util.AttributeSet;
 import androidx.annotation.Nullable;
 
 import cn.authing.guard.activity.AuthActivity;
+import cn.authing.guard.analyze.Analyzer;
 import cn.authing.guard.flow.AuthFlow;
 import cn.authing.guard.internal.MaskLabel;
 
@@ -25,6 +26,8 @@ public class PhoneLabel extends MaskLabel {
 
     public PhoneLabel(Context context, @Nullable AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
+
+        Analyzer.report("PhoneLabel");
 
         if (context instanceof AuthActivity) {
             AuthActivity activity = (AuthActivity) context;

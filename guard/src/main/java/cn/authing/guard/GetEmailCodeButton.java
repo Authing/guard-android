@@ -10,6 +10,7 @@ import android.view.View;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import cn.authing.guard.analyze.Analyzer;
 import cn.authing.guard.flow.AuthFlow;
 import cn.authing.guard.internal.LoadingButton;
 import cn.authing.guard.network.AuthClient;
@@ -28,6 +29,8 @@ public class GetEmailCodeButton extends LoadingButton {
 
     public GetEmailCodeButton(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
+
+        Analyzer.report("GetEmailCodeButton");
 
         if (attrs == null || attrs.getAttributeValue(NS_ANDROID, "text") == null) {
             String text = getContext().getString(R.string.authing_get_verify_code);

@@ -9,6 +9,7 @@ import android.view.View;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import cn.authing.guard.analyze.Analyzer;
 import cn.authing.guard.internal.BasePasswordEditText;
 import cn.authing.guard.util.Util;
 
@@ -23,6 +24,7 @@ public class PasswordConfirmEditText extends BasePasswordEditText {
 
     public PasswordConfirmEditText(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
+        Analyzer.report("PasswordConfirmEditText");
     }
 
     protected int getDefaultHintResId() {

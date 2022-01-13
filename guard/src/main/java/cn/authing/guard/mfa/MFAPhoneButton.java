@@ -19,6 +19,7 @@ import cn.authing.guard.PhoneNumberEditText;
 import cn.authing.guard.R;
 import cn.authing.guard.VerifyCodeEditText;
 import cn.authing.guard.activity.AuthActivity;
+import cn.authing.guard.analyze.Analyzer;
 import cn.authing.guard.data.UserInfo;
 import cn.authing.guard.flow.AuthFlow;
 import cn.authing.guard.internal.LoadingButton;
@@ -37,6 +38,8 @@ public class MFAPhoneButton extends LoadingButton {
 
     public MFAPhoneButton(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
+
+        Analyzer.report("MFAPhoneButton");
 
         if (attrs == null || attrs.getAttributeValue(NS_ANDROID, "text") == null) {
             setText(getResources().getString(R.string.authing_bind));

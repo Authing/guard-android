@@ -10,6 +10,7 @@ import android.util.AttributeSet;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import cn.authing.guard.analyze.Analyzer;
 import cn.authing.guard.util.Util;
 import cn.authing.guard.util.Validator;
 
@@ -25,6 +26,8 @@ public class EmailEditText extends AccountEditText implements TextWatcher {
 
     public EmailEditText(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
+
+        Analyzer.report("EmailEditText");
 
         getEditText().setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
         validator = EMAIL_VALIDATOR;

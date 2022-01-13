@@ -7,6 +7,8 @@ import android.widget.LinearLayout;
 
 import androidx.annotation.Nullable;
 
+import cn.authing.guard.analyze.Analyzer;
+
 public class RegisterContainer extends LinearLayout {
 
     public enum RegisterType {
@@ -30,6 +32,9 @@ public class RegisterContainer extends LinearLayout {
 
     public RegisterContainer(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
+
+        Analyzer.report("RegisterContainer");
+
         setOrientation(VERTICAL);
         TypedArray array = context.obtainStyledAttributes(attrs, R.styleable.RegisterContainer);
         int t = array.getInt(R.styleable.RegisterContainer_type,2);

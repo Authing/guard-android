@@ -20,6 +20,7 @@ import cn.authing.guard.EmailEditText;
 import cn.authing.guard.R;
 import cn.authing.guard.VerifyCodeEditText;
 import cn.authing.guard.activity.AuthActivity;
+import cn.authing.guard.analyze.Analyzer;
 import cn.authing.guard.data.UserInfo;
 import cn.authing.guard.flow.AuthFlow;
 import cn.authing.guard.internal.LoadingButton;
@@ -38,6 +39,8 @@ public class MFAEmailButton extends LoadingButton implements AuthActivity.EventL
 
     public MFAEmailButton(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
+
+        Analyzer.report("MFAEmailButton");
 
         if (attrs == null || attrs.getAttributeValue(NS_ANDROID, "text") == null) {
             setText(getResources().getString(R.string.authing_bind));

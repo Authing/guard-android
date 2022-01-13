@@ -10,6 +10,7 @@ import android.util.TypedValue;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import cn.authing.guard.analyze.Analyzer;
 import cn.authing.guard.internal.LoadingButton;
 import cn.authing.guard.network.AuthClient;
 import cn.authing.guard.util.GlobalCountDown;
@@ -31,6 +32,8 @@ public class GetVerifyCodeButton extends LoadingButton {
 
     public GetVerifyCodeButton(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
+
+        Analyzer.report("GetVerifyCodeButton");
 
         loadingLocation = OVER; // over on top since this button is usually small
 

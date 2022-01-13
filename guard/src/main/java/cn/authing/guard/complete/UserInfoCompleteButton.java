@@ -20,6 +20,7 @@ import java.util.List;
 
 import cn.authing.guard.R;
 import cn.authing.guard.activity.AuthActivity;
+import cn.authing.guard.analyze.Analyzer;
 import cn.authing.guard.data.ExtendedField;
 import cn.authing.guard.data.UserInfo;
 import cn.authing.guard.flow.AuthFlow;
@@ -52,6 +53,9 @@ public class UserInfoCompleteButton extends LoadingButton {
 
     public UserInfoCompleteButton(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
+
+        Analyzer.report("UserInfoCompleteButton");
+
         if (!(getContext() instanceof AuthActivity)) {
             return;
         }

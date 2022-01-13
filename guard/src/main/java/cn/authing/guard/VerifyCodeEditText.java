@@ -28,6 +28,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import cn.authing.guard.activity.AuthActivity;
+import cn.authing.guard.analyze.Analyzer;
 import cn.authing.guard.data.Config;
 import cn.authing.guard.internal.EditTextLayout;
 import cn.authing.guard.util.Util;
@@ -52,6 +53,7 @@ public class VerifyCodeEditText extends EditTextLayout implements TextWatcher {
 
     public VerifyCodeEditText(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
+        Analyzer.report("VerifyCodeEditText");
         Authing.getPublicConfig(config -> init(config, context, attrs));
     }
 

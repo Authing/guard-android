@@ -11,6 +11,7 @@ import androidx.annotation.Nullable;
 
 import cn.authing.guard.R;
 import cn.authing.guard.activity.AuthActivity;
+import cn.authing.guard.analyze.Analyzer;
 import cn.authing.guard.flow.AuthFlow;
 
 public class GoRecoveryButton extends androidx.appcompat.widget.AppCompatButton {
@@ -25,6 +26,8 @@ public class GoRecoveryButton extends androidx.appcompat.widget.AppCompatButton 
 
     public GoRecoveryButton(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
+
+        Analyzer.report("GoRecoveryButton");
 
         if (attrs == null || attrs.getAttributeValue(NS_ANDROID, "textColor") == null) {
             setTextColor(context.getColor(R.color.authing_main));

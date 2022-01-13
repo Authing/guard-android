@@ -7,6 +7,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import cn.authing.guard.R;
+import cn.authing.guard.analyze.Analyzer;
 
 public class WechatLoginButton extends SocialLoginButton {
 
@@ -25,6 +26,9 @@ public class WechatLoginButton extends SocialLoginButton {
 
     public WechatLoginButton(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
+
+        Analyzer.report("WechatLoginButton");
+
         setImageResource(R.drawable.ic_authing_wechat);
     }
 }

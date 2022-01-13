@@ -4,6 +4,7 @@ import android.content.Context;
 import android.util.AttributeSet;
 
 import cn.authing.guard.R;
+import cn.authing.guard.analyze.Analyzer;
 
 public class AlipayLoginButton extends SocialLoginButton {
     public AlipayLoginButton(Context context) {
@@ -16,6 +17,9 @@ public class AlipayLoginButton extends SocialLoginButton {
 
     public AlipayLoginButton(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
+
+        Analyzer.report("AlipayLoginButton");
+
         setImageResource(R.drawable.ic_authing_alipay);
     }
 

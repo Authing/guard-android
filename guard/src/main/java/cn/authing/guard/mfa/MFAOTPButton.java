@@ -17,6 +17,7 @@ import org.json.JSONObject;
 import cn.authing.guard.R;
 import cn.authing.guard.VerifyCodeEditText;
 import cn.authing.guard.activity.AuthActivity;
+import cn.authing.guard.analyze.Analyzer;
 import cn.authing.guard.data.UserInfo;
 import cn.authing.guard.internal.LoadingButton;
 import cn.authing.guard.network.AuthClient;
@@ -34,6 +35,8 @@ public class MFAOTPButton extends LoadingButton implements AuthActivity.EventLis
 
     public MFAOTPButton(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
+
+        Analyzer.report("MFAOTPButton");
 
         if (attrs == null || attrs.getAttributeValue(NS_ANDROID, "text") == null) {
             setText(getResources().getString(android.R.string.ok));

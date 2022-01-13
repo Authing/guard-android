@@ -27,6 +27,7 @@ import androidx.core.text.HtmlCompat;
 import java.util.List;
 import java.util.Locale;
 
+import cn.authing.guard.analyze.Analyzer;
 import cn.authing.guard.data.Agreement;
 import cn.authing.guard.internal.CustomURLSpan;
 
@@ -51,6 +52,8 @@ public class PrivacyConfirmBox extends LinearLayout {
 
     public PrivacyConfirmBox(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
+
+        Analyzer.report("PrivacyConfirmBox");
 
         checkBox = new CheckBox(context);
         addView(checkBox);

@@ -7,6 +7,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import cn.authing.guard.activity.AuthActivity;
+import cn.authing.guard.analyze.Analyzer;
 import cn.authing.guard.flow.AuthFlow;
 import cn.authing.guard.internal.GoSomewhereButton;
 
@@ -22,6 +23,7 @@ public class GoForgotPasswordButton extends GoSomewhereButton {
 
     public GoForgotPasswordButton(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
+        Analyzer.report("GoForgotPasswordButton");
     }
 
     protected String getDefaultText() {

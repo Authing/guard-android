@@ -14,6 +14,7 @@ import java.net.URL;
 import java.util.List;
 import java.util.Map;
 
+import cn.authing.guard.analyze.Analyzer;
 import cn.authing.guard.data.UserInfo;
 import cn.authing.guard.network.AuthClient;
 import cn.authing.guard.util.ALog;
@@ -54,6 +55,9 @@ public class WebAuthView extends WebView {
     }
 
     private void init() {
+
+        Analyzer.report("WebAuthView");
+
         WebSettings webSettings = getSettings();
         webSettings.setJavaScriptEnabled(true);
 

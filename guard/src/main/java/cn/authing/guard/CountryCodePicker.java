@@ -12,6 +12,7 @@ import androidx.annotation.Nullable;
 
 import java.util.List;
 
+import cn.authing.guard.analyze.Analyzer;
 import cn.authing.guard.data.Country;
 import cn.authing.guard.internal.CountryCodeAdapter;
 import cn.authing.guard.util.Util;
@@ -33,6 +34,8 @@ public class CountryCodePicker extends androidx.appcompat.widget.AppCompatTextVi
 
     public CountryCodePicker(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
+
+        Analyzer.report("CountryCodePicker");
 
         setGravity(Gravity.CENTER_VERTICAL);
 

@@ -11,6 +11,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatTextView;
 
+import cn.authing.guard.analyze.Analyzer;
+
 public class AppName extends AppCompatTextView {
     public AppName(@NonNull Context context) {
         this(context, null);
@@ -22,6 +24,8 @@ public class AppName extends AppCompatTextView {
 
     public AppName(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
+
+        Analyzer.report("AppName");
 
         if (attrs == null || attrs.getAttributeValue(NS_ANDROID, "textColor") == null) {
             setTextColor(getResources().getColor(R.color.authing_app_name, null));

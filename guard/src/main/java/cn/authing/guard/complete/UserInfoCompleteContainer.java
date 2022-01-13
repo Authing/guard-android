@@ -14,6 +14,7 @@ import java.util.List;
 
 import cn.authing.guard.MandatoryField;
 import cn.authing.guard.activity.AuthActivity;
+import cn.authing.guard.analyze.Analyzer;
 import cn.authing.guard.data.ExtendedField;
 import cn.authing.guard.flow.AuthFlow;
 
@@ -32,6 +33,9 @@ public class UserInfoCompleteContainer extends LinearLayout {
 
     public UserInfoCompleteContainer(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
+
+        Analyzer.report("UserInfoCompleteContainer");
+
         setOrientation(VERTICAL);
 
         if (context instanceof AuthActivity) {
