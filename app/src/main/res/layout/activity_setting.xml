@@ -41,7 +41,7 @@
         android:layout_marginTop="16dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="App ID：" />
+        android:text="Authing App ID：" />
 
     <cn.authing.guard.internal.EditTextLayout
         android:layout_marginTop="8dp"

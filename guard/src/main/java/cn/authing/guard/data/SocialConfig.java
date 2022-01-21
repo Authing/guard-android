@@ -2,7 +2,8 @@ package cn.authing.guard.data;
 
 public class SocialConfig {
     private String id;
-    private String provider;
+    private String type;
+    private String appId;
 
     public String getId() {
         return id;
@@ -12,11 +13,19 @@ public class SocialConfig {
         this.id = id;
     }
 
-    public String getProvider() {
-        return provider;
+    public String getType() {
+        return type;
     }
 
-    public void setProvider(String provider) {
-        this.provider = provider;
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public String getAppId() {
+        return appId;
+    }
+
+    public void setAppId(String appId) {
+        this.appId = appId;
     }
 }

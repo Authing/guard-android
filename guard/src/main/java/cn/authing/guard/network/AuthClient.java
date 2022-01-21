@@ -212,9 +212,11 @@ public class AuthClient {
     public static void loginByWechat(String authCode, @NotNull AuthCallback<UserInfo> callback) {
         Authing.getPublicConfig((config -> {
             try {
-                String poolId = config.getUserPoolId();
-                String url = Authing.getSchema() + "://" + Util.getHost(config) + "/connection/social/wechat:mobile/" + poolId + "/callback?code=" + authCode + "&app_id=" + Authing.getAppId();
-                Guardian.get(url, (data)-> createUserInfoFromResponse(data, callback));
+                JSONObject body = new JSONObject();
+                body.put("connId", config.getSocialConnectionId("wechat:mobile"));
+                body.put("code", authCode);
+                String url = Authing.getSchema() + "://" + Util.getHost(config) + "/api/v2/ecConn/wechatMobile/authByCode";
+                Guardian.post(url, body, (data)-> createUserInfoFromResponse(data, callback));
             } catch (Exception e) {
                 e.printStackTrace();
                 callback.call(500, "Exception", null);
@@ -225,17 +227,8 @@ public class AuthClient {
     public static void loginByAlipay(String authCode, @NotNull AuthCallback<UserInfo> callback) {
         Authing.getPublicConfig((config -> {
             try {
-                String connId = "";
-                List<SocialConfig> configs = config.getSocialConfigs();
-                for (SocialConfig c : configs) {
-                    String provider = c.getProvider();
-                    if ("alipay".equalsIgnoreCase(provider)) {
-                        connId = c.getId();
-                        break;
-                    }
-                }
                 JSONObject body = new JSONObject();
-                body.put("connId", connId);
+                body.put("connId", config.getSocialConnectionId("alipay"));
                 body.put("code", authCode);
                 String url = Authing.getSchema() + "://" + Util.getHost(config) + "/api/v2/ecConn/alipay/authByCode";
                 Guardian.post(url, body, (data)-> createUserInfoFromResponse(data, callback));

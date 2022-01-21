@@ -49,18 +49,13 @@ implementation 'com.tencent.mm.opensdk:wechat-sdk-android:6.8.0'
 
 >Guard 只是 compileOnly 依赖微信，这样可以让 App 按需引入，防止 Guard aar 包随着支持的第三方登录增加而越来越大。所以每增加一个第三方身份源，都需要 App 手动加上该身份源的依赖
 
-2. 在应用启动的时候设置微信 AppID：
-```java
-Wechat.appId = "wx1cddb15e280c0f67";
-```
-
-3. 在应用启动的时候初始化 Authing：
+2. 在应用启动的时候初始化 Authing：
 ```java
 // appId 是 authing 的应用 id，可以在 authing 控制台里面获取
 Authing.init(context, appId);
 ```
 
-4. 由于微信的限制，必须在应用包名所在的目录下创建一个 wxapi/WXEntryActivity。假设你的应用包名为：
+3. 由于微信的限制，必须在应用包名所在的目录下创建一个 wxapi/WXEntryActivity。假设你的应用包名为：
 
 com.example.myapp
 
@@ -79,7 +74,7 @@ public class WXEntryActivity extends WXCallbackActivity {
 }
 ```
 
-5. 在 Manifest 里面声明微信回调 Activity
+4. 在 Manifest 里面声明微信回调 Activity
 
 ```xml
 <activity

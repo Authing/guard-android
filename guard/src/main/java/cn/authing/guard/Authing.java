@@ -112,10 +112,8 @@ public class Authing {
 
     public static void logout(AuthCallback<JSONObject> callback) {
         AuthClient.logout(((code, message, data) -> {
-            if (code == 200) {
-                Safe.logoutUser(sCurrentUser);
-                sCurrentUser = null;
-            }
+            Safe.logoutUser(sCurrentUser);
+            sCurrentUser = null;
             callback.call(code, message,data);
         }));
     }

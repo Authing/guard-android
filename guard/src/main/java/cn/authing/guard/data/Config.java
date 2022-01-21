@@ -70,8 +70,8 @@ public class Config {
             config.setEnabledLoginMethods(toStringList(enabledLoginMethods));
         }
 
-        if (data.has("socialConnections")) {
-            JSONArray socialConnections = data.getJSONArray("socialConnections");
+        if (data.has("ecConnections")) {
+            JSONArray socialConnections = data.getJSONArray("ecConnections");
             config.socialConfigs = toSocialList(socialConnections);
         }
 
@@ -210,6 +210,32 @@ public class Config {
         this.extendedFields = extendedFields;
     }
 
+    public String getSocialConnectionId(String type) {
+        String connId = "";
+        List<SocialConfig> configs = getSocialConfigs();
+        for (SocialConfig c : configs) {
+            String provider = c.getType();
+            if (type.equalsIgnoreCase(provider)) {
+                connId = c.getId();
+                break;
+            }
+        }
+        return connId;
+    }
+
+    public String getSocialAppId(String type) {
+        String appId = "";
+        List<SocialConfig> configs = getSocialConfigs();
+        for (SocialConfig c : configs) {
+            String provider = c.getType();
+            if (type.equalsIgnoreCase(provider)) {
+                appId = c.getAppId();
+                break;
+            }
+        }
+        return appId;
+    }
+
     private static List<String> toStringList(JSONArray array) throws JSONException {
         List<String> list = new ArrayList<>();
         int size = array.length();
@@ -224,11 +250,25 @@ public class Config {
         int size = array.length();
         for (int i = 0; i < size; i++) {
             JSONObject obj = array.getJSONObject(i);
-            String id = obj.getString("id");
-            String provider = obj.getString("provider");
             SocialConfig config = new SocialConfig();
-            config.setId(id);
-            config.setProvider(provider);
+            if (obj.has("id")) {
+                String id = obj.getString("id");
+                config.setId(id);
+            }
+            if (obj.has("provider")) {
+                String provider = obj.getString("provider");
+                config.setType(provider);
+            }
+            if (obj.has("type")) {
+                String provider = obj.getString("type");
+                config.setType(provider);
+            }
+            if (obj.has("fields")) {
+                JSONObject fields = obj.getJSONObject("fields");
+                if (fields.has("appId")) {
+                    config.setAppId(fields.getString("appId"));
+                }
+            }
             list.add(config);
         }
         return list;

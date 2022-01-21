@@ -10,14 +10,9 @@ implementation 'cn.authing:guard:+'
 implementation files('libs/alipaysdk.aar')
 ```
 
->Guard 只是 compileOnly 依赖微信，这样可以让 App 按需引入，防止 Guard aar 包随着支持的第三方登录增加而越来越大。所以每增加一个第三方身份源，都需要 App 手动加上该身份源的依赖
+>Guard 只是 compileOnly 依赖支付宝 SDK，这样可以让 App 按需引入，防止 Guard aar 包随着支持的第三方登录增加而越来越大。所以每增加一个第三方身份源，都需要 App 手动加上该身份源的依赖
 
-3. 在应用启动的时候设置支付宝 AppID：
-```java
-Alipay.appId = "2021002192647456";
-```
-
-4. 在应用启动的时候初始化 Authing：
+3. 在应用启动的时候初始化 Authing：
 ```java
 // appId 是 authing 的应用 id，可以在 authing 控制台里面获取
 Authing.init(context, appId);
