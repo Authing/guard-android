@@ -27,8 +27,6 @@ public class EmailEditText extends AccountEditText implements TextWatcher {
     public EmailEditText(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
 
-        Analyzer.report("EmailEditText");
-
         getEditText().setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
         validator = EMAIL_VALIDATOR;
 
@@ -43,5 +41,10 @@ public class EmailEditText extends AccountEditText implements TextWatcher {
         if (account != null && Validator.isValidEmail(account)) {
             getEditText().setText(account);
         }
+    }
+
+    @Override
+    protected void report() {
+        Analyzer.report("EmailEditText");
     }
 }

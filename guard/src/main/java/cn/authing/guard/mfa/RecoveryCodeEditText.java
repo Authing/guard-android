@@ -37,8 +37,6 @@ public class RecoveryCodeEditText extends AccountEditText implements TextWatcher
     public RecoveryCodeEditText(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
 
-        Analyzer.report("RecoveryCodeEditText");
-
         if (attrs == null || attrs.getAttributeValue(NS_ANDROID, "hint") == null) {
             getEditText().setHint(context.getString(R.string.authing_account_edit_text_hint) + context.getString(R.string.authing_recovery_code));
         }
@@ -78,5 +76,10 @@ public class RecoveryCodeEditText extends AccountEditText implements TextWatcher
         ClipData clip = ClipData.newPlainText("RecoveryCode", getText());
         clipboard.setPrimaryClip(clip);
         Toast.makeText(getContext(), R.string.authing_copied, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    protected void report() {
+        Analyzer.report("RecoveryCodeEditText");
     }
 }

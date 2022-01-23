@@ -39,8 +39,6 @@ public class PhoneNumberEditText extends AccountEditText implements TextWatcher 
     public PhoneNumberEditText(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
 
-        Analyzer.report("PhoneNumberEditText");
-
         getEditText().setInputType(InputType.TYPE_CLASS_PHONE);
 
         if (attrs == null || attrs.getAttributeValue(NS_ANDROID, "hint") == null) {
@@ -121,5 +119,10 @@ public class PhoneNumberEditText extends AccountEditText implements TextWatcher 
         if (account != null && Validator.isValidPhoneNumber(account)) {
             getEditText().setText(account);
         }
+    }
+
+    @Override
+    protected void report() {
+        Analyzer.report("PhoneNumberEditText");
     }
 }

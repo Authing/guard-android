@@ -37,7 +37,7 @@ public class AccountEditText extends EditTextLayout {
     public AccountEditText(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
 
-        Analyzer.report("AccountEditText");
+        report();
 
         Authing.getPublicConfig((config -> {
             CharSequence s = getEditText().getHint();
@@ -147,5 +147,9 @@ public class AccountEditText extends EditTextLayout {
         if (account != null) {
             getEditText().setText(account);
         }
+    }
+
+    protected void report() {
+        Analyzer.report("AccountEditText");
     }
 }
