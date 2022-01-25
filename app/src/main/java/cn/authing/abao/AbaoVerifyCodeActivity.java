@@ -10,10 +10,10 @@ import cn.authing.guard.GetVerifyCodeButton;
 import cn.authing.guard.GlobalStyle;
 import cn.authing.guard.LoginButton;
 import cn.authing.guard.PhoneNumberEditText;
-import cn.authing.guard.activity.BaseLoginActivity;
+import cn.authing.guard.activity.BaseAuthActivity;
 import cn.authing.guard.data.Country;
 
-public class AbaoVerifyCodeActivity extends BaseLoginActivity {
+public class AbaoVerifyCodeActivity extends BaseAuthActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

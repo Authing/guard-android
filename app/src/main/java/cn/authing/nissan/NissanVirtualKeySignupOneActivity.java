@@ -12,10 +12,10 @@ import cn.authing.R;
 import cn.authing.guard.AccountEditText;
 import cn.authing.guard.GlobalStyle;
 import cn.authing.guard.PhoneNumberEditText;
-import cn.authing.guard.activity.BaseLoginActivity;
+import cn.authing.guard.activity.BaseAuthActivity;
 import cn.authing.guard.util.Validator;
 
-public class NissanVirtualKeySignupOneActivity extends BaseLoginActivity implements TextWatcher {
+public class NissanVirtualKeySignupOneActivity extends BaseAuthActivity implements TextWatcher {
     EditText etFN;
     EditText etLN;
     AccountEditText etEmail;

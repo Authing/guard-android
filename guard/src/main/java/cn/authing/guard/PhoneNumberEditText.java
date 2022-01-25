@@ -116,7 +116,7 @@ public class PhoneNumberEditText extends AccountEditText implements TextWatcher 
     @Override
     protected void syncData() {
         String account = Util.getAccount(this);
-        if (account != null && Validator.isValidPhoneNumber(account)) {
+        if (Validator.isValidPhoneNumber(account)) {
             getEditText().setText(account);
         }
     }

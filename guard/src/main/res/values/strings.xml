@@ -29,6 +29,7 @@
     <string name="authing_reset_password_by_email_tip">The password reset email has been sent to the mailbox %1$s, and the validity period is 5 minutes.</string>
     <string name="authing_resend_password_reset_email">Resend password reset email</string>
     <string name="authing_bind">Bind</string>
+    <string name="authing_unbind">Unbind</string>
     <string name="authing_bind_email">Bind email</string>
     <string name="authing_bind_email_tip">Verify code will be sent to the email below</string>
     <string name="authing_input_email_code">Please input email code</string>
@@ -58,6 +59,16 @@
     <string name="authing_current_phone_login">Login with current phone number</string>
     <string name="authing_other_login">Other login methods</string>
     <string name="authing_logout">Log out</string>
+
+    <!--user profile-->
+    <string name="authing_user_profile">User profile</string>
+    <string name="authing_unspecified">Undefined</string>
+    <string name="authing_input_old_password">Please input old password</string>
+    <string name="authing_nickname">Nickname</string>
+    <string name="authing_name">Name</string>
+    <string name="authing_modify_password">Modify password</string>
+    <string name="authing_update_profile">Modify profile</string>
+    <string name="authing_update">Update</string>
 
     <!--error messages-->
     <string name="authing_password_error_1">At least 6 characters</string>

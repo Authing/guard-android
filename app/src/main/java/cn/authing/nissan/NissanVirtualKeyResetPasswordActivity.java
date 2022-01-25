@@ -12,12 +12,12 @@ import cn.authing.guard.GlobalStyle;
 import cn.authing.guard.PasswordConfirmEditText;
 import cn.authing.guard.PasswordEditText;
 import cn.authing.guard.VerifyCodeEditText;
-import cn.authing.guard.activity.BaseLoginActivity;
+import cn.authing.guard.activity.BaseAuthActivity;
 import cn.authing.guard.internal.LoadingButton;
 import cn.authing.guard.network.AuthClient;
 import cn.authing.guard.util.Validator;
 
-public class NissanVirtualKeyResetPasswordActivity extends BaseLoginActivity implements TextWatcher  {
+public class NissanVirtualKeyResetPasswordActivity extends BaseAuthActivity implements TextWatcher  {
 
     private static final int COLOR_OK = 0xffffffff;
     private static final int COLOR_ERR = 0xff831827;
@@ -83,7 +83,7 @@ public class NissanVirtualKeyResetPasswordActivity extends BaseLoginActivity imp
                 runOnUiThread(()->{
                     if (code == 200) {
                         Toast.makeText(getApplicationContext(), "Password reset success. Now go to sign in", Toast.LENGTH_LONG).show();
-                        Intent intent = new Intent(NissanVirtualKeyResetPasswordActivity.this, NissanVirtualKeyLoginActivity.class);
+                        Intent intent = new Intent(NissanVirtualKeyResetPasswordActivity.this, NissanVirtualKeyAuthActivity.class);
                         startActivity(intent);
                         finish();
                     }

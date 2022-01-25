@@ -11,13 +11,13 @@ import cn.authing.MainActivity;
 import cn.authing.R;
 import cn.authing.guard.CountryCodePicker;
 import cn.authing.guard.PhoneNumberEditText;
-import cn.authing.guard.activity.BaseLoginActivity;
+import cn.authing.guard.activity.BaseAuthActivity;
 import cn.authing.guard.data.Country;
 import cn.authing.guard.network.AuthClient;
 import cn.authing.guard.social.SocialLoginListView;
 import cn.authing.guard.util.Util;
 
-public class AbaoActivity extends BaseLoginActivity {
+public class AbaoActivity extends BaseAuthActivity {
 
     private CountryCodePicker countryCodePicker;
     PhoneNumberEditText editText;

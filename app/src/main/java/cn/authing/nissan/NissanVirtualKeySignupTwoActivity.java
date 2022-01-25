@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.widget.Button;
 import android.widget.TextView;
 
 import cn.authing.MainActivity;
@@ -12,13 +11,11 @@ import cn.authing.R;
 import cn.authing.guard.GlobalStyle;
 import cn.authing.guard.PasswordConfirmEditText;
 import cn.authing.guard.PasswordEditText;
-import cn.authing.guard.PrivacyConfirmBox;
 import cn.authing.guard.RegisterButton;
-import cn.authing.guard.activity.BaseLoginActivity;
-import cn.authing.guard.network.AuthClient;
+import cn.authing.guard.activity.BaseAuthActivity;
 import cn.authing.guard.util.Validator;
 
-public class NissanVirtualKeySignupTwoActivity extends BaseLoginActivity implements TextWatcher {
+public class NissanVirtualKeySignupTwoActivity extends BaseAuthActivity implements TextWatcher {
 
     private static final int COLOR_OK = 0xffffffff;
     private static final int COLOR_ERR = 0xff831827;

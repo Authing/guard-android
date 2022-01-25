@@ -20,11 +20,11 @@ import cn.authing.guard.Authing;
 import cn.authing.guard.data.UserInfo;
 import cn.authing.guard.flow.AuthFlow;
 import cn.authing.guard.oneclick.OneClick;
-import cn.authing.nissan.NissanVirtualKeyLoginActivity;
+import cn.authing.nissan.NissanVirtualKeyAuthActivity;
 import cn.authing.oneclick.OneClickActivity;
-import cn.authing.theragun.TheragunLoginActivity;
+import cn.authing.theragun.TheragunAuthActivity;
 import cn.authing.webview.AuthingWebViewActivity;
-import cn.authing.wechat.WechatLoginActivity;
+import cn.authing.wechat.WechatAuthActivity;
 
 public class SampleListActivity extends AppCompatActivity {
 
@@ -73,16 +73,16 @@ public class SampleListActivity extends AppCompatActivity {
                     }
                 }));
             } else if (pos == 3) {
-                Intent intent = new Intent(SampleListActivity.this, WechatLoginActivity.class);
+                Intent intent = new Intent(SampleListActivity.this, WechatAuthActivity.class);
                 startActivity(intent);
             } else if (pos == 4) {
-                Intent intent = new Intent(SampleListActivity.this, TheragunLoginActivity.class);
+                Intent intent = new Intent(SampleListActivity.this, TheragunAuthActivity.class);
                 startActivity(intent);
             } else if (pos == 5) {
                 Intent intent = new Intent(SampleListActivity.this, AbaoActivity.class);
                 startActivity(intent);
             } else if (pos == 6) {
-                Intent intent = new Intent(SampleListActivity.this, NissanVirtualKeyLoginActivity.class);
+                Intent intent = new Intent(SampleListActivity.this, NissanVirtualKeyAuthActivity.class);
                 startActivity(intent);
             } else if (pos == 7) {
                 Intent intent = new Intent(SampleListActivity.this, AppAuthActivity.class);
@@ -97,7 +97,7 @@ public class SampleListActivity extends AppCompatActivity {
                 Authing.init(SampleListActivity.this, "61ae0c9807451d6f30226bd4");
                 AuthFlow.start(this);
             } else if (pos == 11) {
-                Intent intent = new Intent(SampleListActivity.this, AndroidLoginActivity.class);
+                Intent intent = new Intent(SampleListActivity.this, AndroidAuthActivity.class);
                 startActivity(intent);
             }
         });
@@ -116,9 +116,7 @@ public class SampleListActivity extends AppCompatActivity {
 
     private void gotoMain(UserInfo data) {
         if (data != null) {
-            Intent intent = new Intent(this, MainActivity.class);
-            intent.putExtra("user", data);
-            startActivity(intent);
+            AuthFlow.showUserProfile(this);
         }
     }
 

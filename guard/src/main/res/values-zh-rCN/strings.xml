@@ -29,6 +29,7 @@
     <string name="authing_reset_password_by_email_tip">密码重置邮件已发送至 %1$s, 有效期为 5 分钟</string>
     <string name="authing_resend_password_reset_email">重新发送密码重置邮件</string>
     <string name="authing_bind">绑定</string>
+    <string name="authing_unbind">解绑</string>
     <string name="authing_bind_email">绑定电子邮箱</string>
     <string name="authing_bind_email_tip">验证码将发送至填入邮箱</string>
     <string name="authing_input_email_code">请输入邮箱验证码</string>
@@ -58,6 +59,16 @@
     <string name="authing_current_phone_login">本机号码一键登录</string>
     <string name="authing_other_login">其他方式登录</string>
     <string name="authing_logout">退出登录</string>
+
+    <!--user profile-->
+    <string name="authing_user_profile">个人中心</string>
+    <string name="authing_unspecified">未定义</string>
+    <string name="authing_input_old_password">请输入旧密码</string>
+    <string name="authing_nickname">呢称</string>
+    <string name="authing_name">姓名</string>
+    <string name="authing_modify_password">修改密码</string>
+    <string name="authing_update_profile">更新资料</string>
+    <string name="authing_update">更新</string>
 
     <!--error messages-->
     <string name="authing_password_error_1">至少 6 位</string>

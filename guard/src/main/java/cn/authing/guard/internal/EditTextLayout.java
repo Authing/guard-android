@@ -252,6 +252,11 @@ public class EditTextLayout extends LinearLayout implements TextWatcher, View.On
         }
     }
 
+    public void disable() {
+        editText.setEnabled(false);
+        clearAllButton.setVisibility(View.GONE);
+    }
+
     private void clearAllText(View v) {
         editText.setText("");
         if (hintMode == EAnimated && !editText.hasFocus()) {

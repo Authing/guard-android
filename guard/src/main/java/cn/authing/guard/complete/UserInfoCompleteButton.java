@@ -171,9 +171,9 @@ public class UserInfoCompleteButton extends LoadingButton {
             if (code == 200) {
                 completeFlag &= ~EMAIL;
                 try {
-                    userInfo = UserInfo.createUserInfo(data);
+                    userInfo = data;
                     update();
-                } catch (JSONException e) {
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
             } else {
@@ -208,9 +208,9 @@ public class UserInfoCompleteButton extends LoadingButton {
             if (code == 200) {
                 completeFlag &= ~PHONE;
                 try {
-                    userInfo = UserInfo.createUserInfo(data);
+                    userInfo = data;
                     update();
-                } catch (JSONException e) {
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
             } else {
@@ -224,8 +224,8 @@ public class UserInfoCompleteButton extends LoadingButton {
             if (code == 200) {
                 completeFlag &= ~OTHER;
                 try {
-                    userInfo = UserInfo.createUserInfo(data);
-                } catch (JSONException e) {
+                    userInfo = data;
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
                 update();

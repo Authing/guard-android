@@ -13,7 +13,7 @@ public class Validator {
     }
 
     public static boolean isValidPhoneNumber(CharSequence target) {
-        return PhoneNumberUtils.isGlobalPhoneNumber(target.toString());
+        return target != null && PhoneNumberUtils.isGlobalPhoneNumber(target.toString());
     }
 
     public static boolean hasEnglish(String s) {

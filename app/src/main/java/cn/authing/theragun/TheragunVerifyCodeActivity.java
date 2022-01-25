@@ -6,9 +6,9 @@ import android.os.Bundle;
 import cn.authing.MainActivity;
 import cn.authing.R;
 import cn.authing.guard.LoginButton;
-import cn.authing.guard.activity.BaseLoginActivity;
+import cn.authing.guard.activity.BaseAuthActivity;
 
-public class TheragunVerifyCodeActivity extends BaseLoginActivity {
+public class TheragunVerifyCodeActivity extends BaseAuthActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

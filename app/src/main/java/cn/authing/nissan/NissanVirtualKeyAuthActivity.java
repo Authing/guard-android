@@ -8,9 +8,9 @@ import android.widget.TextView;
 import cn.authing.MainActivity;
 import cn.authing.R;
 import cn.authing.guard.LoginButton;
-import cn.authing.guard.activity.BaseLoginActivity;
+import cn.authing.guard.activity.BaseAuthActivity;
 
-public class NissanVirtualKeyLoginActivity extends BaseLoginActivity {
+public class NissanVirtualKeyAuthActivity extends BaseAuthActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -20,14 +20,14 @@ public class NissanVirtualKeyLoginActivity extends BaseLoginActivity {
 
         TextView tvReset = findViewById(R.id.tv_reset);
         tvReset.setOnClickListener((v)->{
-            Intent intent = new Intent(NissanVirtualKeyLoginActivity.this, NissanVirtualKeySendEmailActivity.class);
+            Intent intent = new Intent(NissanVirtualKeyAuthActivity.this, NissanVirtualKeySendEmailActivity.class);
             startActivity(intent);
         });
 
         LoginButton btn = findViewById(R.id.btn_login);
         btn.setOnLoginListener((code, message, data) -> {
             if (code == 200) {
-                Intent intent = new Intent(NissanVirtualKeyLoginActivity.this, MainActivity.class);
+                Intent intent = new Intent(NissanVirtualKeyAuthActivity.this, MainActivity.class);
                 intent.putExtra("user", data);
                 startActivity(intent);
                 finish();
@@ -36,7 +36,7 @@ public class NissanVirtualKeyLoginActivity extends BaseLoginActivity {
 
         Button signBtn = findViewById(R.id.btn_goto_signup);
         signBtn.setOnClickListener((v)->{
-            Intent intent = new Intent(NissanVirtualKeyLoginActivity.this, NissanVirtualKeySignupOneActivity.class);
+            Intent intent = new Intent(NissanVirtualKeyAuthActivity.this, NissanVirtualKeySignupOneActivity.class);
             startActivity(intent);
         });
     }

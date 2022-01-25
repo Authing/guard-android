@@ -2,4 +2,6 @@
 <resources>
     <dimen name="authing_form_start_end_margin">24dp</dimen>
     <dimen name="authing_form_top_margin">16dp</dimen>
+    <dimen name="authing_action_bar_height">54dp</dimen>
+    <dimen name="authing_user_profile_padding">12dp</dimen>
 </resources>

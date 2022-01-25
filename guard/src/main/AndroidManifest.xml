@@ -11,10 +11,23 @@
 
     <application>
         <activity
-            android:name=".activity.UpdateCustomDataActivity"
-            android:exported="false" />
+            android:name=".activity.BindEmailActivity"
+            android:exported="false"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
-            android:name=".activity.BaseLoginActivity"
+            android:name=".activity.BindPhoneActivity"
+            android:exported="false"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity
+            android:name=".activity.ChangePasswordActivity"
+            android:exported="false"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity
+            android:name=".activity.UpdateUserProfileActivity"
+            android:exported="false"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity
+            android:name=".activity.BaseAuthActivity"
             android:exported="false">
             <intent-filter tools:node="replace">
                 <category android:name="android.intent.category.DEFAULT" />
@@ -38,6 +51,10 @@
             android:exported="false"
             android:launchMode="singleTask"
             android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.UserProfileActivity"
+            android:exported="false"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
     </application>
 
 </manifest>

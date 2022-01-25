@@ -10,10 +10,10 @@ import cn.authing.guard.CountryCodePicker;
 import cn.authing.guard.GlobalStyle;
 import cn.authing.guard.LoginButton;
 import cn.authing.guard.PhoneNumberEditText;
-import cn.authing.guard.activity.BaseLoginActivity;
+import cn.authing.guard.activity.BaseAuthActivity;
 import cn.authing.guard.data.Country;
 
-public class WechatLoginActivity extends BaseLoginActivity {
+public class WechatAuthActivity extends BaseAuthActivity {
 
     private PhoneNumberEditText input;
     private CountryCodePicker countryCodePicker;
@@ -49,7 +49,7 @@ public class WechatLoginActivity extends BaseLoginActivity {
         LoginButton btn = findViewById(R.id.btn_login);
         btn.setOnLoginListener((c, message, data) -> {
             if (c == 200) {
-                Intent intent = new Intent(WechatLoginActivity.this, MainActivity.class);
+                Intent intent = new Intent(WechatAuthActivity.this, MainActivity.class);
                 intent.putExtra("user", data);
                 startActivity(intent);
                 finish();

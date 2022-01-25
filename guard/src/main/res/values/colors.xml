@@ -5,4 +5,5 @@
     <color name="authing_error">#ff4d4f</color>
     <color name="authing_button_pressed">#FF0A3ACA</color>
     <color name="authing_button_disabled">#FF92AAF3</color>
+    <color name="authing_background">#FFF0F0F0</color>
 </resources>

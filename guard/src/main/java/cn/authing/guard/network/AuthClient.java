@@ -254,14 +254,14 @@ public class AuthClient {
         }));
     }
 
-    public static void bindEmail(String email, String code, @NotNull AuthCallback<JSONObject> callback) {
+    public static void bindEmail(String email, String code, @NotNull AuthCallback<UserInfo> callback) {
         Authing.getPublicConfig((config -> {
             try {
                 JSONObject body = new JSONObject();
                 body.put("email", email);
                 body.put("emailCode", code);
                 String url = Authing.getSchema() + "://" + Util.getHost(config) + "/api/v2/users/email/bind";
-                Guardian.post(url, body, (data)-> callback.call(data.getCode(), data.getMessage(), data.getData()));
+                Guardian.post(url, body, (data)-> createUserInfoFromResponse(data, callback));
             } catch (Exception e) {
                 e.printStackTrace();
                 callback.call(500, "Exception", null);
@@ -269,14 +269,40 @@ public class AuthClient {
         }));
     }
 
-    public static void bindPhone(String phone, String code, @NotNull AuthCallback<JSONObject> callback) {
+    public static void unbindEmail(@NotNull AuthCallback<UserInfo> callback) {
+        Authing.getPublicConfig((config -> {
+            try {
+                JSONObject body = new JSONObject();
+                String url = Authing.getSchema() + "://" + Util.getHost(config) + "/api/v2/users/email/unbind";
+                Guardian.post(url, body, (data)-> createUserInfoFromResponse(data, callback));
+            } catch (Exception e) {
+                e.printStackTrace();
+                callback.call(500, "Exception", null);
+            }
+        }));
+    }
+
+    public static void bindPhone(String phone, String code, @NotNull AuthCallback<UserInfo> callback) {
         Authing.getPublicConfig((config -> {
             try {
                 JSONObject body = new JSONObject();
                 body.put("phone", phone);
                 body.put("phoneCode", code);
                 String url = Authing.getSchema() + "://" + Util.getHost(config) + "/api/v2/users/phone/bind";
-                Guardian.post(url, body, (data)-> callback.call(data.getCode(), data.getMessage(), data.getData()));
+                Guardian.post(url, body, (data)-> createUserInfoFromResponse(data, callback));
+            } catch (Exception e) {
+                e.printStackTrace();
+                callback.call(500, "Exception", null);
+            }
+        }));
+    }
+
+    public static void unbindPhone(@NotNull AuthCallback<UserInfo> callback) {
+        Authing.getPublicConfig((config -> {
+            try {
+                JSONObject body = new JSONObject();
+                String url = Authing.getSchema() + "://" + Util.getHost(config) + "/api/v2/users/phone/unbind";
+                Guardian.post(url, body, (data)-> createUserInfoFromResponse(data, callback));
             } catch (Exception e) {
                 e.printStackTrace();
                 callback.call(500, "Exception", null);
@@ -388,11 +414,11 @@ public class AuthClient {
         }));
     }
 
-    public static void updateUser(JSONObject body, @NotNull AuthCallback<JSONObject> callback) {
+    public static void updateUser(JSONObject body, @NotNull AuthCallback<UserInfo> callback) {
         Authing.getPublicConfig((config -> {
             try {
                 String url = Authing.getSchema() + "://" + Util.getHost(config) + "/api/v2/users/profile/update";
-                Guardian.post(url, body, (data)-> callback.call(data.getCode(), data.getMessage(), data.getData()));
+                Guardian.post(url, body, (data)-> createUserInfoFromResponse(data, callback));
             } catch (Exception e) {
                 e.printStackTrace();
                 callback.call(500, "Exception", null);

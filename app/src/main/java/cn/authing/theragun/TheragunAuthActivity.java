@@ -8,12 +8,12 @@ import org.json.JSONObject;
 
 import cn.authing.R;
 import cn.authing.guard.PhoneNumberEditText;
-import cn.authing.guard.activity.BaseLoginActivity;
+import cn.authing.guard.activity.BaseAuthActivity;
 import cn.authing.guard.internal.LoadingButton;
 import cn.authing.guard.network.AuthClient;
 import cn.authing.guard.util.Util;
 
-public class TheragunLoginActivity extends BaseLoginActivity {
+public class TheragunAuthActivity extends BaseAuthActivity {
 
     PhoneNumberEditText editText;
     LoadingButton btn;

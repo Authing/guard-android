@@ -10,12 +10,14 @@ import java.util.Objects;
 
 import cn.authing.guard.GlobalStyle;
 
-public class BaseLoginActivity extends AppCompatActivity {
+public class BaseAuthActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Objects.requireNonNull(getSupportActionBar()).hide();
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().hide();
+        }
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS, WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
     }

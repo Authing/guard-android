@@ -35,7 +35,7 @@
             android:name=".nissan.NissanVirtualKeySignupOneActivity"
             android:exported="false" />
         <activity
-            android:name=".nissan.NissanVirtualKeyLoginActivity"
+            android:name=".nissan.NissanVirtualKeyAuthActivity"
             android:exported="false" />
         <activity
             android:name=".abao.AbaoVerifyCodeActivity"
@@ -55,20 +55,21 @@
             android:launchMode="singleTask" />
         <activity
             android:name=".MainActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"
             android:exported="false" />
         <activity
-            android:name=".AndroidLoginActivity"
+            android:name=".AndroidAuthActivity"
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity
             android:name=".oneclick.OneClickActivity"
             android:exported="false" />
         <activity
-            android:name=".wechat.WechatLoginActivity"
+            android:name=".wechat.WechatAuthActivity"
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".theragun.TheragunLoginActivity"
+            android:name=".theragun.TheragunAuthActivity"
             android:exported="false" />
         <activity
             android:name=".theragun.TheragunVerifyCodeActivity"

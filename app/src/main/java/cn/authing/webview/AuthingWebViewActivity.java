@@ -9,10 +9,10 @@ import android.widget.TextView;
 import cn.authing.MainActivity;
 import cn.authing.R;
 import cn.authing.guard.WebAuthView;
-import cn.authing.guard.activity.BaseLoginActivity;
+import cn.authing.guard.activity.BaseAuthActivity;
 import cn.authing.guard.data.UserInfo;
 
-public class AuthingWebViewActivity extends BaseLoginActivity {
+public class AuthingWebViewActivity extends BaseAuthActivity {
 
     WebAuthView webView;
     LinearLayout llRes;

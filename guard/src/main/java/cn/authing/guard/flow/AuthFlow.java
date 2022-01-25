@@ -13,6 +13,7 @@ import java.util.Map;
 import cn.authing.guard.R;
 import cn.authing.guard.activity.AuthActivity;
 import cn.authing.guard.activity.IndexAuthActivity;
+import cn.authing.guard.activity.UserProfileActivity;
 import cn.authing.guard.data.UserInfo;
 
 public class AuthFlow implements Serializable {
@@ -78,6 +79,11 @@ public class AuthFlow implements Serializable {
             }
         }.start();
         return flow;
+    }
+
+    public static void showUserProfile(Activity activity) {
+        Intent intent = new Intent(activity, UserProfileActivity.class);
+        activity.startActivity(intent);
     }
 
     public Map<String, Object> getData() {

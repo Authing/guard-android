@@ -40,6 +40,7 @@ import cn.authing.guard.VerifyCodeEditText;
 import cn.authing.guard.data.Config;
 import cn.authing.guard.data.Country;
 import cn.authing.guard.data.Safe;
+import cn.authing.guard.data.UserInfo;
 import cn.authing.guard.flow.AuthFlow;
 
 public class Util {
@@ -159,6 +160,12 @@ public class Util {
         }
         if (TextUtils.isEmpty(phone)) {
             phone = Safe.loadAccount();
+        }
+        if (TextUtils.isEmpty(phone)) {
+            UserInfo userInfo = Authing.getCurrentUser();
+            if (userInfo != null) {
+                phone = userInfo.getPhone_number();
+            }
         }
         return phone;
     }

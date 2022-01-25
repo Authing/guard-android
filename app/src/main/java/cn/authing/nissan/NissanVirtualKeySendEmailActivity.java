@@ -7,12 +7,12 @@ import android.widget.Toast;
 import cn.authing.R;
 import cn.authing.guard.AccountEditText;
 import cn.authing.guard.GlobalStyle;
-import cn.authing.guard.activity.BaseLoginActivity;
+import cn.authing.guard.activity.BaseAuthActivity;
 import cn.authing.guard.internal.LoadingButton;
 import cn.authing.guard.network.AuthClient;
 import cn.authing.guard.util.Validator;
 
-public class NissanVirtualKeySendEmailActivity extends BaseLoginActivity {
+public class NissanVirtualKeySendEmailActivity extends BaseAuthActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -3,7 +3,18 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
     android:clipChildren="false">
+
+    <TextView
+        android:id="@+id/tv_welcome"
+        android:layout_width="wrap_content"
+        android:layout_height="54dp"
+        android:textColor="#000"
+        android:textSize="18sp"
+        android:gravity="center_vertical"
+        android:layout_gravity="center_horizontal"
+        android:text="@string/authing_update_profile"/>
 
     <cn.authing.guard.internal.EditTextLayout
         android:id="@+id/et_value"
@@ -14,11 +25,19 @@
         android:layout_marginEnd="@dimen/authing_form_start_end_margin"
         android:background="@null"/>
 
-    <cn.authing.guard.profile.UpdateCustomDataButton
-        android:id="@+id/btn_update_custom_data"
+    <cn.authing.guard.ErrorTextView
         android:layout_marginStart="@dimen/authing_form_start_end_margin"
         android:layout_marginEnd="@dimen/authing_form_start_end_margin"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginBottom="4dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <cn.authing.guard.internal.PrimaryButton
+        android:id="@+id/btn_submit"
+        android:layout_marginStart="@dimen/authing_form_start_end_margin"
+        android:layout_marginEnd="@dimen/authing_form_start_end_margin"
+        android:text="@string/authing_submit"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 

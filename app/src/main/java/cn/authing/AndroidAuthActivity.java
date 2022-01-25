@@ -5,10 +5,10 @@ import android.os.Bundle;
 
 import cn.authing.guard.GlobalStyle;
 import cn.authing.guard.LoginButton;
-import cn.authing.guard.activity.BaseLoginActivity;
+import cn.authing.guard.activity.BaseAuthActivity;
 import cn.authing.guard.social.SocialLoginListView;
 
-public class AndroidLoginActivity extends BaseLoginActivity {
+public class AndroidAuthActivity extends BaseAuthActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,7 +22,7 @@ public class AndroidLoginActivity extends BaseLoginActivity {
         if (btn != null) {
             btn.setOnLoginListener((code, message, data) -> {
                 if (code == 200) {
-                    Intent intent = new Intent(AndroidLoginActivity.this, MainActivity.class);
+                    Intent intent = new Intent(AndroidAuthActivity.this, MainActivity.class);
                     intent.putExtra("user", data);
                     startActivity(intent);
                     finish();
@@ -34,7 +34,7 @@ public class AndroidLoginActivity extends BaseLoginActivity {
         if (lv != null) {
             lv.setOnLoginListener((code, message, data) -> {
                 if (code == 200) {
-                    Intent intent = new Intent(AndroidLoginActivity.this, MainActivity.class);
+                    Intent intent = new Intent(AndroidAuthActivity.this, MainActivity.class);
                     intent.putExtra("user", data);
                     startActivity(intent);
                     finish();

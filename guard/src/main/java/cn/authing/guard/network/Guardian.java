@@ -66,7 +66,7 @@ public class Guardian {
             builder.addHeader("x-authing-userpool-id", config.getUserPoolId());
         }
         builder.addHeader("x-authing-app-id", Authing.getAppId());
-        builder.addHeader("x-authing-request-from", "Guard@Android@" + SDK_VERSION);
+        builder.addHeader("x-authing-request-from", "guard-android" + SDK_VERSION);
         builder.addHeader("x-authing-lang", Util.getLangHeader());
         UserInfo currentUser = Authing.getCurrentUser();
         if (currentUser != null) {
