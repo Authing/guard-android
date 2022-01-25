@@ -1,7 +1,6 @@
 package cn.authing.guard.activity;
 
 import android.os.Bundle;
-import android.widget.Button;
 
 import org.json.JSONObject;
 
@@ -11,7 +10,6 @@ import cn.authing.guard.data.UserInfo;
 import cn.authing.guard.internal.EditTextLayout;
 import cn.authing.guard.internal.LoadingButton;
 import cn.authing.guard.network.AuthClient;
-import cn.authing.guard.profile.UpdateCustomDataButton;
 import cn.authing.guard.util.Util;
 
 public class UpdateUserProfileActivity extends BaseAuthActivity {
