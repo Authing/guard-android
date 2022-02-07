@@ -70,6 +70,21 @@
     <string name="authing_update_profile">Modify profile</string>
     <string name="authing_update">Update</string>
 
+    <!--auth issue feedback-->
+    <string name="authing_feedback">Feedback</string>
+    <string name="authing_contact_info">Contact information</string>
+    <string name="authing_related_issue">Related issue</string>
+    <string name="authing_feedback_description">Description</string>
+    <string name="authing_feedback_screenshot">Screen shot</string>
+    <string name="authing_contact_info_cannot_be_empty">Contact information cannot be empty</string>
+    <string name="authing_cannot_get_verify_code">Cannot get verify code</string>
+    <string name="authing_cannot_login">Cannot login</string>
+    <string name="authing_cannot_register">Cannot register</string>
+    <string name="authing_lost_account">Lost my account</string>
+    <string name="authing_cannot_reset_password">Cannot reset password</string>
+    <string name="authing_account_is_locked">Account is locked</string>
+    <string name="authing_other">Other</string>
+
     <!--error messages-->
     <string name="authing_password_error_1">At least 6 characters</string>
     <string name="authing_password_error_2">At least 1 lowercase letter</string>

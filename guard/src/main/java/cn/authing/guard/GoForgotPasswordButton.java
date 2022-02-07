@@ -30,6 +30,7 @@ public class GoForgotPasswordButton extends GoSomewhereButton {
         return getResources().getString(R.string.authing_forgot_password);
     }
 
+    @Override
     protected int getTargetLayoutId() {
         if (getContext() instanceof AuthActivity) {
             AuthActivity activity = (AuthActivity) getContext();

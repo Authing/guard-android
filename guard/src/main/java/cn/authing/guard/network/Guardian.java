@@ -152,8 +152,9 @@ public class Guardian {
 
                 callback.call(resp);
             } else {
-                Log.w(TAG, response.code() + " Guardian failed for:" + url);
-                callback.call(new Response(response.code(), "Network Error", null));
+                String s = new String(Objects.requireNonNull(response.body()).bytes(), StandardCharsets.UTF_8);
+                Log.w(TAG, "Guardian failed. " + response.code() + " message:" + s);
+                callback.call(new Response(response.code(), s, null));
             }
         } catch (Exception e) {
             e.printStackTrace();

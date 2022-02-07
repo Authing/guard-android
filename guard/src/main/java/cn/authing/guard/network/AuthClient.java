@@ -29,7 +29,7 @@ public class AuthClient {
             return;
         }
 
-        Authing.getPublicConfig((config -> {
+        Authing.getPublicConfig(config -> {
             try {
                 JSONObject body = new JSONObject();
                 body.put("phone", phone);
@@ -44,7 +44,7 @@ public class AuthClient {
                 e.printStackTrace();
                 callback.call(500, "Exception", null);
             }
-        }));
+        });
     }
 
     public static void loginByPhoneCode(String phone, String code, @NotNull AuthCallback<UserInfo> callback) {
@@ -52,7 +52,7 @@ public class AuthClient {
     }
 
     public static void loginByPhoneCode(AuthData authData, String phone, String code, @NotNull AuthCallback<UserInfo> callback) {
-        Authing.getPublicConfig((config -> {
+        Authing.getPublicConfig(config -> {
             try {
                 JSONObject body = new JSONObject();
                 body.put("phone", phone);
@@ -79,7 +79,7 @@ public class AuthClient {
                 e.printStackTrace();
                 callback.call(500, "Exception", null);
             }
-        }));
+        });
     }
 
     public static void loginByAccount(String account, String password, @NotNull AuthCallback<UserInfo> callback) {
@@ -87,7 +87,7 @@ public class AuthClient {
     }
 
     public static void loginByAccount(AuthData authData, String account, String password, @NotNull AuthCallback<UserInfo> callback) {
-        Authing.getPublicConfig((config -> {
+        Authing.getPublicConfig(config -> {
             try {
                 String encryptPassword = Util.encryptPassword(password);
                 JSONObject body = new JSONObject();
@@ -117,11 +117,11 @@ public class AuthClient {
                 e.printStackTrace();
                 callback.call(500, "Exception", null);
             }
-        }));
+        });
     }
 
     public static void registerByEmail(String email, String password, @NotNull AuthCallback<UserInfo> callback) {
-        Authing.getPublicConfig((config -> {
+        Authing.getPublicConfig(config -> {
             try {
                 String encryptPassword = Util.encryptPassword(password);
                 JSONObject body = new JSONObject();
@@ -148,11 +148,11 @@ public class AuthClient {
                 e.printStackTrace();
                 callback.call(500, "Exception", null);
             }
-        }));
+        });
     }
 
     public static void registerByPhoneCode(String phone, String password, String code, @NotNull AuthCallback<UserInfo> callback) {
-        Authing.getPublicConfig((config -> {
+        Authing.getPublicConfig(config -> {
             try {
                 String encryptPassword = Util.encryptPassword(password);
                 JSONObject body = new JSONObject();
@@ -165,7 +165,7 @@ public class AuthClient {
                 e.printStackTrace();
                 callback.call(500, "Exception", null);
             }
-        }));
+        });
     }
 
     public static void sendResetPasswordEmail(String emailAddress, @NotNull AuthCallback<JSONObject> callback) {
@@ -177,7 +177,7 @@ public class AuthClient {
     }
 
     public static void sendEmail(String emailAddress, String scene, @NotNull AuthCallback<JSONObject> callback) {
-        Authing.getPublicConfig((config -> {
+        Authing.getPublicConfig(config -> {
             try {
                 JSONObject body = new JSONObject();
                 body.put("email", emailAddress);
@@ -188,11 +188,11 @@ public class AuthClient {
                 e.printStackTrace();
                 callback.call(500, "Exception", null);
             }
-        }));
+        });
     }
 
     public static void resetPasswordByEmailCode(String emailAddress, String code, String newPassword, @NotNull AuthCallback<JSONObject> callback) {
-        Authing.getPublicConfig((config -> {
+        Authing.getPublicConfig(config -> {
             try {
                 JSONObject body = new JSONObject();
                 body.put("email", emailAddress);
@@ -204,11 +204,11 @@ public class AuthClient {
                 e.printStackTrace();
                 callback.call(500, "Exception", null);
             }
-        }));
+        });
     }
 
     public static void resetPasswordByPhoneCode(String phone, String code, String newPassword, @NotNull AuthCallback<JSONObject> callback) {
-        Authing.getPublicConfig((config -> {
+        Authing.getPublicConfig(config -> {
             try {
                 JSONObject body = new JSONObject();
                 body.put("phone", phone);
@@ -220,11 +220,11 @@ public class AuthClient {
                 e.printStackTrace();
                 callback.call(500, "Exception", null);
             }
-        }));
+        });
     }
 
     public static void resetPasswordByFirstTimeLoginToken(String token, String newPassword, @NotNull AuthCallback<JSONObject> callback) {
-        Authing.getPublicConfig((config -> {
+        Authing.getPublicConfig(config -> {
             try {
                 JSONObject body = new JSONObject();
                 body.put("token", token);
@@ -235,11 +235,11 @@ public class AuthClient {
                 e.printStackTrace();
                 callback.call(500, "Exception", null);
             }
-        }));
+        });
     }
 
     public static void loginByWechat(String authCode, @NotNull AuthCallback<UserInfo> callback) {
-        Authing.getPublicConfig((config -> {
+        Authing.getPublicConfig(config -> {
             try {
                 JSONObject body = new JSONObject();
                 body.put("connId", config.getSocialConnectionId("wechat:mobile"));
@@ -250,11 +250,11 @@ public class AuthClient {
                 e.printStackTrace();
                 callback.call(500, "Exception", null);
             }
-        }));
+        });
     }
 
     public static void loginByAlipay(String authCode, @NotNull AuthCallback<UserInfo> callback) {
-        Authing.getPublicConfig((config -> {
+        Authing.getPublicConfig(config -> {
             try {
                 JSONObject body = new JSONObject();
                 body.put("connId", config.getSocialConnectionId("alipay"));
@@ -265,11 +265,11 @@ public class AuthClient {
                 e.printStackTrace();
                 callback.call(500, "Exception", null);
             }
-        }));
+        });
     }
 
     public static void loginByOneClick(String token, String accessToken, @NotNull AuthCallback<UserInfo> callback) {
-        Authing.getPublicConfig((config -> {
+        Authing.getPublicConfig(config -> {
             try {
                 JSONObject body = new JSONObject();
                 body.put("token", token);
@@ -280,11 +280,11 @@ public class AuthClient {
                 e.printStackTrace();
                 callback.call(500, "Exception", null);
             }
-        }));
+        });
     }
 
     public static void bindEmail(String email, String code, @NotNull AuthCallback<UserInfo> callback) {
-        Authing.getPublicConfig((config -> {
+        Authing.getPublicConfig(config -> {
             try {
                 JSONObject body = new JSONObject();
                 body.put("email", email);
@@ -295,11 +295,11 @@ public class AuthClient {
                 e.printStackTrace();
                 callback.call(500, "Exception", null);
             }
-        }));
+        });
     }
 
     public static void unbindEmail(@NotNull AuthCallback<UserInfo> callback) {
-        Authing.getPublicConfig((config -> {
+        Authing.getPublicConfig(config -> {
             try {
                 JSONObject body = new JSONObject();
                 String url = Authing.getSchema() + "://" + Util.getHost(config) + "/api/v2/users/email/unbind";
@@ -308,11 +308,11 @@ public class AuthClient {
                 e.printStackTrace();
                 callback.call(500, "Exception", null);
             }
-        }));
+        });
     }
 
     public static void bindPhone(String phone, String code, @NotNull AuthCallback<UserInfo> callback) {
-        Authing.getPublicConfig((config -> {
+        Authing.getPublicConfig(config -> {
             try {
                 JSONObject body = new JSONObject();
                 body.put("phone", phone);
@@ -323,11 +323,11 @@ public class AuthClient {
                 e.printStackTrace();
                 callback.call(500, "Exception", null);
             }
-        }));
+        });
     }
 
     public static void unbindPhone(@NotNull AuthCallback<UserInfo> callback) {
-        Authing.getPublicConfig((config -> {
+        Authing.getPublicConfig(config -> {
             try {
                 JSONObject body = new JSONObject();
                 String url = Authing.getSchema() + "://" + Util.getHost(config) + "/api/v2/users/phone/unbind";
@@ -336,11 +336,11 @@ public class AuthClient {
                 e.printStackTrace();
                 callback.call(500, "Exception", null);
             }
-        }));
+        });
     }
 
     public static void mfaCheck(String phone, String email, @NotNull AuthCallback<JSONObject> callback) {
-        Authing.getPublicConfig((config -> {
+        Authing.getPublicConfig(config -> {
             try {
                 JSONObject body = new JSONObject();
                 if (phone != null)
@@ -353,11 +353,11 @@ public class AuthClient {
                 e.printStackTrace();
                 callback.call(500, "Exception", null);
             }
-        }));
+        });
     }
 
     public static void mfaVerifyByPhone(String phone, String code, @NotNull AuthCallback<JSONObject> callback) {
-        Authing.getPublicConfig((config -> {
+        Authing.getPublicConfig(config -> {
             try {
                 JSONObject body = new JSONObject();
                 body.put("phone", phone);
@@ -368,11 +368,11 @@ public class AuthClient {
                 e.printStackTrace();
                 callback.call(500, "Exception", null);
             }
-        }));
+        });
     }
 
     public static void mfaVerifyByEmail(String email, String code, @NotNull AuthCallback<JSONObject> callback) {
-        Authing.getPublicConfig((config -> {
+        Authing.getPublicConfig(config -> {
             try {
                 JSONObject body = new JSONObject();
                 body.put("email", email);
@@ -383,11 +383,11 @@ public class AuthClient {
                 e.printStackTrace();
                 callback.call(500, "Exception", null);
             }
-        }));
+        });
     }
 
     public static void mfaVerifyByOTP(String code, @NotNull AuthCallback<JSONObject> callback) {
-        Authing.getPublicConfig((config -> {
+        Authing.getPublicConfig(config -> {
             try {
                 JSONObject body = new JSONObject();
                 body.put("authenticatorType", "totp");
@@ -398,11 +398,11 @@ public class AuthClient {
                 e.printStackTrace();
                 callback.call(500, "Exception", null);
             }
-        }));
+        });
     }
 
     public static void mfaVerifyByRecoveryCode(String code, @NotNull AuthCallback<JSONObject> callback) {
-        Authing.getPublicConfig((config -> {
+        Authing.getPublicConfig(config -> {
             try {
                 JSONObject body = new JSONObject();
                 body.put("authenticatorType", "totp");
@@ -413,11 +413,11 @@ public class AuthClient {
                 e.printStackTrace();
                 callback.call(500, "Exception", null);
             }
-        }));
+        });
     }
 
     public static void changePassword(String oldPassword, String newPassword, @NotNull AuthCallback<JSONObject> callback) {
-        Authing.getPublicConfig((config -> {
+        Authing.getPublicConfig(config -> {
             try {
                 JSONObject body = new JSONObject();
                 body.put("oldPassword", Util.encryptPassword(oldPassword));
@@ -428,11 +428,11 @@ public class AuthClient {
                 e.printStackTrace();
                 callback.call(500, "Exception", null);
             }
-        }));
+        });
     }
 
     public static void getCurrentUserInfo(@NotNull AuthCallback<UserInfo> callback) {
-        Authing.getPublicConfig((config -> {
+        Authing.getPublicConfig(config -> {
             try {
                 String url = Authing.getSchema() + "://" + Util.getHost(config) + "/api/v2/users/me";
                 Guardian.get(url, (data)-> createUserInfoFromResponse(data, callback));
@@ -440,11 +440,11 @@ public class AuthClient {
                 e.printStackTrace();
                 callback.call(500, "Exception", null);
             }
-        }));
+        });
     }
 
     public static void updateUser(JSONObject body, @NotNull AuthCallback<UserInfo> callback) {
-        Authing.getPublicConfig((config -> {
+        Authing.getPublicConfig(config -> {
             try {
                 String url = Authing.getSchema() + "://" + Util.getHost(config) + "/api/v2/users/profile/update";
                 Guardian.post(url, body, (data)-> createUserInfoFromResponse(data, callback));
@@ -452,7 +452,7 @@ public class AuthClient {
                 e.printStackTrace();
                 callback.call(500, "Exception", null);
             }
-        }));
+        });
     }
 
     public static void updateCustomUserInfo(JSONObject customData, @NotNull AuthCallback<JSONObject> callback) {
@@ -462,7 +462,7 @@ public class AuthClient {
             return;
         }
 
-        Authing.getPublicConfig((config -> {
+        Authing.getPublicConfig(config -> {
             try {
                 JSONArray array = new JSONArray();
                 for (Iterator<String> it = customData.keys(); it.hasNext(); ) {
@@ -480,11 +480,11 @@ public class AuthClient {
                 e.printStackTrace();
                 callback.call(500, "Exception", null);
             }
-        }));
+        });
     }
 
     public static void getUserDefinedData(UserInfo userInfo, @NotNull AuthCallback<UserInfo> callback) {
-        Authing.getPublicConfig((config -> {
+        Authing.getPublicConfig(config -> {
             try {
                 JSONObject body = new JSONObject();
                 body.put("targetType", "USER");
@@ -505,11 +505,11 @@ public class AuthClient {
                 e.printStackTrace();
                 callback.call(500, "Exception", null);
             }
-        }));
+        });
     }
 
     public static void logout(@NotNull AuthCallback<JSONObject> callback) {
-        Authing.getPublicConfig((config -> {
+        Authing.getPublicConfig(config -> {
             try {
                 String url = Authing.getSchema() + "://" + Util.getHost(config) + "/api/v2/logout?app_id=" + Authing.getAppId();
                 Guardian.get(url, (data)-> callback.call(data.getCode(), data.getMessage(), data.getData()));
@@ -517,11 +517,11 @@ public class AuthClient {
                 e.printStackTrace();
                 callback.call(500, "Exception", null);
             }
-        }));
+        });
     }
 
     public static void authByCode(String code, String codeVerifier, String redirectUrl, @NotNull AuthCallback<UserInfo> callback) {
-        Authing.getPublicConfig((config -> {
+        Authing.getPublicConfig(config -> {
             try {
                 String url = Authing.getSchema() + "://" + Util.getHost(config) + "/oidc/token";
                 String body = "client_id="+Authing.getAppId()
@@ -540,7 +540,7 @@ public class AuthClient {
                 e.printStackTrace();
                 callback.call(500, "Exception", null);
             }
-        }));
+        });
     }
 
     private static void createUserInfoFromResponse(Response data, @NotNull AuthCallback<UserInfo> callback) {

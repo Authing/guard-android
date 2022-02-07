@@ -70,6 +70,21 @@
     <string name="authing_update_profile">更新资料</string>
     <string name="authing_update">更新</string>
 
+    <!--auth issue feedback-->
+    <string name="authing_feedback">问题反馈</string>
+    <string name="authing_contact_info">联系方式</string>
+    <string name="authing_related_issue">相关问题</string>
+    <string name="authing_feedback_description">问题描述</string>
+    <string name="authing_feedback_screenshot">问题截图</string>
+    <string name="authing_contact_info_cannot_be_empty">联系方式为必填项</string>
+    <string name="authing_cannot_get_verify_code">无法收到验证码</string>
+    <string name="authing_cannot_login">无法登录</string>
+    <string name="authing_cannot_register">无法注册</string>
+    <string name="authing_lost_account">帐号丢失</string>
+    <string name="authing_cannot_reset_password">无法重置密码</string>
+    <string name="authing_account_is_locked">帐号锁定</string>
+    <string name="authing_other">其他</string>
+
     <!--error messages-->
     <string name="authing_password_error_1">至少 6 位</string>
     <string name="authing_password_error_2">至少包含小写字母</string>

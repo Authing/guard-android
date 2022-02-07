@@ -4,8 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:clipChildren="false"
-    android:fillViewport="true"
-    android:orientation="vertical">
+    android:fillViewport="true">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -167,8 +166,14 @@
         <cn.authing.guard.social.SocialLoginListView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="48dp"
+            android:layout_marginBottom="32dp"
             app:src="wechat|alipay|wecom" />
+
+        <cn.authing.guard.feedback.GoFeedbackButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="8dp"/>
 
     </LinearLayout>
 </ScrollView>

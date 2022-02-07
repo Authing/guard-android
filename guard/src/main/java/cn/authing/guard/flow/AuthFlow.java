@@ -37,6 +37,7 @@ public class AuthFlow implements Serializable {
     private int forgotPasswordLayoutId;
     private int resetPasswordByEmailLayoutId;
     private int resetPasswordByPhoneLayoutId;
+    private int authHelpLayoutId;
 
     // MFA
     private int[] mfaPhoneLayoutIds;
@@ -177,6 +178,19 @@ public class AuthFlow implements Serializable {
 
     public AuthFlow setResetPasswordByPhoneLayoutId(int resetPasswordByPhoneLayoutId) {
         this.resetPasswordByPhoneLayoutId = resetPasswordByPhoneLayoutId;
+        return this;
+    }
+
+    public int getAuthHelpLayoutId() {
+        if (authHelpLayoutId == 0) {
+            return R.layout.authing_feedback;
+        } else {
+            return authHelpLayoutId;
+        }
+    }
+
+    public AuthFlow setAuthHelpLayoutId(int authHelpLayoutId) {
+        this.authHelpLayoutId = authHelpLayoutId;
         return this;
     }
 

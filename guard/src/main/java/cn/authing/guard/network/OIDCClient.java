@@ -163,7 +163,6 @@ public class OIDCClient {
                 String location = response.header("location");
                 Uri uri = Uri.parse(location);
                 String authCode = uri.getQueryParameter("code");
-                Log.d("Lance", "code=" + authCode);
                 AuthClient.authByCode(authCode, authData.getCodeVerifier(), authData.getRedirect_url(), callback);
             } else {
                 String s = new String(Objects.requireNonNull(response.body()).bytes(), StandardCharsets.UTF_8);
