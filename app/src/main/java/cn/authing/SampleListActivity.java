@@ -17,6 +17,7 @@ import android.widget.Toast;
 import cn.authing.abao.AbaoActivity;
 import cn.authing.appauth.AppAuthActivity;
 import cn.authing.guard.Authing;
+import cn.authing.guard.container.AuthContainer;
 import cn.authing.guard.data.UserInfo;
 import cn.authing.guard.flow.AuthFlow;
 import cn.authing.guard.oneclick.OneClick;
@@ -37,7 +38,7 @@ public class SampleListActivity extends AppCompatActivity {
             "微信",
             "Theragun",
             "阿宝说",
-            "Nissan Virtual Key",
+            "Auth Container",
             "AppAuth",
             "Authing WebView",
             "MFA",
@@ -82,8 +83,10 @@ public class SampleListActivity extends AppCompatActivity {
                 Intent intent = new Intent(SampleListActivity.this, AbaoActivity.class);
                 startActivity(intent);
             } else if (pos == 6) {
-                Intent intent = new Intent(SampleListActivity.this, NissanVirtualKeyAuthActivity.class);
-                startActivity(intent);
+                AuthFlow flow = AuthFlow.start(this);
+                flow.setAuthProtocol(AuthContainer.AuthProtocol.EOIDC);
+//                Intent intent = new Intent(SampleListActivity.this, NissanVirtualKeyAuthActivity.class);
+//                startActivity(intent);
             } else if (pos == 7) {
                 Intent intent = new Intent(SampleListActivity.this, AppAuthActivity.class);
                 startActivity(intent);

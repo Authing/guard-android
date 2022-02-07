@@ -1,5 +1,7 @@
 package cn.authing.guard.util;
 
+import okhttp3.MediaType;
+
 public class Const {
     public final static String NS_ANDROID = "http://schemas.android.com/apk/res/android";
 
@@ -20,4 +22,7 @@ public class Const {
 
     public static final String EC_TYPE_WECHAT = "wechat:mobile";
     public static final String EC_TYPE_ALIPAY = "alipay";
+
+    public static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
+    public static final MediaType FORM = MediaType.parse("application/x-www-form-urlencoded; charset=utf-8");
 }

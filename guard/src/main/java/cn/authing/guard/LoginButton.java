@@ -15,6 +15,7 @@ import java.util.List;
 
 import cn.authing.guard.activity.AuthActivity;
 import cn.authing.guard.analyze.Analyzer;
+import cn.authing.guard.container.AuthContainer;
 import cn.authing.guard.data.Config;
 import cn.authing.guard.data.ExtendedField;
 import cn.authing.guard.data.UserInfo;
@@ -22,6 +23,7 @@ import cn.authing.guard.flow.AuthFlow;
 import cn.authing.guard.flow.FlowHelper;
 import cn.authing.guard.internal.PrimaryButton;
 import cn.authing.guard.network.AuthClient;
+import cn.authing.guard.network.OIDCClient;
 import cn.authing.guard.util.Const;
 import cn.authing.guard.util.Util;
 
@@ -138,24 +140,31 @@ public class LoginButton extends PrimaryButton {
         return ((PrivacyConfirmBox)box).require(true);
     }
 
+    private AuthContainer.AuthProtocol getAuthProtocol() {
+        if (!(getContext() instanceof AuthActivity)) {
+            return AuthContainer.AuthProtocol.EInHouse;
+        }
+
+        AuthActivity activity = (AuthActivity) getContext();
+        AuthFlow flow = (AuthFlow) activity.getIntent().getSerializableExtra(AuthActivity.AUTH_FLOW);
+        return flow.getAuthProtocol();
+    }
+
     private void loginByPhoneCode(String phone, String verifyCode) {
-        AuthClient.loginByPhoneCode(phone, verifyCode, this::fireCallback);
+        if (getAuthProtocol() == AuthContainer.AuthProtocol.EInHouse) {
+            AuthClient.loginByPhoneCode(phone, verifyCode, this::fireCallback);
+        } else if (getAuthProtocol() == AuthContainer.AuthProtocol.EOIDC) {
+            OIDCClient.loginByPhoneCode(phone, verifyCode, this::fireCallback);
+        }
     }
 
     private void loginByAccount(String account, String password) {
-        AuthClient.loginByAccount(account, password, this::fireCallback);
+        if (getAuthProtocol() == AuthContainer.AuthProtocol.EInHouse) {
+            AuthClient.loginByAccount(account, password, this::fireCallback);
+        } else if (getAuthProtocol() == AuthContainer.AuthProtocol.EOIDC) {
+            OIDCClient.loginByAccount(account, password, this::fireCallback);
+        }
     }
-
-//    private void handleError(Response response) {
-//        int code = response.getCode();
-//        if (code == Const.EC_INCORRECT_VERIFY_CODE) {
-//            Util.setErrorText(this, getContext().getString(R.string.authing_incorrect_verify_code));
-//        } else if (code == Const.EC_INCORRECT_CREDENTIAL) {
-//            Util.setErrorText(this, getContext().getString(R.string.authing_incorrect_credential));
-//        } else {
-//            Util.setErrorText(this, response.getMessage());
-//        }
-//    }
 
     private void fireCallback(String message) {
         fireCallback(500, message, null);

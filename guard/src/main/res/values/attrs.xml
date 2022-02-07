@@ -112,4 +112,10 @@
         <attr name="copyEnabled" format="boolean" />
     </declare-styleable>
 
+    <declare-styleable name="AuthContainer">
+        <attr name="authProtocol" format="enum" >
+            <enum name="inHouse" value="0"/>
+            <enum name="OIDC" value="1"/>
+        </attr>
+    </declare-styleable>
 </resources>

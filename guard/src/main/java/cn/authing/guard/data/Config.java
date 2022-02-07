@@ -31,6 +31,7 @@ public class Config {
     private int passwordStrength;
     private List<String> completeFieldsPlace;
     private List<ExtendedField> extendedFields;
+    private List<String> redirectUris;
 
     public static Config parse(JSONObject data) throws JSONException {
         Config config = new Config();
@@ -86,6 +87,10 @@ public class Config {
 
         if (data.has("extendsFields")) {
             config.setExtendedFields(toExtendedFields(data.getJSONArray("extendsFields")));
+        }
+
+        if (data.has("redirectUris")) {
+            config.setRedirectUris(toStringList(data.getJSONArray("redirectUris")));
         }
         return config;
     }
@@ -208,6 +213,14 @@ public class Config {
 
     public void setExtendedFields(List<ExtendedField> extendedFields) {
         this.extendedFields = extendedFields;
+    }
+
+    public List<String> getRedirectUris() {
+        return redirectUris;
+    }
+
+    public void setRedirectUris(List<String> redirectUris) {
+        this.redirectUris = redirectUris;
     }
 
     public String getSocialConnectionId(String type) {

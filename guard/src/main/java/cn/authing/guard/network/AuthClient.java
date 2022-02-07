@@ -12,14 +12,12 @@ import org.json.JSONObject;
 
 import java.net.URLEncoder;
 import java.util.Iterator;
-import java.util.List;
 
 import cn.authing.guard.AuthCallback;
 import cn.authing.guard.Authing;
 import cn.authing.guard.R;
 import cn.authing.guard.data.MFAData;
 import cn.authing.guard.data.Safe;
-import cn.authing.guard.data.SocialConfig;
 import cn.authing.guard.data.UserInfo;
 import cn.authing.guard.util.GlobalCountDown;
 import cn.authing.guard.util.Util;
@@ -50,6 +48,10 @@ public class AuthClient {
     }
 
     public static void loginByPhoneCode(String phone, String code, @NotNull AuthCallback<UserInfo> callback) {
+        loginByPhoneCode(null, phone, code, callback);
+    }
+
+    public static void loginByPhoneCode(AuthData authData, String phone, String code, @NotNull AuthCallback<UserInfo> callback) {
         Authing.getPublicConfig((config -> {
             try {
                 JSONObject body = new JSONObject();
@@ -60,7 +62,18 @@ public class AuthClient {
                     if (data.getCode() == 200 || data.getCode() == EC_MFA_REQUIRED) {
                         Safe.saveAccount(phone);
                     }
-                    createUserInfoFromResponse(data, callback);
+                    if (authData == null) {
+                        createUserInfoFromResponse(data, callback);
+                    } else {
+                        try {
+                            UserInfo userInfo = UserInfo.createUserInfo(data.getData());
+                            String token = userInfo.getIdToken();
+                            authData.setToken(token);
+                            OIDCClient.oidcInteraction(authData, callback);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
                 });
             } catch (Exception e) {
                 e.printStackTrace();
@@ -70,6 +83,10 @@ public class AuthClient {
     }
 
     public static void loginByAccount(String account, String password, @NotNull AuthCallback<UserInfo> callback) {
+        loginByAccount(null, account, password, callback);
+    }
+
+    public static void loginByAccount(AuthData authData, String account, String password, @NotNull AuthCallback<UserInfo> callback) {
         Authing.getPublicConfig((config -> {
             try {
                 String encryptPassword = Util.encryptPassword(password);
@@ -82,7 +99,19 @@ public class AuthClient {
                         Safe.saveAccount(account);
 //                        Safe.savePassword(password);
                     }
-                    createUserInfoFromResponse(data, callback);
+
+                    if (authData == null) {
+                        createUserInfoFromResponse(data, callback);
+                    } else {
+                        try {
+                            UserInfo userInfo = UserInfo.createUserInfo(data.getData());
+                            String token = userInfo.getIdToken();
+                            authData.setToken(token);
+                            OIDCClient.oidcInteraction(authData, callback);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
                 });
             } catch (Exception e) {
                 e.printStackTrace();

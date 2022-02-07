@@ -10,12 +10,14 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.nio.charset.StandardCharsets;
+import java.util.HashSet;
 import java.util.Objects;
 
 import cn.authing.guard.Authing;
 import cn.authing.guard.data.Config;
 import cn.authing.guard.data.Safe;
 import cn.authing.guard.data.UserInfo;
+import cn.authing.guard.util.Const;
 import cn.authing.guard.util.Util;
 import okhttp3.Call;
 import okhttp3.MediaType;
@@ -25,8 +27,6 @@ import okhttp3.RequestBody;
 
 public class Guardian {
 
-    private static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
-    private static final MediaType FORM = MediaType.parse("application/x-www-form-urlencoded; charset=utf-8");
     private static final String TAG = "Guardian";
 
     public static String MFA_TOKEN;
@@ -78,7 +78,7 @@ public class Guardian {
             builder.addHeader("Authorization", "Bearer " + MFA_TOKEN);
         }
         if (method.equalsIgnoreCase("post")) {
-            MediaType type = (body.startsWith("{") || body.startsWith("[")) && (body.endsWith("]") || body.endsWith("}")) ? JSON : FORM;
+            MediaType type = (body.startsWith("{") || body.startsWith("[")) && (body.endsWith("]") || body.endsWith("}")) ? Const.JSON : Const.FORM;
             RequestBody requestBody = RequestBody.create(body, type);
             builder.post(requestBody);
         }
@@ -90,6 +90,8 @@ public class Guardian {
         try {
             response = call.execute();
             if (response.code() == 201 || response.code() == 200) {
+                CookieManager.addCookies(response);
+
                 Response resp = new Response();
                 String s = new String(Objects.requireNonNull(response.body()).bytes(), StandardCharsets.UTF_8);
                 JSONObject json;
@@ -173,7 +175,7 @@ public class Guardian {
         builder.addHeader("x-authing-request-from", "Guard@Android@" + SDK_VERSION);
         builder.addHeader("x-authing-lang", Util.getLangHeader());
         if (method.equalsIgnoreCase("post")) {
-            MediaType type = (body.startsWith("{") || body.startsWith("[")) && (body.endsWith("]") || body.endsWith("}")) ? JSON : FORM;
+            MediaType type = (body.startsWith("{") || body.startsWith("[")) && (body.endsWith("]") || body.endsWith("}")) ? Const.JSON : Const.FORM;
             RequestBody requestBody = RequestBody.create(body, type);
             builder.post(requestBody);
         }
@@ -185,6 +187,7 @@ public class Guardian {
         try {
             response = call.execute();
             if (response.code() == 201 || response.code() == 200) {
+                CookieManager.addCookies(response);
                 Response resp = new Response();
                 String s = new String(Objects.requireNonNull(response.body()).bytes(), StandardCharsets.UTF_8);
                 JSONObject json;
@@ -197,8 +200,9 @@ public class Guardian {
                 }
                 callback.call(resp);
             } else {
-                Log.w(TAG, response.code() + " Guardian failed for:" + url);
-                callback.call(new Response(response.code(), "Network Error", null));
+                String s = new String(Objects.requireNonNull(response.body()).bytes(), StandardCharsets.UTF_8);
+                Log.w(TAG, "authRequest failed. " + response.code() + " message:" + s);
+                callback.call(new Response(response.code(), s, null));
             }
         } catch (Exception e) {
             e.printStackTrace();
