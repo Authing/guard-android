@@ -45,7 +45,7 @@ public class IssueLayout extends LinearLayout {
         wrapper.setBackground(context.getDrawable(R.drawable.authing_edit_text_background_normal));
         addView(wrapper);
 
-        params = new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, (int)Util.dp2px(context, 40));
+        params = new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, (int)Util.dp2px(context, 48));
         spinner = new Spinner(context);
         spinner.setLayoutParams(params);
         ArrayAdapter<String> adapter = new ArrayAdapter<>(
@@ -53,8 +53,6 @@ public class IssueLayout extends LinearLayout {
                 R.layout.authing_spinner_item,
                 TYPES);
         spinner.setAdapter(adapter);
-        int p = (int)Util.dp2px(context, 4);
-        spinner.setPadding(p, 0, p, 0);
         wrapper.addView(spinner);
 
         detail = new TextView(context);

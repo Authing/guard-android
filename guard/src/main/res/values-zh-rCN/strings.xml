@@ -76,6 +76,7 @@
     <string name="authing_related_issue">相关问题</string>
     <string name="authing_feedback_description">问题描述</string>
     <string name="authing_feedback_screenshot">问题截图</string>
+    <string name="authing_upload_image">上传图片</string>
     <string name="authing_contact_info_cannot_be_empty">联系方式为必填项</string>
     <string name="authing_cannot_get_verify_code">无法收到验证码</string>
     <string name="authing_cannot_login">无法登录</string>
@@ -84,6 +85,7 @@
     <string name="authing_cannot_reset_password">无法重置密码</string>
     <string name="authing_account_is_locked">帐号锁定</string>
     <string name="authing_other">其他</string>
+    <string name="authing_submit_success">提交成功</string>
 
     <!--error messages-->
     <string name="authing_password_error_1">至少 6 位</string>

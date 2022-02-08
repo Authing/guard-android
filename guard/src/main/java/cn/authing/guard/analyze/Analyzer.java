@@ -2,7 +2,9 @@ package cn.authing.guard.analyze;
 
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.ExecutorService;
@@ -49,13 +51,14 @@ public class Analyzer {
 
     static void clearComponents() {
         synchronized (componentMap) {
-            for (Iterator<String> it = componentMap.keys(); it.hasNext(); ) {
-                String key = it.next();
-                try {
-                    componentMap.remove(key);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+            Iterator<String> keys = componentMap.keys();
+            List<String> ks = new ArrayList<>();
+            while(keys.hasNext()) {
+                ks.add(keys.next());
+            }
+
+            for (String k : ks) {
+                componentMap.remove(k);
             }
         }
     }

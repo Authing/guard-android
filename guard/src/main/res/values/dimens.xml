@@ -4,4 +4,6 @@
     <dimen name="authing_form_top_margin">16dp</dimen>
     <dimen name="authing_action_bar_height">54dp</dimen>
     <dimen name="authing_user_profile_padding">12dp</dimen>
+    <dimen name="authing_image_picker_item_size">108dp</dimen>
+    <dimen name="authing_image_picker_add_size">32dp</dimen>
 </resources>

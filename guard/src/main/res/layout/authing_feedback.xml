@@ -68,8 +68,12 @@
             android:text="@string/authing_feedback_screenshot" />
 
         <cn.authing.guard.feedback.ImagePickerView
+            android:id="@+id/gv_image_picker"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:columnWidth="@dimen/authing_image_picker_item_size"
+            android:numColumns="auto_fit"
+            android:stretchMode="spacingWidth"
             android:horizontalSpacing="4dp"
             android:verticalSpacing="4dp"
             android:layout_marginTop="4dp" />
@@ -83,6 +87,7 @@
         <cn.authing.guard.feedback.FeedbackSubmitButton
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="32dp"
             android:text="@string/authing_submit" />
     </LinearLayout>
 

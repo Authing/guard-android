@@ -13,6 +13,7 @@
         <activity
             android:name=".activity.FeedbackActivity"
             android:exported="false"
+            android:configChanges="orientation|screenSize"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
         <activity
             android:name=".activity.BindEmailActivity"

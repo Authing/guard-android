@@ -46,6 +46,7 @@ public class ComponentTask implements Runnable {
             Analyzer.clearComponents();
         } catch (Exception e){
             Log.e(TAG, "Trace exception:" + e.toString());
+            e.printStackTrace();
             Analyzer.clearComponents();
         }
     }

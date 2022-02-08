@@ -76,6 +76,7 @@
     <string name="authing_related_issue">Related issue</string>
     <string name="authing_feedback_description">Description</string>
     <string name="authing_feedback_screenshot">Screen shot</string>
+    <string name="authing_upload_image">Add</string>
     <string name="authing_contact_info_cannot_be_empty">Contact information cannot be empty</string>
     <string name="authing_cannot_get_verify_code">Cannot get verify code</string>
     <string name="authing_cannot_login">Cannot login</string>
@@ -84,6 +85,7 @@
     <string name="authing_cannot_reset_password">Cannot reset password</string>
     <string name="authing_account_is_locked">Account is locked</string>
     <string name="authing_other">Other</string>
+    <string name="authing_submit_success">Submit successfully</string>
 
     <!--error messages-->
     <string name="authing_password_error_1">At least 6 characters</string>

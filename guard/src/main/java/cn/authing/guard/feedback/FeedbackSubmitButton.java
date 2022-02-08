@@ -2,17 +2,26 @@ package cn.authing.guard.feedback;
 
 import android.app.Activity;
 import android.content.Context;
+import android.net.Uri;
 import android.util.AttributeSet;
 import android.view.View;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import java.io.FileNotFoundException;
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
+
 import cn.authing.guard.AccountEditText;
+import cn.authing.guard.Callback;
 import cn.authing.guard.R;
 import cn.authing.guard.analyze.Analyzer;
 import cn.authing.guard.internal.PrimaryButton;
 import cn.authing.guard.network.FeedbackClient;
+import cn.authing.guard.network.Uploader;
 import cn.authing.guard.util.Util;
 
 public class FeedbackSubmitButton extends PrimaryButton {
@@ -27,7 +36,7 @@ public class FeedbackSubmitButton extends PrimaryButton {
     public FeedbackSubmitButton(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
 
-        Analyzer.report("AuthHelpSubmitButton");
+        Analyzer.report("FeedbackSubmitButton");
 
         setOnClickListener(v -> submit());
     }
@@ -59,12 +68,65 @@ public class FeedbackSubmitButton extends PrimaryButton {
             des = et.getText().toString();
         }
 
+        List<Uri> uriList = null;
+        v = Util.findViewByClass(this, ImagePickerView.class);
+        if (v != null) {
+            uriList = ((ImagePickerView)v).getImageUris();
+        }
+
         startLoadingVisualEffect();
-        FeedbackClient.feedback(contact, type, des, null, ((ok, data) -> {
+        List<String> uploadedImageURLs = new ArrayList<>();
+        if (uriList != null && uriList.size() > 0) {
+            int finalType = type;
+            String finalDes = des;
+            uploadImages(uriList, uploadedImageURLs, (ok, data) -> {
+                if (ok) {
+                    doSubmit(contact, finalType, finalDes, uploadedImageURLs);
+                } else {
+                    stopLoadingVisualEffect();
+                    Util.setErrorText(this, data);
+                }
+            });
+        } else {
+            doSubmit(contact, type, des, uploadedImageURLs);
+        }
+    }
+
+    private void uploadImages(List<Uri> uriList, List<String> uploadedImageURLs, Callback<String> callback) {
+        if (uriList.size() == 0) {
+            callback.call(true, null);
+            return;
+        }
+
+        Uri uri = uriList.get(0);
+        uriList.remove(0);
+
+        Activity activity = (Activity)getContext();
+        try {
+            InputStream in = activity.getContentResolver().openInputStream(uri);
+            Uploader.uploadImage(in, (ok, data) -> {
+                if (ok) {
+                    uploadedImageURLs.add(data);
+                    uploadImages(uriList, uploadedImageURLs, callback);
+                } else {
+                    callback.call(false, data);
+                }
+            });
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+            callback.call(false, "Exception when uploading image");
+        }
+    }
+
+    private void doSubmit(String contact, int type, String des, List<String> images) {
+        FeedbackClient.feedback(contact, type, des, images, ((ok, data) -> {
             stopLoadingVisualEffect();
             if (ok) {
-                Activity activity = (Activity) getContext();
-                activity.finish();
+                post(()->Toast.makeText(getContext(), getContext().getString(R.string.authing_submit_success), Toast.LENGTH_SHORT).show());
+                postDelayed(() -> {
+                    Activity activity = (Activity) getContext();
+                    activity.finish();
+                }, 1000);
             } else {
                 Util.setErrorText(this, data);
             }
