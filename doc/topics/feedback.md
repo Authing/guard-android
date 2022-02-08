@@ -2,6 +2,20 @@
 
 如果应用使用了我们提供的登录界面，该界面会自带问题反馈入口。应用也可以通过下面的方式独立使用：
 
+1. 引入依赖：
+
+```groovy
+implementation 'cn.authing:guard:+'
+```
+
+2. 在应用启动（如 App.java）里面调用：
+
+```java
+Authing.init(appContext, "your_authing_app_id");
+```
+
+3. 打开问题反馈界面：
+
 ```java
 Intent intent = new Intent(this, FeedbackActivity.class);
 startActivity(intent);
