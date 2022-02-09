@@ -64,6 +64,7 @@
     <string name="authing_user_profile">个人中心</string>
     <string name="authing_unspecified">未定义</string>
     <string name="authing_input_old_password">请输入旧密码</string>
+    <string name="authing_avatar">头像</string>
     <string name="authing_nickname">呢称</string>
     <string name="authing_name">姓名</string>
     <string name="authing_modify_password">修改密码</string>

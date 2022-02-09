@@ -1,6 +1,7 @@
 package cn.authing.guard.activity;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.View;
@@ -11,6 +12,8 @@ import android.widget.LinearLayout;
 import android.widget.Space;
 import android.widget.TextView;
 
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -19,6 +22,7 @@ import cn.authing.guard.Authing;
 import cn.authing.guard.R;
 import cn.authing.guard.data.UserInfo;
 import cn.authing.guard.flow.AuthFlow;
+import cn.authing.guard.network.AuthClient;
 import cn.authing.guard.profile.UserProfileContainer;
 import cn.authing.guard.util.Util;
 
@@ -64,6 +68,22 @@ public class UserProfileActivity extends BaseAuthActivity {
         for (UserInfo.CustomData data : userInfo.getCustomData()) {
             TextView tv = customDataViews.get(data.getKey());
             Objects.requireNonNull(tv).setText(data.getValue());
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (resultCode == RESULT_OK && requestCode == 1000) {
+            Uri selectedImageUri = data.getData();
+            InputStream in;
+            try {
+                in = getContentResolver().openInputStream(selectedImageUri);
+                AuthClient.uploadAvatar(in, (code, message, userInfo) -> runOnUiThread(()-> userProfileContainer.refreshData()));
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
         }
     }
 

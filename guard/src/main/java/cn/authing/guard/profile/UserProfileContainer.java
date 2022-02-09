@@ -1,5 +1,6 @@
 package cn.authing.guard.profile;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.util.AttributeSet;
@@ -19,12 +20,19 @@ import cn.authing.guard.activity.BindEmailActivity;
 import cn.authing.guard.activity.BindPhoneActivity;
 import cn.authing.guard.activity.ChangePasswordActivity;
 import cn.authing.guard.activity.UpdateUserProfileActivity;
+import cn.authing.guard.data.ImageLoader;
 import cn.authing.guard.data.UserInfo;
 import cn.authing.guard.util.Util;
 
 public class UserProfileContainer extends LinearLayout {
 
+    private static final int AVATAR_LAYOUT_HEIGHT = 64;
+    private static final int AVATAR_HEIGHT = 40;
+    private static final int AVATAR_MARGIN = (AVATAR_LAYOUT_HEIGHT - AVATAR_HEIGHT) / 2;
+    private static final int TEXT_LAYOUT_HEIGHT = 48;
+
     private final int padding;
+    private ImageView ivAvatar;
 
     public UserProfileContainer(Context context) {
         this(context, null);
@@ -44,6 +52,8 @@ public class UserProfileContainer extends LinearLayout {
         padding = (int)Util.dp2px(getContext(), 12);
         setOrientation(VERTICAL);
 
+        addAvatarLayout();
+
         create(context.getString(R.string.authing_nickname), "nickname");
         create(context.getString(R.string.authing_name), "name");
         create(context.getString(R.string.authing_username), "username");
@@ -53,8 +63,35 @@ public class UserProfileContainer extends LinearLayout {
         addPasswordLayout();
     }
 
+    private void addAvatarLayout() {
+        LinearLayout layout = createRoot(AVATAR_LAYOUT_HEIGHT);
+        layout.addView(createLabel(getContext().getString(R.string.authing_avatar)));
+        layout.addView(createSpace());
+
+        ivAvatar = new ImageView(getContext());
+        int size = (int)Util.dp2px(getContext(), AVATAR_HEIGHT);
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(size, size);
+        int m = (int)Util.dp2px(getContext(), AVATAR_MARGIN);
+        params.setMargins(0, m, 0, m);
+        ivAvatar.setLayoutParams(params);
+        ivAvatar.setScaleType(ImageView.ScaleType.CENTER_CROP);
+        layout.addView(ivAvatar);
+
+        layout.addView(createArrow());
+        addView(layout);
+        addSeparator();
+
+        layout.setOnClickListener((v)->{
+            Intent i = new Intent();
+            i.addCategory(Intent.CATEGORY_OPENABLE);
+            i.setType("image/*");
+            i.setAction(Intent.ACTION_GET_CONTENT);
+            ((Activity) getContext()).startActivityForResult(Intent.createChooser(i, "Select Picture"), 1000);
+        });
+    }
+
     private void create(String label, String key) {
-        LinearLayout layout = createRoot();
+        LinearLayout layout = createRoot(TEXT_LAYOUT_HEIGHT);
         layout.addView(createLabel(label));
         layout.addView(createSpace());
 
@@ -89,8 +126,8 @@ public class UserProfileContainer extends LinearLayout {
         });
     }
 
-    private LinearLayout createRoot() {
-        int height = (int)Util.dp2px(getContext(), 48);
+    private LinearLayout createRoot(int height) {
+        height = (int)Util.dp2px(getContext(), height);
         LinearLayout layout = new LinearLayout(getContext());
         LinearLayout.LayoutParams containerParam = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, height);
         layout.setLayoutParams(containerParam);
@@ -127,7 +164,7 @@ public class UserProfileContainer extends LinearLayout {
     }
 
     private void addPasswordLayout() {
-        LinearLayout layout = createRoot();
+        LinearLayout layout = createRoot(TEXT_LAYOUT_HEIGHT);
         layout.addView(createLabel(getContext().getString(R.string.authing_modify_password)));
         layout.addView(createSpace());
         layout.addView(createArrow());
@@ -150,6 +187,9 @@ public class UserProfileContainer extends LinearLayout {
 
     public void refreshData() {
         UserInfo userInfo = Authing.getCurrentUser();
+
+        ImageLoader.with(getContext()).load(userInfo.getPhoto()).into(ivAvatar);
+
         for (int i = 0;i < getChildCount();++i) {
             View child = getChildAt(i);
             if (child instanceof ViewGroup) {

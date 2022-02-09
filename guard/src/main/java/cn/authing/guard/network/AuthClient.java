@@ -10,6 +10,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.InputStream;
 import java.net.URLEncoder;
 import java.util.Iterator;
 
@@ -191,18 +192,19 @@ public class AuthClient {
         });
     }
 
-    public static void resetPasswordByEmailCode(String emailAddress, String code, String newPassword, @NotNull AuthCallback<JSONObject> callback) {
-        Authing.getPublicConfig(config -> {
-            try {
-                JSONObject body = new JSONObject();
-                body.put("email", emailAddress);
-                body.put("code", code);
-                body.put("newPassword", Util.encryptPassword(newPassword));
-                String url = Authing.getSchema() + "://" + Util.getHost(config) + "/api/v2/password/reset/email";
-                Guardian.post(url, body, (data)-> callback.call(data.getCode(), data.getMessage(), data.getData()));
-            } catch (Exception e) {
-                e.printStackTrace();
-                callback.call(500, "Exception", null);
+    public static void uploadAvatar(InputStream in, @NotNull AuthCallback<UserInfo> callback) {
+        Uploader.uploadImage(in, (ok, uploadedUrl)->{
+            if (ok && !Util.isNull(uploadedUrl)) {
+                try {
+                    JSONObject body = new JSONObject();
+                    body.put("photo", uploadedUrl);
+                    updateUser(body, callback);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    callback.call(500, "Exception", null);
+                }
+            } else {
+                callback.call(500, "upload avatar failed", null);
             }
         });
     }
@@ -215,6 +217,22 @@ public class AuthClient {
                 body.put("code", code);
                 body.put("newPassword", Util.encryptPassword(newPassword));
                 String url = Authing.getSchema() + "://" + Util.getHost(config) + "/api/v2/password/reset/sms";
+                Guardian.post(url, body, (data)-> callback.call(data.getCode(), data.getMessage(), data.getData()));
+            } catch (Exception e) {
+                e.printStackTrace();
+                callback.call(500, "Exception", null);
+            }
+        });
+    }
+
+    public static void resetPasswordByEmailCode(String emailAddress, String code, String newPassword, @NotNull AuthCallback<JSONObject> callback) {
+        Authing.getPublicConfig(config -> {
+            try {
+                JSONObject body = new JSONObject();
+                body.put("email", emailAddress);
+                body.put("code", code);
+                body.put("newPassword", Util.encryptPassword(newPassword));
+                String url = Authing.getSchema() + "://" + Util.getHost(config) + "/api/v2/password/reset/email";
                 Guardian.post(url, body, (data)-> callback.call(data.getCode(), data.getMessage(), data.getData()));
             } catch (Exception e) {
                 e.printStackTrace();

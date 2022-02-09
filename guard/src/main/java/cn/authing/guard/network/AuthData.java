@@ -27,7 +27,7 @@ public class AuthData {
         nonce = Util.randomString(10);
         redirect_url = "https://console.authing.cn/console/get-started/" + Authing.getAppId();
         response_type = "code";
-        scope = "openid";
+        scope = "openid profile email phone offline_access";
         state = Util.randomString(10);
         _authing_lang = Util.getLangHeader();
         codeVerifier = PKCE.generateCodeVerifier();

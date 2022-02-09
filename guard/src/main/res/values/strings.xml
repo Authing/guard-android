@@ -64,6 +64,7 @@
     <string name="authing_user_profile">User profile</string>
     <string name="authing_unspecified">Undefined</string>
     <string name="authing_input_old_password">Please input old password</string>
+    <string name="authing_avatar">Avatar</string>
     <string name="authing_nickname">Nickname</string>
     <string name="authing_name">Name</string>
     <string name="authing_modify_password">Modify password</string>

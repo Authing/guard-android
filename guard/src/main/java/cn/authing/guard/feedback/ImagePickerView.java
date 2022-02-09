@@ -124,6 +124,5 @@ public class ImagePickerView extends GridView {
             }
             return view;
         }
-
     }
 }

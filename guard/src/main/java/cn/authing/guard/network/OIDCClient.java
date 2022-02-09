@@ -171,6 +171,7 @@ public class OIDCClient {
             }
         } catch (Exception e) {
             e.printStackTrace();
+            callback.call(500, e.toString(),null);
         }
     }
 }

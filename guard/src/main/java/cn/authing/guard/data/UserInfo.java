@@ -64,6 +64,7 @@ public class UserInfo implements Serializable {
     private String name;
     private String nickname;
     private String picture;
+    private String photo;
     private String preferred_username;
     private String profile;
     private String updated_at;
@@ -178,6 +179,14 @@ public class UserInfo implements Serializable {
 
     public void setPicture(String picture) {
         this.picture = picture;
+    }
+
+    public String getPhoto() {
+        return photo;
+    }
+
+    public void setPhoto(String photo) {
+        this.photo = photo;
     }
 
     public String getPreferred_username() {
@@ -355,6 +364,10 @@ public class UserInfo implements Serializable {
             String token = data.getString("token");
             userInfo.setIdToken(token);
             userInfo.setAccessToken(token);
+        }
+        if (data.has("photo")) {
+            String s = data.getString("photo");
+            userInfo.setPhoto(s);
         }
         if (data.has("name")) {
             String s = data.getString("name");
