@@ -1,8 +1,11 @@
 package cn.authing.guard.activity;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -48,6 +51,9 @@ public class UserProfileActivity extends BaseAuthActivity {
 
         Button btn = findViewById(R.id.btn_logout);
         btn.setOnClickListener(v -> logout());
+
+        btn = findViewById(R.id.btn_delete);
+        btn.setOnClickListener(v -> deleteAccount());
     }
 
     @Override
@@ -109,6 +115,9 @@ public class UserProfileActivity extends BaseAuthActivity {
             layout.addView(space);
 
             TextView tvValue = new TextView(this);
+            tvValue.setLines(2);
+            tvValue.setPadding(padding, 0, padding, 0);
+            tvValue.setEllipsize(TextUtils.TruncateAt.END);
             tvValue.setTextSize(16);
             layout.addView(tvValue);
 
@@ -131,6 +140,17 @@ public class UserProfileActivity extends BaseAuthActivity {
 
     private void logout() {
         Authing.logout((code, message, data)-> AuthFlow.start(this));
+    }
+
+    private void deleteAccount() {
+        new AlertDialog.Builder(this).setIcon(android.R.drawable.ic_dialog_alert)
+                .setTitle(R.string.authing_delete_account).setMessage(R.string.authing_delete_account_tip)
+                .setPositiveButton(android.R.string.yes, (dialog, which) -> AuthClient.deleteAccount((code, message, data) -> {
+                    if (code == 200) {
+                        AuthFlow.start(UserProfileActivity.this);
+                    }
+                }))
+                .setNegativeButton(android.R.string.no, null).show();
     }
 
     private void goUpdateUserData(UserInfo.CustomData data) {

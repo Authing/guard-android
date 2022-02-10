@@ -77,6 +77,10 @@ public class UserInfo implements Serializable {
     private String phone_number;
     private boolean phone_number_verified;
     private List<CustomData> customData = new ArrayList<>();
+    private List<Role> roles;
+    private List<Application> applications;
+    private List<Resource> resources;
+    private List<Organization[]> organizations;
 
     private String accessToken;
     private String idToken;
@@ -292,6 +296,38 @@ public class UserInfo implements Serializable {
                 break;
             }
         }
+    }
+
+    public List<Role> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(List<Role> roles) {
+        this.roles = roles;
+    }
+
+    public List<Application> getApplications() {
+        return applications;
+    }
+
+    public void setApplications(List<Application> applications) {
+        this.applications = applications;
+    }
+
+    public List<Resource> getResources() {
+        return resources;
+    }
+
+    public void setResources(List<Resource> resources) {
+        this.resources = resources;
+    }
+
+    public List<Organization[]> getOrganizations() {
+        return organizations;
+    }
+
+    public void setOrganizations(List<Organization[]> organizations) {
+        this.organizations = organizations;
     }
 
     public String getAccessToken() {

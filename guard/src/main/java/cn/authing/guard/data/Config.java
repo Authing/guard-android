@@ -1,5 +1,7 @@
 package cn.authing.guard.data;
 
+import static cn.authing.guard.util.Util.toStringList;
+
 import android.text.TextUtils;
 
 import org.json.JSONArray;
@@ -247,15 +249,6 @@ public class Config {
             }
         }
         return appId;
-    }
-
-    private static List<String> toStringList(JSONArray array) throws JSONException {
-        List<String> list = new ArrayList<>();
-        int size = array.length();
-        for (int i = 0; i < size; i++) {
-            list.add((array.getString(i)));
-        }
-        return list;
     }
 
     private static List<SocialConfig> toSocialList(JSONArray array) throws JSONException {

@@ -43,7 +43,7 @@ public class ChangePasswordActivity extends AppCompatActivity implements TextWat
                     && !Util.isNull(newEditText.getText().toString())
                     && !Util.isNull(confirmEditText.getText().toString())) {
                 button.startLoadingVisualEffect();
-                AuthClient.changePassword(oldEditText.getText().toString(), newEditText.getText().toString(), (code, message, data) -> {
+                AuthClient.updatePassword(oldEditText.getText().toString(), newEditText.getText().toString(), (code, message, data) -> {
                     button.stopLoadingVisualEffect();
                     if (code == 200) {
                         gotoSampleList();

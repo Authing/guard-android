@@ -13,17 +13,109 @@ import org.json.JSONObject;
 import java.io.InputStream;
 import java.net.URLEncoder;
 import java.util.Iterator;
+import java.util.List;
 
 import cn.authing.guard.AuthCallback;
 import cn.authing.guard.Authing;
 import cn.authing.guard.R;
+import cn.authing.guard.data.Application;
 import cn.authing.guard.data.MFAData;
+import cn.authing.guard.data.Organization;
+import cn.authing.guard.data.Resource;
+import cn.authing.guard.data.Role;
 import cn.authing.guard.data.Safe;
 import cn.authing.guard.data.UserInfo;
 import cn.authing.guard.util.GlobalCountDown;
 import cn.authing.guard.util.Util;
+import cn.authing.guard.util.Validator;
 
 public class AuthClient {
+
+    enum PasswordStrength {
+        EWeak,
+        EMedium,
+        EStrong
+    }
+
+    public static void registerByEmail(String email, String password, @NotNull AuthCallback<UserInfo> callback) {
+        Authing.getPublicConfig(config -> {
+            try {
+                String encryptPassword = Util.encryptPassword(password);
+                JSONObject body = new JSONObject();
+                body.put("email", email);
+                body.put("password", encryptPassword);
+                String url = Authing.getSchema() + "://" + Util.getHost(config) + "/api/v2/register/email";
+                Guardian.post(url, body, (data)-> {
+                    if (data.getCode() == 200) {
+                        // after register, login immediately to get access token
+                        JSONObject loginBody = new JSONObject();
+                        try {
+                            loginBody.put("account", email);
+                            loginBody.put("password", encryptPassword);
+                        } catch (JSONException je) {
+                            je.printStackTrace();
+                        }
+                        String loginUrl = Authing.getSchema() + "://" + Util.getHost(config) + "/api/v2/login/account";
+                        Guardian.post(loginUrl, loginBody, (loginData) -> createUserInfoFromResponse(loginData, callback));
+                    } else {
+                        callback.call(data.getCode(), data.getMessage(), null);
+                    }
+                });
+            } catch (Exception e) {
+                e.printStackTrace();
+                callback.call(500, "Exception", null);
+            }
+        });
+    }
+
+    public static void registerByUserName(String username, String password, @NotNull AuthCallback<UserInfo> callback) {
+        Authing.getPublicConfig(config -> {
+            try {
+                String encryptPassword = Util.encryptPassword(password);
+                JSONObject body = new JSONObject();
+                body.put("username", username);
+                body.put("password", encryptPassword);
+                String url = Authing.getSchema() + "://" + Util.getHost(config) + "/api/v2/register/username";
+                Guardian.post(url, body, (data)-> {
+                    if (data.getCode() == 200) {
+                        // after register, login immediately to get access token
+                        JSONObject loginBody = new JSONObject();
+                        try {
+                            loginBody.put("account", username);
+                            loginBody.put("password", encryptPassword);
+                        } catch (JSONException je) {
+                            je.printStackTrace();
+                        }
+                        String loginUrl = Authing.getSchema() + "://" + Util.getHost(config) + "/api/v2/login/account";
+                        Guardian.post(loginUrl, loginBody, (loginData) -> createUserInfoFromResponse(loginData, callback));
+                    } else {
+                        callback.call(data.getCode(), data.getMessage(), null);
+                    }
+                });
+            } catch (Exception e) {
+                e.printStackTrace();
+                callback.call(500, "Exception", null);
+            }
+        });
+    }
+
+    public static void registerByPhoneCode(String phone, String password, String code, @NotNull AuthCallback<UserInfo> callback) {
+        Authing.getPublicConfig(config -> {
+            try {
+                String encryptPassword = Util.encryptPassword(password);
+                JSONObject body = new JSONObject();
+                body.put("phone", phone);
+                body.put("password", encryptPassword);
+                body.put("code", code);
+                String url = Authing.getSchema() + "://" + Util.getHost(config) + "/api/v2/register/phone-code";
+                Guardian.post(url, body, (data)-> createUserInfoFromResponse(data, callback));
+            } catch (Exception e) {
+                e.printStackTrace();
+                callback.call(500, "Exception", null);
+            }
+        });
+    }
+
     public static void sendSms(String phone, @NotNull AuthCallback<?> callback) {
         if (GlobalCountDown.countDown != 0) {
             callback.call(500, Authing.getAppContext().getString(R.string.authing_sms_already_sent), null);
@@ -121,29 +213,19 @@ public class AuthClient {
         });
     }
 
-    public static void registerByEmail(String email, String password, @NotNull AuthCallback<UserInfo> callback) {
+    public static void loginByLDAP(String username, String password, @NotNull AuthCallback<UserInfo> callback) {
         Authing.getPublicConfig(config -> {
             try {
                 String encryptPassword = Util.encryptPassword(password);
                 JSONObject body = new JSONObject();
-                body.put("email", email);
+                body.put("username", username);
                 body.put("password", encryptPassword);
-                String url = Authing.getSchema() + "://" + Util.getHost(config) + "/api/v2/register/email";
+                String url = Authing.getSchema() + "://" + Util.getHost(config) + "/api/v2/login/ldap";
                 Guardian.post(url, body, (data)-> {
-                    if (data.getCode() == 200) {
-                        // after register, login immediately to get access token
-                        JSONObject loginBody = new JSONObject();
-                        try {
-                            loginBody.put("account", email);
-                            loginBody.put("password", encryptPassword);
-                        } catch (JSONException je) {
-                            je.printStackTrace();
-                        }
-                        String loginUrl = Authing.getSchema() + "://" + Util.getHost(config) + "/api/v2/login/account";
-                        Guardian.post(loginUrl, loginBody, (loginData) -> createUserInfoFromResponse(loginData, callback));
-                    } else {
-                        callback.call(data.getCode(), data.getMessage(), null);
+                    if (data.getCode() == 200 || data.getCode() == EC_MFA_REQUIRED) {
+                        Safe.saveAccount(username);
                     }
+                    createUserInfoFromResponse(data, callback);
                 });
             } catch (Exception e) {
                 e.printStackTrace();
@@ -152,16 +234,20 @@ public class AuthClient {
         });
     }
 
-    public static void registerByPhoneCode(String phone, String password, String code, @NotNull AuthCallback<UserInfo> callback) {
+    public static void loginByAD(String username, String password, @NotNull AuthCallback<UserInfo> callback) {
         Authing.getPublicConfig(config -> {
             try {
                 String encryptPassword = Util.encryptPassword(password);
                 JSONObject body = new JSONObject();
-                body.put("phone", phone);
+                body.put("username", username);
                 body.put("password", encryptPassword);
-                body.put("code", code);
-                String url = Authing.getSchema() + "://" + Util.getHost(config) + "/api/v2/register/phone-code";
-                Guardian.post(url, body, (data)-> createUserInfoFromResponse(data, callback));
+                String url = Authing.getSchema() + "://" + Util.getHost(config) + "/api/v2/login/ad";
+                Guardian.post(url, body, (data)-> {
+                    if (data.getCode() == 200 || data.getCode() == EC_MFA_REQUIRED) {
+                        Safe.saveAccount(username);
+                    }
+                    createUserInfoFromResponse(data, callback);
+                });
             } catch (Exception e) {
                 e.printStackTrace();
                 callback.call(500, "Exception", null);
@@ -357,6 +443,170 @@ public class AuthClient {
         });
     }
 
+    public static PasswordStrength computePasswordSecurityLevel(String password) {
+        if (password.length() < 6) {
+            return PasswordStrength.EWeak;
+        }
+
+        boolean hasEnglish = Validator.hasEnglish(password);
+        boolean hasNumber = Validator.hasNumber(password);
+        boolean hasSpecialChar = Validator.hasSpecialCharacter(password);
+        if (hasEnglish && hasNumber && hasSpecialChar) {
+            return PasswordStrength.EStrong;
+        } else if ((hasEnglish && hasNumber) ||
+                (hasEnglish && hasSpecialChar) ||
+                (hasNumber && hasSpecialChar)) {
+            return PasswordStrength.EMedium;
+        } else {
+            return PasswordStrength.EWeak;
+        }
+    }
+
+    public static void getSecurityLevel(@NotNull AuthCallback<JSONObject> callback) {
+        Authing.getPublicConfig(config -> {
+            try {
+                String url = Authing.getSchema() + "://" + Util.getHost(config) + "/api/v2/users/me/security-level";
+                Guardian.get(url, (data)-> callback.call(data.getCode(), data.getMessage(), data.getData()));
+            } catch (Exception e) {
+                e.printStackTrace();
+                callback.call(500, "Exception", null);
+            }
+        });
+    }
+
+    public static void listRoles(@NotNull AuthCallback<List<Role>> callback) {
+        listRoles(null, callback);
+    }
+
+    public static void listRoles(String namespace, @NotNull AuthCallback<List<Role>> callback) {
+        Authing.getPublicConfig(config -> {
+            try {
+                String url = Authing.getSchema() + "://" + Util.getHost(config) + "/api/v2/users/me/roles"
+                        + (TextUtils.isEmpty(namespace) ? "" : "?namespace=" + namespace);
+                Guardian.get(url, (data)-> {
+                    if (data.getCode() == 200) {
+                        try {
+                            JSONArray array = data.getData().getJSONArray("data");
+                            List<Role> roles = Role.parse(array);
+                            UserInfo userInfo = Authing.getCurrentUser();
+                            if (userInfo != null) {
+                                userInfo.setRoles(roles);
+                            }
+                            callback.call(data.getCode(), data.getMessage(), roles);
+                        } catch (JSONException e) {
+                            callback.call(500, "Exception", null);
+                        }
+                    } else {
+                        callback.call(data.getCode(), data.getMessage(), null);
+                    }
+                });
+            } catch (Exception e) {
+                e.printStackTrace();
+                callback.call(500, "Exception", null);
+            }
+        });
+    }
+
+    public static void listApplications(@NotNull AuthCallback<List<Application>> callback) {
+        listApplications(1, 100, callback);
+    }
+
+    public static void listApplications(int page, int limit, @NotNull AuthCallback<List<Application>> callback) {
+        Authing.getPublicConfig(config -> {
+            try {
+                String url = Authing.getSchema() + "://" + Util.getHost(config) + "/api/v2/users/me/applications/allowed?page="
+                        + page + "&limit=" + limit;
+                Guardian.get(url, (data)-> {
+                    if (data.getCode() == 200) {
+                        try {
+                            JSONArray array = data.getData().getJSONArray("list");
+                            List<Application> apps = Application.parse(array);
+                            UserInfo userInfo = Authing.getCurrentUser();
+                            if (userInfo != null) {
+                                userInfo.setApplications(apps);
+                            }
+                            callback.call(data.getCode(), data.getMessage(), apps);
+                        } catch (JSONException e) {
+                            callback.call(500, "Exception", null);
+                        }
+                    } else {
+                        callback.call(data.getCode(), data.getMessage(), null);
+                    }
+                });
+            } catch (Exception e) {
+                e.printStackTrace();
+                callback.call(500, "Exception", null);
+            }
+        });
+    }
+
+    public static void listAuthorizedResources(String namespace, @NotNull AuthCallback<List<Resource>> callback) {
+        listAuthorizedResources(namespace, null, callback);
+    }
+
+    public static void listAuthorizedResources(String namespace, String resourceType, @NotNull AuthCallback<List<Resource>> callback) {
+        Authing.getPublicConfig(config -> {
+            try {
+                String url = Authing.getSchema() + "://" + Util.getHost(config) + "/api/v2/users/resource/authorized";
+                JSONObject body = new JSONObject();
+                body.put("namespace", namespace);
+                if (resourceType != null) {
+                    body.put("resourceType", resourceType);
+                }
+                Guardian.post(url, body, (data)-> {
+                    if (data.getCode() == 200) {
+                        try {
+                            JSONArray array = data.getData().getJSONArray("list");
+                            List<Resource> resources = Resource.parse(array);
+                            UserInfo userInfo = Authing.getCurrentUser();
+                            if (userInfo != null) {
+                                userInfo.setResources(resources);
+                            }
+                            callback.call(data.getCode(), data.getMessage(), resources);
+                        } catch (JSONException e) {
+                            callback.call(500, "Exception", null);
+                        }
+                    } else {
+                        callback.call(data.getCode(), data.getMessage(), null);
+                    }
+                });
+            } catch (Exception e) {
+                e.printStackTrace();
+                callback.call(500, "Exception", null);
+            }
+        });
+    }
+
+    public static void listOrgs(@NotNull AuthCallback<List<Organization[]>> callback) {
+        Authing.getPublicConfig(config -> {
+            try {
+                UserInfo userInfo = Authing.getCurrentUser();
+                if (userInfo == null) {
+                    callback.call(2020, "", null);
+                } else {
+                    String url = Authing.getSchema() + "://" + Util.getHost(config) + "/api/v2/users/" + userInfo.getId() + "/orgs";
+                    Guardian.get(url, (data)-> {
+                        if (data.getCode() == 200) {
+                            try {
+                                JSONArray array = data.getData().getJSONArray("data");
+                                List<Organization[]> organizations = Organization.parse(array);
+                                userInfo.setOrganizations(organizations);
+                                callback.call(data.getCode(), data.getMessage(), organizations);
+                            } catch (JSONException e) {
+                                callback.call(500, "Exception", null);
+                            }
+                        } else {
+                            callback.call(data.getCode(), data.getMessage(), null);
+                        }
+                    });
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+                callback.call(500, "Exception", null);
+            }
+        });
+    }
+
     public static void mfaCheck(String phone, String email, @NotNull AuthCallback<JSONObject> callback) {
         Authing.getPublicConfig(config -> {
             try {
@@ -434,7 +684,7 @@ public class AuthClient {
         });
     }
 
-    public static void changePassword(String oldPassword, String newPassword, @NotNull AuthCallback<JSONObject> callback) {
+    public static void updatePassword(String oldPassword, String newPassword, @NotNull AuthCallback<JSONObject> callback) {
         Authing.getPublicConfig(config -> {
             try {
                 JSONObject body = new JSONObject();
@@ -449,7 +699,7 @@ public class AuthClient {
         });
     }
 
-    public static void getCurrentUserInfo(@NotNull AuthCallback<UserInfo> callback) {
+    public static void getCurrentUser(@NotNull AuthCallback<UserInfo> callback) {
         Authing.getPublicConfig(config -> {
             try {
                 String url = Authing.getSchema() + "://" + Util.getHost(config) + "/api/v2/users/me";
@@ -461,7 +711,12 @@ public class AuthClient {
         });
     }
 
+    @Deprecated
     public static void updateUser(JSONObject body, @NotNull AuthCallback<UserInfo> callback) {
+        updateProfile(body, callback);
+    }
+
+    public static void updateProfile(JSONObject body, @NotNull AuthCallback<UserInfo> callback) {
         Authing.getPublicConfig(config -> {
             try {
                 String url = Authing.getSchema() + "://" + Util.getHost(config) + "/api/v2/users/profile/update";
@@ -473,7 +728,12 @@ public class AuthClient {
         });
     }
 
+    @Deprecated
     public static void updateCustomUserInfo(JSONObject customData, @NotNull AuthCallback<JSONObject> callback) {
+        setCustomUserData(customData, callback);
+    }
+
+    public static void setCustomUserData(JSONObject customData, @NotNull AuthCallback<JSONObject> callback) {
         UserInfo userInfo = Authing.getCurrentUser();
         if (userInfo == null) {
             callback.call(500, "no user logged in", null);
@@ -501,7 +761,7 @@ public class AuthClient {
         });
     }
 
-    public static void getUserDefinedData(UserInfo userInfo, @NotNull AuthCallback<UserInfo> callback) {
+    public static void getCustomUserData(UserInfo userInfo, @NotNull AuthCallback<UserInfo> callback) {
         Authing.getPublicConfig(config -> {
             try {
                 JSONObject body = new JSONObject();
@@ -549,11 +809,23 @@ public class AuthClient {
                         + "&redirect_uri=" + URLEncoder.encode(redirectUrl, "utf-8");
                 Guardian.authRequest(url, "post", body, (data)-> {
                     if (data.getCode() == 200) {
-                        createUserInfoFromResponse(data, (c, m, info) -> AuthClient.getCurrentUserInfo(callback));
+                        createUserInfoFromResponse(data, (c, m, info) -> AuthClient.getCurrentUser(callback));
                     } else {
                         callback.call(data.getCode(), data.getMessage(), null);
                     }
                 });
+            } catch (Exception e) {
+                e.printStackTrace();
+                callback.call(500, "Exception", null);
+            }
+        });
+    }
+
+    public static void deleteAccount(AuthCallback<JSONObject> callback) {
+        Authing.getPublicConfig(config -> {
+            try {
+                String url = Authing.getSchema() + "://" + Util.getHost(config) + "/api/v2/users/delete";
+                Guardian.delete(url, (data)-> callback.call(data.getCode(), data.getMessage(), data.getData()));
             } catch (Exception e) {
                 e.printStackTrace();
                 callback.call(500, "Exception", null);
@@ -571,7 +843,7 @@ public class AuthClient {
                 if (Util.isNull(token)) {
                     callback.call(code, data.getMessage(), userInfo);
                 } else {
-                    getUserDefinedData(userInfo, callback);
+                    getCustomUserData(userInfo, callback);
                 }
             } else if (code == EC_MFA_REQUIRED) {
                 MFAData mfaData = MFAData.create(data.getData());

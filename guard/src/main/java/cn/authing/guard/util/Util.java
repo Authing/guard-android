@@ -7,6 +7,9 @@ import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -301,5 +304,14 @@ public class Util {
         } else {
             return config.getIdentifier() + "." + Authing.getHost();
         }
+    }
+
+    public static List<String> toStringList(JSONArray array) throws JSONException {
+        List<String> list = new ArrayList<>();
+        int size = array.length();
+        for (int i = 0; i < size; i++) {
+            list.add((array.getString(i)));
+        }
+        return list;
     }
 }

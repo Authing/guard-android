@@ -14,14 +14,25 @@ import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 
+import java.util.List;
+
 import cn.authing.guard.Authing;
 import cn.authing.guard.R;
+import cn.authing.guard.activity.ApplicationActivity;
+import cn.authing.guard.activity.AuthorizedResourcesActivity;
 import cn.authing.guard.activity.BindEmailActivity;
 import cn.authing.guard.activity.BindPhoneActivity;
 import cn.authing.guard.activity.ChangePasswordActivity;
+import cn.authing.guard.activity.OrganizationActivity;
+import cn.authing.guard.activity.RolesActivity;
 import cn.authing.guard.activity.UpdateUserProfileActivity;
+import cn.authing.guard.data.Application;
 import cn.authing.guard.data.ImageLoader;
+import cn.authing.guard.data.Organization;
+import cn.authing.guard.data.Resource;
+import cn.authing.guard.data.Role;
 import cn.authing.guard.data.UserInfo;
+import cn.authing.guard.network.AuthClient;
 import cn.authing.guard.util.Util;
 
 public class UserProfileContainer extends LinearLayout {
@@ -31,8 +42,17 @@ public class UserProfileContainer extends LinearLayout {
     private static final int AVATAR_MARGIN = (AVATAR_LAYOUT_HEIGHT - AVATAR_HEIGHT) / 2;
     private static final int TEXT_LAYOUT_HEIGHT = 48;
 
+    private List<Role> roles;
+    private List<Application> applications;
+    private List<Resource> resources;
+    private List<Organization[]> organizations;
+
     private final int padding;
     private ImageView ivAvatar;
+    private TextView tvRoleCount;
+    private TextView tvAppCount;
+    private TextView tvResCount;
+    private TextView tvOrgCount;
 
     public UserProfileContainer(Context context) {
         this(context, null);
@@ -61,6 +81,10 @@ public class UserProfileContainer extends LinearLayout {
         create(context.getString(R.string.authing_email), "email");
 
         addPasswordLayout();
+        addRolesLayout();
+        addAppLayout();
+        addResourceLayout();
+        addOrganizationLayout();
     }
 
     private void addAvatarLayout() {
@@ -169,10 +193,107 @@ public class UserProfileContainer extends LinearLayout {
         layout.addView(createSpace());
         layout.addView(createArrow());
         addView(layout);
+        addSeparator();
 
         layout.setOnClickListener((v)->{
             Intent intent = new Intent(getContext(), ChangePasswordActivity.class);
             getContext().startActivity(intent);
+        });
+    }
+
+    private void addRolesLayout() {
+        LinearLayout layout = createRoot(TEXT_LAYOUT_HEIGHT);
+        layout.addView(createLabel(getContext().getString(R.string.authing_roles)));
+        layout.addView(createSpace());
+
+        LinearLayout.LayoutParams labelParam = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT);
+        tvRoleCount = new TextView(getContext());
+        tvRoleCount.setLayoutParams(labelParam);
+        tvRoleCount.setTextSize(16);
+        tvRoleCount.setGravity(Gravity.CENTER_VERTICAL);
+        layout.addView(tvRoleCount);
+
+        layout.addView(createArrow());
+        addView(layout);
+        addSeparator();
+
+        layout.setOnClickListener((v)->{
+            if (roles != null && roles.size() > 0) {
+                Intent intent = new Intent(getContext(), RolesActivity.class);
+                getContext().startActivity(intent);
+            }
+        });
+    }
+
+    private void addAppLayout() {
+        LinearLayout layout = createRoot(TEXT_LAYOUT_HEIGHT);
+        layout.addView(createLabel(getContext().getString(R.string.authing_apps)));
+        layout.addView(createSpace());
+
+        LinearLayout.LayoutParams labelParam = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT);
+        tvAppCount = new TextView(getContext());
+        tvAppCount.setLayoutParams(labelParam);
+        tvAppCount.setTextSize(16);
+        tvAppCount.setGravity(Gravity.CENTER_VERTICAL);
+        layout.addView(tvAppCount);
+
+        layout.addView(createArrow());
+        addView(layout);
+        addSeparator();
+
+        layout.setOnClickListener((v)->{
+            if (applications != null && applications.size() > 0) {
+                Intent intent = new Intent(getContext(), ApplicationActivity.class);
+                getContext().startActivity(intent);
+            }
+        });
+    }
+
+    private void addResourceLayout() {
+        LinearLayout layout = createRoot(TEXT_LAYOUT_HEIGHT);
+        layout.addView(createLabel(getContext().getString(R.string.authing_authorized_resources)));
+        layout.addView(createSpace());
+
+        LinearLayout.LayoutParams labelParam = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT);
+        tvResCount = new TextView(getContext());
+        tvResCount.setLayoutParams(labelParam);
+        tvResCount.setTextSize(16);
+        tvResCount.setGravity(Gravity.CENTER_VERTICAL);
+        layout.addView(tvResCount);
+
+        layout.addView(createArrow());
+        addView(layout);
+        addSeparator();
+
+        layout.setOnClickListener((v)->{
+            if (applications != null && applications.size() > 0) {
+                Intent intent = new Intent(getContext(), AuthorizedResourcesActivity.class);
+                getContext().startActivity(intent);
+            }
+        });
+    }
+
+    private void addOrganizationLayout() {
+        LinearLayout layout = createRoot(TEXT_LAYOUT_HEIGHT);
+        layout.addView(createLabel(getContext().getString(R.string.authing_organizations)));
+        layout.addView(createSpace());
+
+        LinearLayout.LayoutParams labelParam = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT);
+        tvOrgCount = new TextView(getContext());
+        tvOrgCount.setLayoutParams(labelParam);
+        tvOrgCount.setTextSize(16);
+        tvOrgCount.setGravity(Gravity.CENTER_VERTICAL);
+        layout.addView(tvOrgCount);
+
+        layout.addView(createArrow());
+        addView(layout);
+        addSeparator();
+
+        layout.setOnClickListener((v)->{
+            if (applications != null && applications.size() > 0) {
+                Intent intent = new Intent(getContext(), OrganizationActivity.class);
+                getContext().startActivity(intent);
+            }
         });
     }
 
@@ -204,5 +325,50 @@ public class UserProfileContainer extends LinearLayout {
                 }
             }
         }
+
+        getRoles();
+        getApplications();
+        getAuthorizedResources();
+        getOrganizations();
+    }
+
+    private void getRoles() {
+        AuthClient.listRoles((code, message, roles) -> post(()->{
+            this.roles = roles;
+            if (tvRoleCount != null && roles != null) {
+                String s = roles.size() == 0 ? getContext().getString(R.string.authing_unspecified) : "" + roles.size();
+                tvRoleCount.setText(s);
+            }
+        }));
+    }
+
+    private void getApplications() {
+        AuthClient.listApplications((code, message, applications) -> post(()->{
+            this.applications = applications;
+            if (tvAppCount != null && applications != null) {
+                String s = applications.size() == 0 ? getContext().getString(R.string.authing_unspecified) : "" + applications.size();
+                tvAppCount.setText(s);
+            }
+        }));
+    }
+
+    private void getAuthorizedResources() {
+        AuthClient.listAuthorizedResources("default", (code, message, resources) -> post(()->{
+            this.resources = resources;
+            if (tvResCount != null && resources != null) {
+                String s = resources.size() == 0 ? getContext().getString(R.string.authing_unspecified) : "" + resources.size();
+                tvResCount.setText(s);
+            }
+        }));
+    }
+
+    private void getOrganizations() {
+        AuthClient.listOrgs((code, message, organizations) -> post(()->{
+            this.organizations = organizations;
+            if (tvOrgCount != null && organizations != null) {
+                String s = organizations.size() == 0 ? getContext().getString(R.string.authing_unspecified) : "" + organizations.size();
+                tvOrgCount.setText(s);
+            }
+        }));
     }
 }

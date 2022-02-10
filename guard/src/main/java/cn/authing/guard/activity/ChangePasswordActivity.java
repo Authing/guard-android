@@ -6,7 +6,6 @@ import cn.authing.guard.PasswordConfirmEditText;
 import cn.authing.guard.PasswordEditText;
 import cn.authing.guard.R;
 import cn.authing.guard.internal.BasePasswordEditText;
-import cn.authing.guard.internal.EditTextLayout;
 import cn.authing.guard.internal.LoadingButton;
 import cn.authing.guard.network.AuthClient;
 import cn.authing.guard.util.Util;
@@ -36,7 +35,7 @@ public class ChangePasswordActivity extends BaseAuthActivity {
                     && !Util.isNull(newEditText.getText().toString())
                     && !Util.isNull(confirmEditText.getText().toString())) {
                 button.startLoadingVisualEffect();
-                AuthClient.changePassword(oldEditText.getText().toString(), newEditText.getText().toString(), (code, message, data) -> {
+                AuthClient.updatePassword(oldEditText.getText().toString(), newEditText.getText().toString(), (code, message, data) -> {
                     button.stopLoadingVisualEffect();
                     runOnUiThread(()->{
                         if (code == 200) {

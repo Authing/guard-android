@@ -60,14 +60,14 @@ public class Authing {
             callback.call(500, "no user logged in", null);
         } else {
             // TODO need to use refresh token to get latest access token
-            AuthClient.getCurrentUserInfo(((code, message, userInfo) -> {
+            AuthClient.getCurrentUser((code, message, userInfo) -> {
                 if (code != 200) {
                     ALog.d(TAG, "auto login token expired");
                     Safe.logoutUser(sCurrentUser);
                     sCurrentUser = null;
                 }
                 callback.call(code, message, userInfo);
-            }));
+            });
         }
     }
 

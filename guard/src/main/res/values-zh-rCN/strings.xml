@@ -59,6 +59,7 @@
     <string name="authing_current_phone_login">本机号码一键登录</string>
     <string name="authing_other_login">其他方式登录</string>
     <string name="authing_logout">退出登录</string>
+    <string name="authing_delete_account">注销帐号</string>
 
     <!--user profile-->
     <string name="authing_user_profile">个人中心</string>
@@ -70,6 +71,13 @@
     <string name="authing_modify_password">修改密码</string>
     <string name="authing_update_profile">更新资料</string>
     <string name="authing_update">更新</string>
+    <string name="authing_roles">角色</string>
+    <string name="authing_my_roles">我的角色</string>
+    <string name="authing_no_description">无描述</string>
+    <string name="authing_delete_account_tip">确定要删除该帐号吗？该帐号将无法恢复</string>
+    <string name="authing_apps">应用</string>
+    <string name="authing_authorized_resources">授权资源</string>
+    <string name="authing_organizations">组织机构</string>
 
     <!--auth issue feedback-->
     <string name="authing_feedback">问题反馈</string>
@@ -89,6 +97,7 @@
     <string name="authing_submit_success">提交成功</string>
 
     <!--error messages-->
+    <string name="authing_network_exception">网络异常</string>
     <string name="authing_password_error_1">至少 6 位</string>
     <string name="authing_password_error_2">至少包含小写字母</string>
     <string name="authing_password_error_3">至少包含大写字母</string>

@@ -50,9 +50,21 @@
                 android:background="#FFF"
                 android:backgroundTint="#FFF"
                 android:layout_marginTop="8dp"
-                android:textColor="#FF3B30"
+                android:textColor="#000"
                 android:textSize="16sp"
                 android:text="@string/authing_logout"/>
+
+            <cn.authing.guard.internal.LoadingButton
+                android:id="@+id/btn_delete"
+                android:stateListAnimator="@null"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#FFF"
+                android:backgroundTint="#FFF"
+                android:layout_marginTop="8dp"
+                android:textColor="#FF3B30"
+                android:textSize="16sp"
+                android:text="@string/authing_delete_account"/>
         </LinearLayout>
     </ScrollView>
 </LinearLayout>

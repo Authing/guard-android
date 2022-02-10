@@ -14,6 +14,7 @@ import java.util.HashSet;
 import java.util.Objects;
 
 import cn.authing.guard.Authing;
+import cn.authing.guard.R;
 import cn.authing.guard.data.Config;
 import cn.authing.guard.data.Safe;
 import cn.authing.guard.data.UserInfo;
@@ -36,11 +37,15 @@ public class Guardian {
     }
 
     public static void get(String url, @NotNull GuardianCallback callback) {
-        request(url, "get", null, callback);
+        request(url, "GET", null, callback);
     }
 
     public static void post(String url, JSONObject body, @NotNull GuardianCallback callback) {
-        request(url, "post", body.toString(), callback);
+        request(url, "POST", body.toString(), callback);
+    }
+
+    public static void delete(String url, @NotNull GuardianCallback callback) {
+        request(url, "DELETE", null, callback);
     }
 
     private static void request(String url, String method, String body, @NotNull GuardianCallback callback) {
@@ -77,10 +82,12 @@ public class Guardian {
         } else if (MFA_TOKEN != null) {
             builder.addHeader("Authorization", "Bearer " + MFA_TOKEN);
         }
-        if (method.equalsIgnoreCase("post")) {
+        if (null != body) {
             MediaType type = (body.startsWith("{") || body.startsWith("[")) && (body.endsWith("]") || body.endsWith("}")) ? Const.JSON : Const.FORM;
             RequestBody requestBody = RequestBody.create(body, type);
-            builder.post(requestBody);
+            builder.method(method.toUpperCase(), requestBody);
+        } else {
+            builder.method(method.toUpperCase(), null);
         }
 
         Request request = builder.build();
@@ -129,6 +136,15 @@ public class Guardian {
                         resp.setData(data);
                     } catch(JSONException ignored){
                     }
+
+                    try {
+                        JSONArray array = json.getJSONArray("data");
+                        JSONObject data = new JSONObject();
+                        data.put("data", array);
+                        resp.setData(data);
+                    } catch(JSONException ignored){
+                    }
+
                     try {
                         Boolean data = json.getBoolean("data");
                         JSONObject booleanResult = new JSONObject();
@@ -158,7 +174,7 @@ public class Guardian {
             }
         } catch (Exception e) {
             e.printStackTrace();
-            callback.call(new Response(500, "Network Exception", null));
+            callback.call(new Response(500, Authing.getAppContext().getString(R.string.authing_network_exception), null));
         }
     }
 
