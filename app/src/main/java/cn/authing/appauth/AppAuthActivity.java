@@ -20,7 +20,10 @@ import net.openid.appauth.TokenRequest;
 
 import cn.authing.R;
 import cn.authing.guard.Authing;
+import cn.authing.guard.data.UserInfo;
+import cn.authing.guard.flow.AuthFlow;
 import cn.authing.guard.internal.LoadingButton;
+import cn.authing.guard.network.OIDCClient;
 import cn.authing.guard.util.Util;
 
 public class AppAuthActivity extends AppCompatActivity {
@@ -73,7 +76,7 @@ public class AppAuthActivity extends AppCompatActivity {
 
         AuthorizationRequest authRequest = authRequestBuilder
                 .setScope("openid profile email phone address offline_access role extended_fields")
-                .setPrompt("consent")
+                .setPrompt("consent") // for refresh token
                 .setCodeVerifier(Util.randomString(43))
                 .build();
 
@@ -92,25 +95,51 @@ public class AppAuthActivity extends AppCompatActivity {
 
             TokenRequest request = resp.createTokenExchangeRequest();
             authService.performTokenRequest(
-                    request,
-                    (resp1, ex1) -> {
-                        if (resp1 != null) {
-                            // exchange succeeded
-                            authState.update(resp1, ex1);
-                            runOnUiThread(()->{
-                                tvTitle.setVisibility(View.VISIBLE);
-                                tvRes.setText(resp1.idToken);
-                                Log.d(TAG, resp1.idToken);
-                                Log.d(TAG, "ak:" + resp1.accessToken);
-                                Log.d(TAG, "rk:" + resp1.refreshToken);
-                                btn.setVisibility(View.GONE);
-                            });
-                        } else {
-                            // authorization failed, check ex for more details
-                        }
-                    });
+                request,
+                (resp1, ex1) -> {
+                    if (resp1 != null) {
+                        // exchange succeeded
+                        authState.update(resp1, ex1);
+                        runOnUiThread(()->{
+                            tvTitle.setVisibility(View.VISIBLE);
+                            tvRes.setText(resp1.idToken);
+                            Log.d(TAG, resp1.idToken);
+                            Log.d(TAG, "at:" + resp1.accessToken);
+                            Log.d(TAG, "rt:" + resp1.refreshToken);
+                            btn.setVisibility(View.GONE);
+                            getUserInfo(resp1.accessToken, resp1.refreshToken);
+                        });
+                    } else {
+                        // authorization failed, check ex for more details
+                    }
+                });
         } else {
             // ...
         }
+    }
+
+    private void getUserInfo(String accessToken, String refreshToken) {
+        UserInfo userInfo = new UserInfo();
+        userInfo.setAccessToken(accessToken);
+        userInfo.setRefreshToken(refreshToken);
+        OIDCClient.getUserInfoByAccessToken(userInfo, (code, message, data)->{
+            if (code == 200) {
+                updateToken(data.getRefreshToken());
+            }
+        });
+    }
+
+    private void updateToken(String rt) {
+        OIDCClient.getNewAccessTokenByRefreshToken(rt, (code, message, data)->{
+            if (code == 200) {
+                Log.d(TAG, "new at:" + data.getAccessToken());
+                Log.d(TAG, "new id token:" + data.getIdToken());
+                Log.d(TAG, "new rt:" + data.getRefreshToken());
+
+                runOnUiThread(()->{
+                    AuthFlow.showUserProfile(this);
+                });
+            }
+        });
     }
 }

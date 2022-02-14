@@ -14,9 +14,6 @@ import android.widget.CheckBox;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import cn.authing.guard.R;
 import cn.authing.guard.activity.AuthActivity;
 import cn.authing.guard.analyze.Analyzer;
@@ -98,11 +95,10 @@ public class MFARecoveryButton extends LoadingButton {
         }
     }
 
-    private void mfaDone(int code, String message, JSONObject data) {
+    private void mfaDone(int code, String message, UserInfo userInfo) {
         stopLoadingVisualEffect();
         if (code == 200) {
             try {
-                UserInfo userInfo = UserInfo.createUserInfo(data);
                 AuthActivity activity = (AuthActivity) getContext();
                 AuthFlow flow = activity.getFlow();
                 flow.getData().put(KEY_MFA_RECOVERY_CODE, userInfo.getRecoveryCode());
@@ -119,7 +115,7 @@ public class MFARecoveryButton extends LoadingButton {
                     intent.putExtra(AuthActivity.CONTENT_LAYOUT_ID, R.layout.authing_mfa_otp_recovery_1);
                 }
                 activity.startActivityForResult(intent, AuthActivity.RC_LOGIN);
-            } catch (JSONException e) {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         } else {

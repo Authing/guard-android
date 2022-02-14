@@ -23,9 +23,12 @@ public class Authing {
 
     private final static String TAG = "Authing";
 
+    private static final String DEF_PUBLIC_KEY = "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQC4xKeUgQ+Aoz7TLfAfs9+paePb5KIofVthEopwrXFkp8OCeocaTHt9ICjTT2QeJh6cZaDaArfZ873GPUn00eOIZ7Ae+TiA2BKHbCvloW3w5Lnqm70iSsUi5Fmu9/2+68GZRH9L7Mlh8cFksCicW2Y2W2uMGKl64GDcIq3au+aqJQIDAQAB";
+
     private static Context sAppContext;
     private static String schema = "https";
     private static String sHost = "authing.cn"; // for private deployment
+    private static String sPublicKey = DEF_PUBLIC_KEY;
     private static String sAppId;
     private static boolean isGettingConfig;
     private static Config publicConfig;
@@ -55,6 +58,23 @@ public class Authing {
         return sHost;
     }
 
+    public static void setHost(String host) {
+        Authing.sHost = host;
+    }
+
+    public static String getPublicKey() {
+        return sPublicKey;
+    }
+
+    public static void setPublicKey(String publicKey) {
+        Authing.sPublicKey = publicKey;
+    }
+
+    public static void setOnPremiseInfo(String host, String publicKey) {
+        Authing.sHost = host;
+        Authing.sPublicKey = publicKey;
+    }
+
     public static void autoLogin(AuthCallback<UserInfo> callback) {
         if (getCurrentUser() == null) {
             callback.call(500, "no user logged in", null);
@@ -69,10 +89,6 @@ public class Authing {
                 callback.call(code, message, userInfo);
             });
         }
-    }
-
-    public static void setHost(String sHost) {
-        Authing.sHost = sHost;
     }
 
     public static String getAppId() {

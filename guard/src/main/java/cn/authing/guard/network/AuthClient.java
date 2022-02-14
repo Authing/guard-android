@@ -624,14 +624,14 @@ public class AuthClient {
         });
     }
 
-    public static void mfaVerifyByPhone(String phone, String code, @NotNull AuthCallback<JSONObject> callback) {
+    public static void mfaVerifyByPhone(String phone, String code, @NotNull AuthCallback<UserInfo> callback) {
         Authing.getPublicConfig(config -> {
             try {
                 JSONObject body = new JSONObject();
                 body.put("phone", phone);
                 body.put("code", code);
                 String url = Authing.getSchema() + "://" + Util.getHost(config) + "/api/v2/applications/mfa/sms/verify";
-                Guardian.post(url, body, (data)-> callback.call(data.getCode(), data.getMessage(), data.getData()));
+                Guardian.post(url, body, (data)-> createUserInfoFromResponse(data, callback));
             } catch (Exception e) {
                 e.printStackTrace();
                 callback.call(500, "Exception", null);
@@ -639,14 +639,14 @@ public class AuthClient {
         });
     }
 
-    public static void mfaVerifyByEmail(String email, String code, @NotNull AuthCallback<JSONObject> callback) {
+    public static void mfaVerifyByEmail(String email, String code, @NotNull AuthCallback<UserInfo> callback) {
         Authing.getPublicConfig(config -> {
             try {
                 JSONObject body = new JSONObject();
                 body.put("email", email);
                 body.put("code", code);
                 String url = Authing.getSchema() + "://" + Util.getHost(config) + "/api/v2/applications/mfa/email/verify";
-                Guardian.post(url, body, (data)-> callback.call(data.getCode(), data.getMessage(), data.getData()));
+                Guardian.post(url, body, (data)-> createUserInfoFromResponse(data, callback));
             } catch (Exception e) {
                 e.printStackTrace();
                 callback.call(500, "Exception", null);
@@ -654,14 +654,14 @@ public class AuthClient {
         });
     }
 
-    public static void mfaVerifyByOTP(String code, @NotNull AuthCallback<JSONObject> callback) {
+    public static void mfaVerifyByOTP(String code, @NotNull AuthCallback<UserInfo> callback) {
         Authing.getPublicConfig(config -> {
             try {
                 JSONObject body = new JSONObject();
                 body.put("authenticatorType", "totp");
                 body.put("totp", code);
                 String url = Authing.getSchema() + "://" + Util.getHost(config) + "/api/v2/mfa/totp/verify";
-                Guardian.post(url, body, (data)-> callback.call(data.getCode(), data.getMessage(), data.getData()));
+                Guardian.post(url, body, (data)-> createUserInfoFromResponse(data, callback));
             } catch (Exception e) {
                 e.printStackTrace();
                 callback.call(500, "Exception", null);
@@ -669,14 +669,14 @@ public class AuthClient {
         });
     }
 
-    public static void mfaVerifyByRecoveryCode(String code, @NotNull AuthCallback<JSONObject> callback) {
+    public static void mfaVerifyByRecoveryCode(String code, @NotNull AuthCallback<UserInfo> callback) {
         Authing.getPublicConfig(config -> {
             try {
                 JSONObject body = new JSONObject();
                 body.put("authenticatorType", "totp");
                 body.put("recoveryCode", code);
                 String url = Authing.getSchema() + "://" + Util.getHost(config) + "/api/v2/mfa/totp/recovery";
-                Guardian.post(url, body, (data)-> callback.call(data.getCode(), data.getMessage(), data.getData()));
+                Guardian.post(url, body, (data)-> createUserInfoFromResponse(data, callback));
             } catch (Exception e) {
                 e.printStackTrace();
                 callback.call(500, "Exception", null);
@@ -700,10 +700,14 @@ public class AuthClient {
     }
 
     public static void getCurrentUser(@NotNull AuthCallback<UserInfo> callback) {
+        getCurrentUser(new UserInfo(), callback);
+    }
+
+    public static void getCurrentUser(UserInfo userInfo, @NotNull AuthCallback<UserInfo> callback) {
         Authing.getPublicConfig(config -> {
             try {
                 String url = Authing.getSchema() + "://" + Util.getHost(config) + "/api/v2/users/me";
-                Guardian.get(url, (data)-> createUserInfoFromResponse(data, callback));
+                Guardian.get(url, (data)-> createUserInfoFromResponse(userInfo, data, callback));
             } catch (Exception e) {
                 e.printStackTrace();
                 callback.call(500, "Exception", null);
@@ -798,29 +802,6 @@ public class AuthClient {
         });
     }
 
-    public static void authByCode(String code, String codeVerifier, String redirectUrl, @NotNull AuthCallback<UserInfo> callback) {
-        Authing.getPublicConfig(config -> {
-            try {
-                String url = Authing.getSchema() + "://" + Util.getHost(config) + "/oidc/token";
-                String body = "client_id="+Authing.getAppId()
-                        + "&grant_type=authorization_code"
-                        + "&code=" + code
-                        + (TextUtils.isEmpty(codeVerifier) ? "" : "&code_verifier=" + codeVerifier)
-                        + "&redirect_uri=" + URLEncoder.encode(redirectUrl, "utf-8");
-                Guardian.authRequest(url, "post", body, (data)-> {
-                    if (data.getCode() == 200) {
-                        createUserInfoFromResponse(data, (c, m, info) -> AuthClient.getCurrentUser(callback));
-                    } else {
-                        callback.call(data.getCode(), data.getMessage(), null);
-                    }
-                });
-            } catch (Exception e) {
-                e.printStackTrace();
-                callback.call(500, "Exception", null);
-            }
-        });
-    }
-
     public static void deleteAccount(AuthCallback<JSONObject> callback) {
         Authing.getPublicConfig(config -> {
             try {
@@ -833,11 +814,15 @@ public class AuthClient {
         });
     }
 
-    private static void createUserInfoFromResponse(Response data, @NotNull AuthCallback<UserInfo> callback) {
+    public static void createUserInfoFromResponse(Response data, @NotNull AuthCallback<UserInfo> callback) {
+        createUserInfoFromResponse(new UserInfo(), data, callback);
+    }
+
+    public static void createUserInfoFromResponse(UserInfo userInfo, Response data, @NotNull AuthCallback<UserInfo> callback) {
         int code = data.getCode();
         try {
             if (code == 200) {
-                UserInfo userInfo = UserInfo.createUserInfo(data.getData());
+                userInfo = UserInfo.createUserInfo(userInfo, data.getData());
                 Authing.saveUser(userInfo);
                 String token = userInfo.getIdToken();
                 if (Util.isNull(token)) {
@@ -847,14 +832,12 @@ public class AuthClient {
                 }
             } else if (code == EC_MFA_REQUIRED) {
                 MFAData mfaData = MFAData.create(data.getData());
-                UserInfo userInfo = new UserInfo();
                 userInfo.setMfaData(mfaData);
                 callback.call(code, data.getMessage(), userInfo);
             } else if (code == EC_FIRST_TIME_LOGIN) {
                 JSONObject o = data.getData();
                 if (o.has("token")) {
                     String token = o.getString("token");
-                    UserInfo userInfo = new UserInfo();
                     userInfo.setFirstTimeLoginToken(token);
                     callback.call(code, data.getMessage(), userInfo);
                 } else {

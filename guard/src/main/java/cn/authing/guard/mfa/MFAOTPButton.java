@@ -12,7 +12,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import org.json.JSONException;
-import org.json.JSONObject;
 
 import cn.authing.guard.R;
 import cn.authing.guard.VerifyCodeEditText;
@@ -69,17 +68,16 @@ public class MFAOTPButton extends LoadingButton implements AuthActivity.EventLis
         }
     }
 
-    private void mfaDone(int code, String message, JSONObject data) {
+    private void mfaDone(int code, String message, UserInfo userInfo) {
         stopLoadingVisualEffect();
         if (code == 200) {
             try {
                 AuthActivity activity = (AuthActivity) getContext();
-                UserInfo userInfo = UserInfo.createUserInfo(data);
                 Intent intent = new Intent();
                 intent.putExtra("user", userInfo);
                 activity.setResult(AuthActivity.OK, intent);
                 activity.finish();
-            } catch (JSONException e) {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         } else {

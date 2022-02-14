@@ -16,7 +16,7 @@ import java.util.Map;
 
 import cn.authing.guard.analyze.Analyzer;
 import cn.authing.guard.data.UserInfo;
-import cn.authing.guard.network.AuthClient;
+import cn.authing.guard.network.OIDCClient;
 import cn.authing.guard.util.ALog;
 import cn.authing.guard.util.Const;
 import cn.authing.guard.util.PKCE;
@@ -66,6 +66,8 @@ public class WebAuthView extends WebView {
         Authing.getPublicConfig(config -> {
             host = config.getIdentifier();
             String url = "https://" + host + ".authing.cn/login?app_id=" + Authing.getAppId()
+                    + "&scope=" + "openid profile email phone address offline_access role extended_fields"
+                    + "&prompt=" + "consent"
                     + "&code_challenge=" + PKCE.generateCodeChallenge(codeVerifier)
                     + "&code_challenge_method=" + PKCE.getCodeChallengeMethod();
             loadUrl(url);
@@ -81,7 +83,7 @@ public class WebAuthView extends WebView {
                         Map<String, List<String>> map = Util.splitQuery(u, "UTF-8");
                         if (map.containsKey("code")) {
                             String authCode = map.get("code").get(0);
-                            AuthClient.authByCode(authCode, codeVerifier, Const.DEFAULT_REDIRECT_URL, (code, message, userInfo) -> {
+                            OIDCClient.authByCode(authCode, codeVerifier, Const.DEFAULT_REDIRECT_URL, (code, message, userInfo) -> {
                                 fireCallback(userInfo);
                             });
                         } else {

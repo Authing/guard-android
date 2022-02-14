@@ -48,8 +48,6 @@ import cn.authing.guard.flow.AuthFlow;
 
 public class Util {
 
-    private static final String publicKey = "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQC4xKeUgQ+Aoz7TLfAfs9+paePb5KIofVthEopwrXFkp8OCeocaTHt9ICjTT2QeJh6cZaDaArfZ873GPUn00eOIZ7Ae+TiA2BKHbCvloW3w5Lnqm70iSsUi5Fmu9/2+68GZRH9L7Mlh8cFksCicW2Y2W2uMGKl64GDcIq3au+aqJQIDAQAB";
-
     public static float dp2px(Context context, float dp) {
         return dp * context.getResources().getDisplayMetrics().density;
     }
@@ -60,7 +58,7 @@ public class Util {
 
     public static String encryptPassword(String password) {
         try {
-            byte[] keyBytes = Base64.decode(publicKey, Base64.NO_WRAP);
+            byte[] keyBytes = Base64.decode(Authing.getPublicKey(), Base64.NO_WRAP);
             X509EncodedKeySpec keySpec = new X509EncodedKeySpec(keyBytes);
             KeyFactory keyFactory = KeyFactory.getInstance("RSA");
             PublicKey publicKey = keyFactory.generatePublic(keySpec);

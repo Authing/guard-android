@@ -84,6 +84,7 @@ public class UserInfo implements Serializable {
 
     private String accessToken;
     private String idToken;
+    private String refreshToken;
     private String thirdPartySource;
     private MFAData mfaData;
     private String firstTimeLoginToken;
@@ -346,6 +347,14 @@ public class UserInfo implements Serializable {
         this.idToken = idToken;
     }
 
+    public String getRefreshToken() {
+        return refreshToken;
+    }
+
+    public void setRefreshToken(String refreshToken) {
+        this.refreshToken = refreshToken;
+    }
+
     public String getThirdPartySource() {
         return thirdPartySource;
     }
@@ -380,6 +389,10 @@ public class UserInfo implements Serializable {
 
     public static UserInfo createUserInfo(JSONObject data) throws JSONException {
         UserInfo userInfo = new UserInfo();
+        return createUserInfo(userInfo, data);
+    }
+
+    public static UserInfo createUserInfo(UserInfo userInfo, JSONObject data) throws JSONException {
         if (data.has("id")) {
             String id = data.getString("id");
             userInfo.setId(id);
@@ -399,7 +412,6 @@ public class UserInfo implements Serializable {
         if (data.has("token")) {
             String token = data.getString("token");
             userInfo.setIdToken(token);
-            userInfo.setAccessToken(token);
         }
         if (data.has("photo")) {
             String s = data.getString("photo");
@@ -441,14 +453,7 @@ public class UserInfo implements Serializable {
             String s = data.getString("recoveryCode");
             userInfo.setRecoveryCode(s);
         }
-        if (data.has("access_token")) {
-            String s = data.getString("access_token");
-            userInfo.setAccessToken(s);
-        }
-        if (data.has("id_token")) {
-            String s = data.getString("id_token");
-            userInfo.setIdToken(s);
-        }
+        userInfo.parseTokens(data);
         return userInfo;
     }
 
@@ -556,6 +561,25 @@ public class UserInfo implements Serializable {
             } catch (Exception e) {
                 e.printStackTrace();
             }
+        }
+    }
+
+    public void parseTokens(JSONObject obj) {
+        try {
+            if (obj.has("access_token")) {
+                String s = obj.getString("access_token");
+                setAccessToken(s);
+            }
+            if (obj.has("id_token")) {
+                String s = obj.getString("id_token");
+                setIdToken(s);
+            }
+            if (obj.has("refresh_token")) {
+                String s = obj.getString("refresh_token");
+                setRefreshToken(s);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 }

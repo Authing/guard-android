@@ -35,19 +35,23 @@ implementation 'net.openid:appauth:0.10.0'
 ```xml
 <activity
     android:name="net.openid.appauth.RedirectUriReceiverActivity"
+    android:exported="true"
     tools:node="replace">
     <intent-filter>
-        <action android:name="android.intent.action.VIEW"/>
-        <category android:name="android.intent.category.DEFAULT"/>
-        <category android:name="android.intent.category.BROWSABLE"/>
-        <data android:scheme="https"
-            android:host="guard.authing"
-            android:path="/redirect"/>
+        <action android:name="android.intent.action.VIEW" />
+
+        <category android:name="android.intent.category.DEFAULT" />
+        <category android:name="android.intent.category.BROWSABLE" />
+
+        <data
+            android:host="authing.cn"
+            android:path="/redirect"
+            android:scheme="cn.guard" />
     </intent-filter>
 </activity>
 ```
 
-其中 android:host，android:path 由应用自定义。只要不和其他网站冲突就行
+其中 android:host，android:path，android:scheme 由应用自定义，只要不和其他网站冲突就行
 
 <br>
 
@@ -55,7 +59,7 @@ implementation 'net.openid:appauth:0.10.0'
 
 将上面步骤的的配置拼接为 URL 后配置到 Authing 的登录回调里面。在上面例子中，回调 URL 为：
 
-https://guard.authing/redirect
+cn.guard://authing.cn/redirect
 
 那么我们需要在 authing 后台做如下配置：
 
@@ -102,23 +106,27 @@ Authing.getPublicConfig(config -> {
 ## 3. 用系统浏览打开认证界面
 
 ```java
-AuthorizationRequest.Builder authRequestBuilder =
-        new AuthorizationRequest.Builder(
-                serviceConfig, // the authorization service configuration
-                Authing.getAppId(), // the client ID, typically pre-registered and static
-                ResponseTypeValues.CODE, // the response_type value: we want a code
-                Uri.parse("https://guard.authing/redirect")); // the redirect URI to which the auth response is sent
+private void startAuth(AuthorizationServiceConfiguration serviceConfig) {
+    AuthorizationRequest.Builder authRequestBuilder =
+            new AuthorizationRequest.Builder(
+                    serviceConfig,
+                    Authing.getAppId(),
+                    ResponseTypeValues.CODE,
+                    Uri.parse("cn.guard://authing.cn/redirect"));
 
-AuthorizationRequest authRequest = authRequestBuilder
-        .setScope("openid profile email phone address")
-        .build();
+    AuthorizationRequest authRequest = authRequestBuilder
+            .setScope("openid profile email phone address offline_access role extended_fields")
+            .setPrompt("consent") // for refresh token
+            .setCodeVerifier(Util.randomString(43))
+            .build();
 
-AuthorizationService authService = new AuthorizationService(this);
-Intent authIntent = authService.getAuthorizationRequestIntent(authRequest);
-startActivityForResult(authIntent, 1000);
+    authService = new AuthorizationService(this);
+    Intent authIntent = authService.getAuthorizationRequestIntent(authRequest);
+    startActivityForResult(authIntent, RC_AUTH);
+}
 ```
 
->注意：这里的 "https://guard.authing/redirect" 即上面配置信息里面的回调地址，确保已在 authing 后台配置
+>注意：这里的 "cn.guard://authing.cn/redirect" 即上面配置信息里面的回调地址，确保已在 authing 后台配置
 
 ## 4. 拿到凭证
 
@@ -131,19 +139,59 @@ protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         AuthorizationException ex = AuthorizationException.fromIntent(data);
         // ... process the response or exception ...
 
+        TokenRequest request = resp.createTokenExchangeRequest();
         authService.performTokenRequest(
-                resp.createTokenExchangeRequest(),
-                (resp1, ex1) -> {
-                    if (resp1 != null) {
-                        // exchange succeeded resp1.idToken
-                    } else {
-                        // authorization failed, check ex for more details
-                    }
-                });
+            request,
+            (resp1, ex1) -> {
+                if (resp1 != null) {
+                    // exchange succeeded
+                    authState.update(resp1, ex1);
+                    Log.d(TAG, resp1.idToken);
+                    Log.d(TAG, "at:" + resp1.accessToken);
+                    Log.d(TAG, "rt:" + resp1.refreshToken);
+                    getUserInfo(resp1.accessToken, resp1.refreshToken);
+                } else {
+                    // authorization failed, check ex for more details
+                }
+            });
     } else {
         // ...
     }
 }
 ```
+
+## 5. 换取用户信息
+```java
+private void getUserInfo(String accessToken, String refreshToken) {
+    UserInfo userInfo = new UserInfo();
+    userInfo.setAccessToken(accessToken);
+    userInfo.setRefreshToken(refreshToken);
+    OIDCClient.getUserInfoByAccessToken(userInfo, (code, message, userInfo)->{
+        if (code == 200) {
+            // user info
+        }
+    });
+}
+```
+
+## 6. 刷新 access token
+
+如果需要用 refresh token 刷新 access token，则调用：
+
+```java
+OIDCClient.getNewAccessTokenByRefreshToken(rt, (code, message, data)->{
+    if (code == 200) {
+        Log.d(TAG, "new at:" + data.getAccessToken());
+        Log.d(TAG, "new id token:" + data.getIdToken());
+        Log.d(TAG, "new rt:" + data.getRefreshToken());
+
+        runOnUiThread(()->{
+            AuthFlow.showUserProfile(this);
+        });
+    }
+});
+```
+
+>注意，每次调用会得到新的 refresh token
 
 更多详情参考 Demo 里面的 AppAuthActivity.java

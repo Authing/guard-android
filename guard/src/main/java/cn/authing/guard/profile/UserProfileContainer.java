@@ -125,8 +125,11 @@ public class UserProfileContainer extends LinearLayout {
         tvValue.setTextSize(16);
         tvValue.setGravity(Gravity.CENTER_VERTICAL);
         tvValue.setTag(key);
-        String value = Authing.getCurrentUser().getMappedData(key);
-        tvValue.setText(Util.isNull(value) ? getContext().getString(R.string.authing_unspecified) : value);
+        UserInfo userInfo = Authing.getCurrentUser();
+        if (userInfo != null) {
+            String value = userInfo.getMappedData(key);
+            tvValue.setText(Util.isNull(value) ? getContext().getString(R.string.authing_unspecified) : value);
+        }
         layout.addView(tvValue);
 
         layout.addView(createArrow());
@@ -308,6 +311,9 @@ public class UserProfileContainer extends LinearLayout {
 
     public void refreshData() {
         UserInfo userInfo = Authing.getCurrentUser();
+        if (userInfo == null) {
+            return;
+        }
 
         ImageLoader.with(getContext()).load(userInfo.getPhoto()).into(ivAvatar);
 
