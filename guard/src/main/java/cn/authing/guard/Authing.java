@@ -30,7 +30,7 @@ public class Authing {
     private static String sHost = "authing.cn"; // for private deployment
     private static String sPublicKey = DEF_PUBLIC_KEY;
     private static String sAppId;
-    private static String sScope = "openid profile email phone address offline_access role extended_fields";
+    private static String sScope = "openid profile email phone username address offline_access role extended_fields";
     private static boolean isGettingConfig;
     private static Config publicConfig;
     private static final Queue<Config.ConfigCallback> listeners = new ConcurrentLinkedQueue<>();
@@ -80,14 +80,15 @@ public class Authing {
         if (getCurrentUser() == null) {
             callback.call(500, "no user logged in", null);
         } else {
-            // TODO need to use refresh token to get latest access token
             AuthClient.getCurrentUser((code, message, userInfo) -> {
                 if (code != 200) {
                     ALog.d(TAG, "auto login token expired");
                     Safe.logoutUser(sCurrentUser);
                     sCurrentUser = null;
+                    callback.call(code, message, userInfo);
+                } else {
+                    AuthClient.updateIdToken(callback);
                 }
-                callback.call(code, message, userInfo);
             });
         }
     }

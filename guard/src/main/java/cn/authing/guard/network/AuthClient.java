@@ -11,7 +11,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.InputStream;
-import java.net.URLEncoder;
 import java.util.Iterator;
 import java.util.List;
 
@@ -99,7 +98,7 @@ public class AuthClient {
         });
     }
 
-    public static void registerByPhoneCode(String phone, String password, String code, @NotNull AuthCallback<UserInfo> callback) {
+    public static void registerByPhoneCode(String phone, String code, String password, @NotNull AuthCallback<UserInfo> callback) {
         Authing.getPublicConfig(config -> {
             try {
                 String encryptPassword = Util.encryptPassword(password);
@@ -144,7 +143,7 @@ public class AuthClient {
         loginByPhoneCode(null, phone, code, callback);
     }
 
-    public static void loginByPhoneCode(AuthData authData, String phone, String code, @NotNull AuthCallback<UserInfo> callback) {
+    public static void loginByPhoneCode(AuthRequest authData, String phone, String code, @NotNull AuthCallback<UserInfo> callback) {
         Authing.getPublicConfig(config -> {
             try {
                 JSONObject body = new JSONObject();
@@ -179,7 +178,7 @@ public class AuthClient {
         loginByAccount(null, account, password, callback);
     }
 
-    public static void loginByAccount(AuthData authData, String account, String password, @NotNull AuthCallback<UserInfo> callback) {
+    public static void loginByAccount(AuthRequest authData, String account, String password, @NotNull AuthCallback<UserInfo> callback) {
         Authing.getPublicConfig(config -> {
             try {
                 String encryptPassword = Util.encryptPassword(password);
@@ -566,6 +565,25 @@ public class AuthClient {
                         } catch (JSONException e) {
                             callback.call(500, "Exception", null);
                         }
+                    } else {
+                        callback.call(data.getCode(), data.getMessage(), null);
+                    }
+                });
+            } catch (Exception e) {
+                e.printStackTrace();
+                callback.call(500, "Exception", null);
+            }
+        });
+    }
+
+    public static void updateIdToken(@NotNull AuthCallback<UserInfo> callback) {
+        Authing.getPublicConfig(config -> {
+            try {
+                String url = Authing.getSchema() + "://" + Util.getHost(config) + "/api/v2/users/refresh-token";
+                JSONObject body = new JSONObject();
+                Guardian.post(url, body, (data)-> {
+                    if (data.getCode() == 200) {
+                        createUserInfoFromResponse(Authing.getCurrentUser(), data, callback);
                     } else {
                         callback.call(data.getCode(), data.getMessage(), null);
                     }

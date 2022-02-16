@@ -1,7 +1,6 @@
 package cn.authing.guard.network;
 
 import android.net.Uri;
-import android.text.TextUtils;
 import android.util.Log;
 
 import org.jetbrains.annotations.NotNull;
@@ -14,6 +13,7 @@ import java.util.Objects;
 
 import cn.authing.guard.AuthCallback;
 import cn.authing.guard.Authing;
+import cn.authing.guard.Callback;
 import cn.authing.guard.data.Config;
 import cn.authing.guard.data.UserInfo;
 import cn.authing.guard.util.Const;
@@ -28,20 +28,39 @@ public class OIDCClient {
 
     private static final String TAG = "AuthClientInternal";
 
-    static void prepareLogin(Config config, @NotNull AuthCallback<AuthData> callback) {
+    public static void buildAuthorizeUrl(AuthRequest authRequest, Callback<String> callback) {
+        Authing.getPublicConfig(config -> callback.call(true, buildAuthorizeUrl(config, authRequest)));
+    }
+
+    public static String buildAuthorizeUrl(Config config, AuthRequest authRequest) {
+        return Authing.getSchema() + "://" + Util.getHost(config) + "/oidc/auth?_authing_lang="
+                + Util.getLangHeader()
+                + "&app_id=" + Authing.getAppId()
+                + "&client_id=" + Authing.getAppId()
+                + "&nonce=" + authRequest.getNonce()
+                + "&redirect_uri=" + authRequest.getRedirectURL()
+                + "&response_type=" + authRequest.getResponse_type()
+                + "&scope=" + authRequest.getScope()
+                + "&prompt=consent"
+                + "&state=" + authRequest.getState()
+                + "&code_challenge=" + authRequest.getCodeChallenge()
+                + "&code_challenge_method=" + PKCE.getCodeChallengeMethod();
+    }
+
+    static void prepareLogin(Config config, @NotNull AuthCallback<AuthRequest> callback) {
         new Thread() {
             @Override
             public void run() {
-                AuthData authData = new AuthData();
+                AuthRequest authData = new AuthRequest();
                 if (config.getRedirectUris().size() > 0) {
-                    authData.setRedirect_url(config.getRedirectUris().get(0));
+                    authData.setRedirectURL(config.getRedirectUris().get(0));
                 }
                 String url = Authing.getSchema() + "://" + Util.getHost(config) + "/oidc/auth?_authing_lang="
                         + Util.getLangHeader()
                         + "&app_id=" + Authing.getAppId()
                         + "&client_id=" + Authing.getAppId()
                         + "&nonce=" + authData.getNonce()
-                        + "&redirect_uri=" + authData.getRedirect_url()
+                        + "&redirect_uri=" + authData.getRedirectURL()
                         + "&response_type=" + authData.getResponse_type()
                         + "&scope=" + authData.getScope()
                         + "&prompt=consent"
@@ -79,9 +98,9 @@ public class OIDCClient {
     }
 
     public static void loginByPhoneCode(String phone, String vCode, @NotNull AuthCallback<UserInfo> callback) {
-        Authing.getPublicConfig((config -> OIDCClient.prepareLogin(config, (code, message, authData) -> {
+        Authing.getPublicConfig((config -> OIDCClient.prepareLogin(config, (code, message, authRequest) -> {
             if (code == 200) {
-                AuthClient.loginByPhoneCode(authData, phone, vCode, callback);
+                AuthClient.loginByPhoneCode(authRequest, phone, vCode, callback);
             } else {
                 callback.call(code, message, null);
             }
@@ -89,16 +108,16 @@ public class OIDCClient {
     }
 
     public static void loginByAccount(String account, String password, @NotNull AuthCallback<UserInfo> callback) {
-        Authing.getPublicConfig((config -> OIDCClient.prepareLogin(config, (code, message, authData) -> {
+        Authing.getPublicConfig((config -> OIDCClient.prepareLogin(config, (code, message, authRequest) -> {
             if (code == 200) {
-                AuthClient.loginByAccount(authData, account, password, callback);
+                AuthClient.loginByAccount(authRequest, account, password, callback);
             } else {
                 callback.call(code, message, null);
             }
         })));
     }
 
-    public static void oidcInteraction(AuthData authData, @NotNull AuthCallback<UserInfo> callback) {
+    public static void oidcInteraction(AuthRequest authData, @NotNull AuthCallback<UserInfo> callback) {
         Authing.getPublicConfig((config -> {
             try {
                 String url = Authing.getSchema() + "://" + Util.getHost(config) + "/interaction/oidc/" + authData.getUuid() + "/login";
@@ -111,7 +130,7 @@ public class OIDCClient {
         }));
     }
 
-    private static void _oidcInteraction(String url, AuthData authData, String body, @NotNull AuthCallback<UserInfo> callback) {
+    private static void _oidcInteraction(String url, AuthRequest authData, String body, @NotNull AuthCallback<UserInfo> callback) {
         Request.Builder builder = new Request.Builder();
         builder.url(url);
         RequestBody requestBody = RequestBody.create(body, Const.FORM);
@@ -144,7 +163,7 @@ public class OIDCClient {
         }
     }
 
-    public static void oidcLogin(String url, AuthData authData, @NotNull AuthCallback<UserInfo> callback) {
+    public static void oidcLogin(String url, AuthRequest authData, @NotNull AuthCallback<UserInfo> callback) {
         Request.Builder builder = new Request.Builder();
         builder.url(url);
         String cookie = CookieManager.getCookie();
@@ -167,7 +186,7 @@ public class OIDCClient {
                 Uri uri = Uri.parse(location);
                 String authCode = uri.getQueryParameter("code");
                 if (authCode != null) {
-                    OIDCClient.authByCode(authCode, authData.getCodeVerifier(), authData.getRedirect_url(), callback);
+                    OIDCClient.authByCode(authCode, authData, callback);
                 } else if (uri.getLastPathSegment().equals("authz")) {
                     url = request.url().scheme() + "://" + request.url().host() + "/interaction/oidc/" + authData.getUuid() + "/confirm";
                     _oidcInteractionScopeConfirm(url, authData, callback);
@@ -187,7 +206,7 @@ public class OIDCClient {
         }
     }
 
-    private static void _oidcInteractionScopeConfirm(String url, AuthData authData, @NotNull AuthCallback<UserInfo> callback) {
+    private static void _oidcInteractionScopeConfirm(String url, AuthRequest authData, @NotNull AuthCallback<UserInfo> callback) {
         Request.Builder builder = new Request.Builder();
         builder.url(url);
         String body = authData.getScopesAsConsentBody();
@@ -221,7 +240,7 @@ public class OIDCClient {
         }
     }
 
-    public static void authByCode(String code, String codeVerifier, String redirectUrl, @NotNull AuthCallback<UserInfo> callback) {
+    public static void authByCode(String code, AuthRequest authRequest, @NotNull AuthCallback<UserInfo> callback) {
         Authing.getPublicConfig(config -> {
             try {
                 String url = Authing.getSchema() + "://" + Util.getHost(config) + "/oidc/token";
@@ -230,11 +249,11 @@ public class OIDCClient {
                         + "&code=" + code
                         + "&scope=" + Authing.getScope()
                         + "&prompt=" + "consent"
-                        + (TextUtils.isEmpty(codeVerifier) ? "" : "&code_verifier=" + codeVerifier)
-                        + "&redirect_uri=" + URLEncoder.encode(redirectUrl, "utf-8");
+                        + "&code_verifier=" + authRequest.getCodeVerifier()
+                        + "&redirect_uri=" + URLEncoder.encode(authRequest.getRedirectURL(), "utf-8");
                 Guardian.authRequest(url, "post", body, (data)-> {
                     if (data.getCode() == 200) {
-                        AuthClient.createUserInfoFromResponse(data, (c, m, info) -> AuthClient.getCurrentUser(info, callback));
+                        AuthClient.createUserInfoFromResponse(data, (c, m, info) -> OIDCClient.getUserInfoByAccessToken(info, callback));
                     } else {
                         callback.call(data.getCode(), data.getMessage(), null);
                     }
@@ -274,7 +293,7 @@ public class OIDCClient {
                         json = new JSONObject(s);
                         resp.setCode(200);
                         resp.setData(json);
-                        AuthClient.createUserInfoFromResponse(userInfo, resp, (c, m, info) -> AuthClient.getCurrentUser(userInfo, callback));
+                        AuthClient.createUserInfoFromResponse(userInfo, resp, callback);
                     } catch (JSONException e) {
                         e.printStackTrace();
                         callback.call(500, s,null);

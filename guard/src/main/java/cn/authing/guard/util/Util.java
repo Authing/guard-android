@@ -15,6 +15,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
+import java.net.URI;
 import java.net.URL;
 import java.net.URLDecoder;
 import java.security.KeyFactory;
@@ -209,12 +210,12 @@ public class Util {
         });
     }
 
-    public static Map<String, List<String>> splitQuery(URL url, String charset) throws UnsupportedEncodingException {
+    public static Map<String, List<String>> splitQuery(URL url) throws UnsupportedEncodingException {
         final Map<String, List<String>> queryPairs = new LinkedHashMap<>();
         final String[] pairs = url.getQuery().split("&");
         for (String pair : pairs) {
             final int idx = pair.indexOf("=");
-            final String key = idx > 0 ? URLDecoder.decode(pair.substring(0, idx), charset) : pair;
+            final String key = idx > 0 ? URLDecoder.decode(pair.substring(0, idx), "UTF-8") : pair;
             if (!queryPairs.containsKey(key)) {
                 queryPairs.put(key, new LinkedList<>());
             }
@@ -222,6 +223,22 @@ public class Util {
             Objects.requireNonNull(queryPairs.get(key)).add(value);
         }
         return queryPairs;
+    }
+
+    public static String getAuthCode(String url) {
+        try {
+            URL u = new URL(url);
+            Map<String, List<String>> map = Util.splitQuery(u);
+            if (map.containsKey("code")) {
+                List<String> list = map.get("code");
+                if (list != null && list.size() > 0) {
+                    return list.get(0);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     public static int getThemeAccentColor (final Context context) {

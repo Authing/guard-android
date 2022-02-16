@@ -10,6 +10,8 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import cn.authing.guard.util.Util;
+
 public class UserInfo implements Serializable {
     private static final long serialVersionUID = -5986447815199326409L;
 
@@ -179,7 +181,7 @@ public class UserInfo implements Serializable {
     }
 
     public String getPicture() {
-        return picture;
+        return picture != null? picture : photo;
     }
 
     public void setPicture(String picture) {
@@ -187,7 +189,7 @@ public class UserInfo implements Serializable {
     }
 
     public String getPhoto() {
-        return photo;
+        return photo != null? photo : picture;
     }
 
     public void setPhoto(String photo) {
@@ -405,6 +407,10 @@ public class UserInfo implements Serializable {
             String phone = data.getString("phone");
             userInfo.setPhone_number(phone);
         }
+        if (data.has("phone_number")) {
+            String phone = data.getString("phone_number");
+            userInfo.setPhone_number(phone);
+        }
         if (data.has("email")) {
             String email = data.getString("email");
             userInfo.setEmail(email);
@@ -416,6 +422,10 @@ public class UserInfo implements Serializable {
         if (data.has("photo")) {
             String s = data.getString("photo");
             userInfo.setPhoto(s);
+        }
+        if (data.has("picture")) {
+            String s = data.getString("picture");
+            userInfo.setPicture(s);
         }
         if (data.has("name")) {
             String s = data.getString("name");
@@ -452,6 +462,16 @@ public class UserInfo implements Serializable {
         if (data.has("recoveryCode")) {
             String s = data.getString("recoveryCode");
             userInfo.setRecoveryCode(s);
+        }
+        if (data.has("role")) {
+            List<String> list = Util.toStringList(data.getJSONArray("role"));
+            List<Role> roles = new ArrayList<>();
+            for (String s : list) {
+                Role role = new Role();
+                role.setCode(s);
+                roles.add(role);
+            }
+            userInfo.setRoles(roles);
         }
         userInfo.parseTokens(data);
         return userInfo;
@@ -535,6 +555,8 @@ public class UserInfo implements Serializable {
         if (array == null) {
             return;
         }
+
+        customData.clear();
 
         for (int i = 0, n = array.length(); i < n; i++) {
             try {

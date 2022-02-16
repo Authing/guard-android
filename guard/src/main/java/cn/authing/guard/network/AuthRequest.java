@@ -7,7 +7,7 @@ import cn.authing.guard.Authing;
 import cn.authing.guard.util.PKCE;
 import cn.authing.guard.util.Util;
 
-public class AuthData {
+public class AuthRequest {
     private String client_id;
     private String finish_login_url;
     private String nonce;
@@ -22,12 +22,12 @@ public class AuthData {
 
     private String token;
 
-    public AuthData() {
+    public AuthRequest() {
         client_id = Authing.getAppId();
         nonce = Util.randomString(10);
         redirect_url = "https://console.authing.cn/console/get-started/" + Authing.getAppId();
         response_type = "code";
-        scope = "openid profile email phone offline_access";
+        scope = Authing.getScope();
         state = Util.randomString(10);
         _authing_lang = Util.getLangHeader();
         codeVerifier = PKCE.generateCodeVerifier();
@@ -91,11 +91,11 @@ public class AuthData {
         this.nonce = nonce;
     }
 
-    public String getRedirect_url() {
+    public String getRedirectURL() {
         return redirect_url;
     }
 
-    public void setRedirect_url(String redirect_url) {
+    public void setRedirectURL(String redirect_url) {
         this.redirect_url = redirect_url;
     }
 

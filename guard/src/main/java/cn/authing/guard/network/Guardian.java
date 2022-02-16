@@ -75,11 +75,11 @@ public class Guardian {
         builder.addHeader("x-authing-lang", Util.getLangHeader());
         UserInfo currentUser = Authing.getCurrentUser();
         if (currentUser != null) {
-            String token = currentUser.getAccessToken();
+            String token = currentUser.getIdToken();
             if (!Util.isNull(token)) {
                 builder.addHeader("Authorization", "Bearer " + token);
             } else {
-                token = currentUser.getIdToken();
+                token = currentUser.getAccessToken();
                 if (!Util.isNull(token)) {
                     builder.addHeader("Authorization", "Bearer " + token);
                 }

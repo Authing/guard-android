@@ -69,7 +69,7 @@ public class UserProfileContainer extends LinearLayout {
     public UserProfileContainer(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
 
-        padding = (int)Util.dp2px(getContext(), 12);
+        padding = (int)context.getResources().getDimension(R.dimen.authing_user_profile_padding);
         setOrientation(VERTICAL);
 
         addAvatarLayout();

@@ -78,6 +78,7 @@
     <string name="authing_apps">Applications</string>
     <string name="authing_authorized_resources">Authorized resources</string>
     <string name="authing_organizations">Organizations</string>
+    <string name="authing_developer">Developer</string>
 
     <!--auth issue feedback-->
     <string name="authing_feedback">Feedback</string>

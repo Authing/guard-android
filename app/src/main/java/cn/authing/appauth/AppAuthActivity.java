@@ -15,6 +15,7 @@ import net.openid.appauth.AuthorizationRequest;
 import net.openid.appauth.AuthorizationResponse;
 import net.openid.appauth.AuthorizationService;
 import net.openid.appauth.AuthorizationServiceConfiguration;
+import net.openid.appauth.EndSessionRequest;
 import net.openid.appauth.ResponseTypeValues;
 import net.openid.appauth.TokenRequest;
 
@@ -24,13 +25,17 @@ import cn.authing.guard.data.UserInfo;
 import cn.authing.guard.flow.AuthFlow;
 import cn.authing.guard.internal.LoadingButton;
 import cn.authing.guard.network.OIDCClient;
+import cn.authing.guard.util.ALog;
 import cn.authing.guard.util.Util;
 
 public class AppAuthActivity extends AppCompatActivity {
 
     private static final String TAG = "AppAuthActivity";
 
+    private static final String REDIRECT_URL = "cn.guard://authing.cn/redirect";
+
     private static final int RC_AUTH = 1000;
+    private static final int RC_END = 1001;
 
     AuthorizationService authService;
     AuthState authState;
@@ -38,6 +43,8 @@ public class AppAuthActivity extends AppCompatActivity {
     TextView tvTitle;
     TextView tvRes;
     LoadingButton btn;
+
+    UserInfo userInfo = new UserInfo();;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,6 +70,20 @@ public class AppAuthActivity extends AppCompatActivity {
                         startAuth(serviceConfiguration);
                     });
         });
+
+        findViewById(R.id.btn_logout).setOnClickListener((v -> {
+            Uri authEndpoint = Uri.parse("https://lrb31s-demo.authing.cn/oidc/auth");
+            Uri tokenEndpoint = Uri.parse("https://lrb31s-demo.authing.cn/oidc/token");
+            Uri regEndpoint = Uri.parse("https://lrb31s-demo.authing.cn/oidc/reg");
+            Uri endEndpoint = Uri.parse("https://lrb31s-demo.authing.cn/login/profile/logout?redirect_uri=cn.guard://authing.cn/redirect");
+            AuthorizationServiceConfiguration configuration = new AuthorizationServiceConfiguration(authEndpoint, tokenEndpoint, regEndpoint, endEndpoint);
+            EndSessionRequest request = new EndSessionRequest.Builder(configuration)
+                    .build();
+
+            authService = new AuthorizationService(this);
+            Intent authIntent = authService.getEndSessionRequestIntent(request);
+            startActivityForResult(authIntent, RC_END);
+        }));
     }
 
     private void startAuth(AuthorizationServiceConfiguration serviceConfig) {
@@ -72,7 +93,7 @@ public class AppAuthActivity extends AppCompatActivity {
                         serviceConfig, // the authorization service configuration
                         Authing.getAppId(), // the client ID, typically pre-registered and static
                         ResponseTypeValues.CODE, // the response_type value: we want a code
-                        Uri.parse("cn.guard://authing.cn/redirect")); // the redirect URI to which the auth response is sent
+                        Uri.parse(REDIRECT_URL)); // the redirect URI to which the auth response is sent
 
         AuthorizationRequest authRequest = authRequestBuilder
                 .setScope("openid profile email phone address offline_access role extended_fields")
@@ -113,18 +134,17 @@ public class AppAuthActivity extends AppCompatActivity {
                         // authorization failed, check ex for more details
                     }
                 });
-        } else {
-            // ...
+        } else if (requestCode == RC_END)  {
+            ALog.d(TAG, "logged out");
         }
     }
 
     private void getUserInfo(String accessToken, String refreshToken) {
-        UserInfo userInfo = new UserInfo();
         userInfo.setAccessToken(accessToken);
         userInfo.setRefreshToken(refreshToken);
         OIDCClient.getUserInfoByAccessToken(userInfo, (code, message, data)->{
             if (code == 200) {
-                updateToken(data.getRefreshToken());
+//                updateToken(data.getRefreshToken());
             }
         });
     }

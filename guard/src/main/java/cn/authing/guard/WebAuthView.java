@@ -1,8 +1,10 @@
 package cn.authing.guard;
 
 import android.content.Context;
+import android.net.Uri;
 import android.util.AttributeSet;
 import android.webkit.WebResourceRequest;
+import android.webkit.WebResourceResponse;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -16,20 +18,23 @@ import java.util.Map;
 
 import cn.authing.guard.analyze.Analyzer;
 import cn.authing.guard.data.UserInfo;
+import cn.authing.guard.network.AuthRequest;
 import cn.authing.guard.network.OIDCClient;
 import cn.authing.guard.util.ALog;
-import cn.authing.guard.util.Const;
-import cn.authing.guard.util.PKCE;
 import cn.authing.guard.util.Util;
 
 public class WebAuthView extends WebView {
 
+    public interface WebViewListener {
+        void onLoaded();
+    }
+
     private static final String TAG = "WebAuthView";
 
-    private String host;
-    private String redirectURI;
+    private final AuthRequest authRequest = new AuthRequest();
+    private WebViewListener listener;
+    private boolean loadingEventFired;
     private WebAuthViewCallback callback;
-    private String codeVerifier;
 
     public interface WebAuthViewCallback {
         void call(UserInfo userInfo);
@@ -50,11 +55,6 @@ public class WebAuthView extends WebView {
         init();
     }
 
-    public WebAuthView(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr, int defStyleRes) {
-        super(context, attrs, defStyleAttr, defStyleRes);
-        init();
-    }
-
     private void init() {
 
         Analyzer.report("WebAuthView");
@@ -62,36 +62,20 @@ public class WebAuthView extends WebView {
         WebSettings webSettings = getSettings();
         webSettings.setJavaScriptEnabled(true);
 
-        codeVerifier = PKCE.generateCodeVerifier();
-
         Authing.getPublicConfig(config -> {
-            host = config.getIdentifier();
-            if (config.getRedirectUris().size() == 0) {
-                return;
-            }
-            redirectURI = config.getRedirectUris().get(0);
-            String url = "https://" + host + ".authing.cn/login?app_id=" + Authing.getAppId()
-                    + "&scope=" + "openid profile email phone address offline_access role extended_fields"
-                    + "&prompt=" + "consent"
-                    + "&redirect_uri=" + redirectURI
-                    + "&code_challenge=" + PKCE.generateCodeChallenge(codeVerifier)
-                    + "&code_challenge_method=" + PKCE.getCodeChallengeMethod();
+            String url = OIDCClient.buildAuthorizeUrl(config, authRequest);
             loadUrl(url);
         });
 
-        setWebViewClient(new WebViewClient(){
+        setWebViewClient(new WebViewClient() {
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
                 String url = request.getUrl().toString();
-                if (url.startsWith(redirectURI)) {
+                if (url.startsWith(authRequest.getRedirectURL())) {
                     try {
-                        URL u = new URL(url);
-                        Map<String, List<String>> map = Util.splitQuery(u, "UTF-8");
-                        if (map.containsKey("code")) {
-                            String authCode = map.get("code").get(0);
-                            OIDCClient.authByCode(authCode, codeVerifier, redirectURI, (code, message, userInfo) -> {
-                                fireCallback(userInfo);
-                            });
+                        String authCode = Util.getAuthCode(url);
+                        if (authCode != null) {
+                            OIDCClient.authByCode(authCode, authRequest, (code, message, userInfo) -> fireCallback(userInfo));
                         } else {
                             ALog.e(TAG, url);
                             fireCallback(null);
@@ -103,7 +87,58 @@ public class WebAuthView extends WebView {
                 }
                 return false;
             }
+
+            @Override
+            public void onLoadResource(WebView view, String url) {
+                super.onLoadResource(view, url);
+//                ALog.d(TAG, "onLoadResource:" + url);
+            }
+
+            @Override
+            public void onReceivedHttpError(WebView view, WebResourceRequest request, WebResourceResponse errorResponse) {
+                super.onReceivedHttpError(view, request, errorResponse);
+                ALog.e(TAG, "onReceivedHttpError:" + request.getUrl());
+                if (errorResponse.getStatusCode() == 400) {
+                    if (listener != null) {
+                        listener.onLoaded();
+                    }
+                }
+            }
+
+            // TODO login page loaded twice. Remove it after back end fix
+            int count;
+            @Override
+            public void onPageFinished(WebView view, String url) {
+                ALog.d(TAG, "onPageFinished:" + url);
+                if (listener != null && "login".equals(Uri.parse(url).getLastPathSegment())) {
+                    try {
+                        URL u = new URL(url);
+                        Map<String, List<String>> map = Util.splitQuery(u);
+                        if (map.containsKey("uuid")) {
+                            if (count == 1) {
+                                postDelayed(()->{
+                                    listener.onLoaded();
+                                    loadingEventFired = true;
+                                }, 300);
+                            } else {
+                                count++;
+                                postDelayed(()->{
+                                    if (!loadingEventFired) {
+                                        listener.onLoaded();
+                                    }
+                                }, 3000);
+                            }
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
         });
+    }
+
+    public void setListener(WebViewListener listener) {
+        this.listener = listener;
     }
 
     public void setOnLoginCallback(WebAuthViewCallback callback) {

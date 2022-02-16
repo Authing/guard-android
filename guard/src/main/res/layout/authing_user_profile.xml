@@ -42,6 +42,14 @@
                 android:layout_height="wrap_content">
             </LinearLayout>
 
+            <cn.authing.guard.profile.GoDeveloperButton
+                android:textAppearance="@null"
+                android:layout_marginTop="8dp"
+                android:background="#FFF"
+                android:stateListAnimator="@null"
+                android:layout_width="match_parent"
+                android:layout_height="48dp" />
+
             <cn.authing.guard.internal.LoadingButton
                 android:id="@+id/btn_logout"
                 android:stateListAnimator="@null"

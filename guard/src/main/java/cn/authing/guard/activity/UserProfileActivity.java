@@ -1,7 +1,6 @@
 package cn.authing.guard.activity;
 
 import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -14,6 +13,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Space;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.io.FileNotFoundException;
 import java.io.InputStream;
@@ -115,7 +115,7 @@ public class UserProfileActivity extends BaseAuthActivity {
             layout.addView(space);
 
             TextView tvValue = new TextView(this);
-            tvValue.setLines(2);
+            tvValue.setMaxLines(2);
             tvValue.setPadding(padding, 0, padding, 0);
             tvValue.setEllipsize(TextUtils.TruncateAt.END);
             tvValue.setTextSize(16);
@@ -148,6 +148,8 @@ public class UserProfileActivity extends BaseAuthActivity {
                 .setPositiveButton(android.R.string.yes, (dialog, which) -> AuthClient.deleteAccount((code, message, data) -> {
                     if (code == 200) {
                         AuthFlow.start(UserProfileActivity.this);
+                    } else {
+                        runOnUiThread(()->Toast.makeText(UserProfileActivity.this, message, Toast.LENGTH_LONG).show());
                     }
                 }))
                 .setNegativeButton(android.R.string.no, null).show();

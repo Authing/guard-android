@@ -1,0 +1,275 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#F0F0F0"
+    android:fitsSystemWindows="true">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/authing_action_bar_height"
+        android:textColor="#000"
+        android:textSize="18sp"
+        android:gravity="center_vertical"
+        android:layout_gravity="center_horizontal"
+        android:text="@string/authing_developer"/>
+    <ScrollView android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:background="#FFF">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <LinearLayout
+                android:orientation="horizontal"
+                android:paddingStart="@dimen/authing_user_profile_padding"
+                android:paddingEnd="@dimen/authing_user_profile_padding"
+                android:layout_width="match_parent"
+                android:layout_height="40dp">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center_vertical"
+                    android:textColor="#000"
+                    android:text="Access Token" />
+                <Space
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_weight="1" />
+                <TextView
+                    android:visibility="gone"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Decode" />
+                <Switch
+                    android:id="@+id/switch_decode_at"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="4dp" />
+            </LinearLayout>
+
+            <FrameLayout
+                android:layout_marginStart="@dimen/authing_user_profile_padding"
+                android:layout_marginEnd="@dimen/authing_user_profile_padding"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:id="@+id/tv_at"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="8dp"
+                    android:background="@drawable/authing_background_code"
+                    android:textColor="#FFF" />
+                <ImageView
+                    android:id="@+id/iv_copy_at"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_gravity="right|bottom"
+                    android:layout_marginRight="8dp"
+                    android:layout_marginBottom="2dp"
+                    android:src="@drawable/ic_authing_copy" />
+            </FrameLayout>
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:paddingStart="@dimen/authing_user_profile_padding"
+                android:paddingEnd="@dimen/authing_user_profile_padding"
+                android:layout_width="match_parent"
+                android:layout_height="32dp">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center_vertical"
+                    android:textSize="@dimen/authing_des_text_size"
+                    android:text="Issued at" />
+                <Space
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_weight="1" />
+                <TextView
+                    android:id="@+id/tv_at_iat"
+                    android:textSize="@dimen/authing_des_text_size"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+            <LinearLayout
+                android:orientation="horizontal"
+                android:paddingStart="@dimen/authing_user_profile_padding"
+                android:paddingEnd="@dimen/authing_user_profile_padding"
+                android:layout_width="match_parent"
+                android:layout_height="32dp">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:textSize="@dimen/authing_des_text_size"
+                    android:gravity="center_vertical"
+                    android:text="Expired at" />
+                <Space
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_weight="1" />
+                <TextView
+                    android:textSize="@dimen/authing_des_text_size"
+                    android:id="@+id/tv_at_exp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+
+            <View
+                android:background="#F0F0F0"
+                android:layout_width="match_parent"
+                android:layout_height="1px" />
+
+            <LinearLayout
+                android:layout_marginTop="8dp"
+                android:orientation="horizontal"
+                android:paddingStart="@dimen/authing_user_profile_padding"
+                android:paddingEnd="@dimen/authing_user_profile_padding"
+                android:layout_width="match_parent"
+                android:layout_height="40dp">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center_vertical"
+                    android:textColor="#000"
+                    android:text="ID Token" />
+                <Space
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_weight="1" />
+                <TextView
+                    android:visibility="gone"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="decode" />
+                <Switch
+                    android:id="@+id/switch_decode_id_token"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="4dp" />
+            </LinearLayout>
+
+            <FrameLayout
+                android:layout_marginStart="@dimen/authing_user_profile_padding"
+                android:layout_marginEnd="@dimen/authing_user_profile_padding"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:id="@+id/tv_id_token"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="8dp"
+                    android:background="@drawable/authing_background_code"
+                    android:textColor="#FFF" />
+                <ImageView
+                    android:id="@+id/iv_copy_idt"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_gravity="right|bottom"
+                    android:layout_marginRight="8dp"
+                    android:layout_marginBottom="2dp"
+                    android:src="@drawable/ic_authing_copy" />
+            </FrameLayout>
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:paddingStart="@dimen/authing_user_profile_padding"
+                android:paddingEnd="@dimen/authing_user_profile_padding"
+                android:layout_width="match_parent"
+                android:layout_height="32dp">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:textSize="@dimen/authing_des_text_size"
+                    android:gravity="center_vertical"
+                    android:text="Issued at" />
+                <Space
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_weight="1" />
+                <TextView
+                    android:textSize="@dimen/authing_des_text_size"
+                    android:id="@+id/tv_idt_iat"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+            <LinearLayout
+                android:orientation="horizontal"
+                android:paddingStart="@dimen/authing_user_profile_padding"
+                android:paddingEnd="@dimen/authing_user_profile_padding"
+                android:layout_width="match_parent"
+                android:layout_height="32dp">
+                <TextView
+                    android:textSize="@dimen/authing_des_text_size"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center_vertical"
+                    android:text="Expired at" />
+                <Space
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_weight="1" />
+                <TextView
+                    android:textSize="@dimen/authing_des_text_size"
+                    android:id="@+id/tv_idt_exp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+
+            <View
+                android:background="#F0F0F0"
+                android:layout_width="match_parent"
+                android:layout_height="1px" />
+
+            <TextView
+                android:layout_marginTop="8dp"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:paddingStart="@dimen/authing_user_profile_padding"
+                android:paddingEnd="@dimen/authing_user_profile_padding"
+                android:gravity="center_vertical"
+                android:textColor="#000"
+                android:text="Refresh token" />
+            <RelativeLayout
+                android:layout_marginStart="@dimen/authing_user_profile_padding"
+                android:layout_marginEnd="@dimen/authing_user_profile_padding"
+                android:background="@drawable/authing_background_code"
+                android:orientation="horizontal"
+                android:padding="8dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:id="@+id/tv_rt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="4dp"
+                    android:layout_toLeftOf="@id/iv_copy_rt"
+                    android:textColor="#ff15a9de" />
+
+                <ImageView
+                    android:id="@+id/iv_copy_rt"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:src="@drawable/ic_authing_copy" />
+            </RelativeLayout>
+
+            <cn.authing.guard.internal.PrimaryButton
+                android:id="@+id/btn_refresh_token"
+                app:loadingLocation="over"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/authing_user_profile_padding"
+                android:layout_marginEnd="@dimen/authing_user_profile_padding"
+                android:text="Update tokens"
+                android:textAllCaps="false"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="32dp" />
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

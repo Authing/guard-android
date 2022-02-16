@@ -30,9 +30,6 @@ import cn.authing.guard.util.Util;
 
 public class RegisterButton extends LoadingButton {
 
-    private String phoneNumber;
-    private String phoneCode;
-    private String identifier;
     private String email;
     protected AuthCallback<UserInfo> callback;
 
@@ -76,11 +73,6 @@ public class RegisterButton extends LoadingButton {
         this.callback = callback;
     }
 
-    // manually set phone number. in case of 2 step login
-    public void setPhoneNumber(String phoneNumber) {
-        this.phoneNumber = phoneNumber;
-    }
-
     public void setEmail(String email) {
         this.email = email;
     }
@@ -103,24 +95,9 @@ public class RegisterButton extends LoadingButton {
             return;
         }
 
-        identifier = config.getIdentifier();
-
         View phoneNumberET = Util.findViewByClass(this, PhoneNumberEditText.class);
         View passwordET = Util.findViewByClass(this, PasswordEditText.class);
         View phoneCodeET = Util.findViewByClass(this, VerifyCodeEditText.class);
-//        if (phoneNumberET != null && phoneNumberET.isShown()) {
-//            PhoneNumberEditText phoneNumberEditText = (PhoneNumberEditText)phoneNumberET;
-//            phoneNumber = phoneNumberEditText.getText().toString();
-//        }
-//        if (phoneCodeET != null && phoneCodeET.isShown()) {
-//            VerifyCodeEditText verifyCodeEditText = (VerifyCodeEditText)phoneCodeET;
-//            phoneCode = verifyCodeEditText.getText().toString();
-//        }
-//        if (!TextUtils.isEmpty(phoneNumber) && !TextUtils.isEmpty(phoneCode)) {
-//            startLoadingVisualEffect();
-//            registerByPhoneCode(phoneNumber, phoneCode);
-//            return;
-//        }
 
         if (phoneNumberET != null && phoneNumberET.isShown()
                 && passwordET != null && passwordET.isShown()
@@ -147,7 +124,7 @@ public class RegisterButton extends LoadingButton {
             }
 
             startLoadingVisualEffect();
-            registerByPhoneCode(phone, password, code);
+            registerByPhoneCode(phone, code, password);
         } else {
             View accountET = Util.findViewByClass(this, AccountEditText.class);
             if ((email != null || accountET != null && accountET.isShown())
@@ -185,8 +162,8 @@ public class RegisterButton extends LoadingButton {
         return ((PrivacyConfirmBox)box).require(true);
     }
 
-    private void registerByPhoneCode(String phone, String password, String phoneCode) {
-        AuthClient.registerByPhoneCode(phone, password, phoneCode, (code, message, data)->{
+    private void registerByPhoneCode(String phone, String phoneCode, String password) {
+        AuthClient.registerByPhoneCode(phone, phoneCode, password, (code, message, data)->{
             if (code == 200) {
                 fireCallback(200, "", data);
             } else {

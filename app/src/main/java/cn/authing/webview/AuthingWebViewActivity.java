@@ -3,6 +3,7 @@ package cn.authing.webview;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -27,6 +28,10 @@ public class AuthingWebViewActivity extends BaseAuthActivity {
         tvIdToken = findViewById(R.id.tv_idtoken);
 
         webView = findViewById(R.id.wv_auth);
+        FrameLayout flLoading = findViewById(R.id.fl_loading);
+        webView.setListener(()->{
+            flLoading.setVisibility(View.GONE);
+        });
         webView.setOnLoginCallback(this::setResult);
     }
 

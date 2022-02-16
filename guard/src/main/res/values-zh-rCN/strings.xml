@@ -78,6 +78,7 @@
     <string name="authing_apps">应用</string>
     <string name="authing_authorized_resources">授权资源</string>
     <string name="authing_organizations">组织机构</string>
+    <string name="authing_developer">开发者</string>
 
     <!--auth issue feedback-->
     <string name="authing_feedback">问题反馈</string>

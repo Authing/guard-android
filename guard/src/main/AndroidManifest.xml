@@ -11,6 +11,10 @@
 
     <application>
         <activity
+            android:name=".activity.DeveloperActivity"
+            android:exported="false"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity
             android:name=".activity.OrganizationActivity"
             android:exported="false"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
