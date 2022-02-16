@@ -196,14 +196,14 @@ public class AuthClient {
                     if (authData == null) {
                         createUserInfoFromResponse(data, callback);
                     } else {
-                        try {
-                            UserInfo userInfo = UserInfo.createUserInfo(data.getData());
-                            String token = userInfo.getIdToken();
-                            authData.setToken(token);
-                            OIDCClient.oidcInteraction(authData, callback);
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
+                        createUserInfoFromResponse(data, (c, m, d)->{
+                            if (c == 200) {
+                                authData.setToken(d.getIdToken());
+                                OIDCClient.oidcInteraction(authData, callback);
+                            } else {
+                                callback.call(c, m, d);
+                            }
+                        });
                     }
                 });
             } catch (Exception e) {

@@ -30,6 +30,7 @@ public class Authing {
     private static String sHost = "authing.cn"; // for private deployment
     private static String sPublicKey = DEF_PUBLIC_KEY;
     private static String sAppId;
+    private static String sScope = "openid profile email phone address offline_access role extended_fields";
     private static boolean isGettingConfig;
     private static Config publicConfig;
     private static final Queue<Config.ConfigCallback> listeners = new ConcurrentLinkedQueue<>();
@@ -93,6 +94,14 @@ public class Authing {
 
     public static String getAppId() {
         return sAppId;
+    }
+
+    public static String getScope() {
+        return sScope;
+    }
+
+    public static void setScope(String sScope) {
+        Authing.sScope = sScope;
     }
 
     public static void getPublicConfig(Config.ConfigCallback callback) {

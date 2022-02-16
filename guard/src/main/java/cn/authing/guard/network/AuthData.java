@@ -52,6 +52,21 @@ public class AuthData {
         return o;
     }
 
+    public String getScopesAsConsentBody() {
+        String[] scopes = scope.split(" ");
+        if (scopes.length == 0) {
+            return scope;
+        }
+
+        StringBuilder sb = new StringBuilder();
+        for (String s : scopes) {
+            sb.append("consent[acceptedScopes][]=");
+            sb.append(s);
+            sb.append("&");
+        }
+        return sb.toString();
+    }
+
     public String getClient_id() {
         return client_id;
     }

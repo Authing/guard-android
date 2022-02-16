@@ -27,6 +27,7 @@ public class WebAuthView extends WebView {
     private static final String TAG = "WebAuthView";
 
     private String host;
+    private String redirectURI;
     private WebAuthViewCallback callback;
     private String codeVerifier;
 
@@ -65,9 +66,14 @@ public class WebAuthView extends WebView {
 
         Authing.getPublicConfig(config -> {
             host = config.getIdentifier();
+            if (config.getRedirectUris().size() == 0) {
+                return;
+            }
+            redirectURI = config.getRedirectUris().get(0);
             String url = "https://" + host + ".authing.cn/login?app_id=" + Authing.getAppId()
                     + "&scope=" + "openid profile email phone address offline_access role extended_fields"
                     + "&prompt=" + "consent"
+                    + "&redirect_uri=" + redirectURI
                     + "&code_challenge=" + PKCE.generateCodeChallenge(codeVerifier)
                     + "&code_challenge_method=" + PKCE.getCodeChallengeMethod();
             loadUrl(url);
@@ -77,13 +83,13 @@ public class WebAuthView extends WebView {
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
                 String url = request.getUrl().toString();
-                if (url.startsWith(Const.DEFAULT_REDIRECT_URL)) {
+                if (url.startsWith(redirectURI)) {
                     try {
                         URL u = new URL(url);
                         Map<String, List<String>> map = Util.splitQuery(u, "UTF-8");
                         if (map.containsKey("code")) {
                             String authCode = map.get("code").get(0);
-                            OIDCClient.authByCode(authCode, codeVerifier, Const.DEFAULT_REDIRECT_URL, (code, message, userInfo) -> {
+                            OIDCClient.authByCode(authCode, codeVerifier, redirectURI, (code, message, userInfo) -> {
                                 fireCallback(userInfo);
                             });
                         } else {

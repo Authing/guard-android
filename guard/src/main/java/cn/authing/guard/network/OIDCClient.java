@@ -44,6 +44,7 @@ public class OIDCClient {
                         + "&redirect_uri=" + authData.getRedirect_url()
                         + "&response_type=" + authData.getResponse_type()
                         + "&scope=" + authData.getScope()
+                        + "&prompt=consent"
                         + "&state=" + authData.getState()
                         + "&code_challenge=" + authData.getCodeChallenge()
                         + "&code_challenge_method=" + PKCE.getCodeChallengeMethod();
@@ -101,7 +102,7 @@ public class OIDCClient {
         Authing.getPublicConfig((config -> {
             try {
                 String url = Authing.getSchema() + "://" + Util.getHost(config) + "/interaction/oidc/" + authData.getUuid() + "/login";
-                String body = "token="+authData.getToken();
+                String body = "token=" + authData.getToken();
                 _oidcInteraction(url, authData, body, callback);
             } catch (Exception e) {
                 e.printStackTrace();
@@ -130,6 +131,7 @@ public class OIDCClient {
         try {
             response = call.execute();
             if (response.code() == 302) {
+                CookieManager.addCookies(response);
                 String location = response.header("location");
                 oidcLogin(location, authData, callback);
             } else {
@@ -160,10 +162,20 @@ public class OIDCClient {
         try {
             response = call.execute();
             if (response.code() == 302) {
+                CookieManager.addCookies(response);
                 String location = response.header("location");
                 Uri uri = Uri.parse(location);
                 String authCode = uri.getQueryParameter("code");
-                OIDCClient.authByCode(authCode, authData.getCodeVerifier(), authData.getRedirect_url(), callback);
+                if (authCode != null) {
+                    OIDCClient.authByCode(authCode, authData.getCodeVerifier(), authData.getRedirect_url(), callback);
+                } else if (uri.getLastPathSegment().equals("authz")) {
+                    url = request.url().scheme() + "://" + request.url().host() + "/interaction/oidc/" + authData.getUuid() + "/confirm";
+                    _oidcInteractionScopeConfirm(url, authData, callback);
+                } else {
+                    // might be another redirect to this api itself
+                    url = request.url().scheme() + "://" + request.url().host() + location;
+                    oidcLogin(url, authData, callback);
+                }
             } else {
                 String s = new String(Objects.requireNonNull(response.body()).bytes(), StandardCharsets.UTF_8);
                 Log.w(TAG, "oidcLogin failed. " + response.code() + " message:" + s);
@@ -175,6 +187,40 @@ public class OIDCClient {
         }
     }
 
+    private static void _oidcInteractionScopeConfirm(String url, AuthData authData, @NotNull AuthCallback<UserInfo> callback) {
+        Request.Builder builder = new Request.Builder();
+        builder.url(url);
+        String body = authData.getScopesAsConsentBody();
+        RequestBody requestBody = RequestBody.create(body, Const.FORM);
+        builder.post(requestBody);
+        String cookie = CookieManager.getCookie();
+        if (!Util.isNull(cookie)) {
+            builder.addHeader("cookie", cookie);
+        }
+
+        Request request = builder.build();
+        OkHttpClient client = new OkHttpClient().newBuilder()
+                .followRedirects(false)
+                .followSslRedirects(false)
+                .build();
+        Call call = client.newCall(request);
+        okhttp3.Response response;
+        try {
+            response = call.execute();
+            if (response.code() == 302) {
+                CookieManager.addCookies(response);
+                String location = response.header("location");
+                oidcLogin(location, authData, callback);
+            } else {
+                String s = new String(Objects.requireNonNull(response.body()).bytes(), StandardCharsets.UTF_8);
+                Log.w(TAG, "oidcInteraction failed. " + response.code() + " message:" + s);
+                callback.call(response.code(), s,null);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     public static void authByCode(String code, String codeVerifier, String redirectUrl, @NotNull AuthCallback<UserInfo> callback) {
         Authing.getPublicConfig(config -> {
             try {
@@ -182,7 +228,7 @@ public class OIDCClient {
                 String body = "client_id="+Authing.getAppId()
                         + "&grant_type=authorization_code"
                         + "&code=" + code
-                        + "&scope=" + "openid profile email phone address offline_access role extended_fields"
+                        + "&scope=" + Authing.getScope()
                         + "&prompt=" + "consent"
                         + (TextUtils.isEmpty(codeVerifier) ? "" : "&code_verifier=" + codeVerifier)
                         + "&redirect_uri=" + URLEncoder.encode(redirectUrl, "utf-8");
@@ -228,9 +274,7 @@ public class OIDCClient {
                         json = new JSONObject(s);
                         resp.setCode(200);
                         resp.setData(json);
-                        AuthClient.createUserInfoFromResponse(userInfo, resp, (c, m, info) -> {
-                            AuthClient.getCurrentUser(userInfo, callback);
-                        });
+                        AuthClient.createUserInfoFromResponse(userInfo, resp, (c, m, info) -> AuthClient.getCurrentUser(userInfo, callback));
                     } catch (JSONException e) {
                         e.printStackTrace();
                         callback.call(500, s,null);
