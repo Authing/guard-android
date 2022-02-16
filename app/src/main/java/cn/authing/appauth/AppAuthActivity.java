@@ -72,17 +72,20 @@ public class AppAuthActivity extends AppCompatActivity {
         });
 
         findViewById(R.id.btn_logout).setOnClickListener((v -> {
-            Uri authEndpoint = Uri.parse("https://lrb31s-demo.authing.cn/oidc/auth");
-            Uri tokenEndpoint = Uri.parse("https://lrb31s-demo.authing.cn/oidc/token");
-            Uri regEndpoint = Uri.parse("https://lrb31s-demo.authing.cn/oidc/reg");
-            Uri endEndpoint = Uri.parse("https://lrb31s-demo.authing.cn/login/profile/logout?redirect_uri=cn.guard://authing.cn/redirect");
-            AuthorizationServiceConfiguration configuration = new AuthorizationServiceConfiguration(authEndpoint, tokenEndpoint, regEndpoint, endEndpoint);
-            EndSessionRequest request = new EndSessionRequest.Builder(configuration)
-                    .build();
+            Authing.getPublicConfig(config -> {
+                String host = config.getIdentifier();
+                Uri authEndpoint = Uri.parse("https://" + host + ".authing.cn/oidc/auth");
+                Uri tokenEndpoint = Uri.parse("https://" + host + ".authing.cn/oidc/token");
+                Uri regEndpoint = Uri.parse("https://" + host + ".authing.cn/oidc/reg");
+                Uri endEndpoint = Uri.parse("https://" + host + ".authing.cn/login/profile/logout?redirect_uri=cn.guard://authing.cn/redirect");
+                AuthorizationServiceConfiguration configuration = new AuthorizationServiceConfiguration(authEndpoint, tokenEndpoint, regEndpoint, endEndpoint);
+                EndSessionRequest request = new EndSessionRequest.Builder(configuration)
+                        .build();
 
-            authService = new AuthorizationService(this);
-            Intent authIntent = authService.getEndSessionRequestIntent(request);
-            startActivityForResult(authIntent, RC_END);
+                authService = new AuthorizationService(this);
+                Intent authIntent = authService.getEndSessionRequestIntent(request);
+                startActivityForResult(authIntent, RC_END);
+            });
         }));
     }
 
