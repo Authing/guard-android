@@ -247,7 +247,7 @@ public class OIDCClient {
                 String body = "client_id="+Authing.getAppId()
                         + "&grant_type=authorization_code"
                         + "&code=" + code
-                        + "&scope=" + Authing.getScope()
+                        + "&scope=" + authRequest.getScope()
                         + "&prompt=" + "consent"
                         + "&code_verifier=" + authRequest.getCodeVerifier()
                         + "&redirect_uri=" + URLEncoder.encode(authRequest.getRedirectURL(), "utf-8");

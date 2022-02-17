@@ -220,7 +220,7 @@ public class UserInfoCompleteButton extends LoadingButton {
     }
 
     private void updateUserInfo() {
-        AuthClient.updateUser(otherInfoField, (code, message, data)->{
+        AuthClient.updateProfile(otherInfoField, (code, message, data)->{
             if (code == 200) {
                 completeFlag &= ~OTHER;
                 try {
@@ -236,7 +236,7 @@ public class UserInfoCompleteButton extends LoadingButton {
     }
 
     private void updateCustom() {
-        AuthClient.updateCustomUserInfo(customField, (code, message, data)->{
+        AuthClient.setCustomUserData(customField, (code, message, data)->{
             if (code == 200) {
                 completeFlag &= ~CUSTOM;
                 try {

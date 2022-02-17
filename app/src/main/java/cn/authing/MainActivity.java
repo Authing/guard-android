@@ -6,6 +6,7 @@ import android.widget.Button;
 
 import cn.authing.guard.Authing;
 import cn.authing.guard.activity.UserProfileActivity;
+import cn.authing.guard.network.AuthClient;
 
 public class MainActivity extends UserProfileActivity {
 
@@ -18,7 +19,7 @@ public class MainActivity extends UserProfileActivity {
     }
 
     private void logout() {
-        Authing.logout((code, message, data)->{
+        AuthClient.logout((code, message, data)->{
             Intent intent = new Intent(this, SampleListActivity.class);
             startActivity(intent);
             finish();

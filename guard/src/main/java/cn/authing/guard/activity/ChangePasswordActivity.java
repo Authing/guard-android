@@ -35,7 +35,7 @@ public class ChangePasswordActivity extends BaseAuthActivity {
                     && !Util.isNull(newEditText.getText().toString())
                     && !Util.isNull(confirmEditText.getText().toString())) {
                 button.startLoadingVisualEffect();
-                AuthClient.updatePassword(oldEditText.getText().toString(), newEditText.getText().toString(), (code, message, data) -> {
+                AuthClient.updatePassword(newEditText.getText().toString(), oldEditText.getText().toString(), (code, message, data) -> {
                     button.stopLoadingVisualEffect();
                     runOnUiThread(()->{
                         if (code == 200) {

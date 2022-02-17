@@ -139,7 +139,7 @@ public class UserProfileActivity extends BaseAuthActivity {
     }
 
     private void logout() {
-        Authing.logout((code, message, data)-> AuthFlow.start(this));
+        AuthClient.logout((code, message, data)-> AuthFlow.start(this));
     }
 
     private void deleteAccount() {

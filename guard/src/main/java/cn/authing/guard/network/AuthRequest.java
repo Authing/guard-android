@@ -27,7 +27,7 @@ public class AuthRequest {
         nonce = Util.randomString(10);
         redirect_url = "https://console.authing.cn/console/get-started/" + Authing.getAppId();
         response_type = "code";
-        scope = Authing.getScope();
+        scope = "openid profile email phone username address offline_access role extended_fields";
         state = Util.randomString(10);
         _authing_lang = Util.getLangHeader();
         codeVerifier = PKCE.generateCodeVerifier();

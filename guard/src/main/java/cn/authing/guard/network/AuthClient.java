@@ -116,6 +116,10 @@ public class AuthClient {
     }
 
     public static void sendSms(String phone, @NotNull AuthCallback<?> callback) {
+        sendSms(phone, null, callback);
+    }
+
+    public static void sendSms(String phone, String phoneCountryCode, @NotNull AuthCallback<?> callback) {
         if (GlobalCountDown.countDown != 0) {
             callback.call(500, Authing.getAppContext().getString(R.string.authing_sms_already_sent), null);
             return;
@@ -125,6 +129,9 @@ public class AuthClient {
             try {
                 JSONObject body = new JSONObject();
                 body.put("phone", phone);
+                if (phoneCountryCode != null) {
+                    body.put("phoneCountryCode", phoneCountryCode);
+                }
                 String url = Authing.getSchema() + "://" + Util.getHost(config) + "/api/v2/sms/send";
                 Guardian.post(url, body, (data)-> {
                     if (data.getCode() == 200) {
@@ -283,7 +290,7 @@ public class AuthClient {
                 try {
                     JSONObject body = new JSONObject();
                     body.put("photo", uploadedUrl);
-                    updateUser(body, callback);
+                    updateProfile(body, callback);
                 } catch (Exception e) {
                     e.printStackTrace();
                     callback.call(500, "Exception", null);
@@ -702,12 +709,14 @@ public class AuthClient {
         });
     }
 
-    public static void updatePassword(String oldPassword, String newPassword, @NotNull AuthCallback<JSONObject> callback) {
+    public static void updatePassword(String newPassword, String oldPassword, @NotNull AuthCallback<JSONObject> callback) {
         Authing.getPublicConfig(config -> {
             try {
                 JSONObject body = new JSONObject();
-                body.put("oldPassword", Util.encryptPassword(oldPassword));
                 body.put("newPassword", Util.encryptPassword(newPassword));
+                if (oldPassword != null) {
+                    body.put("oldPassword", Util.encryptPassword(oldPassword));
+                }
                 String url = Authing.getSchema() + "://" + Util.getHost(config) + "/api/v2/password/update";
                 Guardian.post(url, body, (data)-> callback.call(data.getCode(), data.getMessage(), data.getData()));
             } catch (Exception e) {
@@ -734,15 +743,15 @@ public class AuthClient {
     }
 
     @Deprecated
-    public static void updateUser(JSONObject body, @NotNull AuthCallback<UserInfo> callback) {
-        updateProfile(body, callback);
+    public static void updateUser(JSONObject object, @NotNull AuthCallback<UserInfo> callback) {
+        updateProfile(object, callback);
     }
 
-    public static void updateProfile(JSONObject body, @NotNull AuthCallback<UserInfo> callback) {
+    public static void updateProfile(JSONObject object, @NotNull AuthCallback<UserInfo> callback) {
         Authing.getPublicConfig(config -> {
             try {
                 String url = Authing.getSchema() + "://" + Util.getHost(config) + "/api/v2/users/profile/update";
-                Guardian.post(url, body, (data)-> createUserInfoFromResponse(data, callback));
+                Guardian.post(url, object, (data)-> createUserInfoFromResponse(data, callback));
             } catch (Exception e) {
                 e.printStackTrace();
                 callback.call(500, "Exception", null);
@@ -808,11 +817,15 @@ public class AuthClient {
         });
     }
 
-    public static void logout(@NotNull AuthCallback<JSONObject> callback) {
+    public static void logout(@NotNull AuthCallback<?> callback) {
         Authing.getPublicConfig(config -> {
             try {
                 String url = Authing.getSchema() + "://" + Util.getHost(config) + "/api/v2/logout?app_id=" + Authing.getAppId();
-                Guardian.get(url, (data)-> callback.call(data.getCode(), data.getMessage(), data.getData()));
+                Guardian.get(url, (data)-> {
+                    Safe.logoutUser(Authing.getCurrentUser());
+                    Authing.setCurrentUser(null);
+                    callback.call(data.getCode(), data.getMessage(), null);
+                });
             } catch (Exception e) {
                 e.printStackTrace();
                 callback.call(500, "Exception", null);

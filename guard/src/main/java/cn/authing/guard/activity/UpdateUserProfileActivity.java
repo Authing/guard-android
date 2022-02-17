@@ -15,7 +15,6 @@ import cn.authing.guard.util.Util;
 public class UpdateUserProfileActivity extends BaseAuthActivity {
 
     private String key;
-    private String label;
     private UserInfo.CustomData data;
     private LoadingButton btnSubmit;
 
@@ -25,7 +24,7 @@ public class UpdateUserProfileActivity extends BaseAuthActivity {
         setContentView(R.layout.authing_user_profile_update);
 
         key = getIntent().getStringExtra("key");
-        label = getIntent().getStringExtra("label");
+        String label = getIntent().getStringExtra("label");
         data = (UserInfo.CustomData) getIntent().getSerializableExtra("data");
 
         UserInfo userInfo = Authing.getCurrentUser();
@@ -41,7 +40,7 @@ public class UpdateUserProfileActivity extends BaseAuthActivity {
         }
 
         btnSubmit = findViewById(R.id.btn_submit);
-        btnSubmit.setOnClickListener((v -> {
+        btnSubmit.setOnClickListener(v -> {
             try {
                 btnSubmit.startLoadingVisualEffect();
                 if (data != null) {
@@ -52,26 +51,26 @@ public class UpdateUserProfileActivity extends BaseAuthActivity {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-        }));
+        });
     }
 
     private void updateUserInfo(String value) throws Exception {
         JSONObject object = new JSONObject();
         object.put(key, value);
-        AuthClient.updateUser(object, ((code, message, res) -> {
+        AuthClient.updateProfile(object, (code, message, res) -> {
             btnSubmit.stopLoadingVisualEffect();
             if (code == 200) {
                 finish();
             } else {
                 Util.setErrorText(btnSubmit, message);
             }
-        }));
+        });
     }
 
     private void updateCustomData(String value) throws Exception {
         JSONObject object = new JSONObject();
         object.put(data.getKey(), value);
-        AuthClient.updateCustomUserInfo(object, ((code, message, res) -> {
+        AuthClient.setCustomUserData(object, (code, message, res) -> {
             btnSubmit.stopLoadingVisualEffect();
             if (code == 200) {
                 UserInfo user = Authing.getCurrentUser();
@@ -80,6 +79,6 @@ public class UpdateUserProfileActivity extends BaseAuthActivity {
             } else {
                 Util.setErrorText(btnSubmit, message);
             }
-        }));
+        });
     }
 }

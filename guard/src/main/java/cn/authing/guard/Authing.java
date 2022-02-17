@@ -30,7 +30,6 @@ public class Authing {
     private static String sHost = "authing.cn"; // for private deployment
     private static String sPublicKey = DEF_PUBLIC_KEY;
     private static String sAppId;
-    private static String sScope = "openid profile email phone username address offline_access role extended_fields";
     private static boolean isGettingConfig;
     private static Config publicConfig;
     private static final Queue<Config.ConfigCallback> listeners = new ConcurrentLinkedQueue<>();
@@ -97,14 +96,6 @@ public class Authing {
         return sAppId;
     }
 
-    public static String getScope() {
-        return sScope;
-    }
-
-    public static void setScope(String sScope) {
-        Authing.sScope = sScope;
-    }
-
     public static void getPublicConfig(Config.ConfigCallback callback) {
         // add listener first. otherwise callback might be fired in the other thread
         // and this listener is missed
@@ -118,12 +109,6 @@ public class Authing {
         }
     }
 
-    private static void requestPublicConfig() {
-        isGettingConfig = true;
-        publicConfig = null;
-        _requestPublicConfig();
-    }
-
     public static UserInfo getCurrentUser() {
         if (sCurrentUser == null) {
             sCurrentUser = Safe.loadUser();
@@ -131,17 +116,19 @@ public class Authing {
         return sCurrentUser;
     }
 
+    public static void setCurrentUser(UserInfo userInfo) {
+        sCurrentUser = userInfo;
+    }
+
     public static void saveUser(UserInfo user) {
         sCurrentUser = user;
         Safe.saveUser(user);
     }
 
-    public static void logout(AuthCallback<JSONObject> callback) {
-        AuthClient.logout(((code, message, data) -> {
-            Safe.logoutUser(sCurrentUser);
-            sCurrentUser = null;
-            callback.call(code, message,data);
-        }));
+    private static void requestPublicConfig() {
+        isGettingConfig = true;
+        publicConfig = null;
+        _requestPublicConfig();
     }
 
     private static void _requestPublicConfig() {
