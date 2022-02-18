@@ -12,8 +12,6 @@ import android.view.View;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import org.json.JSONException;
-
 import cn.authing.guard.PhoneNumberEditText;
 import cn.authing.guard.R;
 import cn.authing.guard.VerifyCodeEditText;
@@ -80,20 +78,13 @@ public class MFAPhoneButton extends LoadingButton {
                 String phone = editText.getText().toString();
                 flow.getData().put(AuthFlow.KEY_MFA_PHONE, phone);
                 startLoadingVisualEffect();
-                AuthClient.mfaCheck(phone, null, (code, message, data) -> {
+                AuthClient.mfaCheck(phone, null, (code, message, ok) -> {
                     if (code == 200) {
-                        try {
-                            boolean ok = data.getBoolean("result");
-                            if (ok) {
-                                sendSms(flow, phone);
-                            } else {
-                                stopLoadingVisualEffect();
-                                post(()->editText.showError(activity.getString(R.string.authing_phone_number_already_bound)));
-                            }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
+                        if (ok) {
+                            sendSms(flow, phone);
+                        } else {
                             stopLoadingVisualEffect();
-                            Util.setErrorText(this, e.toString());
+                            post(()->editText.showError(activity.getString(R.string.authing_phone_number_already_bound)));
                         }
                     } else {
                         stopLoadingVisualEffect();

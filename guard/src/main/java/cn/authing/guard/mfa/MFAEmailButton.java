@@ -13,8 +13,6 @@ import android.view.View;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import org.json.JSONException;
-
 import cn.authing.guard.EmailEditText;
 import cn.authing.guard.R;
 import cn.authing.guard.VerifyCodeEditText;
@@ -79,20 +77,13 @@ public class MFAEmailButton extends LoadingButton implements AuthActivity.EventL
                 String email = editText.getText().toString();
                 flow.getData().put(AuthFlow.KEY_MFA_EMAIL, email);
                 startLoadingVisualEffect();
-                AuthClient.mfaCheck(null, email, (code, message, data) -> {
+                AuthClient.mfaCheck(null, email, (code, message, ok) -> {
                     if (code == 200) {
-                        try {
-                            boolean ok = data.getBoolean("result");
-                            if (ok) {
-                                sendEmail(flow, email);
-                            } else {
-                                stopLoadingVisualEffect();
-                                post(()-> editText.showError(activity.getString(R.string.authing_email_already_bound)));
-                            }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
+                        if (ok) {
+                            sendEmail(flow, email);
+                        } else {
                             stopLoadingVisualEffect();
-                            Util.setErrorText(this, e.toString());
+                            post(()-> editText.showError(activity.getString(R.string.authing_email_already_bound)));
                         }
                     } else {
                         stopLoadingVisualEffect();

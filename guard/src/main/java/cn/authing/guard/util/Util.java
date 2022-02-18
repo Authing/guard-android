@@ -212,6 +212,11 @@ public class Util {
 
     public static Map<String, List<String>> splitQuery(URL url) throws UnsupportedEncodingException {
         final Map<String, List<String>> queryPairs = new LinkedHashMap<>();
+        final String query = url.getQuery();
+        if (TextUtils.isEmpty(query)) {
+            return null;
+        }
+
         final String[] pairs = url.getQuery().split("&");
         for (String pair : pairs) {
             final int idx = pair.indexOf("=");
@@ -226,11 +231,15 @@ public class Util {
     }
 
     public static String getAuthCode(String url) {
+        return getQueryParam(url, "code");
+    }
+
+    public static String getQueryParam(String url, String key) {
         try {
             URL u = new URL(url);
             Map<String, List<String>> map = Util.splitQuery(u);
-            if (map.containsKey("code")) {
-                List<String> list = map.get("code");
+            if (map != null && map.containsKey(key)) {
+                List<String> list = map.get(key);
                 if (list != null && list.size() > 0) {
                     return list.get(0);
                 }

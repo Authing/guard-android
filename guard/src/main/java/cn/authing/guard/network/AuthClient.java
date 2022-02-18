@@ -632,7 +632,7 @@ public class AuthClient {
         });
     }
 
-    public static void mfaCheck(String phone, String email, @NotNull AuthCallback<JSONObject> callback) {
+    public static void mfaCheck(String phone, String email, @NotNull AuthCallback<Boolean> callback) {
         Authing.getPublicConfig(config -> {
             try {
                 JSONObject body = new JSONObject();
@@ -641,7 +641,19 @@ public class AuthClient {
                 if (email != null)
                     body.put("email", email);
                 String url = Authing.getSchema() + "://" + Util.getHost(config) + "/api/v2/applications/mfa/check";
-                Guardian.post(url, body, (data)-> callback.call(data.getCode(), data.getMessage(), data.getData()));
+                Guardian.post(url, body, (data)-> {
+                    try {
+                        if (data.getCode() == 200) {
+                            boolean ok = data.getData().getBoolean("result");
+                            callback.call(data.getCode(), data.getMessage(), ok);
+                        } else {
+                            callback.call(data.getCode(), data.getMessage(), false);
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        callback.call(500, "Exception", null);
+                    }
+                });
             } catch (Exception e) {
                 e.printStackTrace();
                 callback.call(500, "Exception", null);

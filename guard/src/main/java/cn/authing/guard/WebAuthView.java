@@ -61,6 +61,7 @@ public class WebAuthView extends WebView {
 
         WebSettings webSettings = getSettings();
         webSettings.setJavaScriptEnabled(true);
+        WebView.setWebContentsDebuggingEnabled(true);
 
         Authing.getPublicConfig(config -> {
             String url = OIDCClient.buildAuthorizeUrl(config, authRequest);
@@ -71,6 +72,14 @@ public class WebAuthView extends WebView {
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
                 String url = request.getUrl().toString();
+//                ALog.d(TAG, "shouldOverrideUrlLoading:" + url);
+
+                Uri uri = Uri.parse(url);
+                String uuid = Util.getQueryParam(url, "uuid");
+                if (uuid != null) {
+                    authRequest.setUuid(uuid);
+                }
+
                 if (url.startsWith(authRequest.getRedirectURL())) {
                     try {
                         String authCode = Util.getAuthCode(url);
@@ -83,6 +92,9 @@ public class WebAuthView extends WebView {
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
+                    return true;
+                } else if ("authz".equals(uri.getLastPathSegment()) && authRequest.getUuid() != null) {
+                    skipConsent(uri);
                     return true;
                 }
                 return false;
@@ -149,5 +161,26 @@ public class WebAuthView extends WebView {
         if (callback != null) {
             callback.call(userInfo);
         }
+    }
+
+    private void skipConsent(Uri uri) {
+        String url = uri.getScheme() + "://" + uri.getHost() + "/interaction/oidc/" + authRequest.getUuid() + "/confirm";
+        String body = authRequest.getScopesAsConsentBody();
+        ALog.d(TAG, "skipping consent:" + url);
+        ALog.d(TAG, "skipping consent:" + body);
+        String js = "(function f(){\n" +
+            "var url = \"" + url + "\";\n" +
+            "var xhr = new XMLHttpRequest();\n" +
+            "xhr.onload = function() {\n" +
+            "   console.log('status=' + xhr.status + ' responseURL=' + xhr.responseURL);" +
+            "   if(xhr.status === 200) {\n" +
+            "       window.location.href = xhr.responseURL;\n" +
+            "   }\n" +
+            "}\n" +
+            "xhr.open('POST', url, true);\n" +
+            "xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded; charset=utf-8');\n" +
+            "xhr.send(\"" + body + "\");\n" +
+        "})()";
+        evaluateJavascript(js, null);
     }
 }
