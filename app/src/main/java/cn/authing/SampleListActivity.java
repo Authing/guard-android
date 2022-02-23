@@ -23,6 +23,7 @@ import cn.authing.guard.flow.AuthFlow;
 import cn.authing.guard.oneclick.OneClick;
 import cn.authing.nissan.NissanVirtualKeyAuthActivity;
 import cn.authing.oneclick.OneClickActivity;
+import cn.authing.scan.ScanAuthActivity;
 import cn.authing.theragun.TheragunAuthActivity;
 import cn.authing.webview.AuthingWebViewActivity;
 import cn.authing.wechat.WechatAuthActivity;
@@ -43,6 +44,7 @@ public class SampleListActivity extends AppCompatActivity {
             "Authing WebView",
             "MFA",
             "登录/注册后用户信息完善",
+            "扫码登录",
             "Android 默认风格登录",
     };
 
@@ -100,6 +102,9 @@ public class SampleListActivity extends AppCompatActivity {
                 Authing.init(SampleListActivity.this, "61ae0c9807451d6f30226bd4");
                 AuthFlow.start(this);
             } else if (pos == 11) {
+                Intent intent = new Intent(SampleListActivity.this, ScanAuthActivity.class);
+                startActivity(intent);
+            } else if (pos == 12) {
                 Intent intent = new Intent(SampleListActivity.this, AndroidAuthActivity.class);
                 startActivity(intent);
             }

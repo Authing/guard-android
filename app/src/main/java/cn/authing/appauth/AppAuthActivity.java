@@ -77,9 +77,11 @@ public class AppAuthActivity extends AppCompatActivity {
                 Uri authEndpoint = Uri.parse("https://" + host + ".authing.cn/oidc/auth");
                 Uri tokenEndpoint = Uri.parse("https://" + host + ".authing.cn/oidc/token");
                 Uri regEndpoint = Uri.parse("https://" + host + ".authing.cn/oidc/reg");
-                Uri endEndpoint = Uri.parse("https://" + host + ".authing.cn/login/profile/logout?redirect_uri=cn.guard://authing.cn/redirect");
+                Uri endEndpoint = Uri.parse("https://" + host + ".authing.cn/oidc/session/end");
                 AuthorizationServiceConfiguration configuration = new AuthorizationServiceConfiguration(authEndpoint, tokenEndpoint, regEndpoint, endEndpoint);
                 EndSessionRequest request = new EndSessionRequest.Builder(configuration)
+                        .setIdTokenHint(userInfo.getIdToken())
+                        .setPostLogoutRedirectUri(Uri.parse("cn.guard://authing.cn/redirect"))
                         .build();
 
                 authService = new AuthorizationService(this);
@@ -130,6 +132,7 @@ public class AppAuthActivity extends AppCompatActivity {
                             Log.d(TAG, resp1.idToken);
                             Log.d(TAG, "at:" + resp1.accessToken);
                             Log.d(TAG, "rt:" + resp1.refreshToken);
+                            userInfo.setIdToken(resp1.idToken);
                             btn.setVisibility(View.GONE);
                             getUserInfo(resp1.accessToken, resp1.refreshToken);
                         });

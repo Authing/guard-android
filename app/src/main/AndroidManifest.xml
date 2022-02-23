@@ -17,6 +17,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Guard">
         <activity
+            android:name=".scan.ScanAuthActivity"
+            android:exported="false" />
+        <activity
             android:name=".SettingActivity"
             android:exported="false" />
         <activity
@@ -55,8 +58,8 @@
             android:launchMode="singleTask" />
         <activity
             android:name=".MainActivity"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar"
-            android:exported="false" />
+            android:exported="false"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
             android:name=".AndroidAuthActivity"
             android:exported="false"
@@ -113,7 +116,6 @@
                     android:scheme="guard" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".guard.wxapi.WXEntryActivity"
             android:exported="true" />

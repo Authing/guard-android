@@ -8,3 +8,4 @@ dependencyResolutionManagement {
 rootProject.name = "Guard"
 include ':app'
 include ':guard'
+include ':scanner'

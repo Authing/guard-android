@@ -857,6 +857,48 @@ public class AuthClient {
         });
     }
 
+    public static void markQRCodeScanned(String ticket, @NotNull AuthCallback<JSONObject> callback) {
+        Authing.getPublicConfig(config -> {
+            try {
+                String url = Authing.getSchema() + "://" + Util.getHost(config) + "/api/v2/qrcode/scanned";
+                JSONObject body = new JSONObject();
+                body.put("random", ticket);
+                Guardian.post(url, body, (data)-> callback.call(data.getCode(), data.getMessage(), data.getData()));
+            } catch (Exception e) {
+                e.printStackTrace();
+                callback.call(500, "Exception", null);
+            }
+        });
+    }
+
+    public static void loginByScannedTicket(boolean autoMarkScanned, String ticket, @NotNull AuthCallback<JSONObject> callback) {
+        if (autoMarkScanned) {
+            markQRCodeScanned(ticket, ((code, message, data) -> {
+                if (code == 200) {
+                    loginByScannedTicket(ticket, callback);
+                } else {
+                    callback.call(code, message, data);
+                }
+            }));
+        } else {
+            loginByScannedTicket(ticket, callback);
+        }
+    }
+
+    public static void loginByScannedTicket(String ticket, @NotNull AuthCallback<JSONObject> callback) {
+        Authing.getPublicConfig(config -> {
+            try {
+                String url = Authing.getSchema() + "://" + Util.getHost(config) + "/api/v2/qrcode/confirm";
+                JSONObject body = new JSONObject();
+                body.put("random", ticket);
+                Guardian.post(url, body, (data)-> callback.call(data.getCode(), data.getMessage(), data.getData()));
+            } catch (Exception e) {
+                e.printStackTrace();
+                callback.call(500, "Exception", null);
+            }
+        });
+    }
+
     public static void createUserInfoFromResponse(Response data, @NotNull AuthCallback<UserInfo> callback) {
         createUserInfoFromResponse(new UserInfo(), data, callback);
     }

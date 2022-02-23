@@ -19,6 +19,8 @@ import cn.authing.guard.util.Validator;
 
 public class GetEmailCodeButton extends LoadingButton {
 
+    private String scene = "RESET_PASSWORD";
+
     public GetEmailCodeButton(@NonNull Context context) {
         this(context, null);
     }
@@ -66,7 +68,7 @@ public class GetEmailCodeButton extends LoadingButton {
         startLoadingVisualEffect();
         Util.setErrorText(this, null);
 
-        AuthClient.sendResetPasswordEmail(email, this::handleResult);
+        AuthClient.sendEmail(email, scene, this::handleResult);
     }
 
     private void handleResult(int code, String message, Object ignore) {
@@ -76,5 +78,9 @@ public class GetEmailCodeButton extends LoadingButton {
                 Util.setErrorText(this, getContext().getString(R.string.authing_get_email_code_failed));
             }
         });
+    }
+
+    public void setScene(String scene) {
+        this.scene = scene;
     }
 }

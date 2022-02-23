@@ -18,6 +18,7 @@ import org.json.JSONObject;
 
 import java.util.List;
 
+import cn.authing.guard.GetEmailCodeButton;
 import cn.authing.guard.R;
 import cn.authing.guard.activity.AuthActivity;
 import cn.authing.guard.analyze.Analyzer;
@@ -63,6 +64,13 @@ public class UserInfoCompleteButton extends LoadingButton {
         activity.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN
                 | WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
         setOnClickListener((v -> submit()));
+
+        post(()->{
+            View v = Util.findViewByClass(this, GetEmailCodeButton.class);
+            if (v != null) {
+                ((GetEmailCodeButton)v).setScene("CHANGE_EMAIL");
+            }
+        });
     }
 
     private void submit() {
