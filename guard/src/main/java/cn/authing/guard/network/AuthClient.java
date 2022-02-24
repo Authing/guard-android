@@ -43,23 +43,9 @@ public class AuthClient {
                 JSONObject body = new JSONObject();
                 body.put("email", email);
                 body.put("password", encryptPassword);
+                body.put("forceLogin", true);
                 String url = Authing.getSchema() + "://" + Util.getHost(config) + "/api/v2/register/email";
-                Guardian.post(url, body, (data)-> {
-                    if (data.getCode() == 200) {
-                        // after register, login immediately to get access token
-                        JSONObject loginBody = new JSONObject();
-                        try {
-                            loginBody.put("account", email);
-                            loginBody.put("password", encryptPassword);
-                        } catch (JSONException je) {
-                            je.printStackTrace();
-                        }
-                        String loginUrl = Authing.getSchema() + "://" + Util.getHost(config) + "/api/v2/login/account";
-                        Guardian.post(loginUrl, loginBody, (loginData) -> createUserInfoFromResponse(loginData, callback));
-                    } else {
-                        callback.call(data.getCode(), data.getMessage(), null);
-                    }
-                });
+                Guardian.post(url, body, (data)-> createUserInfoFromResponse(data, callback));
             } catch (Exception e) {
                 e.printStackTrace();
                 callback.call(500, "Exception", null);
@@ -74,23 +60,9 @@ public class AuthClient {
                 JSONObject body = new JSONObject();
                 body.put("username", username);
                 body.put("password", encryptPassword);
+                body.put("forceLogin", true);
                 String url = Authing.getSchema() + "://" + Util.getHost(config) + "/api/v2/register/username";
-                Guardian.post(url, body, (data)-> {
-                    if (data.getCode() == 200) {
-                        // after register, login immediately to get access token
-                        JSONObject loginBody = new JSONObject();
-                        try {
-                            loginBody.put("account", username);
-                            loginBody.put("password", encryptPassword);
-                        } catch (JSONException je) {
-                            je.printStackTrace();
-                        }
-                        String loginUrl = Authing.getSchema() + "://" + Util.getHost(config) + "/api/v2/login/account";
-                        Guardian.post(loginUrl, loginBody, (loginData) -> createUserInfoFromResponse(loginData, callback));
-                    } else {
-                        callback.call(data.getCode(), data.getMessage(), null);
-                    }
-                });
+                Guardian.post(url, body, (data)-> createUserInfoFromResponse(data, callback));
             } catch (Exception e) {
                 e.printStackTrace();
                 callback.call(500, "Exception", null);
@@ -106,6 +78,7 @@ public class AuthClient {
                 body.put("phone", phone);
                 body.put("password", encryptPassword);
                 body.put("code", code);
+                body.put("forceLogin", true);
                 String url = Authing.getSchema() + "://" + Util.getHost(config) + "/api/v2/register/phone-code";
                 Guardian.post(url, body, (data)-> createUserInfoFromResponse(data, callback));
             } catch (Exception e) {

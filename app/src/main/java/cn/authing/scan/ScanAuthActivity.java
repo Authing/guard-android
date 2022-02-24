@@ -37,6 +37,9 @@ public class ScanAuthActivity extends AppCompatActivity {
     int REQ_QR_CODE = 1001;
     Button btnScan;
     TextView tvRes;
+    Button btnAuth;
+
+    String random;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +50,17 @@ public class ScanAuthActivity extends AppCompatActivity {
         btnScan.setOnClickListener((v -> clicked()));
 
         tvRes = findViewById(R.id.tv_res);
+        btnAuth = findViewById(R.id.btn_auth);
+        btnAuth.setOnClickListener((v)-> {
+            AuthClient.loginByScannedTicket(random, (code, message, data1) -> {
+                ALog.d(TAG, "loginByScannedTicket result:" + code + " " + message);
+                if (code == 200) {
+                    setRes("login by qr code success");
+                } else {
+                    setRes(message);
+                }
+            });
+        });
     }
 
     private void clicked() {
@@ -85,15 +99,15 @@ public class ScanAuthActivity extends AppCompatActivity {
                 try {
                     JSONObject obj = new JSONObject(scanResult);
                     if (obj.has("random")) {
-                        String random = obj.getString("random");
-                        AuthClient.loginByScannedTicket(true, random, ((code, message, data1) -> {
-                            ALog.d(TAG, "loginByScannedTicket result:" + code + " " + message);
+                        random = obj.getString("random");
+                        AuthClient.markQRCodeScanned(random, (code, message, data1) -> {
+                            ALog.d(TAG, "markQRCodeScanned result:" + code + " " + message);
                             if (code == 200) {
-                                setRes("login by qr code success");
+                                setRes("marked as scanned");
                             } else {
                                 setRes(message);
                             }
-                        }));
+                        });
                     }
                 } catch (Exception e) {
 
