@@ -35,8 +35,6 @@ public class LoginContainer extends LinearLayout {
     public LoginContainer(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
 
-        Analyzer.report("LoginContainer");
-
         setOrientation(VERTICAL);
         TypedArray array = context.obtainStyledAttributes(attrs, R.styleable.LoginContainer);
         int t = array.getInt(R.styleable.LoginContainer_type,0);

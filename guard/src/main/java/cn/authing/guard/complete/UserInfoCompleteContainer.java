@@ -43,8 +43,9 @@ public class UserInfoCompleteContainer extends LinearLayout {
             AuthFlow flow = activity.getFlow();
             Object o = flow.getData().get(KEY_EXTENDED_FIELDS);
             if (o instanceof List) {
-                List<ExtendedField> extendedFields = (List<ExtendedField>)o;
-                for (ExtendedField field : extendedFields) {
+                List<?> extendedFields = (List<?>)o;
+                for (Object obj : extendedFields) {
+                    ExtendedField field = (ExtendedField)obj;
                     View view = null;
                     if ("text".equals(field.getInputType())) {
                         view = inflateItem(flow.getUserInfoCompleteItemNormal(), field);

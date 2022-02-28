@@ -4,6 +4,10 @@ public class Agreement {
     private String title;
     private boolean isRequired;
     private String lang;
+    private int availableAt;
+
+    private boolean showAtLogin;
+    private boolean showAtRegister;
 
     public String getTitle() {
         return title;
@@ -27,5 +31,29 @@ public class Agreement {
 
     public void setLang(String lang) {
         this.lang = lang;
+    }
+
+    public int getAvailableAt() {
+        return availableAt;
+    }
+
+    public void setAvailableAt(int availableAt) {
+        this.availableAt = availableAt;
+        if (availableAt == 0) {
+            showAtRegister = true;
+        } else if (availableAt == 1) {
+            showAtLogin = true;
+        } else if (availableAt == 2) {
+            showAtLogin = true;
+            showAtRegister = true;
+        }
+    }
+
+    public boolean isShowAtLogin() {
+        return showAtLogin;
+    }
+
+    public boolean isShowAtRegister() {
+        return showAtRegister;
     }
 }

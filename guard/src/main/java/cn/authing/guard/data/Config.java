@@ -284,14 +284,24 @@ public class Config {
         List<Agreement> list = new ArrayList<>();
         int size = array.length();
         for (int i = 0; i < size; i++) {
+            Agreement agreement = new Agreement();
             JSONObject obj = array.getJSONObject(i);
             String title = obj.getString("title");
-            String lang = obj.getString("lang");
-            boolean isRequired = obj.getBoolean("required");
-            Agreement agreement = new Agreement();
             agreement.setTitle(title);
+
+            String lang = obj.getString("lang");
             agreement.setLang(lang);
+
+            boolean isRequired = obj.getBoolean("required");
             agreement.setRequired(isRequired);
+
+            try {
+                int availableAt = obj.getInt("availableAt");
+                agreement.setAvailableAt(availableAt);
+            } catch (JSONException e) {
+                // for historical reason availableAt can be null
+                e.printStackTrace();
+            }
             list.add(agreement);
         }
         return list;

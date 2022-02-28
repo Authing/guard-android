@@ -30,6 +30,7 @@ import java.util.Locale;
 import cn.authing.guard.analyze.Analyzer;
 import cn.authing.guard.data.Agreement;
 import cn.authing.guard.internal.CustomURLSpan;
+import cn.authing.guard.util.Util;
 
 public class PrivacyConfirmBox extends LinearLayout {
 
@@ -86,43 +87,61 @@ public class PrivacyConfirmBox extends LinearLayout {
                 new int[] { uncheckColor, checkColor });
         checkBox.setButtonTintList(colorStateList);
 
-        Authing.getPublicConfig((config -> {
+        setVisibility(View.GONE);
+        post(()-> Authing.getPublicConfig((config -> {
             if (config == null) {
                 return;
             }
 
             List<Agreement> agreements = config.getAgreements();
-            if (agreements != null && agreements.size() > 0) {
-                String lang = Locale.getDefault().getLanguage();
-                for (Agreement agreement : config.getAgreements()) {
-                    if (agreement.getLang().startsWith(lang)) {
-                        Spanned htmlAsSpanned = Html.fromHtml(agreement.getTitle(), HtmlCompat.FROM_HTML_MODE_LEGACY);
+            if (agreements == null || agreements.size() == 0) {
+                return;
+            }
 
-                        Spannable s = new SpannableString(removeTrailingLineBreak(htmlAsSpanned));
+            int pageType = -1;
+            View v = Util.findViewByClass(this, LoginButton.class);
+            if (v != null) {
+                pageType = 1;
+            }
+            v = Util.findViewByClass(this, RegisterButton.class);
+            if (v != null) {
+                pageType = 0;
+            }
+            boolean show = false;
+            String lang = Locale.getDefault().getLanguage();
+            for (Agreement agreement : config.getAgreements()) {
+                if (agreement.getLang().startsWith(lang)
+                        && (pageType == -1
+                        || (pageType == 0 && agreement.isShowAtRegister())
+                        || (pageType == 1 && agreement.isShowAtLogin()))) {
+                    Spanned htmlAsSpanned = Html.fromHtml(agreement.getTitle(), HtmlCompat.FROM_HTML_MODE_LEGACY);
 
-                        URLSpan[] spans = s.getSpans(0, s.length(), URLSpan.class);
-                        for (URLSpan span: spans) {
-                            int start = s.getSpanStart(span);
-                            int end = s.getSpanEnd(span);
-                            s.removeSpan(span);
-                            span = new CustomURLSpan(span.getURL(), linkColor);
-                            s.setSpan(span, start, end, 0);
-                        }
-                        textView.setText(s);
+                    Spannable s = new SpannableString(removeTrailingLineBreak(htmlAsSpanned));
 
-                        textView.setMovementMethod(LinkMovementMethod.getInstance());
-                        isRequired = agreement.isRequired();
-                        break;
+                    URLSpan[] spans = s.getSpans(0, s.length(), URLSpan.class);
+                    for (URLSpan span: spans) {
+                        int start = s.getSpanStart(span);
+                        int end = s.getSpanEnd(span);
+                        s.removeSpan(span);
+                        span = new CustomURLSpan(span.getURL(), linkColor);
+                        s.setSpan(span, start, end, 0);
                     }
+                    textView.setText(s);
+
+                    textView.setMovementMethod(LinkMovementMethod.getInstance());
+                    isRequired = agreement.isRequired();
+                    show = true;
+                    break;
                 }
-            } else {
-                setVisibility(View.GONE);
             }
 
-            if (!TextUtils.isEmpty(text)) {
-                textView.setText(text);
+            if (show) {
+                setVisibility(View.VISIBLE);
+                if (!TextUtils.isEmpty(text)) {
+                    textView.setText(text);
+                }
             }
-        }));
+        })));
     }
 
     private CharSequence removeTrailingLineBreak(CharSequence text) {

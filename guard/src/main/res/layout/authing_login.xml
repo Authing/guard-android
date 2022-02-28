@@ -113,6 +113,13 @@
             android:layout_marginEnd="@dimen/authing_form_start_end_margin"
             android:layout_marginTop="8dp"/>
 
+        <cn.authing.guard.PrivacyConfirmBox
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/authing_form_start_end_margin"
+            android:layout_marginEnd="@dimen/authing_form_start_end_margin"
+            android:layout_marginTop="4dp" />
+
         <cn.authing.guard.LoginButton
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
