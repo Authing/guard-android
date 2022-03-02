@@ -146,7 +146,7 @@ public class OneClick implements Serializable {
     }
 
     private void authingLogin(String t, String ac) {
-        AuthClient.loginByOneClick(t, ac, (code, message, userInfo) -> {
+        AuthClient.loginByOneAuth(t, ac, (code, message, userInfo) -> {
             Handler handler = new Handler(Looper.getMainLooper());
             handler.post(()-> {
                 if (code != 200) {

@@ -351,7 +351,7 @@ public class AuthClient {
         });
     }
 
-    public static void loginByOneClick(String token, String accessToken, @NotNull AuthCallback<UserInfo> callback) {
+    public static void loginByOneAuth(String token, String accessToken, @NotNull AuthCallback<UserInfo> callback) {
         Authing.getPublicConfig(config -> {
             try {
                 JSONObject body = new JSONObject();
@@ -556,25 +556,6 @@ public class AuthClient {
         });
     }
 
-    public static void updateIdToken(@NotNull AuthCallback<UserInfo> callback) {
-        Authing.getPublicConfig(config -> {
-            try {
-                String url = Authing.getSchema() + "://" + Util.getHost(config) + "/api/v2/users/refresh-token";
-                JSONObject body = new JSONObject();
-                Guardian.post(url, body, (data)-> {
-                    if (data.getCode() == 200) {
-                        createUserInfoFromResponse(Authing.getCurrentUser(), data, callback);
-                    } else {
-                        callback.call(data.getCode(), data.getMessage(), null);
-                    }
-                });
-            } catch (Exception e) {
-                e.printStackTrace();
-                callback.call(500, "Exception", null);
-            }
-        });
-    }
-
     public static void listOrgs(@NotNull AuthCallback<List<Organization[]>> callback) {
         Authing.getPublicConfig(config -> {
             try {
@@ -598,6 +579,25 @@ public class AuthClient {
                         }
                     });
                 }
+            } catch (Exception e) {
+                e.printStackTrace();
+                callback.call(500, "Exception", null);
+            }
+        });
+    }
+
+    public static void updateIdToken(@NotNull AuthCallback<UserInfo> callback) {
+        Authing.getPublicConfig(config -> {
+            try {
+                String url = Authing.getSchema() + "://" + Util.getHost(config) + "/api/v2/users/refresh-token";
+                JSONObject body = new JSONObject();
+                Guardian.post(url, body, (data)-> {
+                    if (data.getCode() == 200) {
+                        createUserInfoFromResponse(Authing.getCurrentUser(), data, callback);
+                    } else {
+                        callback.call(data.getCode(), data.getMessage(), null);
+                    }
+                });
             } catch (Exception e) {
                 e.printStackTrace();
                 callback.call(500, "Exception", null);
