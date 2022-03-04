@@ -11,6 +11,9 @@ import cn.authing.guard.AuthCallback;
 import cn.authing.guard.R;
 import cn.authing.guard.activity.AuthActivity;
 import cn.authing.guard.data.UserInfo;
+import cn.authing.guard.flow.AuthFlow;
+import cn.authing.guard.flow.FlowHelper;
+import cn.authing.guard.util.Const;
 
 public abstract class SocialLoginButton extends androidx.appcompat.widget.AppCompatImageButton {
 
@@ -33,12 +36,19 @@ public abstract class SocialLoginButton extends androidx.appcompat.widget.AppCom
         if (callback != null) {
             callback.call(code, message, userInfo);
         } else if (getContext() instanceof AuthActivity) {
-            if (userInfo != null) {
+            if (code == 200) {
                 AuthActivity activity = (AuthActivity) getContext();
                 Intent intent = new Intent();
                 intent.putExtra("user", userInfo);
                 activity.setResult(AuthActivity.OK, intent);
                 activity.finish();
+            } else if (code == Const.EC_MFA_REQUIRED) {
+                if (getContext() instanceof AuthActivity) {
+                    AuthActivity activity = (AuthActivity) getContext();
+                    AuthFlow flow = (AuthFlow) activity.getIntent().getSerializableExtra(AuthActivity.AUTH_FLOW);
+                    flow.getData().put(AuthFlow.KEY_USER_INFO, userInfo);
+                }
+                FlowHelper.handleMFA(this, userInfo.getMfaData());
             }
         }
     }

@@ -313,7 +313,7 @@ public class OIDCClient {
         Authing.getPublicConfig(config -> {
             try {
                 String url = Authing.getSchema() + "://" + Util.getHost(config) + "/oidc/token";
-                String body = "client_id="+Authing.getAppId()
+                String body = "client_id=" + Authing.getAppId()
                         + "&grant_type=refresh_token"
                         + "&refresh_token=" + refreshToken;
                 Guardian.authRequest(url, "post", body, (data)-> {
