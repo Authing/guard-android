@@ -10,8 +10,12 @@ import android.widget.LinearLayout;
 
 import androidx.annotation.Nullable;
 
+import java.util.List;
+
 import cn.authing.guard.AuthCallback;
+import cn.authing.guard.Authing;
 import cn.authing.guard.R;
+import cn.authing.guard.data.SocialConfig;
 import cn.authing.guard.data.UserInfo;
 import cn.authing.guard.util.Util;
 
@@ -38,11 +42,35 @@ public class SocialLoginListView extends LinearLayout {
         TypedArray array = context.obtainStyledAttributes(attrs, R.styleable.SocialLoginListView);
         String src = array.getString(R.styleable.SocialLoginListView_src);
         if (TextUtils.isEmpty(src)) {
-            src = "wechat";
+            src = "auto"; // auto means from console
         }
         array.recycle();
 
-        setup(context, src);
+        if ("auto".equals(src)) {
+            StringBuilder sb = new StringBuilder();
+            Authing.getPublicConfig((config -> {
+                List<SocialConfig> socialConfigs = config.getSocialConfigs();
+                for (int i = 0, n = socialConfigs.size();i < n;++i) {
+                    SocialConfig sc = socialConfigs.get(i);
+                    String type = sc.getType();
+                    if ("wechat:mobile".equals(type)) {
+                        sb.append("wechat");
+                    } else if ("alipay".equals(type)) {
+                        sb.append("alipay");
+                    } else if ("wecom".equals(type)) {
+                        sb.append("wecom");
+                    } else if ("lark".equals(type)) {
+                        sb.append("lark");
+                    }
+                    if (i < n - 1) {
+                        sb.append("|");
+                    }
+                }
+                setup(context, sb.toString());
+            }));
+        } else {
+            setup(context, src);
+        }
     }
 
     private void setup(Context context, String s) {
@@ -60,6 +88,9 @@ public class SocialLoginListView extends LinearLayout {
                     break;
                 case "wecom":
                     button = new WeComLoginButton(context);
+                    break;
+                case "lark":
+                    button = new LarkLoginButton(context);
                     break;
             }
 

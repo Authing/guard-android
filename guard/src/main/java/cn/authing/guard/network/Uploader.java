@@ -60,7 +60,7 @@ public class Uploader {
                 .addFormDataPart("file", "aPhoto", requestBody)
                 .build();
 
-        String url = Authing.getSchema() + "://" + Util.getHost(config) + "/api/v2/upload?folder=photos";
+        String url = Authing.getScheme() + "://" + Util.getHost(config) + "/api/v2/upload?folder=photos";
         Request request = new Request.Builder().url(url).post(formBody).build();
         OkHttpClient client = new OkHttpClient().newBuilder().build();
         Call call = client.newCall(request);

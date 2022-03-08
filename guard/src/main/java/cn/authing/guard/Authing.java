@@ -26,7 +26,7 @@ public class Authing {
     private static final String DEF_PUBLIC_KEY = "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQC4xKeUgQ+Aoz7TLfAfs9+paePb5KIofVthEopwrXFkp8OCeocaTHt9ICjTT2QeJh6cZaDaArfZ873GPUn00eOIZ7Ae+TiA2BKHbCvloW3w5Lnqm70iSsUi5Fmu9/2+68GZRH9L7Mlh8cFksCicW2Y2W2uMGKl64GDcIq3au+aqJQIDAQAB";
 
     private static Context sAppContext;
-    private static String schema = "https";
+    private static String scheme = "https";
     private static String sHost = "authing.cn"; // for private deployment
     private static String sPublicKey = DEF_PUBLIC_KEY;
     private static String sAppId;
@@ -46,12 +46,12 @@ public class Authing {
         return sAppContext;
     }
 
-    public static String getSchema() {
-        return schema;
+    public static String getScheme() {
+        return scheme;
     }
 
-    public static void setSchema(String schema) {
-        Authing.schema = schema;
+    public static void setScheme(String scheme) {
+        Authing.scheme = scheme;
     }
 
     public static String getHost() {
@@ -136,7 +136,7 @@ public class Authing {
         if (!Util.isIp(sHost)) {
             host = "console." + sHost;
         }
-        String url = schema + "://" + host + "/api/v2/applications/" + sAppId + "/public-config";
+        String url = scheme + "://" + host + "/api/v2/applications/" + sAppId + "/public-config";
         Guardian.request(null, url, "get", null, (response)->{
             try {
                 if (response.getCode() == 200) {

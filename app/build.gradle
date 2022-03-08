@@ -63,6 +63,10 @@ dependencies {
     // 企业微信
     implementation files('libs/wechatwork.jar')
 
+    // 飞书
+    implementation files ('libs/larksso-3.0.8.aar')
+    implementation 'com.alibaba:fastjson:1.1.58.android'
+
     // AppAuth
     implementation 'net.openid:appauth:0.10.0'
 }

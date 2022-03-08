@@ -44,7 +44,7 @@ public class AuthClient {
                 body.put("email", email);
                 body.put("password", encryptPassword);
                 body.put("forceLogin", true);
-                String url = Authing.getSchema() + "://" + Util.getHost(config) + "/api/v2/register/email";
+                String url = Authing.getScheme() + "://" + Util.getHost(config) + "/api/v2/register/email";
                 Guardian.post(url, body, (data)-> createUserInfoFromResponse(data, callback));
             } catch (Exception e) {
                 e.printStackTrace();
@@ -61,7 +61,7 @@ public class AuthClient {
                 body.put("username", username);
                 body.put("password", encryptPassword);
                 body.put("forceLogin", true);
-                String url = Authing.getSchema() + "://" + Util.getHost(config) + "/api/v2/register/username";
+                String url = Authing.getScheme() + "://" + Util.getHost(config) + "/api/v2/register/username";
                 Guardian.post(url, body, (data)-> createUserInfoFromResponse(data, callback));
             } catch (Exception e) {
                 e.printStackTrace();
@@ -79,7 +79,7 @@ public class AuthClient {
                 body.put("password", encryptPassword);
                 body.put("code", code);
                 body.put("forceLogin", true);
-                String url = Authing.getSchema() + "://" + Util.getHost(config) + "/api/v2/register/phone-code";
+                String url = Authing.getScheme() + "://" + Util.getHost(config) + "/api/v2/register/phone-code";
                 Guardian.post(url, body, (data)-> createUserInfoFromResponse(data, callback));
             } catch (Exception e) {
                 e.printStackTrace();
@@ -105,7 +105,7 @@ public class AuthClient {
                 if (phoneCountryCode != null) {
                     body.put("phoneCountryCode", phoneCountryCode);
                 }
-                String url = Authing.getSchema() + "://" + Util.getHost(config) + "/api/v2/sms/send";
+                String url = Authing.getScheme() + "://" + Util.getHost(config) + "/api/v2/sms/send";
                 Guardian.post(url, body, (data)-> {
                     if (data.getCode() == 200) {
                         GlobalCountDown.start();
@@ -129,7 +129,7 @@ public class AuthClient {
                 JSONObject body = new JSONObject();
                 body.put("phone", phone);
                 body.put("code", code);
-                String url = Authing.getSchema() + "://" + Util.getHost(config) + "/api/v2/login/phone-code";
+                String url = Authing.getScheme() + "://" + Util.getHost(config) + "/api/v2/login/phone-code";
                 Guardian.post(url, body, (data)-> {
                     if (data.getCode() == 200 || data.getCode() == EC_MFA_REQUIRED) {
                         Safe.saveAccount(phone);
@@ -165,7 +165,7 @@ public class AuthClient {
                 JSONObject body = new JSONObject();
                 body.put("account", account);
                 body.put("password", encryptPassword);
-                String url = Authing.getSchema() + "://" + Util.getHost(config) + "/api/v2/login/account";
+                String url = Authing.getScheme() + "://" + Util.getHost(config) + "/api/v2/login/account";
                 Guardian.post(url, body, (data)-> {
                     if (data.getCode() == 200 || data.getCode() == EC_MFA_REQUIRED) {
                         Safe.saveAccount(account);
@@ -199,7 +199,7 @@ public class AuthClient {
                 JSONObject body = new JSONObject();
                 body.put("username", username);
                 body.put("password", encryptPassword);
-                String url = Authing.getSchema() + "://" + Util.getHost(config) + "/api/v2/login/ldap";
+                String url = Authing.getScheme() + "://" + Util.getHost(config) + "/api/v2/login/ldap";
                 Guardian.post(url, body, (data)-> {
                     if (data.getCode() == 200 || data.getCode() == EC_MFA_REQUIRED) {
                         Safe.saveAccount(username);
@@ -220,7 +220,7 @@ public class AuthClient {
                 JSONObject body = new JSONObject();
                 body.put("username", username);
                 body.put("password", encryptPassword);
-                String url = Authing.getSchema() + "://" + Util.getHost(config) + "/api/v2/login/ad";
+                String url = Authing.getScheme() + "://" + Util.getHost(config) + "/api/v2/login/ad";
                 Guardian.post(url, body, (data)-> {
                     if (data.getCode() == 200 || data.getCode() == EC_MFA_REQUIRED) {
                         Safe.saveAccount(username);
@@ -248,7 +248,7 @@ public class AuthClient {
                 JSONObject body = new JSONObject();
                 body.put("email", emailAddress);
                 body.put("scene", scene);
-                String url = Authing.getSchema() + "://" + Util.getHost(config) + "/api/v2/email/send";
+                String url = Authing.getScheme() + "://" + Util.getHost(config) + "/api/v2/email/send";
                 Guardian.post(url, body, (data)-> callback.call(data.getCode(), data.getMessage(), data.getData()));
             } catch (Exception e) {
                 e.printStackTrace();
@@ -281,7 +281,7 @@ public class AuthClient {
                 body.put("phone", phone);
                 body.put("code", code);
                 body.put("newPassword", Util.encryptPassword(newPassword));
-                String url = Authing.getSchema() + "://" + Util.getHost(config) + "/api/v2/password/reset/sms";
+                String url = Authing.getScheme() + "://" + Util.getHost(config) + "/api/v2/password/reset/sms";
                 Guardian.post(url, body, (data)-> callback.call(data.getCode(), data.getMessage(), data.getData()));
             } catch (Exception e) {
                 e.printStackTrace();
@@ -297,7 +297,7 @@ public class AuthClient {
                 body.put("email", emailAddress);
                 body.put("code", code);
                 body.put("newPassword", Util.encryptPassword(newPassword));
-                String url = Authing.getSchema() + "://" + Util.getHost(config) + "/api/v2/password/reset/email";
+                String url = Authing.getScheme() + "://" + Util.getHost(config) + "/api/v2/password/reset/email";
                 Guardian.post(url, body, (data)-> callback.call(data.getCode(), data.getMessage(), data.getData()));
             } catch (Exception e) {
                 e.printStackTrace();
@@ -312,7 +312,7 @@ public class AuthClient {
                 JSONObject body = new JSONObject();
                 body.put("token", token);
                 body.put("password", Util.encryptPassword(newPassword));
-                String url = Authing.getSchema() + "://" + Util.getHost(config) + "/api/v2/users/password/reset-by-first-login-token";
+                String url = Authing.getScheme() + "://" + Util.getHost(config) + "/api/v2/users/password/reset-by-first-login-token";
                 Guardian.post(url, body, (data)-> callback.call(data.getCode(), data.getMessage(), data.getData()));
             } catch (Exception e) {
                 e.printStackTrace();
@@ -327,7 +327,7 @@ public class AuthClient {
                 JSONObject body = new JSONObject();
                 body.put("connId", config.getSocialConnectionId("wechat:mobile"));
                 body.put("code", authCode);
-                String url = Authing.getSchema() + "://" + Util.getHost(config) + "/api/v2/ecConn/wechatMobile/authByCode";
+                String url = Authing.getScheme() + "://" + Util.getHost(config) + "/api/v2/ecConn/wechatMobile/authByCode";
                 Guardian.post(url, body, (data)-> createUserInfoFromResponse(data, callback));
             } catch (Exception e) {
                 e.printStackTrace();
@@ -342,7 +342,22 @@ public class AuthClient {
                 JSONObject body = new JSONObject();
                 body.put("connId", config.getSocialConnectionId("alipay"));
                 body.put("code", authCode);
-                String url = Authing.getSchema() + "://" + Util.getHost(config) + "/api/v2/ecConn/alipay/authByCode";
+                String url = Authing.getScheme() + "://" + Util.getHost(config) + "/api/v2/ecConn/alipay/authByCode";
+                Guardian.post(url, body, (data)-> createUserInfoFromResponse(data, callback));
+            } catch (Exception e) {
+                e.printStackTrace();
+                callback.call(500, "Exception", null);
+            }
+        });
+    }
+
+    public static void loginByLark(String authCode, @NotNull AuthCallback<UserInfo> callback) {
+        Authing.getPublicConfig(config -> {
+            try {
+                JSONObject body = new JSONObject();
+                body.put("connId", config.getSocialConnectionId("lark"));
+                body.put("code", authCode);
+                String url = Authing.getScheme() + "://" + Util.getHost(config) + "/api/v2/ecConn/lark/authByCode";
                 Guardian.post(url, body, (data)-> createUserInfoFromResponse(data, callback));
             } catch (Exception e) {
                 e.printStackTrace();
@@ -357,7 +372,7 @@ public class AuthClient {
                 JSONObject body = new JSONObject();
                 body.put("token", token);
                 body.put("accessToken", accessToken);
-                String url = Authing.getSchema() + "://" + Util.getHost(config) + "/api/v2/ecConn/oneAuth/login";
+                String url = Authing.getScheme() + "://" + Util.getHost(config) + "/api/v2/ecConn/oneAuth/login";
                 Guardian.post(url, body, (data)-> createUserInfoFromResponse(data, callback));
             } catch (Exception e) {
                 e.printStackTrace();
@@ -372,7 +387,7 @@ public class AuthClient {
                 JSONObject body = new JSONObject();
                 body.put("email", email);
                 body.put("emailCode", code);
-                String url = Authing.getSchema() + "://" + Util.getHost(config) + "/api/v2/users/email/bind";
+                String url = Authing.getScheme() + "://" + Util.getHost(config) + "/api/v2/users/email/bind";
                 Guardian.post(url, body, (data)-> createUserInfoFromResponse(data, callback));
             } catch (Exception e) {
                 e.printStackTrace();
@@ -385,7 +400,7 @@ public class AuthClient {
         Authing.getPublicConfig(config -> {
             try {
                 JSONObject body = new JSONObject();
-                String url = Authing.getSchema() + "://" + Util.getHost(config) + "/api/v2/users/email/unbind";
+                String url = Authing.getScheme() + "://" + Util.getHost(config) + "/api/v2/users/email/unbind";
                 Guardian.post(url, body, (data)-> createUserInfoFromResponse(data, callback));
             } catch (Exception e) {
                 e.printStackTrace();
@@ -400,7 +415,7 @@ public class AuthClient {
                 JSONObject body = new JSONObject();
                 body.put("phone", phone);
                 body.put("phoneCode", code);
-                String url = Authing.getSchema() + "://" + Util.getHost(config) + "/api/v2/users/phone/bind";
+                String url = Authing.getScheme() + "://" + Util.getHost(config) + "/api/v2/users/phone/bind";
                 Guardian.post(url, body, (data)-> createUserInfoFromResponse(data, callback));
             } catch (Exception e) {
                 e.printStackTrace();
@@ -413,7 +428,7 @@ public class AuthClient {
         Authing.getPublicConfig(config -> {
             try {
                 JSONObject body = new JSONObject();
-                String url = Authing.getSchema() + "://" + Util.getHost(config) + "/api/v2/users/phone/unbind";
+                String url = Authing.getScheme() + "://" + Util.getHost(config) + "/api/v2/users/phone/unbind";
                 Guardian.post(url, body, (data)-> createUserInfoFromResponse(data, callback));
             } catch (Exception e) {
                 e.printStackTrace();
@@ -444,7 +459,7 @@ public class AuthClient {
     public static void getSecurityLevel(@NotNull AuthCallback<JSONObject> callback) {
         Authing.getPublicConfig(config -> {
             try {
-                String url = Authing.getSchema() + "://" + Util.getHost(config) + "/api/v2/users/me/security-level";
+                String url = Authing.getScheme() + "://" + Util.getHost(config) + "/api/v2/users/me/security-level";
                 Guardian.get(url, (data)-> callback.call(data.getCode(), data.getMessage(), data.getData()));
             } catch (Exception e) {
                 e.printStackTrace();
@@ -460,7 +475,7 @@ public class AuthClient {
     public static void listRoles(String namespace, @NotNull AuthCallback<List<Role>> callback) {
         Authing.getPublicConfig(config -> {
             try {
-                String url = Authing.getSchema() + "://" + Util.getHost(config) + "/api/v2/users/me/roles"
+                String url = Authing.getScheme() + "://" + Util.getHost(config) + "/api/v2/users/me/roles"
                         + (TextUtils.isEmpty(namespace) ? "" : "?namespace=" + namespace);
                 Guardian.get(url, (data)-> {
                     if (data.getCode() == 200) {
@@ -493,7 +508,7 @@ public class AuthClient {
     public static void listApplications(int page, int limit, @NotNull AuthCallback<List<Application>> callback) {
         Authing.getPublicConfig(config -> {
             try {
-                String url = Authing.getSchema() + "://" + Util.getHost(config) + "/api/v2/users/me/applications/allowed?page="
+                String url = Authing.getScheme() + "://" + Util.getHost(config) + "/api/v2/users/me/applications/allowed?page="
                         + page + "&limit=" + limit;
                 Guardian.get(url, (data)-> {
                     if (data.getCode() == 200) {
@@ -526,7 +541,7 @@ public class AuthClient {
     public static void listAuthorizedResources(String namespace, String resourceType, @NotNull AuthCallback<List<Resource>> callback) {
         Authing.getPublicConfig(config -> {
             try {
-                String url = Authing.getSchema() + "://" + Util.getHost(config) + "/api/v2/users/resource/authorized";
+                String url = Authing.getScheme() + "://" + Util.getHost(config) + "/api/v2/users/resource/authorized";
                 JSONObject body = new JSONObject();
                 body.put("namespace", namespace);
                 if (resourceType != null) {
@@ -563,7 +578,7 @@ public class AuthClient {
                 if (userInfo == null) {
                     callback.call(2020, "", null);
                 } else {
-                    String url = Authing.getSchema() + "://" + Util.getHost(config) + "/api/v2/users/" + userInfo.getId() + "/orgs";
+                    String url = Authing.getScheme() + "://" + Util.getHost(config) + "/api/v2/users/" + userInfo.getId() + "/orgs";
                     Guardian.get(url, (data)-> {
                         if (data.getCode() == 200) {
                             try {
@@ -589,7 +604,7 @@ public class AuthClient {
     public static void updateIdToken(@NotNull AuthCallback<UserInfo> callback) {
         Authing.getPublicConfig(config -> {
             try {
-                String url = Authing.getSchema() + "://" + Util.getHost(config) + "/api/v2/users/refresh-token";
+                String url = Authing.getScheme() + "://" + Util.getHost(config) + "/api/v2/users/refresh-token";
                 JSONObject body = new JSONObject();
                 Guardian.post(url, body, (data)-> {
                     if (data.getCode() == 200) {
@@ -613,7 +628,7 @@ public class AuthClient {
                     body.put("phone", phone);
                 if (email != null)
                     body.put("email", email);
-                String url = Authing.getSchema() + "://" + Util.getHost(config) + "/api/v2/applications/mfa/check";
+                String url = Authing.getScheme() + "://" + Util.getHost(config) + "/api/v2/applications/mfa/check";
                 Guardian.post(url, body, (data)-> {
                     try {
                         if (data.getCode() == 200) {
@@ -640,7 +655,7 @@ public class AuthClient {
                 JSONObject body = new JSONObject();
                 body.put("phone", phone);
                 body.put("code", code);
-                String url = Authing.getSchema() + "://" + Util.getHost(config) + "/api/v2/applications/mfa/sms/verify";
+                String url = Authing.getScheme() + "://" + Util.getHost(config) + "/api/v2/applications/mfa/sms/verify";
                 Guardian.post(url, body, (data)-> createUserInfoFromResponse(data, callback));
             } catch (Exception e) {
                 e.printStackTrace();
@@ -655,7 +670,7 @@ public class AuthClient {
                 JSONObject body = new JSONObject();
                 body.put("email", email);
                 body.put("code", code);
-                String url = Authing.getSchema() + "://" + Util.getHost(config) + "/api/v2/applications/mfa/email/verify";
+                String url = Authing.getScheme() + "://" + Util.getHost(config) + "/api/v2/applications/mfa/email/verify";
                 Guardian.post(url, body, (data)-> createUserInfoFromResponse(data, callback));
             } catch (Exception e) {
                 e.printStackTrace();
@@ -670,7 +685,7 @@ public class AuthClient {
                 JSONObject body = new JSONObject();
                 body.put("authenticatorType", "totp");
                 body.put("totp", code);
-                String url = Authing.getSchema() + "://" + Util.getHost(config) + "/api/v2/mfa/totp/verify";
+                String url = Authing.getScheme() + "://" + Util.getHost(config) + "/api/v2/mfa/totp/verify";
                 Guardian.post(url, body, (data)-> createUserInfoFromResponse(data, callback));
             } catch (Exception e) {
                 e.printStackTrace();
@@ -685,7 +700,7 @@ public class AuthClient {
                 JSONObject body = new JSONObject();
                 body.put("authenticatorType", "totp");
                 body.put("recoveryCode", code);
-                String url = Authing.getSchema() + "://" + Util.getHost(config) + "/api/v2/mfa/totp/recovery";
+                String url = Authing.getScheme() + "://" + Util.getHost(config) + "/api/v2/mfa/totp/recovery";
                 Guardian.post(url, body, (data)-> createUserInfoFromResponse(data, callback));
             } catch (Exception e) {
                 e.printStackTrace();
@@ -702,7 +717,7 @@ public class AuthClient {
                 if (oldPassword != null) {
                     body.put("oldPassword", Util.encryptPassword(oldPassword));
                 }
-                String url = Authing.getSchema() + "://" + Util.getHost(config) + "/api/v2/password/update";
+                String url = Authing.getScheme() + "://" + Util.getHost(config) + "/api/v2/password/update";
                 Guardian.post(url, body, (data)-> callback.call(data.getCode(), data.getMessage(), data.getData()));
             } catch (Exception e) {
                 e.printStackTrace();
@@ -718,7 +733,7 @@ public class AuthClient {
     public static void getCurrentUser(UserInfo userInfo, @NotNull AuthCallback<UserInfo> callback) {
         Authing.getPublicConfig(config -> {
             try {
-                String url = Authing.getSchema() + "://" + Util.getHost(config) + "/api/v2/users/me";
+                String url = Authing.getScheme() + "://" + Util.getHost(config) + "/api/v2/users/me";
                 Guardian.get(url, (data)-> createUserInfoFromResponse(userInfo, data, callback));
             } catch (Exception e) {
                 e.printStackTrace();
@@ -735,7 +750,7 @@ public class AuthClient {
     public static void updateProfile(JSONObject object, @NotNull AuthCallback<UserInfo> callback) {
         Authing.getPublicConfig(config -> {
             try {
-                String url = Authing.getSchema() + "://" + Util.getHost(config) + "/api/v2/users/profile/update";
+                String url = Authing.getScheme() + "://" + Util.getHost(config) + "/api/v2/users/profile/update";
                 Guardian.post(url, object, (data)-> createUserInfoFromResponse(data, callback));
             } catch (Exception e) {
                 e.printStackTrace();
@@ -768,7 +783,7 @@ public class AuthClient {
                 }
                 JSONObject body = new JSONObject();
                 body.put("udfs", array);
-                String url = Authing.getSchema() + "://" + Util.getHost(config) + "/api/v2/udfs/values";
+                String url = Authing.getScheme() + "://" + Util.getHost(config) + "/api/v2/udfs/values";
                 Guardian.post(url, body, (data)-> callback.call(data.getCode(), data.getMessage(), data.getData()));
             } catch (Exception e) {
                 e.printStackTrace();
@@ -783,7 +798,7 @@ public class AuthClient {
                 JSONObject body = new JSONObject();
                 body.put("targetType", "USER");
                 body.put("targetId", userInfo.getId());
-                String url = Authing.getSchema() + "://" + Util.getHost(config) + "/api/v2/udvs/get";
+                String url = Authing.getScheme() + "://" + Util.getHost(config) + "/api/v2/udvs/get";
                 Guardian.post(url, body, (data)-> {
                     if (data.getCode() == 200) {
                         JSONObject obj = data.getData();
@@ -805,7 +820,7 @@ public class AuthClient {
     public static void logout(@NotNull AuthCallback<?> callback) {
         Authing.getPublicConfig(config -> {
             try {
-                String url = Authing.getSchema() + "://" + Util.getHost(config) + "/api/v2/logout?app_id=" + Authing.getAppId();
+                String url = Authing.getScheme() + "://" + Util.getHost(config) + "/api/v2/logout?app_id=" + Authing.getAppId();
                 Guardian.get(url, (data)-> {
                     Safe.logoutUser(Authing.getCurrentUser());
                     Authing.setCurrentUser(null);
@@ -821,7 +836,7 @@ public class AuthClient {
     public static void deleteAccount(AuthCallback<JSONObject> callback) {
         Authing.getPublicConfig(config -> {
             try {
-                String url = Authing.getSchema() + "://" + Util.getHost(config) + "/api/v2/users/delete";
+                String url = Authing.getScheme() + "://" + Util.getHost(config) + "/api/v2/users/delete";
                 Guardian.delete(url, (data)-> callback.call(data.getCode(), data.getMessage(), data.getData()));
             } catch (Exception e) {
                 e.printStackTrace();
@@ -833,7 +848,7 @@ public class AuthClient {
     public static void markQRCodeScanned(String ticket, @NotNull AuthCallback<JSONObject> callback) {
         Authing.getPublicConfig(config -> {
             try {
-                String url = Authing.getSchema() + "://" + Util.getHost(config) + "/api/v2/qrcode/scanned";
+                String url = Authing.getScheme() + "://" + Util.getHost(config) + "/api/v2/qrcode/scanned";
                 JSONObject body = new JSONObject();
                 body.put("random", ticket);
                 Guardian.post(url, body, (data)-> callback.call(data.getCode(), data.getMessage(), data.getData()));
@@ -861,7 +876,7 @@ public class AuthClient {
     public static void loginByScannedTicket(String ticket, @NotNull AuthCallback<JSONObject> callback) {
         Authing.getPublicConfig(config -> {
             try {
-                String url = Authing.getSchema() + "://" + Util.getHost(config) + "/api/v2/qrcode/confirm";
+                String url = Authing.getScheme() + "://" + Util.getHost(config) + "/api/v2/qrcode/confirm";
                 JSONObject body = new JSONObject();
                 body.put("random", ticket);
                 Guardian.post(url, body, (data)-> callback.call(data.getCode(), data.getMessage(), data.getData()));

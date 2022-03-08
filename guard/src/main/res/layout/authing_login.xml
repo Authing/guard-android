@@ -173,8 +173,7 @@
         <cn.authing.guard.social.SocialLoginListView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="32dp"
-            app:src="wechat|alipay|wecom" />
+            android:layout_marginBottom="32dp" />
 
         <cn.authing.guard.feedback.GoFeedbackButton
             android:layout_width="wrap_content"

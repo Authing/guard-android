@@ -22,7 +22,7 @@ public class FeedbackClient {
                 if (images != null && images.size() > 0) {
                     body.put("images", new JSONArray(images));
                 }
-                String url = Authing.getSchema() + "://" + Util.getHost(config) + "/api/v2/feedback";
+                String url = Authing.getScheme() + "://" + Util.getHost(config) + "/api/v2/feedback";
                 Guardian.post(url, body, (data)-> {
                     if (data.getCode() == 200) {
                         callback.call(true, null);

@@ -33,7 +33,7 @@ public class OIDCClient {
     }
 
     public static String buildAuthorizeUrl(Config config, AuthRequest authRequest) {
-        return Authing.getSchema() + "://" + Util.getHost(config) + "/oidc/auth?_authing_lang="
+        return Authing.getScheme() + "://" + Util.getHost(config) + "/oidc/auth?_authing_lang="
                 + Util.getLangHeader()
                 + "&app_id=" + Authing.getAppId()
                 + "&client_id=" + Authing.getAppId()
@@ -55,7 +55,7 @@ public class OIDCClient {
                 if (config.getRedirectUris().size() > 0) {
                     authData.setRedirectURL(config.getRedirectUris().get(0));
                 }
-                String url = Authing.getSchema() + "://" + Util.getHost(config) + "/oidc/auth?_authing_lang="
+                String url = Authing.getScheme() + "://" + Util.getHost(config) + "/oidc/auth?_authing_lang="
                         + Util.getLangHeader()
                         + "&app_id=" + Authing.getAppId()
                         + "&client_id=" + Authing.getAppId()
@@ -120,7 +120,7 @@ public class OIDCClient {
     public static void oidcInteraction(AuthRequest authData, @NotNull AuthCallback<UserInfo> callback) {
         Authing.getPublicConfig((config -> {
             try {
-                String url = Authing.getSchema() + "://" + Util.getHost(config) + "/interaction/oidc/" + authData.getUuid() + "/login";
+                String url = Authing.getScheme() + "://" + Util.getHost(config) + "/interaction/oidc/" + authData.getUuid() + "/login";
                 String body = "token=" + authData.getToken();
                 _oidcInteraction(url, authData, body, callback);
             } catch (Exception e) {
@@ -243,7 +243,7 @@ public class OIDCClient {
     public static void authByCode(String code, AuthRequest authRequest, @NotNull AuthCallback<UserInfo> callback) {
         Authing.getPublicConfig(config -> {
             try {
-                String url = Authing.getSchema() + "://" + Util.getHost(config) + "/oidc/token";
+                String url = Authing.getScheme() + "://" + Util.getHost(config) + "/oidc/token";
                 String body = "client_id="+Authing.getAppId()
                         + "&grant_type=authorization_code"
                         + "&code=" + code
@@ -276,7 +276,7 @@ public class OIDCClient {
     public static void _getUserInfoByAccessToken(UserInfo userInfo, @NotNull AuthCallback<UserInfo> callback) {
         Authing.getPublicConfig(config -> {
             try {
-                String url = Authing.getSchema() + "://" + Util.getHost(config) + "/oidc/me";
+                String url = Authing.getScheme() + "://" + Util.getHost(config) + "/oidc/me";
                 Request.Builder builder = new Request.Builder();
                 builder.url(url);
                 builder.addHeader("Authorization", "Bearer " + userInfo.getAccessToken());
@@ -312,7 +312,7 @@ public class OIDCClient {
     public static void getNewAccessTokenByRefreshToken(String refreshToken, @NotNull AuthCallback<UserInfo> callback) {
         Authing.getPublicConfig(config -> {
             try {
-                String url = Authing.getSchema() + "://" + Util.getHost(config) + "/oidc/token";
+                String url = Authing.getScheme() + "://" + Util.getHost(config) + "/oidc/token";
                 String body = "client_id=" + Authing.getAppId()
                         + "&grant_type=refresh_token"
                         + "&refresh_token=" + refreshToken;

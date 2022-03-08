@@ -16,8 +16,8 @@ public class SettingActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_setting);
 
-        EditTextLayout etSchema = findViewById(R.id.et_schema);
-        etSchema.getEditText().setText(App.loadSchema(this));
+        EditTextLayout etScheme = findViewById(R.id.et_scheme);
+        etScheme.getEditText().setText(App.loadScheme(this));
 
         EditTextLayout etHost = findViewById(R.id.et_host);
         etHost.getEditText().setText(Authing.getHost());
@@ -27,15 +27,15 @@ public class SettingActivity extends AppCompatActivity {
 
         Button btn = findViewById(R.id.btn_save);
         btn.setOnClickListener((v)->{
-            String schema = etSchema.getText().toString();
+            String schema = etScheme.getText().toString();
             String host = etHost.getText().toString();
             String appid = etAppId.getText().toString();
 
-            App.saveSchema(this, schema);
+            App.saveScheme(this, schema);
             App.saveHost(this, host);
             App.saveAppId(this, appid);
 
-            Authing.setSchema(schema);
+            Authing.setScheme(schema);
             Authing.setHost(host);
             Authing.init(this, appid);
 
@@ -44,18 +44,18 @@ public class SettingActivity extends AppCompatActivity {
 
         Button restore = findViewById(R.id.btn_restore);
         restore.setOnClickListener((v)->{
-            String schema = "https";
+            String scheme = "https";
             String host = "authing.cn";
             String appid = "60caaf41df670b771fd08937";
-            Authing.setSchema(schema);
+            Authing.setScheme(scheme);
             Authing.setHost(host);
             Authing.init(this, appid);
 
-            etSchema.getEditText().setText(schema);
+            etScheme.getEditText().setText(scheme);
             etHost.getEditText().setText(host);
             etAppId.getEditText().setText(appid);
 
-            App.saveSchema(this, schema);
+            App.saveScheme(this, scheme);
             App.saveHost(this, host);
             App.saveAppId(this, appid);
 

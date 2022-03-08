@@ -15,11 +15,11 @@
         android:layout_marginTop="64dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Schema：" />
+        android:text="Scheme：" />
 
     <cn.authing.guard.internal.EditTextLayout
         android:layout_marginTop="8dp"
-        android:id="@+id/et_schema"
+        android:id="@+id/et_scheme"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@null" />

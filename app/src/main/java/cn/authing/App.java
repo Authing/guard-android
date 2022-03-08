@@ -5,9 +5,8 @@ import android.content.SharedPreferences;
 
 import cn.authing.guard.Authing;
 import cn.authing.guard.oneclick.OneClick;
-import cn.authing.guard.social.Alipay;
+import cn.authing.guard.social.Lark;
 import cn.authing.guard.social.WeCom;
-import cn.authing.guard.social.Wechat;
 
 public class App extends android.app.Application {
 
@@ -17,12 +16,12 @@ public class App extends android.app.Application {
     public static final String SP_KEY_HOST = "SP_HOST";
     public static final String SP_KEY_APPID = "SP_APPID";
 
-    public static void saveSchema(Context context, String s) {
+    public static void saveScheme(Context context, String s) {
         SharedPreferences sp = context.getSharedPreferences(SP_NAME, MODE_PRIVATE);
         sp.edit().putString(SP_KEY_SCHEMA, s).commit();
     }
 
-    public static String loadSchema(Context context) {
+    public static String loadScheme(Context context) {
         SharedPreferences sp = context.getSharedPreferences(SP_NAME, 0);
         return sp.getString(SP_KEY_SCHEMA, "https");
     }
@@ -58,10 +57,12 @@ public class App extends android.app.Application {
         // one click
         OneClick.bizId = "74ae90bd84f74b69a88b578bbbbcdcfd";
 
-        String schema = loadSchema(this);
+        Lark.appId = "cli_a2afd2f1e53cd00e";
+
+        String schema = loadScheme(this);
         String host = loadHost(this);
         String appid = loadAppId(this);
-        Authing.setSchema(schema);
+        Authing.setScheme(schema);
         Authing.setHost(host);
         Authing.init(getApplicationContext(), appid);
     }

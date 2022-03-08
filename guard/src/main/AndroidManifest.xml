@@ -63,7 +63,7 @@
         </activity>
         <activity
             android:name=".activity.AuthActivity"
-            android:exported="false">
+            android:exported="true">
             <intent-filter tools:node="replace">
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
@@ -73,7 +73,7 @@
         </activity>
         <activity
             android:name=".activity.IndexAuthActivity"
-            android:exported="false"
+            android:exported="true"
             android:launchMode="singleTask"
             android:screenOrientation="portrait" />
         <activity

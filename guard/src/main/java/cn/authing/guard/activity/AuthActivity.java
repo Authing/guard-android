@@ -10,11 +10,12 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.ss.android.larksso.LarkSSO;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 
 import cn.authing.guard.data.UserInfo;
 import cn.authing.guard.flow.AuthFlow;
@@ -31,7 +32,7 @@ public class AuthActivity extends AppCompatActivity {
 
     protected AuthFlow flow;
 
-    private Map<String, List<EventListener>> eventMap = new HashMap<>();
+    private final Map<String, List<EventListener>> eventMap = new HashMap<>();
 
     public interface EventListener {
         void happened(String what);
@@ -62,6 +63,16 @@ public class AuthActivity extends AppCompatActivity {
     }
 
     @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        try {
+            Class.forName("com.ss.android.larksso.LarkSSO");
+            LarkSSO.inst().parseIntent(this, intent);
+        } catch( ClassNotFoundException e ) {
+        }
+    }
+
+    @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == RC_LOGIN && resultCode == OK && data != null) {
@@ -83,11 +94,7 @@ public class AuthActivity extends AppCompatActivity {
 
     public void subscribe(String channel, EventListener listener) {
         if (!TextUtils.isEmpty(channel) && listener != null) {
-            List<EventListener> fans = eventMap.get(channel);
-            if (fans == null) {
-                fans = new ArrayList<>();
-                eventMap.put(channel, fans);
-            }
+            List<EventListener> fans = eventMap.computeIfAbsent(channel, k -> new ArrayList<>());
             fans.add(listener);
         }
     }
