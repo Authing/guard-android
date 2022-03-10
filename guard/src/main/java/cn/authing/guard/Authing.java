@@ -81,8 +81,10 @@ public class Authing {
         } else {
             AuthClient.getCurrentUser((code, message, userInfo) -> {
                 if (code != 200) {
-                    ALog.d(TAG, "auto login token expired");
-                    Safe.logoutUser(sCurrentUser);
+                    if (code == 2020) {
+                        ALog.d(TAG, "auto login token expired");
+                        Safe.logoutUser(sCurrentUser);
+                    }
                     sCurrentUser = null;
                     callback.call(code, message, userInfo);
                 } else {
