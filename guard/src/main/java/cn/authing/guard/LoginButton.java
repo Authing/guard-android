@@ -174,6 +174,9 @@ public class LoginButton extends PrimaryButton {
         stopLoadingVisualEffect();
 
         if (callback != null) {
+            if (code != 200 && code != Const.EC_MFA_REQUIRED && code != Const.EC_FIRST_TIME_LOGIN) {
+                Util.setErrorText(this, message);
+            }
             post(()-> callback.call(code, message, userInfo));
         } else if (code == 200) {
             Authing.getPublicConfig((config)->{
