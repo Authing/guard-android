@@ -24,6 +24,7 @@ import cn.authing.guard.data.Resource;
 import cn.authing.guard.data.Role;
 import cn.authing.guard.data.Safe;
 import cn.authing.guard.data.UserInfo;
+import cn.authing.guard.util.Const;
 import cn.authing.guard.util.GlobalCountDown;
 import cn.authing.guard.util.Util;
 import cn.authing.guard.util.Validator;
@@ -355,7 +356,9 @@ public class AuthClient {
         Authing.getPublicConfig(config -> {
             try {
                 JSONObject body = new JSONObject();
-                body.put("connId", config.getSocialConnectionId("lark"));
+                String connId = config.getSocialConnectionId(Const.EC_TYPE_LARK_INTERNAL);
+                connId = TextUtils.isEmpty(connId) ? config.getSocialConnectionId(Const.EC_TYPE_LARK_PUBLIC) : connId;
+                body.put("connId", connId);
                 body.put("code", authCode);
                 String url = Authing.getScheme() + "://" + Util.getHost(config) + "/api/v2/ecConn/lark/authByCode";
                 Guardian.post(url, body, (data)-> createUserInfoFromResponse(data, callback));

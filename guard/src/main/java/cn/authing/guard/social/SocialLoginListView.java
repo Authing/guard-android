@@ -17,6 +17,7 @@ import cn.authing.guard.Authing;
 import cn.authing.guard.R;
 import cn.authing.guard.data.SocialConfig;
 import cn.authing.guard.data.UserInfo;
+import cn.authing.guard.util.Const;
 import cn.authing.guard.util.Util;
 
 public class SocialLoginListView extends LinearLayout {
@@ -59,7 +60,8 @@ public class SocialLoginListView extends LinearLayout {
                         sb.append("alipay");
                     } else if ("wecom".equals(type)) {
                         sb.append("wecom");
-                    } else if ("lark".equals(type)) {
+                    } else if (Const.EC_TYPE_LARK_INTERNAL.equals(type)
+                            || Const.EC_TYPE_LARK_PUBLIC.equals(type)) {
                         sb.append("lark");
                     }
                     if (i < n - 1) {
