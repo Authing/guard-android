@@ -63,6 +63,16 @@ public class AuthActivity extends AppCompatActivity {
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+        try {
+            Class.forName("com.ss.android.larksso.LarkSSO");
+            LarkSSO.inst().parseIntent(this, getIntent());
+        } catch( ClassNotFoundException e ) {
+        }
+    }
+
+    @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
         try {
@@ -75,6 +85,11 @@ public class AuthActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        try {
+            Class.forName("com.ss.android.larksso.LarkSSO");
+            LarkSSO.inst().parseIntent(this, data);
+        } catch( ClassNotFoundException e ) {
+        }
         if (requestCode == RC_LOGIN && resultCode == OK && data != null) {
             UserInfo userInfo = (UserInfo)data.getSerializableExtra("user");
             Intent intent = new Intent();
