@@ -12,27 +12,27 @@
 ## STEP 1 ：在[企业微信管理控制台](https://work.weixin.qq.com/wework_admin)的操作步骤
 1. 获取企业 ID（CorpID）
 
-![](./images/wecom/1.png)
+![](https://github.com/Authing/guard-android/blob/master/doc/social/images/wecom/1.png)
 
 2. 获取 AgentID 和 Secret
 
 你需要先在 [应用管理 - 应用管理](https://work.weixin.qq.com/wework_admin/frame#apps) 创建一个自建应用
 
-![](./images/wecom/2.png)
+![](https://github.com/Authing/guard-android/blob/master/doc/social/images/wecom/2.png)
 
 创建完成之后，你可以获取该应用的 AgentId 和 Secret：
 
-![](./images/wecom/3.png)
+![](https://github.com/Authing/guard-android/blob/master/doc/social/images/wecom/3.png)
 
 3. 启用企业微信授权登录
 
 在应用详情页，点击设置企业微信授权登录：
 
-![](./images/wecom/4.png)
+![](https://github.com/Authing/guard-android/blob/master/doc/social/images/wecom/4.png)
 
 启用之后，再次点击 “已启用” 按钮，进入配置界面，填入 App 签名的 MD5 码和包名：
 
-![](./images/wecom/5.png)
+![](https://github.com/Authing/guard-android/blob/master/doc/social/images/wecom/5.png)
 
 > 特别注意：这里的签名 MD5 不能包含冒号
 
@@ -42,7 +42,7 @@
 
 1. 选择或者创建一个用户池—>身份源管理—>企业身份源—>创建企业身份源—>选择企业微信
 
-   ![](./images/wecom/6.png)
+   ![](https://github.com/Authing/guard-android/blob/master/doc/social/images/wecom/6.png)
 
 2. 填写配置信息
 
@@ -60,7 +60,7 @@
 
    Schema：企业微信管理控制平台注册的应用 Schema
 
-   ![](./images/wecom/7.png)
+   ![](https://github.com/Authing/guard-android/blob/master/doc/social/images/wecom/7.png)
 
 ## STEP 3 ：集成 Android SDK 步骤
 
