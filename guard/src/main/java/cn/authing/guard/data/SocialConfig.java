@@ -4,6 +4,8 @@ public class SocialConfig {
     private String id;
     private String type;
     private String appId;
+    private String agentId;
+    private String schema;
 
     public String getId() {
         return id;
@@ -27,5 +29,21 @@ public class SocialConfig {
 
     public void setAppId(String appId) {
         this.appId = appId;
+    }
+
+    public String getAgentId() {
+        return agentId;
+    }
+
+    public void setAgentId(String agentId) {
+        this.agentId = agentId;
+    }
+
+    public String getSchema() {
+        return schema;
+    }
+
+    public void setSchema(String schema) {
+        this.schema = schema;
     }
 }

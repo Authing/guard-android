@@ -10,7 +10,10 @@ import com.tencent.wework.api.model.WWAuthMessage;
 import org.jetbrains.annotations.NotNull;
 
 import cn.authing.guard.AuthCallback;
+import cn.authing.guard.Authing;
 import cn.authing.guard.data.UserInfo;
+import cn.authing.guard.network.AuthClient;
+import cn.authing.guard.util.Const;
 
 public class WeCom extends SocialAuthenticator {
 
@@ -22,30 +25,29 @@ public class WeCom extends SocialAuthenticator {
 
     @Override
     public void login(Context context, @NotNull AuthCallback<UserInfo> callback) {
-        // TODO get from authing server
+        Authing.getPublicConfig(config -> {
+            IWWAPI iwwapi = WWAPIFactory.createWWAPI(context);
+            iwwapi.registerApp(schema);
 
-        IWWAPI iwwapi = WWAPIFactory.createWWAPI(context);
-        iwwapi.registerApp(schema);
-
-        final WWAuthMessage.Req req = new WWAuthMessage.Req();
-        req.sch = schema;
-        req.agentId = agentId;
-        req.appId = corpId;
-        req.state = "wecom";
-        iwwapi.sendMessage(req, resp -> {
-            if (resp instanceof WWAuthMessage.Resp) {
-                WWAuthMessage.Resp rsp = (WWAuthMessage.Resp) resp;
-                if (rsp.errCode == WWAuthMessage.ERR_CANCEL) {
-                    Log.i(TAG, "登录取消");
-                    fireCallback(callback, null);
-                } else if (rsp.errCode == WWAuthMessage.ERR_FAIL) {
-                    Log.i(TAG, "登录失败");
-                    fireCallback(callback, null);
-                } else if (rsp.errCode == WWAuthMessage.ERR_OK) {
-                    // TODO get auth info from autthing server
-                    fireCallback(callback, null);
+            final WWAuthMessage.Req req = new WWAuthMessage.Req();
+            req.sch = (schema != null ) ? schema : config.getSocialSchema(Const.EC_TYPE_WECHAT_COM);
+            req.agentId = (agentId != null ) ? agentId : config.getSocialAgentId(Const.EC_TYPE_WECHAT_COM);
+            req.appId = (corpId != null ) ? corpId : config.getSocialAppId(Const.EC_TYPE_WECHAT_COM);
+            req.state = Const.EC_TYPE_WECHAT_COM;
+            iwwapi.sendMessage(req, resp -> {
+                if (resp instanceof WWAuthMessage.Resp) {
+                    WWAuthMessage.Resp rsp = (WWAuthMessage.Resp) resp;
+                    if (rsp.errCode == WWAuthMessage.ERR_CANCEL) {
+                        Log.i(TAG, "登录取消");
+                        fireCallback(callback, null);
+                    } else if (rsp.errCode == WWAuthMessage.ERR_FAIL) {
+                        Log.i(TAG, "登录失败");
+                        fireCallback(callback, null);
+                    } else if (rsp.errCode == WWAuthMessage.ERR_OK) {
+                        AuthClient.loginByWecom(rsp.code, callback);
+                    }
                 }
-            }
+            });
         });
     }
 

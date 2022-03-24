@@ -19,6 +19,7 @@ public class Const {
     public static final String MFA_POLICY_FACE = "FACE";
 
     public static final String EC_TYPE_WECHAT = "wechat:mobile";
+    public static final String EC_TYPE_WECHAT_COM = "wechatwork:mobile";
     public static final String EC_TYPE_ALIPAY = "alipay";
     public static final String EC_TYPE_LARK_INTERNAL = "lark-internal";
     public static final String EC_TYPE_LARK_PUBLIC = "lark-public";

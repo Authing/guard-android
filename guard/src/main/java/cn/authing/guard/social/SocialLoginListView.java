@@ -58,7 +58,7 @@ public class SocialLoginListView extends LinearLayout {
                         sb.append("wechat");
                     } else if ("alipay".equals(type)) {
                         sb.append("alipay");
-                    } else if ("wecom".equals(type)) {
+                    } else if (Const.EC_TYPE_WECHAT_COM.equals(type)) {
                         sb.append("wecom");
                     } else if (Const.EC_TYPE_LARK_INTERNAL.equals(type)
                             || Const.EC_TYPE_LARK_PUBLIC.equals(type)) {

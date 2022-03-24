@@ -226,29 +226,45 @@ public class Config {
     }
 
     public String getSocialConnectionId(String type) {
-        String connId = "";
-        List<SocialConfig> configs = getSocialConfigs();
-        for (SocialConfig c : configs) {
-            String provider = c.getType();
-            if (type.equalsIgnoreCase(provider)) {
-                connId = c.getId();
-                break;
-            }
-        }
-        return connId;
+        return getSocialValue(type, "connectionId");
     }
 
     public String getSocialAppId(String type) {
-        String appId = "";
+        return getSocialValue(type, "appId");
+    }
+
+    public String getSocialAgentId(String type) {
+        return getSocialValue(type, "agentId");
+    }
+
+    public String getSocialSchema(String type) {
+        return getSocialValue(type, "schema");
+    }
+
+    public String getSocialValue(String type, String fieldName) {
+        String value = "";
         List<SocialConfig> configs = getSocialConfigs();
         for (SocialConfig c : configs) {
             String provider = c.getType();
             if (type.equalsIgnoreCase(provider)) {
-                appId = c.getAppId();
+                switch (fieldName){
+                    case "connectionId":
+                        value = c.getId();
+                        break;
+                    case "appId":
+                        value = c.getAppId();
+                        break;
+                    case "agentId":
+                        value = c.getAgentId();
+                        break;
+                    case "schema":
+                        value = c.getSchema();
+                        break;
+                }
                 break;
             }
         }
-        return appId;
+        return value;
     }
 
     private static List<SocialConfig> toSocialList(JSONArray array) throws JSONException {
@@ -273,6 +289,15 @@ public class Config {
                 JSONObject fields = obj.getJSONObject("fields");
                 if (fields.has("appId")) {
                     config.setAppId(fields.getString("appId"));
+                }
+                if (fields.has("corpId")) {
+                    config.setAppId(fields.getString("corpId"));
+                }
+                if (fields.has("agentId")) {
+                    config.setAgentId(fields.getString("agentId"));
+                }
+                if (fields.has("schema")) {
+                    config.setSchema(fields.getString("schema"));
                 }
             }
             list.add(config);
