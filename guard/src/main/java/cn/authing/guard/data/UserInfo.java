@@ -399,6 +399,10 @@ public class UserInfo implements Serializable {
             String id = data.getString("id");
             userInfo.setId(id);
         }
+        if (data.has("sub")) {
+            String id = data.getString("sub");
+            userInfo.setId(id);
+        }
         if (data.has("username")) {
             String username = data.getString("username");
             userInfo.setName(username);
