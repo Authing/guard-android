@@ -253,7 +253,13 @@ public class OIDCClient {
                         + "&redirect_uri=" + URLEncoder.encode(authRequest.getRedirectURL(), "utf-8");
                 Guardian.authRequest(url, "post", body, (data)-> {
                     if (data.getCode() == 200) {
-                        AuthClient.createUserInfoFromResponse(data, (c, m, info) -> OIDCClient.getUserInfoByAccessToken(info, callback));
+                        try {
+                            UserInfo userInfo = UserInfo.createUserInfo(new UserInfo(), data.getData());
+                            OIDCClient.getUserInfoByAccessToken(userInfo, callback);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                            callback.call(500, "Cannot parse data into UserInfo", null);
+                        }
                     } else {
                         callback.call(data.getCode(), data.getMessage(), null);
                     }
