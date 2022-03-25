@@ -4,6 +4,7 @@ import static cn.authing.guard.util.Const.NS_ANDROID;
 
 import android.content.Context;
 import android.text.InputType;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.AttributeSet;
 
@@ -33,6 +34,11 @@ public class EmailEditText extends AccountEditText implements TextWatcher {
         if (attrs == null || attrs.getAttributeValue(NS_ANDROID, "hint") == null) {
             getEditText().setHint(context.getString(R.string.authing_account_edit_text_hint) + context.getString(R.string.authing_email));
         }
+    }
+
+    public boolean isContentValid() {
+        String text = getText().toString();
+        return !TextUtils.isEmpty(text);
     }
 
     @Override

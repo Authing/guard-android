@@ -80,6 +80,9 @@ public class LoginMethodTab extends LinearLayout {
             } else if ("password".equals(s)) {
                 b.setText(getResources().getString(R.string.authing_login_by_password));
                 b.setType(LoginContainer.LoginType.EByAccountPassword);
+            } else if ("email-code".equals(s)) {
+                b.setText(getResources().getString(R.string.authing_login_by_email_code));
+                b.setType(LoginContainer.LoginType.EByEmailCode);
             }
 
             if (config.getDefaultLoginMethod().equals(s)) {

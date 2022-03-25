@@ -107,6 +107,16 @@ public class OIDCClient {
         })));
     }
 
+    public static void loginByEmailCode(String email, String vCode, @NotNull AuthCallback<UserInfo> callback) {
+        Authing.getPublicConfig((config -> OIDCClient.prepareLogin(config, (code, message, authRequest) -> {
+            if (code == 200) {
+                AuthClient.loginByEmailCode(authRequest, email, vCode, callback);
+            } else {
+                callback.call(code, message, null);
+            }
+        })));
+    }
+
     public static void loginByAccount(String account, String password, @NotNull AuthCallback<UserInfo> callback) {
         Authing.getPublicConfig((config -> OIDCClient.prepareLogin(config, (code, message, authRequest) -> {
             if (code == 200) {

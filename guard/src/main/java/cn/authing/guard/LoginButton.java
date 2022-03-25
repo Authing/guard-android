@@ -4,7 +4,6 @@ import static cn.authing.guard.util.Const.NS_ANDROID;
 
 import android.content.Context;
 import android.content.Intent;
-import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.View;
 
@@ -15,23 +14,21 @@ import java.util.List;
 
 import cn.authing.guard.activity.AuthActivity;
 import cn.authing.guard.analyze.Analyzer;
-import cn.authing.guard.container.AuthContainer;
 import cn.authing.guard.data.Config;
 import cn.authing.guard.data.ExtendedField;
 import cn.authing.guard.data.UserInfo;
 import cn.authing.guard.flow.AuthFlow;
 import cn.authing.guard.flow.FlowHelper;
+import cn.authing.guard.handler.login.ILoginRequestCallBack;
+import cn.authing.guard.handler.login.LoginRequestManager;
 import cn.authing.guard.internal.PrimaryButton;
-import cn.authing.guard.network.AuthClient;
-import cn.authing.guard.network.OIDCClient;
 import cn.authing.guard.util.Const;
 import cn.authing.guard.util.Util;
 
-public class LoginButton extends PrimaryButton {
+public class LoginButton extends PrimaryButton implements ILoginRequestCallBack {
 
-    private String phoneNumber;
-    private String phoneCode;
     protected AuthCallback<UserInfo> callback;
+    private LoginRequestManager mLoginRequestManager;
 
     public LoginButton(@NonNull Context context) {
         this(context, null);
@@ -57,9 +54,16 @@ public class LoginButton extends PrimaryButton {
         this.callback = callback;
     }
 
+    private LoginRequestManager getLoginRequestManager(){
+        if (null == mLoginRequestManager){
+            mLoginRequestManager = new LoginRequestManager(this, this);
+        }
+        return mLoginRequestManager;
+    }
+
     // manually set phone number. in case of 2 step login
     public void setPhoneNumber(String phoneNumber) {
-        this.phoneNumber = phoneNumber;
+        getLoginRequestManager().setPhoneNumber(phoneNumber);
     }
 
     public void login() {
@@ -76,59 +80,10 @@ public class LoginButton extends PrimaryButton {
 
     public void _login(Config config) {
         if (config == null) {
-            fireCallback("Public Config is null");
+            fireCallback(500, "Public Config is null", null);
             return;
         }
-
-        View phoneNumberET = Util.findViewByClass(this, PhoneNumberEditText.class);
-        View phoneCodeET = Util.findViewByClass(this, VerifyCodeEditText.class);
-        if (phoneNumberET != null && phoneNumberET.isShown()) {
-            PhoneNumberEditText phoneNumberEditText = (PhoneNumberEditText)phoneNumberET;
-            phoneNumber = phoneNumberEditText.getText().toString();
-        }
-        if (phoneCodeET != null && phoneCodeET.isShown()) {
-            VerifyCodeEditText verifyCodeEditText = (VerifyCodeEditText)phoneCodeET;
-            phoneCode = verifyCodeEditText.getText().toString();
-        }
-        if (!TextUtils.isEmpty(phoneNumber) && !TextUtils.isEmpty(phoneCode)) {
-            startLoadingVisualEffect();
-            loginByPhoneCode(phoneNumber, phoneCode);
-            return;
-        }
-
-        if (phoneNumberET != null && phoneNumberET.isShown()
-                && phoneCodeET != null && phoneCodeET.isShown()) {
-            PhoneNumberEditText phoneNumberEditText = (PhoneNumberEditText)phoneNumberET;
-            if (!phoneNumberEditText.isContentValid()) {
-                fireCallback(getContext().getString(R.string.authing_invalid_phone_number));
-                return;
-            }
-
-            final String phone = phoneNumberEditText.getText().toString();
-            final String code = ((VerifyCodeEditText) phoneCodeET).getText().toString();
-            if (TextUtils.isEmpty(code)) {
-                fireCallback(getContext().getString(R.string.authing_incorrect_verify_code));
-                return;
-            }
-
-            startLoadingVisualEffect();
-            loginByPhoneCode(phone, code);
-        } else {
-            View accountET = Util.findViewByClass(this, AccountEditText.class);
-            View passwordET = Util.findViewByClass(this, PasswordEditText.class);
-            if (accountET != null && accountET.isShown()
-                    && passwordET != null && passwordET.isShown()) {
-                final String account = ((AccountEditText) accountET).getText().toString();
-                final String password = ((PasswordEditText) passwordET).getText().toString();
-                if (TextUtils.isEmpty(account) || TextUtils.isEmpty(password)) {
-                    fireCallback("Account or password is invalid");
-                    return;
-                }
-
-                startLoadingVisualEffect();
-                loginByAccount(account, password);
-            }
-        }
+        getLoginRequestManager().requestLogin();
     }
 
     private boolean requiresAgreement() {
@@ -140,34 +95,9 @@ public class LoginButton extends PrimaryButton {
         return ((PrivacyConfirmBox)box).require(true);
     }
 
-    private AuthContainer.AuthProtocol getAuthProtocol() {
-        if (!(getContext() instanceof AuthActivity)) {
-            return AuthContainer.AuthProtocol.EInHouse;
-        }
-
-        AuthActivity activity = (AuthActivity) getContext();
-        AuthFlow flow = (AuthFlow) activity.getIntent().getSerializableExtra(AuthActivity.AUTH_FLOW);
-        return flow.getAuthProtocol();
-    }
-
-    private void loginByPhoneCode(String phone, String verifyCode) {
-        if (getAuthProtocol() == AuthContainer.AuthProtocol.EInHouse) {
-            AuthClient.loginByPhoneCode(phone, verifyCode, this::fireCallback);
-        } else if (getAuthProtocol() == AuthContainer.AuthProtocol.EOIDC) {
-            OIDCClient.loginByPhoneCode(phone, verifyCode, this::fireCallback);
-        }
-    }
-
-    private void loginByAccount(String account, String password) {
-        if (getAuthProtocol() == AuthContainer.AuthProtocol.EInHouse) {
-            AuthClient.loginByAccount(account, password, this::fireCallback);
-        } else if (getAuthProtocol() == AuthContainer.AuthProtocol.EOIDC) {
-            OIDCClient.loginByAccount(account, password, this::fireCallback);
-        }
-    }
-
-    private void fireCallback(String message) {
-        fireCallback(500, message, null);
+    @Override
+    public void callback(int code, String message, UserInfo userInfo) {
+        fireCallback(code, message, userInfo);
     }
 
     private void fireCallback(int code, String message, UserInfo userInfo) {
@@ -218,4 +148,5 @@ public class LoginButton extends PrimaryButton {
         List<String> complete = config.getCompleteFieldsPlace();
         return complete != null && complete.contains("login");
     }
+
 }

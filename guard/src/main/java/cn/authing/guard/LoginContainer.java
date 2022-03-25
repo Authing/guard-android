@@ -42,6 +42,8 @@ public class LoginContainer extends LinearLayout {
             type = LoginType.EByPhoneCode;
         } else if (t == 1) {
             type = LoginType.EByAccountPassword;
+        } else if (t == 4) {
+            type = LoginType.EByEmailCode;
         }
         array.recycle();
     }

@@ -13,7 +13,8 @@
     <string name="authing_resend_after">Re-send after %1$d seconds</string>
     <string name="authing_register">Register</string>
     <string name="authing_welcome_to">Welcome to</string>
-    <string name="authing_login_by_phone_code">Phone</string>
+    <string name="authing_login_by_phone_code">Phone Code</string>
+    <string name="authing_login_by_email_code">Email Code</string>
     <string name="authing_login_by_password">Password</string>
     <string name="authing_register_by_phone_code">Phone</string>
     <string name="authing_register_by_email">Email</string>

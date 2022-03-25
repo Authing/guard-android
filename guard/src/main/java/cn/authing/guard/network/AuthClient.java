@@ -155,6 +155,41 @@ public class AuthClient {
         });
     }
 
+    public static void loginByEmailCode(String email, String code, @NotNull AuthCallback<UserInfo> callback) {
+        loginByEmailCode(null, email, code, callback);
+    }
+
+    public static void loginByEmailCode(AuthRequest authData, String email, String code, @NotNull AuthCallback<UserInfo> callback) {
+        Authing.getPublicConfig(config -> {
+            try {
+                JSONObject body = new JSONObject();
+                body.put("email", email);
+                body.put("code", code);
+                String url = Authing.getScheme() + "://" + Util.getHost(config) + "/api/v2/login/email-code";
+                Guardian.post(url, body, (data)-> {
+                    if (data.getCode() == 200 || data.getCode() == EC_MFA_REQUIRED) {
+                        Safe.saveAccount(email);
+                    }
+                    if (authData == null) {
+                        createUserInfoFromResponse(data, callback);
+                    } else {
+                        try {
+                            UserInfo userInfo = UserInfo.createUserInfo(data.getData());
+                            String token = userInfo.getIdToken();
+                            authData.setToken(token);
+                            OIDCClient.oidcInteraction(authData, callback);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
+            } catch (Exception e) {
+                e.printStackTrace();
+                callback.call(500, "Exception", null);
+            }
+        });
+    }
+
     public static void loginByAccount(String account, String password, @NotNull AuthCallback<UserInfo> callback) {
         loginByAccount(null, account, password, callback);
     }

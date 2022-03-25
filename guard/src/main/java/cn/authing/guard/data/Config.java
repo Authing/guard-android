@@ -56,7 +56,19 @@ public class Config {
         if (data.has("loginTabs")) {
             JSONObject loginTabs = data.getJSONObject("loginTabs");
             JSONArray loginTabList = loginTabs.getJSONArray("list");
-            config.setLoginTabList(toStringList(loginTabList));
+            List<String> loginTab = toStringList(loginTabList);
+            if (loginTab.contains("phone-code")){
+                if (data.has("verifyCodeTabConfig")) {
+                    JSONObject verifyCodeTabConfig = data.getJSONObject("verifyCodeTabConfig");
+                    JSONArray enabledLoginMethods = verifyCodeTabConfig.getJSONArray("enabledLoginMethods");
+                    List<String> enabledLoginMethodsList = toStringList(enabledLoginMethods);
+                    if (!enabledLoginMethodsList.isEmpty()){
+                        loginTab.remove("phone-code");
+                        loginTab.addAll(enabledLoginMethodsList);
+                    }
+                }
+            }
+            config.setLoginTabList(loginTab);
             config.setDefaultLoginMethod(loginTabs.getString("default"));
         }
 
