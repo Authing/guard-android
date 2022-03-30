@@ -38,7 +38,7 @@ public class FlowHelper {
         // try to find a more convenient way
         for (String option : options) {
             if (MFA_POLICY_SMS.equals(option) && !isNull(data.getPhone())) {
-                handleSMSMFA((AuthActivity) context, currentView, data.getPhone(), false);
+                handleSMSMFA((AuthActivity) context, currentView, data.getPhoneCountryCode(), data.getPhone(), false);
                 return;
             } else if (MFA_POLICY_EMAIL.equals(option) && !isNull(data.getEmail())) {
                 handleEmailMFA((AuthActivity) context, currentView, data.getEmail());
@@ -49,17 +49,17 @@ public class FlowHelper {
         // not found a more convenient way, go for first option
         String firstOption = options.get(0);
         if (MFA_POLICY_SMS.equals(firstOption)) {
-            handleSMSMFA((AuthActivity) context, currentView, data.getPhone());
+            handleSMSMFA((AuthActivity) context, currentView, data.getPhoneCountryCode(), data.getPhone());
         } else if (MFA_POLICY_EMAIL.equals(firstOption)) {
             handleEmailMFA((AuthActivity) context, currentView, data.getEmail());
         }
     }
 
-    public static void handleSMSMFA(AuthActivity activity, View currentView, String phone) {
-        handleSMSMFA(activity, currentView, phone, false);
+    public static void handleSMSMFA(AuthActivity activity, View currentView, String countryCode, String phone) {
+        handleSMSMFA(activity, currentView, countryCode, phone, false);
     }
 
-    public static void handleSMSMFA(AuthActivity activity, View currentView, String phone, boolean forwardResult) {
+    public static void handleSMSMFA(AuthActivity activity, View currentView, String countryCode, String phone, boolean forwardResult) {
         AuthFlow flow = activity.getFlow();
         int[] ids = flow.getMfaPhoneLayoutIds();
         if (ids == null || ids.length == 0) {
@@ -72,6 +72,7 @@ public class FlowHelper {
             intent.putExtra(AuthActivity.CONTENT_LAYOUT_ID, flow.getMfaPhoneLayoutIds()[0]);
         } else {
             flow.getData().put(AuthFlow.KEY_MFA_PHONE, phone);
+            flow.getData().put(AuthFlow.KEY_MFA_PHONE_COUNTRY_CODE, countryCode);
             int step = ids.length > 1 ? ids.length - 1 : 0;
             intent.putExtra(AuthActivity.CONTENT_LAYOUT_ID, ids[step]);
         }

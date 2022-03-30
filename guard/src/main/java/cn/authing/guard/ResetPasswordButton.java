@@ -131,7 +131,9 @@ public class ResetPasswordButton extends LoadingButton {
         AuthActivity activity = (AuthActivity) getContext();
         AuthFlow flow = (AuthFlow) activity.getIntent().getSerializableExtra(AuthActivity.AUTH_FLOW);
         String vCode = Util.getVerifyCode(this);
-        AuthClient.resetPasswordByPhoneCode(phone, vCode, password, (code, message, data)-> activity.runOnUiThread(()->{
+        CountryCodePicker countryCodePicker = (CountryCodePicker)Util.findViewByClass(this, CountryCodePicker.class);
+        String phoneCountryCode = (null == countryCodePicker) ? null :  countryCodePicker.getCountryCode();
+        AuthClient.resetPasswordByPhoneCode(phoneCountryCode, phone, vCode, password, (code, message, data)-> activity.runOnUiThread(()->{
             if (code == 200) {
                 gotoLogin(flow);
             } else {

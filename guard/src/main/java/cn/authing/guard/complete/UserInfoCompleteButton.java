@@ -205,14 +205,15 @@ public class UserInfoCompleteButton extends LoadingButton {
         }
 
         String[] splits = v.split(":");
-        if (splits.length < 2) {
+        if (splits.length < 3) {
             error("Please enter phone and verify code");
             return;
         }
 
-        String phone = splits[0];
-        String vCode = splits[1];
-        AuthClient.bindPhone(phone, vCode, (code, message, data)->{
+        String phoneCountryCode = splits[0];
+        String phone = splits[1];
+        String vCode = splits[2];
+        AuthClient.bindPhone(phoneCountryCode, phone, vCode, (code, message, data)->{
             if (code == 200) {
                 completeFlag &= ~PHONE;
                 try {

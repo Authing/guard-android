@@ -77,6 +77,7 @@ public class UserInfo implements Serializable {
     private boolean email_verified;
     private Address address;
     private String phone_number;
+    private String phoneCountryCode;
     private boolean phone_number_verified;
     private List<CustomData> customData = new ArrayList<>();
     private List<Role> roles;
@@ -276,6 +277,14 @@ public class UserInfo implements Serializable {
         this.phone_number = phone_number;
     }
 
+    public String getPhoneCountryCode() {
+        return phoneCountryCode;
+    }
+
+    public void setPhoneCountryCode(String phoneCountryCode) {
+        this.phoneCountryCode = phoneCountryCode;
+    }
+
     public boolean isPhone_number_verified() {
         return phone_number_verified;
     }
@@ -414,6 +423,10 @@ public class UserInfo implements Serializable {
         if (data.has("phone_number")) {
             String phone = data.getString("phone_number");
             userInfo.setPhone_number(phone);
+        }
+        if (data.has("phoneCountryCode")) {
+            String phoneCountryCode = data.getString("phoneCountryCode");
+            userInfo.setPhoneCountryCode(phoneCountryCode);
         }
         if (data.has("email")) {
             String email = data.getString("email");

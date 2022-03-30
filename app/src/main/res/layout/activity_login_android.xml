@@ -3,8 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".guard.activity.AuthingLoginActivity">
+    android:layout_height="match_parent">
 
     <cn.authing.guard.AppLogo
         android:id="@+id/iv_logo"
@@ -39,7 +38,14 @@
             android:id="@+id/pnet"
             app:clearAllEnabled="false"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content">
+            <cn.authing.guard.CountryCodePicker
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginEnd="4dp"
+                android:textSize="16sp"
+                android:textColor="#6D7784" />
+        </cn.authing.guard.PhoneNumberEditText>
 
         <LinearLayout
             android:layout_width="match_parent"

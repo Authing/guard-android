@@ -13,6 +13,7 @@ import androidx.annotation.Nullable;
 
 import java.util.List;
 
+import cn.authing.guard.CountryCodePicker;
 import cn.authing.guard.R;
 import cn.authing.guard.VerifyCodeEditText;
 import cn.authing.guard.analyze.Analyzer;
@@ -48,7 +49,7 @@ public class UserInfoFieldForm extends LinearLayout {
 
         GENDERS = new String[]{context.getString(R.string.authing_male), context.getString(R.string.authing_female)};
 
-        List<Country> countryList = Util.loadCountries(context);
+        List<Country> countryList = Util.loadCountryList(context);
         COUNTRIES = new Country[countryList.size()];
         for (int i = 0;i < countryList.size();++i) {
             COUNTRIES[i] = countryList.get(i);
@@ -110,6 +111,11 @@ public class UserInfoFieldForm extends LinearLayout {
         }
 
         String value = "";
+        CountryCodePicker countryCodePickerView = (CountryCodePicker)Util.findChildViewByClass(
+                this, CountryCodePicker.class, true);
+        if (countryCodePickerView != null) {
+            value = countryCodePickerView.getCountryCode() + ":";
+        }
         EditText et = (EditText) view;
         String v = et.getText().toString();
         if (!TextUtils.isEmpty(v)) {

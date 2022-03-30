@@ -20,6 +20,7 @@ public class BindPhoneActivity extends BaseAuthActivity {
             editText.getEditText().setText(Authing.getCurrentUser().getPhone_number());
             editText.disable();
             findViewById(R.id.ll_get_code).setVisibility(View.GONE);
+            findViewById(R.id.ccp).setVisibility(View.GONE);
         }
     }
 }

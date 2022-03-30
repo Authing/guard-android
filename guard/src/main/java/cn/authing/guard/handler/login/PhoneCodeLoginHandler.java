@@ -3,6 +3,7 @@ package cn.authing.guard.handler.login;
 import android.text.TextUtils;
 import android.view.View;
 
+import cn.authing.guard.CountryCodePicker;
 import cn.authing.guard.LoginButton;
 import cn.authing.guard.PhoneNumberEditText;
 import cn.authing.guard.R;
@@ -15,6 +16,7 @@ import cn.authing.guard.util.Util;
 
 public class PhoneCodeLoginHandler extends AbsLoginHandler{
 
+    private String phoneCountryCode;
     private String phoneNumber;
     private String phoneCode;
 
@@ -24,8 +26,13 @@ public class PhoneCodeLoginHandler extends AbsLoginHandler{
 
     @Override
     protected boolean login() {
+        View phoneCountryCodeET = Util.findViewByClass(loginButton, CountryCodePicker.class);
         View phoneNumberET = Util.findViewByClass(loginButton, PhoneNumberEditText.class);
         View phoneCodeET = Util.findViewByClass(loginButton, VerifyCodeEditText.class);
+        if (phoneCountryCodeET != null && phoneCountryCodeET.isShown()){
+            CountryCodePicker countryCodePicker = (CountryCodePicker)phoneCountryCodeET;
+            phoneCountryCode = countryCodePicker.getCountryCode();
+        }
         if (phoneNumberET != null && phoneNumberET.isShown()) {
             PhoneNumberEditText phoneNumberEditText = (PhoneNumberEditText)phoneNumberET;
             phoneNumber = phoneNumberEditText.getText().toString();
@@ -36,12 +43,20 @@ public class PhoneCodeLoginHandler extends AbsLoginHandler{
         }
         if (!TextUtils.isEmpty(phoneNumber) && !TextUtils.isEmpty(phoneCode)) {
             loginButton.startLoadingVisualEffect();
-            loginByPhoneCode(phoneNumber, phoneCode);
+            loginByPhoneCode(phoneCountryCode, phoneNumber, phoneCode);
             return true;
         }
 
-        if (phoneNumberET != null && phoneNumberET.isShown()
+        if (phoneCountryCodeET != null && phoneCountryCodeET.isShown()
+                && phoneNumberET != null && phoneNumberET.isShown()
                 && phoneCodeET != null && phoneCodeET.isShown()) {
+            CountryCodePicker countryCodePicker = (CountryCodePicker)phoneCountryCodeET;
+            final String countryCode = countryCodePicker.getCountryCode();
+            if (TextUtils.isEmpty(countryCode)) {
+                fireCallback(mContext.getString(R.string.authing_invalid_phone_country_code));
+                return false;
+            }
+
             PhoneNumberEditText phoneNumberEditText = (PhoneNumberEditText)phoneNumberET;
             if (!phoneNumberEditText.isContentValid()) {
                 fireCallback(mContext.getString(R.string.authing_invalid_phone_number));
@@ -56,18 +71,18 @@ public class PhoneCodeLoginHandler extends AbsLoginHandler{
             }
 
             loginButton.startLoadingVisualEffect();
-            loginByPhoneCode(phone, code);
+            loginByPhoneCode(countryCode, phone, code);
             return true;
         }
 
         return false;
     }
 
-    private void loginByPhoneCode(String phone, String verifyCode) {
+    private void loginByPhoneCode(String phoneCountryCode, String phone, String verifyCode) {
         if (getAuthProtocol() == AuthContainer.AuthProtocol.EInHouse) {
-            AuthClient.loginByPhoneCode(phone, verifyCode, this::fireCallback);
+            AuthClient.loginByPhoneCode(phoneCountryCode, phone, verifyCode, this::fireCallback);
         } else if (getAuthProtocol() == AuthContainer.AuthProtocol.EOIDC) {
-            OIDCClient.loginByPhoneCode(phone, verifyCode, this::fireCallback);
+            OIDCClient.loginByPhoneCode(phoneCountryCode, phone, verifyCode, this::fireCallback);
         }
         ALog.d(TAG, "login by phone code");
     }

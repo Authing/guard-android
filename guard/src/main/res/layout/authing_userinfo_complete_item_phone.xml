@@ -15,7 +15,14 @@
         android:layout_marginTop="4dp"
         android:paddingStart="8dp"
         android:paddingEnd="8dp"
-        android:background="@drawable/authing_edit_text_layout_background" />
+        android:background="@drawable/authing_edit_text_layout_background" >
+        <cn.authing.guard.CountryCodePicker
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginEnd="4dp"
+            android:textSize="16sp"
+            android:textColor="#6D7784" />
+    </cn.authing.guard.PhoneNumberEditText>
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

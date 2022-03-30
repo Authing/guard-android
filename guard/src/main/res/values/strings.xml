@@ -110,6 +110,7 @@
     <string name="authing_password_strength3">Password must be at least 6 characters long, and must contain English, numbers and symbols</string>
     <string name="authing_password_not_match">Password and confirm password do not match</string>
     <string name="authing_get_verify_code_failed">Send SMS failed. Invalid phone number</string>
+    <string name="authing_invalid_phone_country_code">Invalid phone country code</string>
     <string name="authing_invalid_phone_number">Invalid phone number</string>
     <string name="authing_incorrect_verify_code">Incorrect Verify Code</string>
     <string name="authing_incorrect_credential">Incorrect Credential</string>

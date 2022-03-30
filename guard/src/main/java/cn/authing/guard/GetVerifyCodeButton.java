@@ -59,11 +59,12 @@ public class GetVerifyCodeButton extends LoadingButton {
     }
 
     private void getSMSCode() {
+        String phoneCountryCode = Util.getPhoneCountryCode(this);
         String phoneNumber = Util.getPhoneNumber(this);
         if (!TextUtils.isEmpty(phoneNumber)) {
             startLoadingVisualEffect();
             Util.setErrorText(this, null);
-            AuthClient.sendSms(phoneNumber, this::handleSMSResult);
+            AuthClient.sendSms(phoneCountryCode, phoneNumber, this::handleSMSResult);
         }
     }
 

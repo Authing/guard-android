@@ -12,6 +12,7 @@ import android.view.View;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import cn.authing.guard.CountryCodePicker;
 import cn.authing.guard.PhoneNumberEditText;
 import cn.authing.guard.R;
 import cn.authing.guard.VerifyCodeEditText;
@@ -49,9 +50,10 @@ public class MFAPhoneButton extends LoadingButton {
             AuthActivity activity = (AuthActivity) context;
             AuthFlow flow = activity.getFlow();
             String phone = (String) flow.getData().get(AuthFlow.KEY_MFA_PHONE);
+            String phoneCountryCode = (String) flow.getData().get(AuthFlow.KEY_MFA_PHONE_COUNTRY_CODE);
             if (!TextUtils.isEmpty(phone)) {
                 startLoadingVisualEffect();
-                AuthClient.sendSms(phone, (code, message, data)-> activity.runOnUiThread(this::stopLoadingVisualEffect));
+                AuthClient.sendSms(phoneCountryCode, phone, (code, message, data)-> activity.runOnUiThread(this::stopLoadingVisualEffect));
             }
         }
     }
@@ -67,21 +69,25 @@ public class MFAPhoneButton extends LoadingButton {
         View v = Util.findViewByClass(this, VerifyCodeEditText.class);
         if (v != null) {
             String phone = (String) flow.getData().get(AuthFlow.KEY_MFA_PHONE);
+            String phoneCountryCode = (String) flow.getData().get(AuthFlow.KEY_MFA_PHONE_COUNTRY_CODE);
             VerifyCodeEditText editText = (VerifyCodeEditText)v;
-            String verifyCode = editText.getText().toString();
+            String verifyCode = editText.getText().toString().trim();
             startLoadingVisualEffect();
-            AuthClient.mfaVerifyByPhone(phone, verifyCode, (code, message, data)-> activity.runOnUiThread(()-> mfaDone(code, message, data)));
+            AuthClient.mfaVerifyByPhone(phoneCountryCode, phone, verifyCode, (code, message, data)-> activity.runOnUiThread(()-> mfaDone(code, message, data)));
         } else {
             v = Util.findViewByClass(this, PhoneNumberEditText.class);
             if (v != null) {
                 PhoneNumberEditText editText = (PhoneNumberEditText) v;
                 String phone = editText.getText().toString();
+                CountryCodePicker countryCodePicker = (CountryCodePicker)Util.findViewByClass(this, CountryCodePicker.class);
+                String phoneCountryCode = (null == countryCodePicker) ? null :  countryCodePicker.getCountryCode();
                 flow.getData().put(AuthFlow.KEY_MFA_PHONE, phone);
+                flow.getData().put(AuthFlow.KEY_MFA_PHONE_COUNTRY_CODE, phoneCountryCode);
                 startLoadingVisualEffect();
                 AuthClient.mfaCheck(phone, null, (code, message, ok) -> {
                     if (code == 200) {
                         if (ok) {
-                            sendSms(flow, phone);
+                            sendSms(flow, phoneCountryCode, phone);
                         } else {
                             stopLoadingVisualEffect();
                             post(()->editText.showError(activity.getString(R.string.authing_phone_number_already_bound)));
@@ -95,9 +101,9 @@ public class MFAPhoneButton extends LoadingButton {
         }
     }
 
-    private void sendSms(AuthFlow flow, String phone) {
+    private void sendSms(AuthFlow flow, String phoneCountryCode, String phone) {
         AuthActivity activity = (AuthActivity) getContext();
-        AuthClient.sendSms(phone, (code, message, data)-> activity.runOnUiThread(()->{
+        AuthClient.sendSms(phoneCountryCode, phone, (code, message, data)-> activity.runOnUiThread(()->{
             stopLoadingVisualEffect();
             next(flow);
         }));

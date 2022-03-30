@@ -47,15 +47,16 @@ public class ModifyPhoneNumberButton extends PrimaryButton {
     }
 
     public void clicked() {
-        String phone = Util.getPhoneNumber(this);
-        String vCode = Util.getVerifyCode(this);
         startLoadingVisualEffect();
         if (hasPhone) {
             AuthClient.unbindPhone((code, message, data)-> {
                 handleResult(code, message);
             });
         } else {
-            AuthClient.bindPhone(phone, vCode, (code, message, data)-> {
+            String phoneCountryCode = Util.getPhoneCountryCode(this);
+            String phone = Util.getPhoneNumber(this);
+            String vCode = Util.getVerifyCode(this);
+            AuthClient.bindPhone(phoneCountryCode, phone, vCode, (code, message, data)-> {
                 handleResult(code, message);
             });
         }

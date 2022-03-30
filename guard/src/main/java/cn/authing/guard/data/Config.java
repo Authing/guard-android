@@ -34,6 +34,7 @@ public class Config {
     private List<String> completeFieldsPlace;
     private List<ExtendedField> extendedFields;
     private List<String> redirectUris;
+    private boolean internationalSmsEnable;
 
     public static Config parse(JSONObject data) throws JSONException {
         Config config = new Config();
@@ -105,6 +106,13 @@ public class Config {
 
         if (data.has("redirectUris")) {
             config.setRedirectUris(toStringList(data.getJSONArray("redirectUris")));
+        }
+
+        if (data.has("internationalSmsConfig") && !data.isNull("internationalSmsConfig")) {
+            JSONObject internationalSmsConfig = data.getJSONObject("internationalSmsConfig");
+            if (internationalSmsConfig.has("enabled")){
+                config.setInternationalSmsEnable(internationalSmsConfig.getBoolean("enabled"));
+            }
         }
         return config;
     }
@@ -235,6 +243,14 @@ public class Config {
 
     public void setRedirectUris(List<String> redirectUris) {
         this.redirectUris = redirectUris;
+    }
+
+    public boolean isInternationalSmsEnable() {
+        return internationalSmsEnable;
+    }
+
+    public void setInternationalSmsEnable(boolean internationalSmsEnable) {
+        this.internationalSmsEnable = internationalSmsEnable;
     }
 
     public String getSocialConnectionId(String type) {

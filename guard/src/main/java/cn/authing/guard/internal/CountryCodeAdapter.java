@@ -11,6 +11,7 @@ import java.util.List;
 
 import cn.authing.guard.R;
 import cn.authing.guard.data.Country;
+import cn.authing.guard.util.Util;
 
 public class CountryCodeAdapter extends ArrayAdapter<Country> {
 
@@ -36,8 +37,11 @@ public class CountryCodeAdapter extends ArrayAdapter<Country> {
         } else {
             viewHolder = (ViewHolder) convertView.getTag();
         }
-        viewHolder.name.setText(country.getEmoji() + " " + country.getName());
-        viewHolder.code.setText("+" + country.getCode());
+        String countryName = Util.isCn() ? country.getName() : country.getEnName();
+        String name = country.getEmoji() + " " + countryName;
+        viewHolder.name.setText(name);
+        String code = "+" + country.getCode();
+        viewHolder.code.setText(code);
         return convertView;
     }
 }

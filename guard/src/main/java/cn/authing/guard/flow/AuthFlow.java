@@ -25,6 +25,7 @@ public class AuthFlow implements Serializable {
     public static final String KEY_USER_INFO = "user_info";
 
     public static final String KEY_MFA_PHONE = "mfa_phone";
+    public static final String KEY_MFA_PHONE_COUNTRY_CODE = "mfa_phoneCountryCode";
     public static final String KEY_MFA_EMAIL = "mfa_email";
     public static final String KEY_MFA_RECOVERY_CODE = "mfa_recovery_code";
 

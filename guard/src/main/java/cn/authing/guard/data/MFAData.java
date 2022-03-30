@@ -15,6 +15,7 @@ public class MFAData implements Serializable {
     private String mfaToken;
     private String email;
     private String phone;
+    private String phoneCountryCode;
     private boolean faceMfaEnabled;
     private boolean totpMfaEnabled;
 
@@ -36,6 +37,10 @@ public class MFAData implements Serializable {
             if (data.has("phone")) {
                 String v = data.getString("phone");
                 mfaData.setPhone(v);
+            }
+            if (data.has("phoneCountryCode")) {
+                String v = data.getString("phoneCountryCode");
+                mfaData.setPhoneCountryCode(v);
             }
             if (data.has("faceMfaEnabled")) {
                 boolean v = data.getBoolean("faceMfaEnabled");
@@ -78,6 +83,14 @@ public class MFAData implements Serializable {
 
     public void setPhone(String phone) {
         this.phone = phone;
+    }
+
+    public String getPhoneCountryCode() {
+        return phoneCountryCode;
+    }
+
+    public void setPhoneCountryCode(String phoneCountryCode) {
+        this.phoneCountryCode = phoneCountryCode;
     }
 
     public boolean isFaceMfaEnabled() {

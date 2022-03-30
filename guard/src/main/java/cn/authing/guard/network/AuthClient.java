@@ -72,10 +72,17 @@ public class AuthClient {
     }
 
     public static void registerByPhoneCode(String phone, String code, String password, @NotNull AuthCallback<UserInfo> callback) {
+        registerByPhoneCode(null, phone, code, password, callback);
+    }
+
+    public static void registerByPhoneCode(String phoneCountryCode, String phone, String code, String password, @NotNull AuthCallback<UserInfo> callback) {
         Authing.getPublicConfig(config -> {
             try {
                 String encryptPassword = Util.encryptPassword(password);
                 JSONObject body = new JSONObject();
+                if (!Util.isNull(phoneCountryCode)){
+                    body.put("phoneCountryCode", phoneCountryCode);
+                }
                 body.put("phone", phone);
                 body.put("password", encryptPassword);
                 body.put("code", code);
@@ -90,10 +97,10 @@ public class AuthClient {
     }
 
     public static void sendSms(String phone, @NotNull AuthCallback<?> callback) {
-        sendSms(phone, null, callback);
+        sendSms(null, phone, callback);
     }
 
-    public static void sendSms(String phone, String phoneCountryCode, @NotNull AuthCallback<?> callback) {
+    public static void sendSms(String phoneCountryCode, String phone, @NotNull AuthCallback<?> callback) {
         if (GlobalCountDown.countDown != 0) {
             callback.call(500, Authing.getAppContext().getString(R.string.authing_sms_already_sent), null);
             return;
@@ -103,7 +110,7 @@ public class AuthClient {
             try {
                 JSONObject body = new JSONObject();
                 body.put("phone", phone);
-                if (phoneCountryCode != null) {
+                if (!Util.isNull(phoneCountryCode)) {
                     body.put("phoneCountryCode", phoneCountryCode);
                 }
                 String url = Authing.getScheme() + "://" + Util.getHost(config) + "/api/v2/sms/send";
@@ -124,10 +131,17 @@ public class AuthClient {
         loginByPhoneCode(null, phone, code, callback);
     }
 
-    public static void loginByPhoneCode(AuthRequest authData, String phone, String code, @NotNull AuthCallback<UserInfo> callback) {
+    public static void loginByPhoneCode(String phoneCountryCode, String phone, String code, @NotNull AuthCallback<UserInfo> callback) {
+        loginByPhoneCode(null, phoneCountryCode, phone, code, callback);
+    }
+
+    public static void loginByPhoneCode(AuthRequest authData, String phoneCountryCode, String phone, String code, @NotNull AuthCallback<UserInfo> callback) {
         Authing.getPublicConfig(config -> {
             try {
                 JSONObject body = new JSONObject();
+                if (!Util.isNull(phoneCountryCode)){
+                    body.put("phoneCountryCode", phoneCountryCode);
+                }
                 body.put("phone", phone);
                 body.put("code", code);
                 String url = Authing.getScheme() + "://" + Util.getHost(config) + "/api/v2/login/phone-code";
@@ -311,9 +325,16 @@ public class AuthClient {
     }
 
     public static void resetPasswordByPhoneCode(String phone, String code, String newPassword, @NotNull AuthCallback<JSONObject> callback) {
+        resetPasswordByPhoneCode(null, phone, code, newPassword, callback);
+    }
+
+    public static void resetPasswordByPhoneCode(String phoneCountryCode, String phone, String code, String newPassword, @NotNull AuthCallback<JSONObject> callback) {
         Authing.getPublicConfig(config -> {
             try {
                 JSONObject body = new JSONObject();
+                if (!Util.isNull(phoneCountryCode)){
+                    body.put("phoneCountryCode", phoneCountryCode);
+                }
                 body.put("phone", phone);
                 body.put("code", code);
                 body.put("newPassword", Util.encryptPassword(newPassword));
@@ -463,9 +484,16 @@ public class AuthClient {
     }
 
     public static void bindPhone(String phone, String code, @NotNull AuthCallback<UserInfo> callback) {
+        bindPhone(null, phone, code, callback);
+    }
+
+    public static void bindPhone(String phoneCountryCode, String phone, String code, @NotNull AuthCallback<UserInfo> callback) {
         Authing.getPublicConfig(config -> {
             try {
                 JSONObject body = new JSONObject();
+                if (!Util.isNull(phoneCountryCode)){
+                    body.put("phoneCountryCode", phoneCountryCode);
+                }
                 body.put("phone", phone);
                 body.put("phoneCode", code);
                 String url = Authing.getScheme() + "://" + Util.getHost(config) + "/api/v2/users/phone/bind";
@@ -703,9 +731,16 @@ public class AuthClient {
     }
 
     public static void mfaVerifyByPhone(String phone, String code, @NotNull AuthCallback<UserInfo> callback) {
+        mfaVerifyByPhone(null, phone, code, callback);
+    }
+
+    public static void mfaVerifyByPhone(String phoneCountryCode, String phone, String code, @NotNull AuthCallback<UserInfo> callback) {
         Authing.getPublicConfig(config -> {
             try {
                 JSONObject body = new JSONObject();
+                if (!Util.isNull(phoneCountryCode)){
+                    body.put("phoneCountryCode", phoneCountryCode);
+                }
                 body.put("phone", phone);
                 body.put("code", code);
                 String url = Authing.getScheme() + "://" + Util.getHost(config) + "/api/v2/applications/mfa/sms/verify";

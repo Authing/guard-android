@@ -4,8 +4,10 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
+import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.Gravity;
+import android.view.View;
 import android.widget.ListView;
 
 import androidx.annotation.Nullable;
@@ -14,6 +16,7 @@ import java.util.List;
 
 import cn.authing.guard.analyze.Analyzer;
 import cn.authing.guard.data.Country;
+import cn.authing.guard.data.UserInfo;
 import cn.authing.guard.internal.CountryCodeAdapter;
 import cn.authing.guard.util.Util;
 
@@ -51,26 +54,64 @@ public class CountryCodePicker extends androidx.appcompat.widget.AppCompatTextVi
             setCompoundDrawablesWithIntrinsicBounds(drawables[0], drawables[1], drawable, drawables[3]);
         }
 
-        selected = new Country("CN", "中国大陆", "86", "🇨🇳");
+        initData();
+        initView();
+    }
+
+    private void initData(){
+        loadData();
+        UserInfo userInfo = Authing.getCurrentUser();
+        if (userInfo != null && !Util.isNull(userInfo.getPhoneCountryCode())) {
+            String phoneCountryCode = userInfo.getPhoneCountryCode();
+            for (Country country : countries){
+                if (null == country || TextUtils.isEmpty(country.getCode())){
+                    continue;
+                }
+                if (phoneCountryCode.contains(country.getCode())){
+                    selected = country;
+                    break;
+                }
+            }
+        }
+        if (null == selected){
+            selected = new Country("CN", "中国大陆", "Chinese Mainland","86", "🇨🇳");
+        }
         updateSelected(selected);
+    }
 
-        setOnClickListener((v)->{
-            loadData();
 
-            Dialog dialog = new Dialog(getContext());
-            dialog.setContentView(R.layout.authing_country_code_picker);
+    private void initView(){
+        Authing.getPublicConfig(config -> {
+            boolean isEnable = config.isInternationalSmsEnable();
+            if (isEnable) {
+                setEnabled(true);
+                setOnClickListener(this::click);
+            } else {
+                setEnabled(false);
+                setBackgroundResource(R.drawable.authing_country_picker_unenable_background);
+            }
+        });
+    }
 
-            ListView lv = dialog.findViewById(R.id.lv);
-            CountryCodeAdapter adapter = new CountryCodeAdapter(getContext(), countries);
-            lv.setAdapter(adapter);
-            lv.setOnItemClickListener((parent, view, position, id)->{
-                Country c = countries.get(position);
-                updateSelected(c);
-                dialog.dismiss();
-            });
-            dialog.setCancelable(true);
-            dialog.setTitle("ListView");
-            dialog.show();
+    private void click(View v){
+        v.setSelected(!v.isSelected());
+        loadData();
+
+        Dialog dialog = new Dialog(getContext());
+        dialog.setContentView(R.layout.authing_country_code_picker);
+
+        ListView lv = dialog.findViewById(R.id.lv);
+        CountryCodeAdapter adapter = new CountryCodeAdapter(getContext(), countries);
+        lv.setAdapter(adapter);
+        lv.setOnItemClickListener((parent, view, position, id)->{
+            Country c = countries.get(position);
+            updateSelected(c);
+            v.setSelected(!v.isSelected());
+            dialog.dismiss();
+        });
+        dialog.setCancelable(true);
+        dialog.setTitle("ListView");
+        dialog.show();
 
 //            Rect displayRectangle = new Rect();
 //            Window window = ((Activity)getContext()).getWindow();
@@ -86,13 +127,11 @@ public class CountryCodePicker extends androidx.appcompat.widget.AppCompatTextVi
 //            lv.setAdapter(adapter);
 //            final AlertDialog alertDialog = builder.create();
 //            alertDialog.show();
-        });
-        loadData();
     }
 
     private void loadData() {
         if (countries == null) {
-            countries = Util.loadCountries(getContext());
+            countries = Util.loadCountryList(getContext());
         }
 //            JSONArray array = new JSONArray(getFromRaw());
 //            for (int i = 0;i < array.length();++i) {
@@ -139,6 +178,13 @@ public class CountryCodePicker extends androidx.appcompat.widget.AppCompatTextVi
 
     public Country getCountry() {
         return selected;
+    }
+
+    public String getCountryCode() {
+        if (null == selected || null == selected.getCode()){
+            return "";
+        }
+        return "+" + selected.getCode();
     }
 
     public void setCountry(Country country) {

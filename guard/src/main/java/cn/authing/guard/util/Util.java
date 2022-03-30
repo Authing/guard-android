@@ -1,21 +1,24 @@
 package cn.authing.guard.util;
 
 import android.content.Context;
+import android.content.res.AssetManager;
 import android.text.TextUtils;
 import android.util.Base64;
 import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
-import java.net.URI;
+import java.lang.reflect.Type;
 import java.net.URL;
 import java.net.URLDecoder;
 import java.security.KeyFactory;
@@ -36,6 +39,7 @@ import javax.crypto.Cipher;
 
 import cn.authing.guard.AccountEditText;
 import cn.authing.guard.Authing;
+import cn.authing.guard.CountryCodePicker;
 import cn.authing.guard.ErrorTextView;
 import cn.authing.guard.PasswordEditText;
 import cn.authing.guard.PhoneNumberEditText;
@@ -172,6 +176,25 @@ public class Util {
         return phone;
     }
 
+    public static String getPhoneCountryCode(View current) {
+        String phoneCountryCode = null;
+        View v = findViewByClass(current, CountryCodePicker.class);
+        if (v != null) {
+            phoneCountryCode = ((CountryCodePicker)v).getCountryCode();
+        }
+        if (TextUtils.isEmpty(phoneCountryCode)) {
+            phoneCountryCode = (String) AuthFlow.get(current.getContext(), AuthFlow.KEY_MFA_PHONE_COUNTRY_CODE);
+        }
+        if (TextUtils.isEmpty(phoneCountryCode)) {
+            UserInfo userInfo = Authing.getCurrentUser();
+            if (userInfo != null) {
+                phoneCountryCode = userInfo.getPhoneCountryCode();
+            }
+        }
+        return phoneCountryCode;
+    }
+
+
     public static String getPassword(View current) {
         String password = null;
         View v = findViewByClass(current, PasswordEditText.class);
@@ -276,24 +299,33 @@ public class Util {
         return TextUtils.isEmpty(s) || "null".equals(s);
     }
 
-    public static List<Country> loadCountries(Context context) {
-        List<Country> countries = new ArrayList<>();
+    public static List<Country> loadCountryList(Context context) {
+        String jsonStr = getJson(context, "country.json");
+        Type listType = new TypeToken<List<Country>>() {}.getType();
+        Gson gson = new Gson();
+        return gson.fromJson(jsonStr, listType);
+    }
+
+    public static String getJson(Context context,String fileName){
+        StringBuilder stringBuilder = new StringBuilder();
         try {
-            InputStream inputStream = context.getResources().openRawResource(R.raw.country);
-            BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
+            AssetManager assetManager = context.getAssets();
+            BufferedReader bf = new BufferedReader(new InputStreamReader(
+                    assetManager.open(fileName)
+            ));
             String line;
-            do {
-                line = reader.readLine();
-                if (line != null) {
-                    String[] data = line.split(",");
-                    Country country = new Country(data[0], data[3], data[2], data[1]);
-                    countries.add(country);
-                }
-            } while (line != null);
-        } catch (IOException e) {
+            while ((line = bf.readLine()) != null){
+                stringBuilder.append(line);
+            }
+        } catch (IOException e){
             e.printStackTrace();
         }
-        return countries;
+        return stringBuilder.toString();
+    }
+
+    public static boolean isCn(){
+        String lang = Locale.getDefault().getLanguage();
+        return !Util.isNull(lang) && lang.contains("zh");
     }
 
     public static String getLangHeader() {

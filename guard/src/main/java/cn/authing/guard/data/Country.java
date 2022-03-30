@@ -5,32 +5,42 @@ import androidx.annotation.NonNull;
 import java.io.Serializable;
 
 public class Country implements Serializable {
-    private String abbrev;
-    private String name;
+    private String abbreviation;
+    private String cn;
+    private String en;
     private String code;
     private String emoji;
 
-    public Country(String abbrev, String name, String code, String emoji) {
-        this.abbrev = abbrev;
-        this.name = name;
+    public Country(String abbreviation, String cn, String en, String code, String emoji) {
+        this.abbreviation = abbreviation;
+        this.cn = cn;
+        this.en = en;
         this.code = code;
         this.emoji = emoji;
     }
 
     public String getAbbrev() {
-        return abbrev;
+        return abbreviation;
     }
 
     public void setAbbrev(String abbrev) {
-        this.abbrev = abbrev;
+        this.abbreviation = abbrev;
     }
 
     public String getName() {
-        return name;
+        return cn;
     }
 
     public void setName(String name) {
-        this.name = name;
+        this.cn = name;
+    }
+
+    public String getEnName() {
+        return en;
+    }
+
+    public void setEnName(String enName) {
+        this.en = enName;
     }
 
     public String getCode() {
@@ -51,6 +61,6 @@ public class Country implements Serializable {
 
     @NonNull
     public String toString() {
-        return name;
+        return cn;
     }
 }

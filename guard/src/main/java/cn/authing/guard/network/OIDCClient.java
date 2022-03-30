@@ -98,9 +98,13 @@ public class OIDCClient {
     }
 
     public static void loginByPhoneCode(String phone, String vCode, @NotNull AuthCallback<UserInfo> callback) {
+        loginByPhoneCode(null, phone, vCode, callback);
+    }
+
+    public static void loginByPhoneCode(String phoneCountryCode, String phone, String vCode, @NotNull AuthCallback<UserInfo> callback) {
         Authing.getPublicConfig((config -> OIDCClient.prepareLogin(config, (code, message, authRequest) -> {
             if (code == 200) {
-                AuthClient.loginByPhoneCode(authRequest, phone, vCode, callback);
+                AuthClient.loginByPhoneCode(authRequest, phoneCountryCode, phone, vCode, callback);
             } else {
                 callback.call(code, message, null);
             }

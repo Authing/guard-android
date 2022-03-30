@@ -95,13 +95,23 @@ public class RegisterButton extends LoadingButton {
             return;
         }
 
+        View phoneCountryCodeET = Util.findViewByClass(this, CountryCodePicker.class);
         View phoneNumberET = Util.findViewByClass(this, PhoneNumberEditText.class);
         View passwordET = Util.findViewByClass(this, PasswordEditText.class);
         View phoneCodeET = Util.findViewByClass(this, VerifyCodeEditText.class);
 
-        if (phoneNumberET != null && phoneNumberET.isShown()
+        if (phoneCountryCodeET != null && phoneCountryCodeET.isShown()
+                && phoneNumberET != null && phoneNumberET.isShown()
                 && passwordET != null && passwordET.isShown()
                 && phoneCodeET != null && phoneCodeET.isShown()) {
+            CountryCodePicker countryCodePicker = (CountryCodePicker)phoneCountryCodeET;
+            final String phoneCountryCode = countryCodePicker.getCountryCode();
+            if (TextUtils.isEmpty(phoneCountryCode)) {
+                Util.setErrorText(this, getContext().getString(R.string.authing_invalid_phone_country_code));
+                fireCallback(getContext().getString(R.string.authing_invalid_phone_country_code));
+                return;
+            }
+
             PhoneNumberEditText phoneNumberEditText = (PhoneNumberEditText)phoneNumberET;
             if (!phoneNumberEditText.isContentValid()) {
                 Util.setErrorText(this, getContext().getString(R.string.authing_invalid_phone_number));
@@ -124,7 +134,7 @@ public class RegisterButton extends LoadingButton {
             }
 
             startLoadingVisualEffect();
-            registerByPhoneCode(phone, code, password);
+            registerByPhoneCode(phoneCountryCode, phone, code, password);
         } else {
             View accountET = Util.findViewByClass(this, AccountEditText.class);
             if ((email != null || accountET != null && accountET.isShown())
@@ -162,8 +172,8 @@ public class RegisterButton extends LoadingButton {
         return ((PrivacyConfirmBox)box).require(true);
     }
 
-    private void registerByPhoneCode(String phone, String phoneCode, String password) {
-        AuthClient.registerByPhoneCode(phone, phoneCode, password, (code, message, data)->{
+    private void registerByPhoneCode(String phoneCountryCode, String phone, String phoneCode, String password) {
+        AuthClient.registerByPhoneCode(phoneCountryCode, phone, phoneCode, password, (code, message, data)->{
             if (code == 200) {
                 fireCallback(200, "", data);
             } else {
