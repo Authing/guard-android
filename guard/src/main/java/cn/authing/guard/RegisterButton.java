@@ -30,7 +30,6 @@ import cn.authing.guard.util.Util;
 
 public class RegisterButton extends LoadingButton implements IRegisterRequestCallBack {
 
-    //private String email;
     protected AuthCallback<UserInfo> callback;
     private RegisterRequestManager mRegisterRequestManager;
 
@@ -82,7 +81,6 @@ public class RegisterButton extends LoadingButton implements IRegisterRequestCal
     }
 
     public void setEmail(String email) {
-        //this.email = email;
         getRegisterRequestManager().setEmail(email);
     }
 
