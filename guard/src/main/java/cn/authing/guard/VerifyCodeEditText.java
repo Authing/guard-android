@@ -214,6 +214,13 @@ public class VerifyCodeEditText extends EditTextLayout implements TextWatcher {
                     return false;
                 });
 
+                et.setOnClickListener(view -> {
+                    String value = ((EditText)view).getText().toString();
+                    if (!TextUtils.isEmpty(value) && value.length() == 1){
+                        ((EditText)view).setSelection(0, 1);
+                    }
+                });
+
                 if (codeMode == EFrame) {
                     et.setBackgroundResource(R.drawable.authing_verify_code_background);
                 } else if (codeMode == EUnderline) {
