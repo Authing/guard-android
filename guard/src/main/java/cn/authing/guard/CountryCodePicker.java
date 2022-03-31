@@ -88,7 +88,7 @@ public class CountryCodePicker extends androidx.appcompat.widget.AppCompatTextVi
                 setOnClickListener(this::click);
             } else {
                 setEnabled(false);
-                setBackgroundResource(R.drawable.authing_country_picker_unenable_background);
+                setBackgroundResource(R.drawable.authing_country_picker_background);
             }
         });
     }

@@ -120,7 +120,7 @@
                 app:pageType="register"
                 app:errorEnabled="true"
                 android:background="@null"
-                app:leftIconDrawable="@drawable/ic_authing_user"
+                app:leftIconDrawable="@drawable/ic_authing_email"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
             <cn.authing.guard.PasswordEditText
