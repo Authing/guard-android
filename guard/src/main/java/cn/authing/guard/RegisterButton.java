@@ -7,7 +7,6 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffColorFilter;
-import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.view.View;
@@ -24,14 +23,16 @@ import cn.authing.guard.data.ExtendedField;
 import cn.authing.guard.data.UserInfo;
 import cn.authing.guard.flow.AuthFlow;
 import cn.authing.guard.flow.FlowHelper;
+import cn.authing.guard.handler.register.IRegisterRequestCallBack;
+import cn.authing.guard.handler.register.RegisterRequestManager;
 import cn.authing.guard.internal.LoadingButton;
-import cn.authing.guard.network.AuthClient;
 import cn.authing.guard.util.Util;
 
-public class RegisterButton extends LoadingButton {
+public class RegisterButton extends LoadingButton implements IRegisterRequestCallBack {
 
-    private String email;
+    //private String email;
     protected AuthCallback<UserInfo> callback;
+    private RegisterRequestManager mRegisterRequestManager;
 
     public RegisterButton(@NonNull Context context) {
         this(context, null);
@@ -73,8 +74,16 @@ public class RegisterButton extends LoadingButton {
         this.callback = callback;
     }
 
+    private RegisterRequestManager getRegisterRequestManager(){
+        if (null == mRegisterRequestManager){
+            mRegisterRequestManager = new RegisterRequestManager(this, this);
+        }
+        return mRegisterRequestManager;
+    }
+
     public void setEmail(String email) {
-        this.email = email;
+        //this.email = email;
+        getRegisterRequestManager().setEmail(email);
     }
 
     public void register() {
@@ -91,76 +100,11 @@ public class RegisterButton extends LoadingButton {
 
     public void _register(Config config) {
         if (config == null) {
-            fireCallback("Public Config is null");
+            fireCallback(500, "Public Config is null", null);
             return;
         }
 
-        View phoneCountryCodeET = Util.findViewByClass(this, CountryCodePicker.class);
-        View phoneNumberET = Util.findViewByClass(this, PhoneNumberEditText.class);
-        View passwordET = Util.findViewByClass(this, PasswordEditText.class);
-        View phoneCodeET = Util.findViewByClass(this, VerifyCodeEditText.class);
-
-        if (phoneCountryCodeET != null && phoneCountryCodeET.isShown()
-                && phoneNumberET != null && phoneNumberET.isShown()
-                && passwordET != null && passwordET.isShown()
-                && phoneCodeET != null && phoneCodeET.isShown()) {
-            CountryCodePicker countryCodePicker = (CountryCodePicker)phoneCountryCodeET;
-            final String phoneCountryCode = countryCodePicker.getCountryCode();
-            if (TextUtils.isEmpty(phoneCountryCode)) {
-                Util.setErrorText(this, getContext().getString(R.string.authing_invalid_phone_country_code));
-                fireCallback(getContext().getString(R.string.authing_invalid_phone_country_code));
-                return;
-            }
-
-            PhoneNumberEditText phoneNumberEditText = (PhoneNumberEditText)phoneNumberET;
-            if (!phoneNumberEditText.isContentValid()) {
-                Util.setErrorText(this, getContext().getString(R.string.authing_invalid_phone_number));
-                fireCallback(getContext().getString(R.string.authing_invalid_phone_number));
-                return;
-            }
-
-            final String phone = phoneNumberEditText.getText().toString();
-            final String code = ((VerifyCodeEditText) phoneCodeET).getText().toString();
-            if (TextUtils.isEmpty(code)) {
-                Util.setErrorText(this, getContext().getString(R.string.authing_incorrect_verify_code));
-                fireCallback(getContext().getString(R.string.authing_incorrect_verify_code));
-                return;
-            }
-
-            final String password = ((PasswordEditText) passwordET).getText().toString();
-            if (TextUtils.isEmpty(password)) {
-                fireCallback("Password is invalid");
-                return;
-            }
-
-            startLoadingVisualEffect();
-            registerByPhoneCode(phoneCountryCode, phone, code, password);
-        } else {
-            View accountET = Util.findViewByClass(this, AccountEditText.class);
-            if ((email != null || accountET != null && accountET.isShown())
-                    && passwordET != null && passwordET.isShown()) {
-                final String account = email != null ? email : ((AccountEditText) accountET).getText().toString();
-                final String password = ((PasswordEditText) passwordET).getText().toString();
-                if (TextUtils.isEmpty(account) || TextUtils.isEmpty(password)) {
-                    Util.setErrorText(this, "Account or password is invalid");
-                    fireCallback("Account or password is invalid");
-                    return;
-                }
-
-                View v = Util.findViewByClass(this, PasswordConfirmEditText.class);
-                if (v != null) {
-                    PasswordConfirmEditText passwordConfirmEditText = (PasswordConfirmEditText)v;
-                    if (!password.equals(passwordConfirmEditText.getText().toString())) {
-                        Util.setErrorText(this, getResources().getString(R.string.authing_password_not_match));
-                        fireCallback(getResources().getString(R.string.authing_password_not_match));
-                        return;
-                    }
-                }
-
-                startLoadingVisualEffect();
-                registerByEmail(account, password);
-            }
-        }
+        getRegisterRequestManager().requestRegister();
     }
 
     private boolean requiresAgreement() {
@@ -172,30 +116,10 @@ public class RegisterButton extends LoadingButton {
         return ((PrivacyConfirmBox)box).require(true);
     }
 
-    private void registerByPhoneCode(String phoneCountryCode, String phone, String phoneCode, String password) {
-        AuthClient.registerByPhoneCode(phoneCountryCode, phone, phoneCode, password, (code, message, data)->{
-            if (code == 200) {
-                fireCallback(200, "", data);
-            } else {
-                Util.setErrorText(this, message);
-                fireCallback(code, message, null);
-            }
-        });
-    }
 
-    private void registerByEmail(String email, String password) {
-        AuthClient.registerByEmail(email, password, (code, message, data)->{
-            if (code == 200) {
-                fireCallback(200, "", data);
-            } else {
-                Util.setErrorText(this, message);
-                fireCallback(code, message, null);
-            }
-        });
-    }
-
-    private void fireCallback(String message) {
-        fireCallback(500, message, null);
+    @Override
+    public void callback(int code, String message, UserInfo userInfo) {
+        fireCallback(code, message, userInfo);
     }
 
     private void fireCallback(int code, String message, UserInfo userInfo) {
