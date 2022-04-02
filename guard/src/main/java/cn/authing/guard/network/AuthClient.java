@@ -148,6 +148,7 @@ public class AuthClient {
                 Guardian.post(url, body, (data)-> {
                     if (data.getCode() == 200 || data.getCode() == EC_MFA_REQUIRED) {
                         Safe.saveAccount(phone);
+                        Safe.savePhoneCountryCode(phoneCountryCode);
                     }
                     if (authData == null) {
                         createUserInfoFromResponse(data, callback);

@@ -14,6 +14,7 @@ public class Safe {
     private static final String SP_KEY_ACCOUNT = "SP_ACCOUNT";
     private static final String SP_KEY_PASSWORD = "SP_PASSWORD";
     private static final String SP_KEY_TOKEN = "SP_TOKEN";
+    private static final String SP_KEY_PHONE_COUNTRY_CODE = "SP_PHONE_COUNTRY_CODE";
 
     public static void saveAccount(String account) {
         SharedPreferences sp = Authing.getAppContext().getSharedPreferences(SP_NAME, MODE_PRIVATE);
@@ -38,6 +39,16 @@ public class Safe {
         } else {
             return "";
         }
+    }
+
+    public static void savePhoneCountryCode(String code) {
+        SharedPreferences sp = Authing.getAppContext().getSharedPreferences(SP_NAME, MODE_PRIVATE);
+        sp.edit().putString(SP_KEY_PHONE_COUNTRY_CODE, code).commit();
+    }
+
+    public static String loadPhoneCountryCode() {
+        SharedPreferences sp = Authing.getAppContext().getSharedPreferences(SP_NAME, 0);
+        return sp.getString(SP_KEY_PHONE_COUNTRY_CODE, "");
     }
 
     public static void saveUser(UserInfo userInfo) {

@@ -24,6 +24,7 @@ public class CountryCodePicker extends androidx.appcompat.widget.AppCompatTextVi
 
     private final boolean showFlag;
     private final boolean showCountryName;
+    private final boolean showRightArrow;
     private List<Country> countries;
     private Country selected;
 
@@ -45,14 +46,8 @@ public class CountryCodePicker extends androidx.appcompat.widget.AppCompatTextVi
         TypedArray array = context.obtainStyledAttributes(attrs, R.styleable.CountryCodePicker);
         showFlag = array.getBoolean(R.styleable.CountryCodePicker_showFlag, false);
         showCountryName = array.getBoolean(R.styleable.CountryCodePicker_showCountryName, false);
-        boolean showRightArrow = array.getBoolean(R.styleable.CountryCodePicker_showRightArrow, true);
+        showRightArrow = array.getBoolean(R.styleable.CountryCodePicker_showRightArrow, true);
         array.recycle();
-
-        if (showRightArrow) {
-            Drawable drawable = context.getDrawable(R.drawable.ic_authing_menu_down);
-            Drawable[] drawables = this.getCompoundDrawablesRelative();
-            setCompoundDrawablesWithIntrinsicBounds(drawables[0], drawables[1], drawable, drawables[3]);
-        }
 
         initData();
         initView();
@@ -60,9 +55,9 @@ public class CountryCodePicker extends androidx.appcompat.widget.AppCompatTextVi
 
     private void initData(){
         loadData();
-        UserInfo userInfo = Authing.getCurrentUser();
-        if (userInfo != null && !Util.isNull(userInfo.getPhoneCountryCode())) {
-            String phoneCountryCode = userInfo.getPhoneCountryCode();
+
+        String phoneCountryCode = Util.getPhoneCountryCodeByCache(getContext());
+        if (!Util.isNull(phoneCountryCode)){
             for (Country country : countries){
                 if (null == country || TextUtils.isEmpty(country.getCode())){
                     continue;
@@ -76,6 +71,7 @@ public class CountryCodePicker extends androidx.appcompat.widget.AppCompatTextVi
         if (null == selected){
             selected = new Country("CN", "中国大陆", "Chinese Mainland","86", "🇨🇳");
         }
+
         updateSelected(selected);
     }
 
@@ -86,9 +82,13 @@ public class CountryCodePicker extends androidx.appcompat.widget.AppCompatTextVi
             if (isEnable) {
                 setEnabled(true);
                 setOnClickListener(this::click);
+                if (showRightArrow) {
+                    Drawable drawable = getContext().getDrawable(R.drawable.ic_authing_menu_selector);
+                    Drawable[] drawables = this.getCompoundDrawablesRelative();
+                    setCompoundDrawablesWithIntrinsicBounds(drawables[0], drawables[1], drawable, drawables[3]);
+                }
             } else {
                 setEnabled(false);
-                setBackgroundResource(R.drawable.authing_country_picker_background);
             }
         });
     }

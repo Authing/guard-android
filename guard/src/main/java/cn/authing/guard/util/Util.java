@@ -183,7 +183,15 @@ public class Util {
             phoneCountryCode = ((CountryCodePicker)v).getCountryCode();
         }
         if (TextUtils.isEmpty(phoneCountryCode)) {
-            phoneCountryCode = (String) AuthFlow.get(current.getContext(), AuthFlow.KEY_MFA_PHONE_COUNTRY_CODE);
+            return getPhoneCountryCodeByCache(current.getContext());
+        }
+        return phoneCountryCode;
+    }
+
+    public static String getPhoneCountryCodeByCache(Context context) {
+        String phoneCountryCode = (String) AuthFlow.get(context, AuthFlow.KEY_MFA_PHONE_COUNTRY_CODE);
+        if (TextUtils.isEmpty(phoneCountryCode)) {
+            phoneCountryCode = Safe.loadPhoneCountryCode();
         }
         if (TextUtils.isEmpty(phoneCountryCode)) {
             UserInfo userInfo = Authing.getCurrentUser();

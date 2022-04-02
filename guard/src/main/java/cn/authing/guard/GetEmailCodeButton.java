@@ -34,6 +34,8 @@ public class GetEmailCodeButton extends LoadingButton {
 
         Analyzer.report("GetEmailCodeButton");
 
+        loadingLocation = OVER;
+
         if (attrs == null || attrs.getAttributeValue(NS_ANDROID, "text") == null) {
             String text = getContext().getString(R.string.authing_get_verify_code);
             setText(text);
