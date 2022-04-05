@@ -82,4 +82,20 @@
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
     </application>
 
+    <queries>
+        <package android:name="com.tencent.mm" />
+    </queries>
+
+    <queries>
+        <package android:name="com.tencent.wework" />
+    </queries>
+
+    <queries>
+        <package android:name="com.eg.android.AlipayGphone" />
+    </queries>
+
+    <queries>
+        <package android:name="com.ss.android.lark" />
+    </queries>
+
 </manifest>
