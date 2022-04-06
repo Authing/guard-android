@@ -11,8 +11,8 @@ public class RegisterRequestManager {
     public RegisterRequestManager(RegisterButton registerButton, IRegisterRequestCallBack callBack){
         mEmailRegisterHandler = new EmailRegisterHandler(registerButton, callBack);
         PhoneCodeRegisterHandler phoneCodeRegisterHandler = new PhoneCodeRegisterHandler(registerButton, callBack);
-        mEmailRegisterHandler.setNextHandler(phoneCodeRegisterHandler);
-        mFirstRegisterHandler = mEmailRegisterHandler;
+        phoneCodeRegisterHandler.setNextHandler(mEmailRegisterHandler);
+        mFirstRegisterHandler = phoneCodeRegisterHandler;
     }
 
     public void requestRegister(){

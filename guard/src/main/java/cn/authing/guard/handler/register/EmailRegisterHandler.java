@@ -3,7 +3,7 @@ package cn.authing.guard.handler.register;
 import android.text.TextUtils;
 import android.view.View;
 
-import cn.authing.guard.EmailEditText;
+import cn.authing.guard.AccountEditText;
 import cn.authing.guard.PasswordConfirmEditText;
 import cn.authing.guard.PasswordEditText;
 import cn.authing.guard.R;
@@ -22,11 +22,11 @@ public class EmailRegisterHandler extends AbsRegisterHandler {
 
     @Override
     protected boolean register() {
-        View emailET = Util.findViewByClass(mRegisterButton, EmailEditText.class);
+        View emailET = Util.findViewByClass(mRegisterButton, AccountEditText.class);
         View passwordET = Util.findViewByClass(mRegisterButton, PasswordEditText.class);
         if ((email != null || emailET != null && emailET.isShown())
                 && passwordET != null && passwordET.isShown()) {
-            final String account = email != null ? email : ((EmailEditText) emailET).getText().toString();
+            final String account = email != null ? email : ((AccountEditText) emailET).getText().toString();
             final String password = ((PasswordEditText) passwordET).getText().toString();
             if (TextUtils.isEmpty(account) || TextUtils.isEmpty(password)) {
                 Util.setErrorText(mRegisterButton, "Account or password is invalid");

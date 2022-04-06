@@ -47,14 +47,17 @@ public class PhoneCodeLoginHandler extends AbsLoginHandler{
             return true;
         }
 
-        if (phoneCountryCodeET != null && phoneCountryCodeET.isShown()
-                && phoneNumberET != null && phoneNumberET.isShown()
+        if (phoneNumberET != null && phoneNumberET.isShown()
                 && phoneCodeET != null && phoneCodeET.isShown()) {
-            CountryCodePicker countryCodePicker = (CountryCodePicker)phoneCountryCodeET;
-            final String countryCode = countryCodePicker.getCountryCode();
-            if (TextUtils.isEmpty(countryCode)) {
-                fireCallback(mContext.getString(R.string.authing_invalid_phone_country_code));
-                return false;
+
+            String countryCode = "";
+            if (phoneCountryCodeET != null && phoneCountryCodeET.isShown()){
+                CountryCodePicker countryCodePicker = (CountryCodePicker)phoneCountryCodeET;
+                countryCode = countryCodePicker.getCountryCode();
+                if (TextUtils.isEmpty(countryCode)) {
+                    fireCallback(mContext.getString(R.string.authing_invalid_phone_country_code));
+                    return false;
+                }
             }
 
             PhoneNumberEditText phoneNumberEditText = (PhoneNumberEditText)phoneNumberET;

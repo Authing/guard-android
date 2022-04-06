@@ -26,16 +26,19 @@ public class PhoneCodeRegisterHandler extends AbsRegisterHandler {
         View passwordET = Util.findViewByClass(mRegisterButton, PasswordEditText.class);
         View phoneCodeET = Util.findViewByClass(mRegisterButton, VerifyCodeEditText.class);
 
-        if (phoneCountryCodeET != null && phoneCountryCodeET.isShown()
-                && phoneNumberET != null && phoneNumberET.isShown()
+        if (phoneNumberET != null && phoneNumberET.isShown()
                 && passwordET != null && passwordET.isShown()
                 && phoneCodeET != null && phoneCodeET.isShown()) {
-            CountryCodePicker countryCodePicker = (CountryCodePicker)phoneCountryCodeET;
-            final String phoneCountryCode = countryCodePicker.getCountryCode();
-            if (TextUtils.isEmpty(phoneCountryCode)) {
-                Util.setErrorText(mRegisterButton, mContext.getString(R.string.authing_invalid_phone_country_code));
-                fireCallback(mContext.getString(R.string.authing_invalid_phone_country_code));
-                return false;
+
+            String phoneCountryCode = "";
+            if (phoneCountryCodeET != null && phoneCountryCodeET.isShown()){
+                CountryCodePicker countryCodePicker = (CountryCodePicker)phoneCountryCodeET;
+                phoneCountryCode = countryCodePicker.getCountryCode();
+                if (TextUtils.isEmpty(phoneCountryCode)) {
+                    Util.setErrorText(mRegisterButton, mContext.getString(R.string.authing_invalid_phone_country_code));
+                    fireCallback(mContext.getString(R.string.authing_invalid_phone_country_code));
+                    return false;
+                }
             }
 
             PhoneNumberEditText phoneNumberEditText = (PhoneNumberEditText)phoneNumberET;
