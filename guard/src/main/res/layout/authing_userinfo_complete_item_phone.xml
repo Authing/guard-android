@@ -42,9 +42,12 @@
             android:background="@drawable/authing_edit_text_layout_background"
             android:layout_weight="1" />
         <cn.authing.guard.GetVerifyCodeButton
-            android:text="@string/authing_get_verify_code"
-            android:layout_marginLeft="4dp"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:paddingStart="4dp"
+            android:paddingEnd="4dp"
+            android:layout_marginStart="4dp"
+            android:background="@drawable/authing_get_code_button_background"
+            android:textColor="@color/button_text"/>
     </LinearLayout>
 </cn.authing.guard.complete.UserInfoFieldForm>
