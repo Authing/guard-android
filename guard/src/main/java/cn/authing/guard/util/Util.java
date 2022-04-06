@@ -1,24 +1,20 @@
 package cn.authing.guard.util;
 
 import android.content.Context;
-import android.content.res.AssetManager;
 import android.text.TextUtils;
 import android.util.Base64;
 import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
-import java.lang.reflect.Type;
 import java.net.URL;
 import java.net.URLDecoder;
 import java.security.KeyFactory;
@@ -308,27 +304,23 @@ public class Util {
     }
 
     public static List<Country> loadCountryList(Context context) {
-        String jsonStr = getJson(context, "country.json");
-        Type listType = new TypeToken<List<Country>>() {}.getType();
-        Gson gson = new Gson();
-        return gson.fromJson(jsonStr, listType);
-    }
-
-    public static String getJson(Context context,String fileName){
-        StringBuilder stringBuilder = new StringBuilder();
+        List<Country> countries = new ArrayList<>();
         try {
-            AssetManager assetManager = context.getAssets();
-            BufferedReader bf = new BufferedReader(new InputStreamReader(
-                    assetManager.open(fileName)
-            ));
+            InputStream inputStream = context.getResources().openRawResource(R.raw.country);
+            BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
             String line;
-            while ((line = bf.readLine()) != null){
-                stringBuilder.append(line);
-            }
-        } catch (IOException e){
+            do {
+                line = reader.readLine();
+                if (line != null) {
+                    String[] data = line.split(",");
+                    Country country = new Country(data[0], data[3], data[4], data[2], data[1]);
+                    countries.add(country);
+                }
+            } while (line != null);
+        } catch (IOException e) {
             e.printStackTrace();
         }
-        return stringBuilder.toString();
+        return countries;
     }
 
     public static boolean isCn(){
