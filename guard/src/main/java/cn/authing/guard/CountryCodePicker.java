@@ -16,7 +16,6 @@ import java.util.List;
 
 import cn.authing.guard.analyze.Analyzer;
 import cn.authing.guard.data.Country;
-import cn.authing.guard.data.UserInfo;
 import cn.authing.guard.internal.CountryCodeAdapter;
 import cn.authing.guard.util.Util;
 
@@ -80,6 +79,7 @@ public class CountryCodePicker extends androidx.appcompat.widget.AppCompatTextVi
         Authing.getPublicConfig(config -> {
             boolean isEnable = config.isInternationalSmsEnable();
             if (isEnable) {
+                setVisibility(VISIBLE);
                 setEnabled(true);
                 setOnClickListener(this::click);
                 if (showRightArrow) {
@@ -89,6 +89,7 @@ public class CountryCodePicker extends androidx.appcompat.widget.AppCompatTextVi
                 }
             } else {
                 setEnabled(false);
+                setVisibility(GONE);
             }
         });
     }

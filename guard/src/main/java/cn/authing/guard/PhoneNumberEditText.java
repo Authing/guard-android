@@ -125,4 +125,18 @@ public class PhoneNumberEditText extends AccountEditText implements TextWatcher 
     protected void report() {
         Analyzer.report("PhoneNumberEditText");
     }
+
+    @Override
+    protected void onAttachedToWindow() {
+        super.onAttachedToWindow();
+
+        // add left icon
+        if (leftIcon != null){
+            View child = Util.findChildViewByClass(this, CountryCodePicker.class, false);
+            if (child instanceof CountryCodePicker && child.getVisibility() == GONE){
+                leftIcon.setImageDrawable(getResources().getDrawable(R.drawable.ic_authing_cellphone));
+                leftIcon.setVisibility(VISIBLE);
+            }
+        }
+    }
 }
