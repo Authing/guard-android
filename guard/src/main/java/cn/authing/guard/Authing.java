@@ -158,11 +158,11 @@ public class Authing {
     private static void fireCallback(Config config) {
         Handler handler = new Handler(Looper.getMainLooper());
         handler.post(()->{
+            publicConfig = config;
             for (Config.ConfigCallback callback : listeners) {
                 callback.call(config);
             }
             listeners.clear();
-            publicConfig = config;
             isGettingConfig = false;
         });
     }
