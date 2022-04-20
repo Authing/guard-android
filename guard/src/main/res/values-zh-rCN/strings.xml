@@ -99,6 +99,7 @@
     <string name="authing_submit_success">提交成功</string>
 
     <!--error messages-->
+    <string name="authing_no_network">无法连接互联网</string>
     <string name="authing_network_exception">网络异常</string>
     <string name="authing_password_error_1">至少 6 位</string>
     <string name="authing_password_error_2">至少包含小写字母</string>

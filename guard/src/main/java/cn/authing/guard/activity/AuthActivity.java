@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.FrameLayout;
+import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
@@ -21,6 +22,7 @@ import java.util.List;
 import java.util.Map;
 
 import cn.authing.guard.Authing;
+import cn.authing.guard.R;
 import cn.authing.guard.data.UserInfo;
 import cn.authing.guard.flow.AuthFlow;
 import cn.authing.guard.internal.CircularAnimatedView;
@@ -78,7 +80,19 @@ public class AuthActivity extends AppCompatActivity {
             loading.setLayoutParams(lp);
             v.addView(loading);
             rootLayout.addView(v);
-            Authing.getPublicConfig((config)-> v.setVisibility(View.GONE));
+            Authing.getPublicConfig((config)-> {
+                if (config == null) {
+                    loading.setVisibility(View.GONE);
+                    TextView tv = new TextView(this);
+                    tv.setText(R.string.authing_no_network);
+                    FrameLayout.LayoutParams tvlp = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                    tvlp.gravity = Gravity.CENTER;
+                    tv.setLayoutParams(tvlp);
+                    rootLayout.addView(tv);
+                } else {
+                    v.setVisibility(View.GONE);
+                }
+            });
         }
     }
 

@@ -77,7 +77,7 @@ public class CountryCodePicker extends androidx.appcompat.widget.AppCompatTextVi
 
     private void initView(){
         Authing.getPublicConfig(config -> {
-            boolean isEnable = config.isInternationalSmsEnable();
+            boolean isEnable = config != null && config.isInternationalSmsEnable();
             if (isEnable) {
                 setVisibility(VISIBLE);
                 setEnabled(true);

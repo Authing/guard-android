@@ -28,7 +28,7 @@ public class GoRegisterButton extends GoSomewhereButton {
         Analyzer.report("GoRegisterButton");
 
         Authing.getPublicConfig((config)->{
-            if (config.getRegisterTabList() == null || config.getRegisterTabList().size() == 0) {
+            if (config != null && (config.getRegisterTabList() == null || config.getRegisterTabList().size() == 0)) {
                 setVisibility(View.GONE);
             }
         });

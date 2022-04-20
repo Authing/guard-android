@@ -143,8 +143,7 @@ public class Authing {
             try {
                 if (response.getCode() == 200) {
                     JSONObject data = response.getData();
-                    publicConfig = Config.parse(data);
-                    fireCallback(publicConfig);
+                    fireCallback(Config.parse(data));
                 } else {
                     Log.e(TAG, "Get public config failed for appId: " + sAppId + " Msg:" + response.getMessage());
                     fireCallback(null);
@@ -163,6 +162,7 @@ public class Authing {
                 callback.call(config);
             }
             listeners.clear();
+            publicConfig = config;
             isGettingConfig = false;
         });
     }

@@ -50,6 +50,9 @@ public class SocialLoginListView extends LinearLayout {
         if ("auto".equals(src)) {
             StringBuilder sb = new StringBuilder();
             Authing.getPublicConfig((config -> {
+                if (config == null) {
+                    return;
+                }
                 List<SocialConfig> socialConfigs = config.getSocialConfigs();
                 for (int i = 0, n = socialConfigs.size();i < n;++i) {
                     SocialConfig sc = socialConfigs.get(i);
@@ -76,6 +79,7 @@ public class SocialLoginListView extends LinearLayout {
     }
 
     private void setup(Context context, String s) {
+        removeAllViews();
         String[] sources = s.split("\\|");
         for (String source : sources) {
             String src = source.trim();

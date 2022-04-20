@@ -97,7 +97,7 @@ public class AccountEditText extends EditTextLayout {
         if (pageType == 1) {
             editText.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
             validator = EMAIL_VALIDATOR;
-        } else {
+        } else if (config != null) {
             List<String> enabledLoginMethods = config.getEnabledLoginMethods();
             if (enabledLoginMethods.size() == 1) {
                 String opt = enabledLoginMethods.get(0);
