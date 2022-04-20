@@ -166,4 +166,8 @@ public class Authing {
             isGettingConfig = false;
         });
     }
+
+    public static boolean isGettingConfig() {
+        return isGettingConfig;
+    }
 }

@@ -3,8 +3,11 @@ package cn.authing.guard.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.FrameLayout;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
@@ -17,8 +20,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import cn.authing.guard.Authing;
 import cn.authing.guard.data.UserInfo;
 import cn.authing.guard.flow.AuthFlow;
+import cn.authing.guard.internal.CircularAnimatedView;
+import cn.authing.guard.util.Util;
 
 public class AuthActivity extends AppCompatActivity {
 
@@ -60,6 +66,20 @@ public class AuthActivity extends AppCompatActivity {
                 setContentView(layoutId);
             }
         }
+
+        if (Authing.isGettingConfig()) {
+            FrameLayout rootLayout = (FrameLayout) findViewById(android.R.id.content);
+            FrameLayout v = new FrameLayout(this);
+            v.setBackgroundColor(0xffffffff);
+            View loading = new CircularAnimatedView(this);
+            int size = (int)Util.dp2px(this, 88);
+            FrameLayout.LayoutParams lp = new FrameLayout.LayoutParams(size, size);
+            lp.gravity = Gravity.CENTER;
+            loading.setLayoutParams(lp);
+            v.addView(loading);
+            rootLayout.addView(v);
+            Authing.getPublicConfig((config)-> v.setVisibility(View.GONE));
+        }
     }
 
     @Override
@@ -69,6 +89,7 @@ public class AuthActivity extends AppCompatActivity {
             Class.forName("com.ss.android.larksso.LarkSSO");
             LarkSSO.inst().parseIntent(this, getIntent());
         } catch( ClassNotFoundException e ) {
+            e.printStackTrace();
         }
     }
 
@@ -79,6 +100,7 @@ public class AuthActivity extends AppCompatActivity {
             Class.forName("com.ss.android.larksso.LarkSSO");
             LarkSSO.inst().parseIntent(this, intent);
         } catch( ClassNotFoundException e ) {
+            e.printStackTrace();
         }
     }
 
@@ -89,6 +111,7 @@ public class AuthActivity extends AppCompatActivity {
             Class.forName("com.ss.android.larksso.LarkSSO");
             LarkSSO.inst().parseIntent(this, data);
         } catch( ClassNotFoundException e ) {
+            e.printStackTrace();
         }
         if (requestCode == RC_LOGIN && resultCode == OK && data != null) {
             UserInfo userInfo = (UserInfo)data.getSerializableExtra("user");
