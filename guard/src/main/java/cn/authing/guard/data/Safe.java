@@ -42,13 +42,19 @@ public class Safe {
     }
 
     public static void savePhoneCountryCode(String code) {
-        SharedPreferences sp = Authing.getAppContext().getSharedPreferences(SP_NAME, MODE_PRIVATE);
-        sp.edit().putString(SP_KEY_PHONE_COUNTRY_CODE, code).commit();
+        if (Authing.getAppContext() != null) {
+            SharedPreferences sp = Authing.getAppContext().getSharedPreferences(SP_NAME, MODE_PRIVATE);
+            sp.edit().putString(SP_KEY_PHONE_COUNTRY_CODE, code).commit();
+        }
     }
 
     public static String loadPhoneCountryCode() {
-        SharedPreferences sp = Authing.getAppContext().getSharedPreferences(SP_NAME, 0);
-        return sp.getString(SP_KEY_PHONE_COUNTRY_CODE, "");
+        if (Authing.getAppContext() != null) {
+            SharedPreferences sp = Authing.getAppContext().getSharedPreferences(SP_NAME, 0);
+            return sp.getString(SP_KEY_PHONE_COUNTRY_CODE, "");
+        } else {
+            return "";
+        }
     }
 
     public static void saveUser(UserInfo userInfo) {

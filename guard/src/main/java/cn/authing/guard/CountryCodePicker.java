@@ -76,17 +76,17 @@ public class CountryCodePicker extends androidx.appcompat.widget.AppCompatTextVi
 
 
     private void initView(){
+        if (showRightArrow) {
+            Drawable drawable = getContext().getDrawable(R.drawable.ic_authing_menu_down);
+            Drawable[] drawables = this.getCompoundDrawablesRelative();
+            setCompoundDrawablesWithIntrinsicBounds(drawables[0], drawables[1], drawable, drawables[3]);
+        }
+        setOnClickListener(this::click);
         Authing.getPublicConfig(config -> {
             boolean isEnable = config != null && config.isInternationalSmsEnable();
             if (isEnable) {
                 setVisibility(VISIBLE);
                 setEnabled(true);
-                setOnClickListener(this::click);
-                if (showRightArrow) {
-                    Drawable drawable = getContext().getDrawable(R.drawable.ic_authing_menu_selector);
-                    Drawable[] drawables = this.getCompoundDrawablesRelative();
-                    setCompoundDrawablesWithIntrinsicBounds(drawables[0], drawables[1], drawable, drawables[3]);
-                }
             } else {
                 setEnabled(false);
                 setVisibility(GONE);
@@ -95,7 +95,6 @@ public class CountryCodePicker extends androidx.appcompat.widget.AppCompatTextVi
     }
 
     private void click(View v){
-        v.setSelected(!v.isSelected());
         loadData();
 
         Dialog dialog = new Dialog(getContext());
@@ -107,7 +106,6 @@ public class CountryCodePicker extends androidx.appcompat.widget.AppCompatTextVi
         lv.setOnItemClickListener((parent, view, position, id)->{
             Country c = countries.get(position);
             updateSelected(c);
-            v.setSelected(!v.isSelected());
             dialog.dismiss();
         });
         dialog.setCancelable(true);
