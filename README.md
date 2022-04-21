@@ -11,8 +11,21 @@
 </div>
 <br/>
 
-[重新定义认证流程构建方式](./doc/index_zh.md)
+[中文文档请移步至这里查看](https://docs.authing.cn/v2/reference/sdk-for-android/)
 
-[Re-define the way you build Auth Flow](./doc/index_en.md)
+[Click me for English documentation](./doc/index_en.md)
 
 </div>
+
+## Contribute
+- Fork it
+- Create your feature branch (git checkout -b my-new-feature)
+- Commit your changes (git commit -am 'Add some feature')
+- Push to the branch (git push origin my-new-feature)
+- Create new Pull Request
+
+## Get help
+
+Contact our senior Android developer via Wechat:
+
+<img width="120" src="./doc/images/zhongjiahui.jpg">

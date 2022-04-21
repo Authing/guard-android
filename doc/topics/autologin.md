@@ -54,7 +54,17 @@ public class SplashActivity extends AppCompatActivity {
 
         new Handler().postDelayed(()-> next(1), 1000);
 
-        Authing.autoLogin((code, message, userInfo) -> next(2));
+        if (Authing.isGettingConfig()) {
+            Authing.getPublicConfig(config -> {
+                if (config == null) {
+                    Toast.makeText(this, R.string.authing_no_network, Toast.LENGTH_LONG).show();
+                } else {
+                    Authing.autoLogin((code, message, userInfo) -> next(2));
+                }
+            });
+        } else {
+            Authing.autoLogin((code, message, userInfo) -> next(2));
+        }
     }
 
     private void next(int f) {
