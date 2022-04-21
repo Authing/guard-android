@@ -519,6 +519,35 @@ public class AuthClient {
         });
     }
 
+    public static void updatePhone(String phoneCountryCode, String phone, String code,
+                                   String oldPhoneCountryCode, String oldPhone, String oldCode,
+                                   @NotNull AuthCallback<UserInfo> callback) {
+        Authing.getPublicConfig(config -> {
+            try {
+                JSONObject body = new JSONObject();
+                if (!Util.isNull(phoneCountryCode)){
+                    body.put("phoneCountryCode", phoneCountryCode);
+                }
+                body.put("phone", phone);
+                body.put("phoneCode", code);
+                if (!Util.isNull(oldPhoneCountryCode)){
+                    body.put("oldPhoneCountryCode", oldPhoneCountryCode);
+                }
+                if (!Util.isNull(oldPhone)){
+                    body.put("oldPhone", oldPhone);
+                }
+                if (!Util.isNull(oldCode)){
+                    body.put("oldPhoneCode", oldCode);
+                }
+                String url = Authing.getScheme() + "://" + Util.getHost(config) + "/api/v2/users/phone/update";
+                Guardian.post(url, body, (data)-> createUserInfoFromResponse(data, callback));
+            } catch (Exception e) {
+                e.printStackTrace();
+                callback.call(500, "Exception", null);
+            }
+        });
+    }
+
     public static PasswordStrength computePasswordSecurityLevel(String password) {
         if (password.length() < 6) {
             return PasswordStrength.EWeak;

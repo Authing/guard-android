@@ -65,7 +65,6 @@ public class LoginMethodTabItem extends LinearLayout {
         int color = getResources().getColor(R.color.authing_main, null);
         button.setTextColor(color);
         underLine.setBackgroundColor(color);
-        button.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 16);
 
         post(()->{
             List<View> containers = findAllViewByClass(this, LoginContainer.class);
@@ -83,7 +82,6 @@ public class LoginMethodTabItem extends LinearLayout {
     public void loseFocus() {
         button.setTextColor(0xffaaaaaa);
         underLine.setBackgroundColor(0);
-        button.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 15);
     }
 
     public LoginContainer.LoginType getType() {

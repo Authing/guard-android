@@ -15,14 +15,14 @@
         <cn.authing.guard.AppLogo
             android:layout_width="48dp"
             android:layout_height="48dp"
-            android:layout_marginStart="@dimen/authing_form_start_end_margin"
-            android:layout_marginTop="64dp" />
+            android:layout_marginTop="64dp"
+            android:layout_gravity="center_horizontal" />
 
         <LinearLayout
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:layout_marginStart="@dimen/authing_form_start_end_margin">
+            android:layout_gravity="center_horizontal">
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -187,6 +187,14 @@
                 android:gravity="end|center_vertical"
                 android:text="@string/authing_go_login" />
         </LinearLayout>
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:minHeight="16dp"
+            android:layout_weight="1"/>
+
+        <include layout="@layout/authing_powered_by" />
 
     </LinearLayout>
 </ScrollView>
