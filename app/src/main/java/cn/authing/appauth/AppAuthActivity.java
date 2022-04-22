@@ -21,6 +21,7 @@ import net.openid.appauth.TokenRequest;
 
 import cn.authing.R;
 import cn.authing.guard.Authing;
+import cn.authing.guard.activity.UserProfileActivity;
 import cn.authing.guard.data.UserInfo;
 import cn.authing.guard.flow.AuthFlow;
 import cn.authing.guard.internal.LoadingButton;
@@ -40,19 +41,15 @@ public class AppAuthActivity extends AppCompatActivity {
     AuthorizationService authService;
     AuthState authState;
 
-    TextView tvTitle;
-    TextView tvRes;
     LoadingButton btn;
 
-    UserInfo userInfo = new UserInfo();;
+    UserInfo userInfo = new UserInfo();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_app_auth);
 
-        tvTitle = findViewById(R.id.tv_title);
-        tvRes = findViewById(R.id.tv_idtoken);
         btn = findViewById(R.id.btn_loading);
 
         btn.startLoadingVisualEffect();
@@ -69,6 +66,11 @@ public class AppAuthActivity extends AppCompatActivity {
                         authState = new AuthState(serviceConfiguration);
                         startAuth(serviceConfiguration);
                     });
+        });
+
+        findViewById(R.id.btn_user_profile).setOnClickListener(v -> {
+            Intent intent = new Intent(this, UserProfileActivity.class);
+            startActivity(intent);
         });
 
         findViewById(R.id.btn_logout).setOnClickListener((v -> {
@@ -127,8 +129,6 @@ public class AppAuthActivity extends AppCompatActivity {
                         // exchange succeeded
                         authState.update(resp1, ex1);
                         runOnUiThread(()->{
-                            tvTitle.setVisibility(View.VISIBLE);
-                            tvRes.setText(resp1.idToken);
                             Log.d(TAG, resp1.idToken);
                             Log.d(TAG, "at:" + resp1.accessToken);
                             Log.d(TAG, "rt:" + resp1.refreshToken);
