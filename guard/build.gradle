@@ -37,6 +37,4 @@ dependencies {
     compileOnly files('libs/wechatwork.jar')
     compileOnly files('libs/alipaysdk.aar')
     compileOnly files ('libs/larksso-3.0.8.aar')
-
-    testImplementation 'junit:junit:4.13.2'
 }
