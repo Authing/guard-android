@@ -40,6 +40,7 @@ public class AppAuthActivity extends AppCompatActivity {
 
     AuthorizationService authService;
     AuthState authState;
+    AuthorizationServiceConfiguration configuration;
 
     LoadingButton btn;
 
@@ -56,6 +57,11 @@ public class AppAuthActivity extends AppCompatActivity {
 
         Authing.getPublicConfig(config -> {
             String host = config.getIdentifier();
+            Uri authEndpoint = Uri.parse("https://" + host + ".authing.cn/oidc/auth");
+            Uri tokenEndpoint = Uri.parse("https://" + host + ".authing.cn/oidc/token");
+            Uri regEndpoint = Uri.parse("https://" + host + ".authing.cn/oidc/reg");
+            Uri endEndpoint = Uri.parse("https://ialppgammggc.authing.cn/login/profile/logout?redirect_uri=cn.guard://authing.cn/redirect");
+            configuration = new AuthorizationServiceConfiguration(authEndpoint, tokenEndpoint, regEndpoint, endEndpoint);
             AuthorizationServiceConfiguration.fetchFromIssuer(Uri.parse("https://" + host + ".authing.cn/oidc"),
                     (serviceConfiguration, ex) -> {
                         if (ex != null) {
@@ -75,12 +81,6 @@ public class AppAuthActivity extends AppCompatActivity {
 
         findViewById(R.id.btn_logout).setOnClickListener((v -> {
             Authing.getPublicConfig(config -> {
-                String host = config.getIdentifier();
-                Uri authEndpoint = Uri.parse("https://" + host + ".authing.cn/oidc/auth");
-                Uri tokenEndpoint = Uri.parse("https://" + host + ".authing.cn/oidc/token");
-                Uri regEndpoint = Uri.parse("https://" + host + ".authing.cn/oidc/reg");
-                Uri endEndpoint = Uri.parse("https://" + host + ".authing.cn/oidc/session/end");
-                AuthorizationServiceConfiguration configuration = new AuthorizationServiceConfiguration(authEndpoint, tokenEndpoint, regEndpoint, endEndpoint);
                 EndSessionRequest request = new EndSessionRequest.Builder(configuration)
                         .setIdTokenHint(userInfo.getIdToken())
                         .setPostLogoutRedirectUri(Uri.parse("cn.guard://authing.cn/redirect"))
