@@ -61,6 +61,8 @@
     <string name="authing_other_login">Other login methods</string>
     <string name="authing_logout">Log out</string>
     <string name="authing_delete_account">Delete account</string>
+    <string name="authing_biometric_title">Biometric authentication</string>
+    <string name="authing_biometric_tip">Log in using your biometric credential</string>
 
     <!--user profile-->
     <string name="authing_user_profile">User profile</string>

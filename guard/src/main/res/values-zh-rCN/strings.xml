@@ -61,6 +61,8 @@
     <string name="authing_other_login">其他方式登录</string>
     <string name="authing_logout">退出登录</string>
     <string name="authing_delete_account">注销帐号</string>
+    <string name="authing_biometric_title">生物认证</string>
+    <string name="authing_biometric_tip">需提供生物信息进行认证</string>
 
     <!--user profile-->
     <string name="authing_user_profile">个人中心</string>

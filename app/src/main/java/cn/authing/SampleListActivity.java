@@ -3,16 +3,23 @@ package cn.authing;
 import static cn.authing.guard.activity.AuthActivity.OK;
 import static cn.authing.guard.activity.AuthActivity.RC_LOGIN;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.biometric.BiometricManager;
+import androidx.biometric.BiometricPrompt;
+import androidx.core.content.ContextCompat;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
+
+import java.util.concurrent.Executor;
 
 import cn.authing.abao.AbaoActivity;
 import cn.authing.appauth.AppAuthActivity;
@@ -32,6 +39,8 @@ public class SampleListActivity extends AppCompatActivity {
 
     private static final int AUTHING_LOGIN = 0;
 
+    private boolean biometric;
+
     String[] from = {
             "Authing 标准登录",
             "手机号一键登录（Authing UI）",
@@ -45,6 +54,7 @@ public class SampleListActivity extends AppCompatActivity {
             "MFA",
             "登录/注册后用户信息完善",
             "扫码登录",
+            "生物二次验证",
             "Android 默认风格登录",
     };
 
@@ -105,6 +115,9 @@ public class SampleListActivity extends AppCompatActivity {
                 Intent intent = new Intent(SampleListActivity.this, ScanAuthActivity.class);
                 startActivity(intent);
             } else if (pos == 12) {
+                biometric = true;
+                AuthFlow.start(this);
+            } else if (pos == 13) {
                 Intent intent = new Intent(SampleListActivity.this, AndroidAuthActivity.class);
                 startActivity(intent);
             }
@@ -115,11 +128,54 @@ public class SampleListActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == RC_LOGIN && resultCode == OK && data != null) {
-            Intent intent = new Intent(this, MainActivity.class);
-            UserInfo userInfo = (UserInfo) data.getSerializableExtra("user");
-            intent.putExtra("user", userInfo);
-            startActivity(intent);
+            if (biometric) {
+                startBiometric();
+            } else {
+                Intent intent = new Intent(this, MainActivity.class);
+                UserInfo userInfo = (UserInfo) data.getSerializableExtra("user");
+                intent.putExtra("user", userInfo);
+                startActivity(intent);
+            }
         }
+    }
+
+    private void startBiometric() {
+        Executor executor = ContextCompat.getMainExecutor(this);
+        BiometricPrompt biometricPrompt = new BiometricPrompt(this,
+                executor, new BiometricPrompt.AuthenticationCallback() {
+            @Override
+            public void onAuthenticationError(int errorCode,
+                                              @NonNull CharSequence errString) {
+                super.onAuthenticationError(errorCode, errString);
+                Toast.makeText(getApplicationContext(),
+                        "" + errString, Toast.LENGTH_SHORT)
+                        .show();
+            }
+
+            @Override
+            public void onAuthenticationSucceeded(
+                    @NonNull BiometricPrompt.AuthenticationResult result) {
+                super.onAuthenticationSucceeded(result);
+                Intent intent = new Intent(SampleListActivity.this, MainActivity.class);
+                startActivity(intent);
+            }
+
+            @Override
+            public void onAuthenticationFailed() {
+                super.onAuthenticationFailed();
+                Toast.makeText(getApplicationContext(), "Authentication failed",
+                        Toast.LENGTH_SHORT)
+                        .show();
+            }
+        });
+
+        BiometricPrompt.PromptInfo promptInfo = new BiometricPrompt.PromptInfo.Builder()
+                .setTitle(getString(R.string.authing_biometric_title))
+                .setSubtitle(getString(R.string.authing_biometric_tip))
+                .setAllowedAuthenticators(BiometricManager.Authenticators.BIOMETRIC_STRONG)
+                .setNegativeButtonText("Cancel")
+                .build();
+        biometricPrompt.authenticate(promptInfo);
     }
 
     private void gotoMain(UserInfo data) {
