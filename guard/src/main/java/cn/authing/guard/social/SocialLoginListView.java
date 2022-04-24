@@ -41,7 +41,7 @@ public class SocialLoginListView extends LinearLayout {
         setGravity(Gravity.CENTER);
 
         TypedArray array = context.obtainStyledAttributes(attrs, R.styleable.SocialLoginListView);
-        String src = array.getString(R.styleable.SocialLoginListView_src);
+        String src = array.getString(R.styleable.SocialLoginListView_loginSource);
         if (TextUtils.isEmpty(src)) {
             src = "auto"; // auto means from console
         }

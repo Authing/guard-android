@@ -77,7 +77,7 @@
     </declare-styleable>
 
     <declare-styleable name="SocialLoginListView">
-        <attr name="src" format="string" />
+        <attr name="loginSource" format="string" />
     </declare-styleable>
 
     <declare-styleable name="CountryCodePicker">

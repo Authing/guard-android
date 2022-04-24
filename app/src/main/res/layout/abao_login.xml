@@ -62,7 +62,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="64dp"
-        app:src="wechat|alipay" />
+        app:loginSource="wechat|alipay" />
 
     <TextView
         android:layout_width="wrap_content"
