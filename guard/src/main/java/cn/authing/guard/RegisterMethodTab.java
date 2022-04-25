@@ -36,6 +36,11 @@ public class RegisterMethodTab extends LinearLayout {
 
         Analyzer.report("RegisterMethodTab");
 
+        if (Authing.getAppId() == null) {
+            setVisibility(View.GONE);
+            return;
+        }
+
         setOrientation(LinearLayout.VERTICAL);
         setBackgroundColor(0);
 

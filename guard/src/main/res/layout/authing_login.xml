@@ -94,6 +94,7 @@
             android:clipChildren="false"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:visibility="gone"
             android:layout_marginStart="@dimen/authing_form_start_end_margin"
             android:layout_marginEnd="@dimen/authing_form_start_end_margin"
             android:layout_marginTop="16dp">
@@ -131,7 +132,7 @@
         <cn.authing.guard.LoginContainer
             app:type="accountPassword"
             android:clipChildren="false"
-            android:visibility="invisible"
+            android:visibility="gone"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/authing_form_start_end_margin"

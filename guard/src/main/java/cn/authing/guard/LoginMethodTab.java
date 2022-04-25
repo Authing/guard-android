@@ -36,6 +36,11 @@ public class LoginMethodTab extends LinearLayout {
 
         Analyzer.report("LoginMethodTab");
 
+        if (Authing.getAppId() == null) {
+            setVisibility(View.GONE);
+            return;
+        }
+
         setOrientation(LinearLayout.VERTICAL);
         setBackgroundColor(0);
 
