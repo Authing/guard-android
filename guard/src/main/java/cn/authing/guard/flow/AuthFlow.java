@@ -70,6 +70,10 @@ public class AuthFlow implements Serializable {
         return start(context, R.layout.authing_login);
     }
 
+    public static AuthFlow startWeb(Activity context) {
+        return start(context, R.layout.authing_login_web);
+    }
+
     public static AuthFlow start(Activity activity, int layoutId) {
         final AuthFlow flow = new AuthFlow();
         flow.indexLayoutId = layoutId;

@@ -50,7 +50,8 @@ public class SampleListActivity extends AppCompatActivity {
             "阿宝说",
             "Auth Container",
             "AppAuth",
-            "Authing WebView",
+            "Authing WebView 登录",
+            "Authing 自定义 WebView 登录",
             "MFA",
             "登录/注册后用户信息完善",
             "扫码登录",
@@ -104,21 +105,23 @@ public class SampleListActivity extends AppCompatActivity {
                 Intent intent = new Intent(SampleListActivity.this, AppAuthActivity.class);
                 startActivity(intent);
             } else if (pos == 8) {
+                AuthFlow.startWeb(this);
+            } else if (pos == 9) {
                 Intent intent = new Intent(SampleListActivity.this, AuthingWebViewActivity.class);
                 startActivity(intent);
-            } else if (pos == 9) {
+            } else if (pos == 10) {
                 Authing.init(SampleListActivity.this, "61c173ada0e3aec651b1a1d1");
                 AuthFlow.start(this);
-            } else if (pos == 10) {
+            } else if (pos == 11) {
                 Authing.init(SampleListActivity.this, "61ae0c9807451d6f30226bd4");
                 AuthFlow.start(this);
-            } else if (pos == 11) {
+            } else if (pos == 12) {
                 Intent intent = new Intent(SampleListActivity.this, ScanAuthActivity.class);
                 startActivity(intent);
-            } else if (pos == 12) {
+            } else if (pos == 13) {
                 biometric = true;
                 AuthFlow.start(this);
-            } else if (pos == 13) {
+            } else if (pos == 14) {
                 Intent intent = new Intent(SampleListActivity.this, AndroidAuthActivity.class);
                 startActivity(intent);
             }

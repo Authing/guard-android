@@ -1,6 +1,7 @@
 package cn.authing.guard;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.util.AttributeSet;
 import android.webkit.WebResourceRequest;
@@ -16,8 +17,11 @@ import java.net.URL;
 import java.util.List;
 import java.util.Map;
 
+import cn.authing.guard.activity.AuthActivity;
 import cn.authing.guard.analyze.Analyzer;
+import cn.authing.guard.data.Config;
 import cn.authing.guard.data.UserInfo;
+import cn.authing.guard.flow.AuthFlow;
 import cn.authing.guard.network.AuthRequest;
 import cn.authing.guard.network.OIDCClient;
 import cn.authing.guard.util.ALog;
@@ -79,10 +83,10 @@ public class WebAuthView extends WebView {
                     try {
                         String authCode = Util.getAuthCode(url);
                         if (authCode != null) {
-                            OIDCClient.authByCode(authCode, authRequest, (code, message, userInfo) -> fireCallback(userInfo));
+                            OIDCClient.authByCode(authCode, authRequest, (code, message, userInfo) -> fireCallback(code, message, userInfo));
                         } else {
                             ALog.e(TAG, url);
-                            fireCallback(null);
+                            fireCallback(500, "login failed", null);
                         }
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -160,9 +164,23 @@ public class WebAuthView extends WebView {
         this.callback = callback;
     }
 
-    private void fireCallback(UserInfo userInfo) {
+    private void fireCallback(int code, String message, UserInfo userInfo) {
         if (callback != null) {
-            callback.call(userInfo);
+            post(()-> callback.call(userInfo));
+        } else if (code == 200) {
+            if (getContext() instanceof AuthActivity) {
+                AuthActivity activity = (AuthActivity) getContext();
+                AuthFlow flow = (AuthFlow) activity.getIntent().getSerializableExtra(AuthActivity.AUTH_FLOW);
+                AuthFlow.Callback<UserInfo> cb = flow.getAuthCallback();
+                if (cb != null) {
+                    cb.call(getContext(), code, message, userInfo);
+                }
+
+                Intent intent = new Intent();
+                intent.putExtra("user", userInfo);
+                activity.setResult(AuthActivity.OK, intent);
+                activity.finish();
+            }
         }
     }
 
