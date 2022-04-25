@@ -13,8 +13,10 @@ import com.tencent.mm.opensdk.openapi.IWXAPIEventHandler;
 import com.tencent.mm.opensdk.openapi.WXAPIFactory;
 
 import cn.authing.guard.AuthCallback;
+import cn.authing.guard.container.AuthContainer;
 import cn.authing.guard.data.UserInfo;
 import cn.authing.guard.network.AuthClient;
+import cn.authing.guard.network.OIDCClient;
 import cn.authing.guard.social.Wechat;
 
 public class WXCallbackActivity extends AppCompatActivity implements IWXAPIEventHandler {
@@ -22,6 +24,7 @@ public class WXCallbackActivity extends AppCompatActivity implements IWXAPIEvent
     public static final String TAG = WXCallbackActivity.class.getSimpleName();
 
     private static AuthCallback<UserInfo> callback;
+    private static AuthContainer.AuthProtocol authProtocol = AuthContainer.AuthProtocol.EInHouse;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,7 +50,11 @@ public class WXCallbackActivity extends AppCompatActivity implements IWXAPIEvent
         switch (resp.errCode) {
             case BaseResp.ErrCode.ERR_OK:
                 Log.d(TAG, "Got wechat code: " + ((SendAuth.Resp) resp).code);
-                AuthClient.loginByWechat(((SendAuth.Resp) resp).code, callback);
+                if (authProtocol == AuthContainer.AuthProtocol.EInHouse) {
+                    AuthClient.loginByWechat(((SendAuth.Resp) resp).code, callback);
+                } else if (authProtocol == AuthContainer.AuthProtocol.EOIDC) {
+                    OIDCClient.loginByWechat(((SendAuth.Resp) resp).code, callback);
+                }
                 break;
             case BaseResp.ErrCode.ERR_USER_CANCEL:
                 break;
@@ -69,5 +76,9 @@ public class WXCallbackActivity extends AppCompatActivity implements IWXAPIEvent
 
     public static void setCallback(AuthCallback<UserInfo> callback) {
         WXCallbackActivity.callback = callback;
+    }
+
+    public static void setAuthProtocol(AuthContainer.AuthProtocol authProtocol) {
+        WXCallbackActivity.authProtocol = authProtocol;
     }
 }

@@ -77,7 +77,8 @@ public class SampleListActivity extends AppCompatActivity {
                 Intent intent = new Intent(SampleListActivity.this, OneClickActivity.class);
                 startActivityForResult(intent, RC_LOGIN);
             } else if (pos == 2) {
-                OneClick oneClick = new OneClick(SampleListActivity.this);
+                //OneClick oneClick = new OneClick(SampleListActivity.this);
+                OneClick oneClick = new OneClick(SampleListActivity.this, AuthContainer.AuthProtocol.EOIDC);
                 oneClick.start(((code, message, userInfo) -> {
                     if (code != 200) {
                         Toast.makeText(Authing.getAppContext(), message, Toast.LENGTH_SHORT).show();

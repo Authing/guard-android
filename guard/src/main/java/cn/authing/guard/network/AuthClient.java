@@ -380,13 +380,30 @@ public class AuthClient {
     }
 
     public static void loginByWechat(String authCode, @NotNull AuthCallback<UserInfo> callback) {
+        loginByWechat(null, authCode, callback);
+    }
+
+    public static void loginByWechat(AuthRequest authData, String authCode, @NotNull AuthCallback<UserInfo> callback) {
         Authing.getPublicConfig(config -> {
             try {
                 JSONObject body = new JSONObject();
                 body.put("connId", config.getSocialConnectionId("wechat:mobile"));
                 body.put("code", authCode);
                 String url = Authing.getScheme() + "://" + Util.getHost(config) + "/api/v2/ecConn/wechatMobile/authByCode";
-                Guardian.post(url, body, (data)-> createUserInfoFromResponse(data, callback));
+                Guardian.post(url, body, (data)-> {
+                    if (authData == null) {
+                        createUserInfoFromResponse(data, callback);
+                    } else {
+                        createUserInfoFromResponse(data, (c, m, d)->{
+                            if (c == 200) {
+                                authData.setToken(d.getIdToken());
+                                OIDCClient.oidcInteraction(authData, callback);
+                            } else {
+                                callback.call(c, m, d);
+                            }
+                        });
+                    }
+                });
             } catch (Exception e) {
                 e.printStackTrace();
                 callback.call(500, "Exception", null);
@@ -442,13 +459,30 @@ public class AuthClient {
     }
 
     public static void loginByOneAuth(String token, String accessToken, @NotNull AuthCallback<UserInfo> callback) {
+        loginByOneAuth(null, token, accessToken, callback);
+    }
+
+    public static void loginByOneAuth(AuthRequest authData, String token, String accessToken, @NotNull AuthCallback<UserInfo> callback) {
         Authing.getPublicConfig(config -> {
             try {
                 JSONObject body = new JSONObject();
                 body.put("token", token);
                 body.put("accessToken", accessToken);
                 String url = Authing.getScheme() + "://" + Util.getHost(config) + "/api/v2/ecConn/oneAuth/login";
-                Guardian.post(url, body, (data)-> createUserInfoFromResponse(data, callback));
+                Guardian.post(url, body, (data)-> {
+                    if (authData == null) {
+                        createUserInfoFromResponse(data, callback);
+                    } else {
+                        createUserInfoFromResponse(data, (c, m, d)->{
+                            if (c == 200) {
+                                authData.setToken(d.getIdToken());
+                                OIDCClient.oidcInteraction(authData, callback);
+                            } else {
+                                callback.call(c, m, d);
+                            }
+                        });
+                    }
+                });
             } catch (Exception e) {
                 e.printStackTrace();
                 callback.call(500, "Exception", null);

@@ -32,10 +32,12 @@ import java.io.Serializable;
 import cn.authing.guard.AuthCallback;
 import cn.authing.guard.Authing;
 import cn.authing.guard.R;
+import cn.authing.guard.container.AuthContainer;
 import cn.authing.guard.data.ImageLoader;
 import cn.authing.guard.data.UserInfo;
 import cn.authing.guard.flow.AuthFlow;
 import cn.authing.guard.network.AuthClient;
+import cn.authing.guard.network.OIDCClient;
 import cn.authing.guard.social.SocialLoginListView;
 import cn.authing.guard.util.Util;
 
@@ -53,9 +55,17 @@ public class OneClick implements Serializable {
     private QuickLogin quickLogin;
 
     private int screenWidth; // dp
+    private AuthContainer.AuthProtocol authProtocol = AuthContainer.AuthProtocol.EInHouse;
 
     public OneClick(Context context) {
+        this(context, null);
+    }
+
+    public OneClick(Context context, AuthContainer.AuthProtocol authProtocol) {
         this.context = context;
+        if (null != authProtocol){
+            this.authProtocol = authProtocol;
+        }
         handler = new Handler(Looper.getMainLooper()) {
             @Override
             public void handleMessage(@NonNull Message msg) {
@@ -146,14 +156,20 @@ public class OneClick implements Serializable {
     }
 
     private void authingLogin(String t, String ac) {
-        AuthClient.loginByOneAuth(t, ac, (code, message, userInfo) -> {
-            Handler handler = new Handler(Looper.getMainLooper());
-            handler.post(()-> {
-                if (code != 200) {
-                    Toast.makeText(Authing.getAppContext(), message, Toast.LENGTH_SHORT).show();
-                }
-                callback.call(code, message, userInfo);
-            });
+        if (authProtocol == AuthContainer.AuthProtocol.EInHouse) {
+            AuthClient.loginByOneAuth(t, ac, this::fireCallback);
+        } else if (authProtocol == AuthContainer.AuthProtocol.EOIDC) {
+            OIDCClient.loginByOneAuth(t, ac, this::fireCallback);
+        }
+    }
+
+    private void fireCallback(int code, String message, UserInfo userInfo){
+        Handler handler = new Handler(Looper.getMainLooper());
+        handler.post(()-> {
+            if (code != 200) {
+                Toast.makeText(Authing.getAppContext(), message, Toast.LENGTH_SHORT).show();
+            }
+            callback.call(code, message, userInfo);
         });
     }
 

@@ -131,6 +131,26 @@ public class OIDCClient {
         })));
     }
 
+    public static void loginByOneAuth(String account, String password, @NotNull AuthCallback<UserInfo> callback) {
+        Authing.getPublicConfig((config -> OIDCClient.prepareLogin(config, (code, message, authRequest) -> {
+            if (code == 200) {
+                AuthClient.loginByOneAuth(authRequest, account, password, callback);
+            } else {
+                callback.call(code, message, null);
+            }
+        })));
+    }
+
+    public static void loginByWechat(String authCode, @NotNull AuthCallback<UserInfo> callback) {
+        Authing.getPublicConfig((config -> OIDCClient.prepareLogin(config, (code, message, authRequest) -> {
+            if (code == 200) {
+                AuthClient.loginByWechat(authRequest, authCode, callback);
+            } else {
+                callback.call(code, message, null);
+            }
+        })));
+    }
+
     public static void oidcInteraction(AuthRequest authData, @NotNull AuthCallback<UserInfo> callback) {
         Authing.getPublicConfig((config -> {
             try {
