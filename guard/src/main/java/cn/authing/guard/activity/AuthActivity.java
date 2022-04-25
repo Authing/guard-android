@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.FrameLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
@@ -70,7 +71,7 @@ public class AuthActivity extends AppCompatActivity {
         }
 
         if (Authing.isGettingConfig()) {
-            FrameLayout rootLayout = (FrameLayout) findViewById(android.R.id.content);
+            FrameLayout rootLayout = findViewById(android.R.id.content);
             FrameLayout v = new FrameLayout(this);
             v.setBackgroundColor(0xffffffff);
             View loading = new CircularAnimatedView(this);
@@ -93,6 +94,8 @@ public class AuthActivity extends AppCompatActivity {
                     v.setVisibility(View.GONE);
                 }
             });
+        } else if (Authing.getAppId() == null) {
+            Toast.makeText(this, R.string.authing_uninitialized, Toast.LENGTH_LONG).show();
         }
     }
 
@@ -103,7 +106,6 @@ public class AuthActivity extends AppCompatActivity {
             Class.forName("com.ss.android.larksso.LarkSSO");
             LarkSSO.inst().parseIntent(this, getIntent());
         } catch( ClassNotFoundException e ) {
-            e.printStackTrace();
         }
     }
 
@@ -114,7 +116,6 @@ public class AuthActivity extends AppCompatActivity {
             Class.forName("com.ss.android.larksso.LarkSSO");
             LarkSSO.inst().parseIntent(this, intent);
         } catch( ClassNotFoundException e ) {
-            e.printStackTrace();
         }
     }
 
@@ -125,7 +126,6 @@ public class AuthActivity extends AppCompatActivity {
             Class.forName("com.ss.android.larksso.LarkSSO");
             LarkSSO.inst().parseIntent(this, data);
         } catch( ClassNotFoundException e ) {
-            e.printStackTrace();
         }
         if (requestCode == RC_LOGIN && resultCode == OK && data != null) {
             UserInfo userInfo = (UserInfo)data.getSerializableExtra("user");

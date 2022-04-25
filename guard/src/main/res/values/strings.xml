@@ -102,6 +102,7 @@
 
     <!--error messages-->
     <string name="authing_no_network">Network is not available</string>
+    <string name="authing_uninitialized">Guard not initialized. Call Authing.init(your authing appId) before using any Guard functionality</string>
     <string name="authing_network_exception">Network exception</string>
     <string name="authing_password_error_1">At least 6 characters</string>
     <string name="authing_password_error_2">At least 1 lowercase letter</string>

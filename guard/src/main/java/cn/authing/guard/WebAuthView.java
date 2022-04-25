@@ -63,11 +63,6 @@ public class WebAuthView extends WebView {
         webSettings.setJavaScriptEnabled(true);
         WebView.setWebContentsDebuggingEnabled(true);
 
-        Authing.getPublicConfig(config -> {
-            String url = OIDCClient.buildAuthorizeUrl(config, authRequest);
-            loadUrl(url);
-        });
-
         setWebViewClient(new WebViewClient() {
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
@@ -147,6 +142,14 @@ public class WebAuthView extends WebView {
                 }
             }
         });
+
+        Authing.getPublicConfig(config -> {
+            post(()-> loadUrl(OIDCClient.buildAuthorizeUrl(config, authRequest)));
+        });
+    }
+
+    public void setScope(String scope) {
+        authRequest.setScope(scope);
     }
 
     public void setListener(WebViewListener listener) {

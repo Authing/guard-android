@@ -1,5 +1,7 @@
 package cn.authing.guard;
 
+import static cn.authing.guard.util.Const.NS_ANDROID;
+
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
@@ -54,6 +56,9 @@ public class VerifyCodeEditText extends EditTextLayout implements TextWatcher {
     public VerifyCodeEditText(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         Analyzer.report("VerifyCodeEditText");
+        if (attrs == null || attrs.getAttributeValue(NS_ANDROID, "hint") == null) {
+            getEditText().setHint(context.getString(R.string.authing_verify_code_edit_text_hint));
+        }
         Authing.getPublicConfig(config -> init(config, context, attrs));
     }
 
