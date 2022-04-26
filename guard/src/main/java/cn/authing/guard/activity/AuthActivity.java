@@ -6,7 +6,6 @@ import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -55,8 +54,7 @@ public class AuthActivity extends AppCompatActivity {
         if (bar != null) {
             bar.hide();
         }
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS, WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-        getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+        Util.setStatusBarColor(this, R.color.authing_status_bar_bg);
 
         Intent intent = getIntent();
         flow = (AuthFlow) intent.getSerializableExtra(AUTH_FLOW);

@@ -1,11 +1,14 @@
 package cn.authing.guard.util;
 
+import android.app.Activity;
 import android.content.Context;
 import android.text.TextUtils;
 import android.util.Base64;
 import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -369,5 +372,16 @@ public class Util {
             list.add((array.getString(i)));
         }
         return list;
+    }
+
+    public static void setStatusBarColor(Activity activity, int colorResId){
+        if (null == activity){
+            return;
+        }
+        Window window = activity.getWindow();
+        window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+        window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+        window.setStatusBarColor(activity.getColor(colorResId));
     }
 }
