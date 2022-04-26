@@ -93,8 +93,16 @@ public class WebAuthView extends WebView {
                     }
                     return true;
                 } else if ("authz".equals(uri.getLastPathSegment()) && authRequest.getUuid() != null) {
-                    skipConsent(uri);
-                    return true;
+                    if (getContext() instanceof AuthActivity) {
+                        AuthActivity activity = (AuthActivity) getContext();
+                        AuthFlow flow = (AuthFlow) activity.getIntent().getSerializableExtra(AuthActivity.AUTH_FLOW);
+                        if (flow.isSkipConsent()) {
+                            skipConsent(uri);
+                            return true;
+                        }
+                    } else {
+                        return false;
+                    }
                 }
                 return false;
             }
@@ -108,10 +116,23 @@ public class WebAuthView extends WebView {
             @Override
             public void onReceivedHttpError(WebView view, WebResourceRequest request, WebResourceResponse errorResponse) {
                 super.onReceivedHttpError(view, request, errorResponse);
-                ALog.e(TAG, "onReceivedHttpError:" + request.getUrl());
+//                ALog.e(TAG, "onReceivedHttpError:" + request.getUrl());
+                String url = request.getUrl().toString();
                 if (errorResponse.getStatusCode() == 400) {
                     if (listener != null) {
                         listener.onLoaded();
+                    }
+                } else if (url.startsWith(authRequest.getRedirectURL())) {
+                    try {
+                        String authCode = Util.getAuthCode(url);
+                        if (authCode != null) {
+                            OIDCClient.authByCode(authCode, authRequest, (code, message, userInfo) -> fireCallback(code, message, userInfo));
+                        } else {
+                            ALog.e(TAG, url);
+                            fireCallback(500, "login failed", null);
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
                 }
             }
@@ -148,12 +169,13 @@ public class WebAuthView extends WebView {
         });
 
         Authing.getPublicConfig(config -> {
-            post(()-> loadUrl(OIDCClient.buildAuthorizeUrl(config, authRequest)));
+            if (getContext() instanceof AuthActivity) {
+                AuthActivity activity = (AuthActivity) getContext();
+                AuthFlow flow = (AuthFlow) activity.getIntent().getSerializableExtra(AuthActivity.AUTH_FLOW);
+                authRequest.setScope(flow.getScope());
+            }
+            post(()-> OIDCClient.buildAuthorizeUrl(authRequest, (ok, data) -> loadUrl(data)));
         });
-    }
-
-    public void setScope(String scope) {
-        authRequest.setScope(scope);
     }
 
     public void setListener(WebViewListener listener) {

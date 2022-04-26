@@ -4,6 +4,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import cn.authing.guard.Authing;
+import cn.authing.guard.util.ALog;
 import cn.authing.guard.util.PKCE;
 import cn.authing.guard.util.Util;
 
@@ -23,9 +24,17 @@ public class AuthRequest {
     private String token;
 
     public AuthRequest() {
+        redirect_url = "https://console.authing.cn/console/get-started/" + Authing.getAppId();
+        Authing.getPublicConfig(config -> {
+            if (config != null && config.getRedirectUris().size() > 0) {
+                redirect_url = config.getRedirectUris().get(0);
+            } else {
+                ALog.e("Guard", "no redirect found in public config. OIDC will fail");
+            }
+        });
+
         client_id = Authing.getAppId();
         nonce = Util.randomString(10);
-        redirect_url = "https://console.authing.cn/console/get-started/" + Authing.getAppId();
         response_type = "code";
         scope = "openid profile email phone username address offline_access role extended_fields";
         state = Util.randomString(10);

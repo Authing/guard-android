@@ -33,7 +33,7 @@ public class Config {
     private int passwordStrength;
     private List<String> completeFieldsPlace;
     private List<ExtendedField> extendedFields;
-    private List<String> redirectUris;
+    private List<String> redirectUris = new ArrayList<>();
     private boolean internationalSmsEnable;
 
     public static Config parse(JSONObject data) throws JSONException {

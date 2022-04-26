@@ -105,7 +105,9 @@ public class SampleListActivity extends AppCompatActivity {
                 Intent intent = new Intent(SampleListActivity.this, AppAuthActivity.class);
                 startActivity(intent);
             } else if (pos == 8) {
-                AuthFlow.startWeb(this);
+                AuthFlow flow = AuthFlow.startWeb(this);
+//                flow.setScope("openid");
+                flow.setSkipConsent(true);
             } else if (pos == 9) {
                 Intent intent = new Intent(SampleListActivity.this, AuthingWebViewActivity.class);
                 startActivity(intent);

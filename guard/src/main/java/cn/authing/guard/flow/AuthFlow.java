@@ -60,6 +60,8 @@ public class AuthFlow implements Serializable {
     private int resetPasswordFirstLoginLayoutId;
 
     private AuthContainer.AuthProtocol authProtocol = AuthContainer.AuthProtocol.EInHouse;
+    private String scope = "openid profile email phone username address offline_access role extended_fields";
+    private boolean skipConsent;
 
     public interface Callback<T> extends Serializable {
         void call(Context context, int code, String message, T userInfo);
@@ -371,5 +373,21 @@ public class AuthFlow implements Serializable {
 
     public void setAuthProtocol(AuthContainer.AuthProtocol authProtocol) {
         this.authProtocol = authProtocol;
+    }
+
+    public String getScope() {
+        return scope;
+    }
+
+    public void setScope(String scope) {
+        this.scope = scope;
+    }
+
+    public boolean isSkipConsent() {
+        return skipConsent;
+    }
+
+    public void setSkipConsent(boolean skipConsent) {
+        this.skipConsent = skipConsent;
     }
 }

@@ -360,8 +360,11 @@ public class Util {
     public static String getHost(Config config) {
         if (isIp(Authing.getHost())) {
             return Authing.getHost();
-        } else {
+        } else if (config != null) {
             return config.getIdentifier() + "." + Authing.getHost();
+        } else {
+            ALog.e("Guard", "invalid host");
+            return "core." + Authing.getHost();
         }
     }
 

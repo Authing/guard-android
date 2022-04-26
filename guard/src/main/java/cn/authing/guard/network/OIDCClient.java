@@ -29,7 +29,12 @@ public class OIDCClient {
     private static final String TAG = "AuthClientInternal";
 
     public static void buildAuthorizeUrl(AuthRequest authRequest, Callback<String> callback) {
-        Authing.getPublicConfig(config -> callback.call(true, buildAuthorizeUrl(config, authRequest)));
+        Authing.getPublicConfig(config -> {
+            if (config != null && config.getRedirectUris().size() > 0) {
+                authRequest.setRedirectURL(config.getRedirectUris().get(0));
+            }
+            callback.call(true, buildAuthorizeUrl(config, authRequest));
+        });
     }
 
     public static String buildAuthorizeUrl(Config config, AuthRequest authRequest) {
