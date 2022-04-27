@@ -46,6 +46,7 @@ public class LoginMethodTab extends LinearLayout {
 
         HorizontalScrollView scrollView = new HorizontalScrollView(context);
         scrollView.setBackgroundColor(0);
+        scrollView.setHorizontalScrollBarEnabled(false);
         addView(scrollView);
 
         View underLine = new View(context);
@@ -89,6 +90,8 @@ public class LoginMethodTab extends LinearLayout {
             } else if ("email-code".equals(s)) {
                 b.setText(getResources().getString(R.string.authing_login_by_email_code));
                 b.setType(LoginContainer.LoginType.EByEmailCode);
+            } else {
+                continue;
             }
 
             if (config.getDefaultLoginMethod().equals(s)) {

@@ -211,7 +211,7 @@
             android:minHeight="16dp"
             android:layout_weight="1"/>
 
-        <TextView
+        <cn.authing.guard.internal.ContinueWithTextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/authing_3rd_login"
