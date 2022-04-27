@@ -12,6 +12,7 @@ import java.util.List;
 
 import cn.authing.guard.analyze.Analyzer;
 import cn.authing.guard.data.Config;
+import cn.authing.guard.internal.BaseTabItem;
 import cn.authing.guard.internal.RegisterMethodTabItem;
 import cn.authing.guard.util.Util;
 
@@ -57,6 +58,7 @@ public class RegisterMethodTab extends LinearLayout {
 
         // contents
         LinearLayout container = new LinearLayout(context);
+        container.setClipChildren(false);
         LayoutParams containerParam = new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT, 1f);
         container.setLayoutParams(containerParam);
         container.setOrientation(LinearLayout.HORIZONTAL);
@@ -88,7 +90,7 @@ public class RegisterMethodTab extends LinearLayout {
             }
 
             if (config.getDefaultRegisterMethod().equals(s)) {
-                b.gainFocus();
+                b.gainFocus(null);
                 container.addView(b, 0);
             } else {
                 b.loseFocus();
@@ -101,10 +103,14 @@ public class RegisterMethodTab extends LinearLayout {
 
     public void addClickListener(View view) {
         view.setOnClickListener((v) -> {
+            BaseTabItem lastFocused = null;
             for (RegisterMethodTabItem item : items) {
+                if (item.isFocused()) {
+                    lastFocused = item;
+                }
                 item.loseFocus();
             }
-            ((RegisterMethodTabItem)v).gainFocus();
+            ((RegisterMethodTabItem)v).gainFocus(lastFocused);
             Util.setErrorText(this, null);
         });
     }
@@ -113,7 +119,7 @@ public class RegisterMethodTab extends LinearLayout {
         RegisterMethodTabItem b = new RegisterMethodTabItem(getContext());
         b.setText("手机号注册");
         container.addView(b);
-        b.gainFocus();
+        b.gainFocus(null);
         b.setType(RegisterContainer.RegisterType.EByPhoneCodePassword);
         addClickListener(b);
         items.add(b);

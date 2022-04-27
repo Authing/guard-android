@@ -57,6 +57,7 @@ public class LoginMethodTab extends LinearLayout {
 
         // contents
         LinearLayout container = new LinearLayout(context);
+        container.setClipChildren(false);
         LinearLayout.LayoutParams containerParam = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT, 1f);
         container.setLayoutParams(containerParam);
         container.setOrientation(LinearLayout.HORIZONTAL);
@@ -91,7 +92,7 @@ public class LoginMethodTab extends LinearLayout {
             }
 
             if (config.getDefaultLoginMethod().equals(s)) {
-                b.gainFocus();
+                b.gainFocus(null);
                 container.addView(b, 0);
             } else {
                 b.loseFocus();
@@ -104,10 +105,14 @@ public class LoginMethodTab extends LinearLayout {
 
     public void addClickListener(View view) {
         view.setOnClickListener((v) -> {
+            LoginMethodTabItem lastFocused = null;
             for (LoginMethodTabItem item : items) {
+                if (item.isFocused()) {
+                    lastFocused = item;
+                }
                 item.loseFocus();
             }
-            ((LoginMethodTabItem)v).gainFocus();
+            ((LoginMethodTabItem)v).gainFocus(lastFocused);
             Util.setErrorText(this, null);
         });
     }
@@ -116,7 +121,7 @@ public class LoginMethodTab extends LinearLayout {
         LoginMethodTabItem b = new LoginMethodTabItem(getContext());
         b.setText(getResources().getString(R.string.authing_login_by_phone_code));
         container.addView(b);
-        b.gainFocus();
+        b.gainFocus(null);
         b.setType(LoginContainer.LoginType.EByPhoneCode);
         addClickListener(b);
         items.add(b);

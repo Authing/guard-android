@@ -216,12 +216,12 @@
             android:text="@string/authing_3rd_login"
             android:gravity="center"
             android:textColor="#DDD"
-            android:layout_marginBottom="32dp" />
+            android:layout_marginBottom="24dp" />
 
         <cn.authing.guard.social.SocialLoginListView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="24dp" />
+            android:layout_marginBottom="18dp" />
 
         <cn.authing.guard.feedback.GoFeedbackButton
             android:layout_width="wrap_content"
