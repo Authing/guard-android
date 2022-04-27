@@ -80,7 +80,7 @@ public class Authing {
             callback.call(500, "no user logged in", null);
         } else {
             String refreshToken = getCurrentUser().getRefreshToken();
-            if (Util.isNull(refreshToken)){
+            if (Util.isNull(refreshToken)) {
                 AuthClient.getCurrentUser((code, message, userInfo) -> {
                     if (code != 200) {
                         if (code == 2020) {

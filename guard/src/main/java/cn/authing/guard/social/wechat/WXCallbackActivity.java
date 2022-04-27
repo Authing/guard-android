@@ -2,7 +2,6 @@ package cn.authing.guard.social.wechat;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -18,6 +17,7 @@ import cn.authing.guard.data.UserInfo;
 import cn.authing.guard.network.AuthClient;
 import cn.authing.guard.network.OIDCClient;
 import cn.authing.guard.social.Wechat;
+import cn.authing.guard.util.ALog;
 
 public class WXCallbackActivity extends AppCompatActivity implements IWXAPIEventHandler {
 
@@ -41,7 +41,7 @@ public class WXCallbackActivity extends AppCompatActivity implements IWXAPIEvent
 
     @Override
     public void onReq(BaseReq baseReq) {
-        Log.d(TAG, "onReq: ");
+        ALog.d(TAG, "onReq: ");
         finish();
     }
 
@@ -49,7 +49,7 @@ public class WXCallbackActivity extends AppCompatActivity implements IWXAPIEvent
     public void onResp(BaseResp resp) {
         switch (resp.errCode) {
             case BaseResp.ErrCode.ERR_OK:
-                Log.d(TAG, "Got wechat code: " + ((SendAuth.Resp) resp).code);
+                ALog.d(TAG, "Got wechat code: " + ((SendAuth.Resp) resp).code);
                 if (authProtocol == AuthContainer.AuthProtocol.EInHouse) {
                     AuthClient.loginByWechat(((SendAuth.Resp) resp).code, callback);
                 } else if (authProtocol == AuthContainer.AuthProtocol.EOIDC) {
@@ -57,8 +57,16 @@ public class WXCallbackActivity extends AppCompatActivity implements IWXAPIEvent
                 }
                 break;
             case BaseResp.ErrCode.ERR_USER_CANCEL:
+                ALog.i(TAG, "wechat user canceled");
+                if (callback != null) {
+                    callback.call(BaseResp.ErrCode.ERR_USER_CANCEL, "", null);
+                }
                 break;
             case BaseResp.ErrCode.ERR_AUTH_DENIED:
+                ALog.w(TAG, "wechat user denied auth");
+                if (callback != null) {
+                    callback.call(BaseResp.ErrCode.ERR_AUTH_DENIED, "", null);
+                }
                 break;
             default:
                 break;
