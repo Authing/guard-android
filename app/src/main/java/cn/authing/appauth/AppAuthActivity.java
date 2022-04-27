@@ -60,7 +60,7 @@ public class AppAuthActivity extends AppCompatActivity {
             Uri authEndpoint = Uri.parse("https://" + host + ".authing.cn/oidc/auth");
             Uri tokenEndpoint = Uri.parse("https://" + host + ".authing.cn/oidc/token");
             Uri regEndpoint = Uri.parse("https://" + host + ".authing.cn/oidc/reg");
-            Uri endEndpoint = Uri.parse("https://ialppgammggc.authing.cn/login/profile/logout?redirect_uri=cn.guard://authing.cn/redirect");
+            Uri endEndpoint = Uri.parse("https://lrb31s-demo.authing.cn/login/profile/logout?redirect_uri=cn.guard://authing.cn/redirect");
             configuration = new AuthorizationServiceConfiguration(authEndpoint, tokenEndpoint, regEndpoint, endEndpoint);
             AuthorizationServiceConfiguration.fetchFromIssuer(Uri.parse("https://" + host + ".authing.cn/oidc"),
                     (serviceConfiguration, ex) -> {

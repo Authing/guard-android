@@ -101,7 +101,7 @@ public class AuthClient {
     }
 
     public static void sendSms(String phoneCountryCode, String phone, @NotNull AuthCallback<?> callback) {
-        if (GlobalCountDown.countDown != 0) {
+        if (GlobalCountDown.isCountingDown(phone+phoneCountryCode)) {
             callback.call(500, Authing.getAppContext().getString(R.string.authing_sms_already_sent), null);
             return;
         }
@@ -116,7 +116,7 @@ public class AuthClient {
                 String url = Authing.getScheme() + "://" + Util.getHost(config) + "/api/v2/sms/send";
                 Guardian.post(url, body, (data)-> {
                     if (data.getCode() == 200) {
-                        GlobalCountDown.start();
+                        GlobalCountDown.start(phone+phoneCountryCode);
                     }
                     callback.call(data.getCode(), data.getMessage(), null);
                 });

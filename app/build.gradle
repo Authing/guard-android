@@ -10,7 +10,7 @@ android {
         minSdk 24
         targetSdk 31
         versionCode 1
-        versionName "1.2.8"
+        versionName "1.2.9"
         archivesBaseName = "GuardDemo-$versionName"
     }
 

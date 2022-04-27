@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.drawable.AnimatedVectorDrawable;
+import android.os.Looper;
 import android.util.AttributeSet;
 
 import androidx.annotation.NonNull;
@@ -57,12 +58,18 @@ public class LoadingButton extends AppCompatButton {
     }
 
     public void stopLoadingVisualEffect() {
-        post(()->{
-            showLoading = false;
-            loading.stop();
-            loading.setVisible(false, true);
-            setEnabled(true);
-        });
+        if (Thread.currentThread() == Looper.getMainLooper().getThread()) {
+            doStopLoadingVisualEffect();
+        } else {
+            post(this::doStopLoadingVisualEffect);
+        }
+    }
+
+    private void doStopLoadingVisualEffect() {
+        showLoading = false;
+        loading.stop();
+        loading.setVisible(false, true);
+        setEnabled(true);
     }
 
     @Override

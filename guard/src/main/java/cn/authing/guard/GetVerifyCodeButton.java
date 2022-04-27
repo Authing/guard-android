@@ -52,7 +52,7 @@ public class GetVerifyCodeButton extends LoadingButton {
             setBackgroundResource(R.drawable.authing_verify_code_background);
         }
 
-        if (GlobalCountDown.countDown > 0) {
+        if (GlobalCountDown.isCountingDown()) {
             countDown();
         }
         setOnClickListener((v -> getSMSCode()));
@@ -71,6 +71,8 @@ public class GetVerifyCodeButton extends LoadingButton {
     private void handleSMSResult(int code, String message, Object ignore) {
         post(()->{
             stopLoadingVisualEffect();
+            // in stopLoadingVisualEffect it will setEnabled to true
+            setEnabled(false);
             if (code == 200) {
                 countDown();
             } else {
@@ -80,7 +82,7 @@ public class GetVerifyCodeButton extends LoadingButton {
     }
 
     private void countDown() {
-        if (GlobalCountDown.countDown > 0) {
+        if (GlobalCountDown.isCountingDown()) {
             updateCountDown();
             postDelayed(this::countDown, 1000);
         } else {
@@ -91,7 +93,7 @@ public class GetVerifyCodeButton extends LoadingButton {
 
     private void updateCountDown() {
         setEnabled(false);
-        setText(String.format(countDownTip, GlobalCountDown.countDown));
+        setText(String.format(countDownTip, GlobalCountDown.getFirstCountDown()));
     }
 
     public void setCountDownTip(String format) {
