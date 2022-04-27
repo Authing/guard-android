@@ -5,6 +5,8 @@
     android:layout_height="match_parent"
     android:clipChildren="false"
     android:fillViewport="true"
+    android:scrollbars="none"
+    android:overScrollMode="never"
     android:orientation="vertical">
     <LinearLayout
         android:layout_width="match_parent"
@@ -15,7 +17,7 @@
         <cn.authing.guard.AppLogo
             android:layout_width="48dp"
             android:layout_height="48dp"
-            android:layout_marginTop="64dp"
+            android:layout_marginTop="60dp"
             android:layout_gravity="center_horizontal" />
 
         <LinearLayout
@@ -39,7 +41,7 @@
         <cn.authing.guard.RegisterMethodTab
             android:layout_width="match_parent"
             android:layout_height="52dp"
-            android:layout_marginTop="32dp"
+            android:layout_marginTop="28dp"
             android:layout_marginStart="@dimen/authing_form_start_end_margin"
             android:layout_marginEnd="@dimen/authing_form_start_end_margin" />
 
@@ -50,7 +52,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/authing_form_start_end_margin"
             android:layout_marginEnd="@dimen/authing_form_start_end_margin"
-            android:layout_marginTop="16dp">
+            android:layout_marginTop="14dp">
             <cn.authing.guard.PhoneNumberEditText
                 android:background="@null"
                 app:errorEnabled="true"
@@ -115,7 +117,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/authing_form_start_end_margin"
             android:layout_marginEnd="@dimen/authing_form_start_end_margin"
-            android:layout_marginTop="16dp">
+            android:layout_marginTop="14dp">
             <cn.authing.guard.EmailEditText
                 app:pageType="register"
                 app:errorEnabled="true"
@@ -146,7 +148,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/authing_form_start_end_margin"
             android:layout_marginEnd="@dimen/authing_form_start_end_margin"
-            android:layout_marginTop="8dp"/>
+            android:layout_marginTop="4dp"/>
 
         <cn.authing.guard.PrivacyConfirmBox
             android:layout_width="match_parent"
@@ -168,8 +170,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/authing_form_start_end_margin"
-            android:layout_marginEnd="@dimen/authing_form_start_end_margin"
-            android:layout_marginTop="12dp" >
+            android:layout_marginEnd="@dimen/authing_form_start_end_margin">
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
