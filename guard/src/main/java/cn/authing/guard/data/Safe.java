@@ -14,6 +14,7 @@ public class Safe {
     private static final String SP_KEY_ACCOUNT = "SP_ACCOUNT";
     private static final String SP_KEY_PASSWORD = "SP_PASSWORD";
     private static final String SP_KEY_TOKEN = "SP_TOKEN";
+    private static final String SP_KEY_REFRESH_TOKEN = "SP_REFRESH_TOKEN";
     private static final String SP_KEY_PHONE_COUNTRY_CODE = "SP_PHONE_COUNTRY_CODE";
 
     public static void saveAccount(String account) {
@@ -61,6 +62,7 @@ public class Safe {
         if (Authing.getAppContext() != null) {
             SharedPreferences sp = Authing.getAppContext().getSharedPreferences(SP_NAME, MODE_PRIVATE);
             sp.edit().putString(SP_KEY_TOKEN, userInfo.getIdToken()).commit();
+            sp.edit().putString(SP_KEY_REFRESH_TOKEN, userInfo.getRefreshToken()).commit();
         }
     }
 
@@ -73,6 +75,8 @@ public class Safe {
             } else {
                 UserInfo userInfo = new UserInfo();
                 userInfo.setIdToken(token);
+                String refreshToken = sp.getString(SP_KEY_REFRESH_TOKEN, "");
+                userInfo.setRefreshToken(refreshToken);
                 return userInfo;
             }
         } else {
@@ -84,6 +88,7 @@ public class Safe {
         if (Authing.getAppContext() != null) {
             SharedPreferences sp = Authing.getAppContext().getSharedPreferences(SP_NAME, MODE_PRIVATE);
             sp.edit().remove(SP_KEY_TOKEN).commit();
+            sp.edit().remove(SP_KEY_REFRESH_TOKEN).commit();
         }
     }
 }

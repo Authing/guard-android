@@ -3,7 +3,6 @@ package cn.authing.guard;
 import android.content.Context;
 import android.os.Handler;
 import android.os.Looper;
-import android.util.Log;
 
 import org.json.JSONObject;
 
@@ -16,6 +15,7 @@ import cn.authing.guard.data.Safe;
 import cn.authing.guard.data.UserInfo;
 import cn.authing.guard.network.AuthClient;
 import cn.authing.guard.network.Guardian;
+import cn.authing.guard.network.OIDCClient;
 import cn.authing.guard.util.ALog;
 import cn.authing.guard.util.Util;
 
@@ -79,18 +79,34 @@ public class Authing {
         if (getCurrentUser() == null) {
             callback.call(500, "no user logged in", null);
         } else {
-            AuthClient.getCurrentUser((code, message, userInfo) -> {
-                if (code != 200) {
-                    if (code == 2020) {
-                        ALog.d(TAG, "auto login token expired");
-                        Safe.logoutUser(sCurrentUser);
+            String refreshToken = getCurrentUser().getRefreshToken();
+            if (Util.isNull(refreshToken)){
+                AuthClient.getCurrentUser((code, message, userInfo) -> {
+                    if (code != 200) {
+                        if (code == 2020) {
+                            ALog.d(TAG, "auto login token expired");
+                            Safe.logoutUser(sCurrentUser);
+                        }
+                        sCurrentUser = null;
+                        callback.call(code, message, userInfo);
+                    } else {
+                        AuthClient.updateIdToken(callback);
                     }
-                    sCurrentUser = null;
-                    callback.call(code, message, userInfo);
-                } else {
-                    AuthClient.updateIdToken(callback);
-                }
-            });
+                });
+            } else {
+                OIDCClient.getNewAccessTokenByRefreshToken(refreshToken, (code, message, userInfo) -> {
+                    if (code != 200) {
+                        if (code == 2020) {
+                            ALog.d(TAG, "auto login token expired");
+                            Safe.logoutUser(sCurrentUser);
+                        }
+                        sCurrentUser = null;
+                        callback.call(code, message, userInfo);
+                    } else {
+                        OIDCClient.getUserInfoByAccessToken(getCurrentUser(), callback);
+                    }
+                });
+            }
         }
     }
 
@@ -145,7 +161,7 @@ public class Authing {
                     JSONObject data = response.getData();
                     fireCallback(Config.parse(data));
                 } else {
-                    Log.e(TAG, "Get public config failed for appId: " + sAppId + " Msg:" + response.getMessage());
+                    ALog.e(TAG, "Get public config failed for appId: " + sAppId + " Msg:" + response.getMessage());
                     fireCallback(null);
                 }
             } catch (Exception e) {
