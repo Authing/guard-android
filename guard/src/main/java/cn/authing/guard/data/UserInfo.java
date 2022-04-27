@@ -673,14 +673,21 @@ public class UserInfo implements Serializable {
             String s = data.getString("streetAddress");
             userInfo.setStreetAddress(s);
         }
+        if (data.has("email_verified")) {
+            boolean b = data.getBoolean("email_verified");
+            userInfo.setEmail_verified(b);
+        }
         if (data.has("emailVerified")) {
             boolean b = data.getBoolean("emailVerified");
             userInfo.setEmail_verified(b);
         }
+        if (data.has("phone_number_verified")) {
+            boolean b = data.getBoolean("phone_number_verified");
+            userInfo.setPhone_number_verified(b);
+        }
         if (data.has("phoneVerified")) {
             boolean b = data.getBoolean("phoneVerified");
-            userInfo.setPhone_number_verified(
-                    b);
+            userInfo.setPhone_number_verified(b);
         }
         if (data.has("recoveryCode")) {
             String s = data.getString("recoveryCode");
