@@ -62,6 +62,8 @@ public class AuthFlow implements Serializable {
     private AuthContainer.AuthProtocol authProtocol = AuthContainer.AuthProtocol.EInHouse;
     private String scope = "openid profile email phone username address offline_access role extended_fields";
     private boolean skipConsent;
+    // save confirmed data across Guard. e.g. Phone Number, Email
+    private boolean syncData = true;
 
     public interface Callback<T> extends Serializable {
         void call(Context context, int code, String message, T userInfo);
@@ -389,5 +391,13 @@ public class AuthFlow implements Serializable {
 
     public void setSkipConsent(boolean skipConsent) {
         this.skipConsent = skipConsent;
+    }
+
+    public boolean isSyncData() {
+        return syncData;
+    }
+
+    public void setSyncData(boolean syncData) {
+        this.syncData = syncData;
     }
 }

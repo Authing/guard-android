@@ -9,8 +9,10 @@ import android.view.inputmethod.EditorInfo;
 
 import java.util.List;
 
+import cn.authing.guard.activity.AuthActivity;
 import cn.authing.guard.analyze.Analyzer;
 import cn.authing.guard.data.Config;
+import cn.authing.guard.flow.AuthFlow;
 import cn.authing.guard.internal.EditTextLayout;
 import cn.authing.guard.util.Util;
 import cn.authing.guard.util.Validator;
@@ -46,7 +48,16 @@ public class AccountEditText extends EditTextLayout {
             }
 
             setup(config);
-            syncData();
+
+            if (getContext() instanceof AuthActivity) {
+                AuthActivity activity = (AuthActivity) getContext();
+                AuthFlow flow = (AuthFlow) activity.getIntent().getSerializableExtra(AuthActivity.AUTH_FLOW);
+                if (flow.isSyncData()) {
+                    syncData();
+                }
+            } else {
+                syncData();
+            }
         }));
     }
 
