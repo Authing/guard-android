@@ -2,6 +2,7 @@ package cn.authing.guard.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.View;
@@ -41,6 +42,8 @@ public class AuthActivity extends AppCompatActivity {
     protected AuthFlow flow;
 
     private final Map<String, List<EventListener>> eventMap = new HashMap<>();
+    private FrameLayout loadingContainer;
+    private View loading;
 
     public interface EventListener {
         void happened(String what);
@@ -70,28 +73,19 @@ public class AuthActivity extends AppCompatActivity {
 
         if (Authing.isGettingConfig()) {
             FrameLayout rootLayout = findViewById(android.R.id.content);
-            FrameLayout v = new FrameLayout(this);
-            v.setBackgroundColor(0xffffffff);
-            View loading = new CircularAnimatedView(this);
+            loadingContainer = new FrameLayout(this);
+            loadingContainer.setBackgroundColor(0xffffffff);
+            loading = new CircularAnimatedView(this);
             int size = (int)Util.dp2px(this, 88);
             FrameLayout.LayoutParams lp = new FrameLayout.LayoutParams(size, size);
             lp.gravity = Gravity.CENTER;
             loading.setLayoutParams(lp);
-            v.addView(loading);
-            rootLayout.addView(v);
-            Authing.getPublicConfig((config)-> {
-                if (config == null) {
-                    loading.setVisibility(View.GONE);
-                    TextView tv = new TextView(this);
-                    tv.setText(R.string.authing_no_network);
-                    FrameLayout.LayoutParams tvlp = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-                    tvlp.gravity = Gravity.CENTER;
-                    tv.setLayoutParams(tvlp);
-                    rootLayout.addView(tv);
-                } else {
-                    v.setVisibility(View.GONE);
-                }
-            });
+            loading.setVisibility(View.INVISIBLE);
+            loadingContainer.addView(loading);
+            rootLayout.addView(loadingContainer);
+
+            // some tolerance for blank screen. otherwise the loading will blink
+            new Handler().postDelayed(this::showLoading, 500);
         } else if (Authing.getAppId() == null) {
             Toast.makeText(this, R.string.authing_uninitialized, Toast.LENGTH_LONG).show();
         }
@@ -132,6 +126,30 @@ public class AuthActivity extends AppCompatActivity {
             setResult(OK, intent);
             finish();
         }
+    }
+
+    private void showLoading() {
+        if (!Authing.isGettingConfig()) {
+            loadingContainer.setVisibility(View.GONE);
+            return;
+        }
+
+        // still requesting config. show loading for some minimum time to avoid blinking
+        loading.setVisibility(View.VISIBLE);
+        new Handler().postDelayed(()-> Authing.getPublicConfig((config)-> {
+            if (config == null) {
+                FrameLayout rootLayout = findViewById(android.R.id.content);
+                loading.setVisibility(View.GONE);
+                TextView tv = new TextView(this);
+                tv.setText(R.string.authing_no_network);
+                FrameLayout.LayoutParams tvlp = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                tvlp.gravity = Gravity.CENTER;
+                tv.setLayoutParams(tvlp);
+                rootLayout.addView(tv);
+            } else {
+                loadingContainer.setVisibility(View.GONE);
+            }
+        }), 888);
     }
 
     public AuthFlow getFlow() {

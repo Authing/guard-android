@@ -56,6 +56,14 @@ public class UserInfo implements Serializable {
 
     private String id;
     private String sub;
+    private String status;
+    private String company;
+    private String browser;
+    private String device;
+    private int loginsCount;
+    private String lastIp;
+    private boolean blocked;
+    private boolean isDeleted;
     private String birthday;
     private String family_name;
     private String gender;
@@ -73,6 +81,11 @@ public class UserInfo implements Serializable {
     private String website;
     private String zoneinfo;
     private String country;
+    private String city;
+    private String province;
+    private String streetAddress;
+    private String region;
+    private String postalCode;
     private String email;
     private boolean email_verified;
     private Address address;
@@ -107,6 +120,70 @@ public class UserInfo implements Serializable {
 
     public void setSub(String sub) {
         this.sub = sub;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public String getCompany() {
+        return company;
+    }
+
+    public void setCompany(String company) {
+        this.company = company;
+    }
+
+    public String getBrowser() {
+        return browser;
+    }
+
+    public void setBrowser(String browser) {
+        this.browser = browser;
+    }
+
+    public String getDevice() {
+        return device;
+    }
+
+    public void setDevice(String device) {
+        this.device = device;
+    }
+
+    public int getLoginsCount() {
+        return loginsCount;
+    }
+
+    public void setLoginsCount(int loginsCount) {
+        this.loginsCount = loginsCount;
+    }
+
+    public String getLastIp() {
+        return lastIp;
+    }
+
+    public void setLastIp(String lastIp) {
+        this.lastIp = lastIp;
+    }
+
+    public boolean isBlocked() {
+        return blocked;
+    }
+
+    public void setBlocked(boolean blocked) {
+        this.blocked = blocked;
+    }
+
+    public boolean isDeleted() {
+        return isDeleted;
+    }
+
+    public void setDeleted(boolean deleted) {
+        isDeleted = deleted;
     }
 
     public String getBirthday() {
@@ -243,6 +320,46 @@ public class UserInfo implements Serializable {
 
     public void setCountry(String country) {
         this.country = country;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public String getProvince() {
+        return province;
+    }
+
+    public void setProvince(String province) {
+        this.province = province;
+    }
+
+    public String getStreetAddress() {
+        return streetAddress;
+    }
+
+    public void setStreetAddress(String streetAddress) {
+        this.streetAddress = streetAddress;
+    }
+
+    public String getRegion() {
+        return region;
+    }
+
+    public void setRegion(String region) {
+        this.region = region;
+    }
+
+    public String getPostalCode() {
+        return postalCode;
+    }
+
+    public void setPostalCode(String postalCode) {
+        this.postalCode = postalCode;
     }
 
     public String getEmail() {
@@ -404,6 +521,10 @@ public class UserInfo implements Serializable {
     }
 
     public static UserInfo createUserInfo(UserInfo userInfo, JSONObject data) throws JSONException {
+        if (userInfo == null || data == null) {
+            return null;
+        }
+
         if (data.has("id")) {
             String id = data.getString("id");
             userInfo.setId(id);
@@ -411,6 +532,54 @@ public class UserInfo implements Serializable {
         if (data.has("sub")) {
             String id = data.getString("sub");
             userInfo.setId(id);
+        }
+        if (data.has("birthdate")) {
+            String s = data.getString("birthdate");
+            userInfo.setBirthday(s);
+        }
+        if (data.has("locale")) {
+            String s = data.getString("locale");
+            userInfo.setLocale(s);
+        }
+        if (data.has("website")) {
+            String s = data.getString("website");
+            userInfo.setWebsite(s);
+        }
+        if (data.has("zoneinfo")) {
+            String s = data.getString("zoneinfo");
+            userInfo.setZoneinfo(s);
+        }
+        if (data.has("status")) {
+            String s = data.getString("status");
+            userInfo.setStatus(s);
+        }
+        if (data.has("company")) {
+            String s = data.getString("company");
+            userInfo.setCompany(s);
+        }
+        if (data.has("browser")) {
+            String s = data.getString("browser");
+            userInfo.setBrowser(s);
+        }
+        if (data.has("device")) {
+            String s = data.getString("device");
+            userInfo.setDevice(s);
+        }
+        if (data.has("loginsCount")) {
+            int i = data.getInt("loginsCount");
+            userInfo.setLoginsCount(i);
+        }
+        if (data.has("lastIp")) {
+            String s = data.getString("lastIp");
+            userInfo.setLastIp(s);
+        }
+        if (data.has("blocked")) {
+            boolean b = data.getBoolean("blocked");
+            userInfo.setBlocked(b);
+        }
+        if (data.has("isDeleted")) {
+            boolean b = data.getBoolean("isDeleted");
+            userInfo.setDeleted(b);
         }
         if (data.has("username")) {
             String username = data.getString("username");
@@ -444,6 +613,14 @@ public class UserInfo implements Serializable {
             String s = data.getString("picture");
             userInfo.setPicture(s);
         }
+        if (data.has("updatedAt")) {
+            String s = data.getString("updatedAt");
+            userInfo.setUpdated_at(s);
+        }
+        if (data.has("preferredUsername")) {
+            String s = data.getString("preferredUsername");
+            userInfo.setPreferred_username(s);
+        }
         if (data.has("name")) {
             String s = data.getString("name");
             userInfo.setName(s);
@@ -475,6 +652,35 @@ public class UserInfo implements Serializable {
         if (data.has("country")) {
             String s = data.getString("country");
             userInfo.setCountry(s);
+        }
+        if (data.has("city")) {
+            String s = data.getString("city");
+            userInfo.setCity(s);
+        }
+        if (data.has("province")) {
+            String s = data.getString("province");
+            userInfo.setProvince(s);
+        }
+        if (data.has("region")) {
+            String s = data.getString("region");
+            userInfo.setRegion(s);
+        }
+        if (data.has("postalCode")) {
+            String s = data.getString("postalCode");
+            userInfo.setPostalCode(s);
+        }
+        if (data.has("streetAddress")) {
+            String s = data.getString("streetAddress");
+            userInfo.setStreetAddress(s);
+        }
+        if (data.has("emailVerified")) {
+            boolean b = data.getBoolean("emailVerified");
+            userInfo.setEmail_verified(b);
+        }
+        if (data.has("phoneVerified")) {
+            boolean b = data.getBoolean("phoneVerified");
+            userInfo.setPhone_number_verified(
+                    b);
         }
         if (data.has("recoveryCode")) {
             String s = data.getString("recoveryCode");
