@@ -19,6 +19,7 @@ public class Config {
 
     private String userPoolId;
     private String identifier; // tenant domain
+    private String requestHostname;
     private String name;
     private String logo;
     private String userpoolLogo;
@@ -43,6 +44,8 @@ public class Config {
             config.setUserPoolId(data.getString("userPoolId"));
         if (data.has("identifier"))
             config.setIdentifier(data.getString("identifier"));
+        if (data.has("requestHostname"))
+            config.setRequestHostname(data.getString("requestHostname"));
         if (data.has("name"))
             config.setName(data.getString("name"));
         if (data.has("logo"))
@@ -131,6 +134,14 @@ public class Config {
 
     public void setIdentifier(String identifier) {
         this.identifier = identifier;
+    }
+
+    public String getRequestHostname() {
+        return requestHostname;
+    }
+
+    public void setRequestHostname(String requestHostname) {
+        this.requestHostname = requestHostname;
     }
 
     public String getName() {

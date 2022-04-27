@@ -361,7 +361,9 @@ public class Util {
         if (isIp(Authing.getHost())) {
             return Authing.getHost();
         } else if (config != null) {
-            return config.getIdentifier() + "." + Authing.getHost();
+            String appHost = config.getIdentifier() + "." + Authing.getHost();
+            String ssoHost = config.getRequestHostname();
+            return Util.isNull(ssoHost) ? appHost : ssoHost;
         } else {
             ALog.e("Guard", "invalid host");
             return "core." + Authing.getHost();
