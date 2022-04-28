@@ -120,13 +120,10 @@ public class OneClick implements Serializable {
             }
 
             String url = config.getUserpoolLogo();
-            new ImageLoader(context) {
-                @Override
-                public void onPostExecute(Drawable result) {
-                    config(result);
-                    startOnePass();
-                }
-            }.execute(url);
+            ImageLoader.with(context).execute(url, (ok, result)->{
+                config(result);
+                startOnePass();
+            });
         });
     }
 

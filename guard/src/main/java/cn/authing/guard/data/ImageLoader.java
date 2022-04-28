@@ -1,28 +1,32 @@
 package cn.authing.guard.data;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
-import android.os.AsyncTask;
 import android.widget.ImageView;
 
 import androidx.appcompat.content.res.AppCompatResources;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 
+import cn.authing.guard.Authing;
+import cn.authing.guard.Callback;
 import cn.authing.guard.R;
+import cn.authing.guard.util.Util;
 
-public class ImageLoader extends AsyncTask<String, Void, Drawable> {
-    @SuppressLint("StaticFieldLeak")
+public class ImageLoader {
     private final Context context;
 
     private String url;
-    @SuppressLint("StaticFieldLeak")
     private ImageView imageView;
 
-    public ImageLoader(Context context) {
+    private ImageLoader(Context context) {
         this.context = context.getApplicationContext();
     }
 
@@ -36,28 +40,60 @@ public class ImageLoader extends AsyncTask<String, Void, Drawable> {
     }
 
     public void into(ImageView imageView) {
-        this.imageView=imageView;
-        execute(url);
-    }
-
-    @Override
-    protected Drawable doInBackground(String... urls) {
-        try {
-            String imageURL=urls[0];
-            if (imageURL.endsWith(".svg")) {
-                return AppCompatResources.getDrawable(context, R.drawable.ic_authing_default_logo);
-            } else {
-                InputStream in = new java.net.URL(imageURL).openStream();
-                return new BitmapDrawable(context.getResources(), BitmapFactory.decodeStream(in));
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
+        if (imageView == null || Util.isNull(url)) {
+            return;
         }
-        return null;
+
+        this.imageView = imageView;
+
+        execute(url, null);
     }
 
-    @Override
-    protected void onPostExecute(Drawable result) {
-        imageView.setImageDrawable(result);
+    public void execute(String url, Callback<Drawable> callback) {
+        new Thread(() -> {
+            try {
+                Drawable drawable = _execute(url);
+                if (callback != null) {
+                    callback.call(true, drawable);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+                if (callback != null) {
+                    callback.call(false, null);
+                }
+            }
+        }).start();
+    }
+
+    private Drawable _execute(String url) throws IOException {
+        if (url.endsWith(".svg")) {
+            Drawable drawable = AppCompatResources.getDrawable(context, R.drawable.ic_authing_default_logo);
+            updateImage(drawable);
+            return drawable;
+        }
+
+        String fileName = "" + Authing.getAppId();
+        File file = new File(context.getExternalCacheDir(), fileName);
+        if (file.exists()) {
+            Drawable drawable = new BitmapDrawable(context.getResources(), BitmapFactory.decodeStream(new FileInputStream(file)));
+            updateImage(drawable);
+        }
+
+        InputStream in = new java.net.URL(url).openStream();
+        BitmapDrawable drawable = new BitmapDrawable(context.getResources(), BitmapFactory.decodeStream(in));
+        updateImage(drawable);
+
+        Bitmap bitmap = drawable.getBitmap();
+        FileOutputStream outputStream = new FileOutputStream(file);
+        bitmap.compress(Bitmap.CompressFormat.PNG, 100, outputStream);
+        outputStream.close();
+
+        return drawable;
+    }
+
+    private void updateImage(Drawable drawable) {
+        if (imageView != null) {
+            imageView.post(() -> imageView.setImageDrawable(drawable));
+        }
     }
 }
