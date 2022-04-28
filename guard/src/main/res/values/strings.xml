@@ -7,6 +7,7 @@
     <string name="authing_password_confirm_edit_text_hint">Confirm password</string>
     <string name="authing_login">Login</string>
     <string name="authing_verify_code_edit_text_hint">Please input verify code</string>
+    <string name="authing_captcha_code_edit_text_hint">Please input captcha code</string>
     <string name="authing_get_verify_code">Get Verify Code</string>
     <string name="authing_login_by_account_and_password">Login by account and password</string>
     <string name="authing_login_by_phone_and_verify_code">Login by SMS code</string>

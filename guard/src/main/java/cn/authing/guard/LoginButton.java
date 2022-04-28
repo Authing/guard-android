@@ -137,8 +137,10 @@ public class LoginButton extends PrimaryButton implements ILoginRequestCallBack 
                 flow.getData().put(AuthFlow.KEY_USER_INFO, userInfo);
             }
             FlowHelper.handleMFA(this, userInfo.getMfaData());
-        }  else if (code == Const.EC_FIRST_TIME_LOGIN) {
+        } else if (code == Const.EC_FIRST_TIME_LOGIN) {
             FlowHelper.handleFirstTimeLogin(this, userInfo);
+        } else if (code == Const.EC_CAPTCHA) {
+            FlowHelper.handleCaptcha(this);
         } else {
             Util.setErrorText(this, message);
         }
@@ -148,5 +150,4 @@ public class LoginButton extends PrimaryButton implements ILoginRequestCallBack 
         List<String> complete = config.getCompleteFieldsPlace();
         return complete != null && complete.contains("login");
     }
-
 }

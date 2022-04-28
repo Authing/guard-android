@@ -192,11 +192,7 @@ public class EditTextLayout extends LinearLayout implements TextWatcher, View.On
 
         errorTextView = new TextView(context);
         errorTextView.setTextColor(context.getColor(R.color.authing_error));
-        if (errorEnabled) {
-            errorTextView.setVisibility(View.INVISIBLE);
-        } else {
-            errorTextView.setVisibility(View.GONE);
-        }
+        setErrorEnabled(errorEnabled);
         addView(errorTextView);
 
         array.recycle();
@@ -471,6 +467,15 @@ public class EditTextLayout extends LinearLayout implements TextWatcher, View.On
             }
 
             super.dispatchDraw(canvas);
+        }
+    }
+
+    public void setErrorEnabled(boolean enabled) {
+        errorEnabled = enabled;
+        if (errorEnabled) {
+            errorTextView.setVisibility(View.INVISIBLE);
+        } else {
+            errorTextView.setVisibility(View.GONE);
         }
     }
 }

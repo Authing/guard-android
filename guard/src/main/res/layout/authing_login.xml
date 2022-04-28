@@ -154,6 +154,26 @@
                 app:clearAllEnabled="false"
                 app:errorEnabled="false"
                 android:layout_marginTop="4dp"/>
+            <cn.authing.guard.CaptchaContainer
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:visibility="gone"
+                android:clipChildren="false"
+                android:gravity="center_vertical">
+                <cn.authing.guard.CaptchaCodeEditText
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@null"
+                    app:errorEnabled="false"
+                    app:leftIconDrawable="@drawable/ic_authing_shield_check"/>
+                <cn.authing.guard.CaptchaImageView
+                    android:background="@drawable/authing_edit_text_background_normal"
+                    android:layout_width="126dp"
+                    android:layout_height="42dp"
+                    android:layout_marginStart="4dp" />
+            </cn.authing.guard.CaptchaContainer>
         </cn.authing.guard.LoginContainer>
 
         <cn.authing.guard.ErrorTextView

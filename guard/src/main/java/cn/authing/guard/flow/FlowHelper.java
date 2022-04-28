@@ -6,17 +6,30 @@ import static cn.authing.guard.util.Util.isNull;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.view.View;
 
+import org.jetbrains.annotations.NotNull;
+
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
+import cn.authing.guard.AuthCallback;
+import cn.authing.guard.Authing;
+import cn.authing.guard.CaptchaContainer;
+import cn.authing.guard.PasswordEditText;
 import cn.authing.guard.activity.AuthActivity;
 import cn.authing.guard.data.Config;
 import cn.authing.guard.data.ExtendedField;
 import cn.authing.guard.data.MFAData;
 import cn.authing.guard.data.UserInfo;
+import cn.authing.guard.util.ALog;
 import cn.authing.guard.util.Util;
+import okhttp3.Call;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
 
 public class FlowHelper {
     public static void handleMFA(View currentView, MFAData data) {
@@ -179,5 +192,50 @@ public class FlowHelper {
         intent.putExtra(AuthActivity.CONTENT_LAYOUT_ID, flow.getResetPasswordFirstLoginLayoutId());
         intent.putExtra(AuthActivity.AUTH_FLOW, flow);
         activity.startActivityForResult(intent, AuthActivity.RC_LOGIN);
+    }
+
+    public static void handleCaptcha(View currentView) {
+        final View editText = Util.findViewByClass(currentView, PasswordEditText.class);
+        if (editText != null) {
+            currentView.post(()-> ((PasswordEditText)editText).setErrorEnabled(true));
+        }
+
+        View v = Util.findViewByClass(currentView, CaptchaContainer.class);
+        if (v != null) {
+            currentView.post(()-> v.setVisibility(View.VISIBLE));
+        }
+
+        getCaptcha((code, message, data) -> {
+
+        });
+    }
+
+    private static void getCaptcha(@NotNull AuthCallback<Drawable> callback) {
+        Authing.getPublicConfig(config -> {
+            if (config == null) {
+                callback.call(500, "config is null", null);
+                return;
+            }
+            try {
+                String url = Authing.getScheme() + "://" + Util.getHost(config) + "/api/v2/security/captcha?r=" + Util.randomString(10) + "&userpool_id=" + config.getUserPoolId();
+                Request.Builder builder = new Request.Builder();
+                builder.url(url);
+                Request request = builder.build();
+                OkHttpClient client = new OkHttpClient().newBuilder().build();
+                Call call = client.newCall(request);
+                okhttp3.Response response;
+                response = call.execute();
+                String s = new String(Objects.requireNonNull(response.body()).bytes(), StandardCharsets.UTF_8);
+                if (response.code() == 200) {
+                    callback.call(500, s,null);
+                } else {
+                    ALog.w("Guard", "getCaptcha failed. " + response.code() + " message:" + s);
+                    callback.call(response.code(), s,null);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+                callback.call(500, "Exception", null);
+            }
+        });
     }
 }
