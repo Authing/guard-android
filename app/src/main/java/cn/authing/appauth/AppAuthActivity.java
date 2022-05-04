@@ -22,6 +22,7 @@ import net.openid.appauth.TokenRequest;
 import cn.authing.R;
 import cn.authing.guard.Authing;
 import cn.authing.guard.activity.UserProfileActivity;
+import cn.authing.guard.data.Safe;
 import cn.authing.guard.data.UserInfo;
 import cn.authing.guard.flow.AuthFlow;
 import cn.authing.guard.internal.LoadingButton;
@@ -60,7 +61,7 @@ public class AppAuthActivity extends AppCompatActivity {
             Uri authEndpoint = Uri.parse("https://" + host + ".authing.cn/oidc/auth");
             Uri tokenEndpoint = Uri.parse("https://" + host + ".authing.cn/oidc/token");
             Uri regEndpoint = Uri.parse("https://" + host + ".authing.cn/oidc/reg");
-            Uri endEndpoint = Uri.parse("https://lrb31s-demo.authing.cn/login/profile/logout?redirect_uri=cn.guard://authing.cn/redirect");
+            Uri endEndpoint = Uri.parse("https://guard-mobile.authing.cn/login/profile/logout?redirect_uri=cn.guard://authing.cn/redirect");
             configuration = new AuthorizationServiceConfiguration(authEndpoint, tokenEndpoint, regEndpoint, endEndpoint);
             AuthorizationServiceConfiguration.fetchFromIssuer(Uri.parse("https://" + host + ".authing.cn/oidc"),
                     (serviceConfiguration, ex) -> {
@@ -142,6 +143,8 @@ public class AppAuthActivity extends AppCompatActivity {
                 });
         } else if (requestCode == RC_END)  {
             ALog.d(TAG, "logged out");
+            Safe.logoutUser(Authing.getCurrentUser());
+            Authing.setCurrentUser(null);
         }
     }
 
