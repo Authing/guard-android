@@ -36,6 +36,7 @@ public class Config {
     private List<ExtendedField> extendedFields;
     private List<String> redirectUris = new ArrayList<>();
     private boolean internationalSmsEnable;
+    private String userAgent;
 
     public static Config parse(JSONObject data) throws JSONException {
         Config config = new Config();
@@ -262,6 +263,14 @@ public class Config {
 
     public void setInternationalSmsEnable(boolean internationalSmsEnable) {
         this.internationalSmsEnable = internationalSmsEnable;
+    }
+
+    public String getUserAgent() {
+        return userAgent;
+    }
+
+    public void setUserAgent(String userAgent) {
+        this.userAgent = userAgent;
     }
 
     public String getSocialConnectionId(String type) {

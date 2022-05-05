@@ -10,13 +10,11 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.nio.charset.StandardCharsets;
-import java.util.HashSet;
 import java.util.Objects;
 
 import cn.authing.guard.Authing;
 import cn.authing.guard.R;
 import cn.authing.guard.data.Config;
-import cn.authing.guard.data.Safe;
 import cn.authing.guard.data.UserInfo;
 import cn.authing.guard.util.Const;
 import cn.authing.guard.util.Util;
@@ -74,8 +72,14 @@ public class Guardian {
 
         Request.Builder builder = new Request.Builder();
         builder.url(url);
-        if (config != null && config.getUserPoolId() != null) {
-            builder.addHeader("x-authing-userpool-id", config.getUserPoolId());
+        if (config != null) {
+            if (config.getUserPoolId() != null){
+                builder.addHeader("x-authing-userpool-id", config.getUserPoolId());
+            }
+            if (!Util.isNull(config.getUserAgent())){
+                builder.removeHeader("User-Agent");
+                builder.addHeader("User-Agent", config.getUserAgent());
+            }
         }
         builder.addHeader("x-authing-app-id", Authing.getAppId());
         builder.addHeader("x-authing-request-from", "guard-android" + SDK_VERSION);

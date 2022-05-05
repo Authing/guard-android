@@ -17,6 +17,7 @@ import cn.authing.guard.network.AuthClient;
 import cn.authing.guard.network.Guardian;
 import cn.authing.guard.network.OIDCClient;
 import cn.authing.guard.util.ALog;
+import cn.authing.guard.util.SystemUtil;
 import cn.authing.guard.util.Util;
 
 public class Authing {
@@ -159,7 +160,9 @@ public class Authing {
             try {
                 if (response.getCode() == 200) {
                     JSONObject data = response.getData();
-                    fireCallback(Config.parse(data));
+                    Config config = Config.parse(data);
+                    config.setUserAgent(SystemUtil.getUserAgent(getAppContext()));
+                    fireCallback(config);
                 } else {
                     ALog.e(TAG, "Get public config failed for appId: " + sAppId + " Msg:" + response.getMessage());
                     fireCallback(null);
