@@ -24,6 +24,7 @@
             app:layout_constraintTop_toTopOf="parent"/>
 
         <cn.authing.guard.oneclick.OneClickAuthButton
+            android:id="@+id/one_click_btn"
             android:background="@drawable/authing_button_background"
             android:textColor="@color/white"
             android:layout_width="match_parent"

@@ -9,7 +9,6 @@ import android.os.Looper;
 import android.os.Message;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.ViewGroup;
 import android.view.WindowManager;
@@ -39,11 +38,12 @@ import cn.authing.guard.flow.AuthFlow;
 import cn.authing.guard.network.AuthClient;
 import cn.authing.guard.network.OIDCClient;
 import cn.authing.guard.social.SocialLoginListView;
+import cn.authing.guard.util.ALog;
 import cn.authing.guard.util.Util;
 
 public class OneClick implements Serializable {
 
-    private static final String TAG = "OneClickAuthButton";
+    private static final String TAG = "OneClick";
     private static final int MSG_LOGIN = 1;
 
     public static String bizId;
@@ -95,13 +95,13 @@ public class OneClick implements Serializable {
             @Override
             public void onGetMobileNumberSuccess(String YDToken, String mobileNumber) {
                 //预取号成功
-                Log.d(TAG, "Got phone:" + mobileNumber);
+                ALog.d(TAG, "Got phone:" + mobileNumber);
                 handler.sendEmptyMessageDelayed(MSG_LOGIN, 1000);
             }
 
             @Override
             public void onGetMobileNumberError(String YDToken, String msg) {
-                Log.e(TAG, "Got phone error:" + msg);
+                ALog.e(TAG, "Got phone error:" + msg);
                 callback.call(500, msg, null);
             }
         });
@@ -134,14 +134,14 @@ public class OneClick implements Serializable {
                 quickLogin.quitActivity();
                 //一键登录成功 运营商token：accessCode获取成功
                 //拿着获取到的运营商token二次校验（建议放在自己的服务端）
-                Log.e(TAG, "onGetTokenSuccess:" + accessCode);
+                ALog.e(TAG, "onGetTokenSuccess:" + accessCode);
                 authingLogin(YDToken, accessCode);
             }
 
             @Override
             public void onGetTokenError(String YDToken, String msg) {
                 quickLogin.quitActivity();
-                Log.e(TAG, "onGetTokenError:" + msg);
+                ALog.e(TAG, "onGetTokenError:" + msg);
                 callback.call(500, msg, null);
             }
 
@@ -183,12 +183,12 @@ public class OneClick implements Serializable {
         screenWidth = (int) (width / density);  // 屏幕宽度(dp)
         int screenHeight = (int) (height / density);// 屏幕高度(dp)
 
-        Log.d(TAG, "屏幕宽度（像素）：" + width);
-        Log.d(TAG, "屏幕高度（像素）：" + height);
-        Log.d(TAG, "屏幕密度（0.75 / 1.0 / 1.5）：" + density);
-        Log.d(TAG, "屏幕密度dpi（120 / 160 / 240）：" + densityDpi);
-        Log.d(TAG, "屏幕宽度（dp）：" + screenWidth);
-        Log.d(TAG, "屏幕高度（dp）：" + screenHeight);
+        ALog.d(TAG, "屏幕宽度（像素）：" + width);
+        ALog.d(TAG, "屏幕高度（像素）：" + height);
+        ALog.d(TAG, "屏幕密度（0.75 / 1.0 / 1.5）：" + density);
+        ALog.d(TAG, "屏幕密度dpi（120 / 160 / 240）：" + densityDpi);
+        ALog.d(TAG, "屏幕宽度（dp）：" + screenWidth);
+        ALog.d(TAG, "屏幕高度（dp）：" + screenHeight);
     }
 
     private void config(Drawable logo) {

@@ -13,6 +13,7 @@ import androidx.annotation.Nullable;
 import cn.authing.guard.R;
 import cn.authing.guard.activity.AuthActivity;
 import cn.authing.guard.analyze.Analyzer;
+import cn.authing.guard.container.AuthContainer;
 import cn.authing.guard.internal.PrimaryButton;
 import cn.authing.guard.util.Util;
 
@@ -39,7 +40,9 @@ public class OneClickAuthButton extends PrimaryButton {
 
         setOnClickListener((v)->{
             startLoadingVisualEffect();
-            oneClick = new OneClick(context);
+            if (null == oneClick){
+                oneClick = new OneClick(context);
+            }
             oneClick.start((code, message, userInfo)->{
                 stopLoadingVisualEffect();
                 if (code == 200 && userInfo != null) {
@@ -52,5 +55,9 @@ public class OneClickAuthButton extends PrimaryButton {
                 }
             });
         });
+    }
+
+    public void setAuthProtocol(AuthContainer.AuthProtocol authProtocol){
+        oneClick = new OneClick(getContext(), authProtocol);
     }
 }
