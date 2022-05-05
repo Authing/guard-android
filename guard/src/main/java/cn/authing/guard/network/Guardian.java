@@ -36,16 +36,16 @@ public class Guardian {
         void call(@NotNull Response response);
     }
 
-    public static void get(String url, @NotNull GuardianCallback callback) {
-        request(url, "GET", null, callback);
+    public static void get(String endpoint, @NotNull GuardianCallback callback) {
+        request(endpoint, "GET", null, callback);
     }
 
-    public static void post(String url, JSONObject body, @NotNull GuardianCallback callback) {
-        request(url, "POST", body.toString(), callback);
+    public static void post(String endpoint, JSONObject body, @NotNull GuardianCallback callback) {
+        request(endpoint, "POST", body.toString(), callback);
     }
 
-    public static void delete(String url, @NotNull GuardianCallback callback) {
-        request(url, "DELETE", null, callback);
+    public static void delete(String endpoint, @NotNull GuardianCallback callback) {
+        request(endpoint, "DELETE", null, callback);
     }
 
     private static void request(String url, String method, String body, @NotNull GuardianCallback callback) {
@@ -64,7 +64,14 @@ public class Guardian {
         }.start();
     }
 
-    private static void _request(Config config, String url, String method, String body, @NotNull GuardianCallback callback) {
+    private static void _request(Config config, String endpoint, String method, String body, @NotNull GuardianCallback callback) {
+        String url;
+        if (config == null) {
+            url = endpoint;
+        } else {
+            url = Authing.getScheme() + "://" + Util.getHost(config) + endpoint;
+        }
+
         Request.Builder builder = new Request.Builder();
         builder.url(url);
         if (config != null && config.getUserPoolId() != null) {

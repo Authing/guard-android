@@ -12,28 +12,25 @@ import cn.authing.guard.util.Util;
 
 public class FeedbackClient {
     public static void feedback(String contact, int type, String description, List<String> images, @NotNull Callback<String> callback) {
-        Authing.getPublicConfig((config -> {
-            try {
-                JSONObject body = new JSONObject();
-                body.put("appId", Authing.getAppId());
-                body.put("phone", contact);
-                body.put("type", type);
-                body.put("description", description);
-                if (images != null && images.size() > 0) {
-                    body.put("images", new JSONArray(images));
-                }
-                String url = Authing.getScheme() + "://" + Util.getHost(config) + "/api/v2/feedback";
-                Guardian.post(url, body, (data)-> {
-                    if (data.getCode() == 200) {
-                        callback.call(true, null);
-                    } else {
-                        callback.call(false, data.getMessage());
-                    }
-                });
-            } catch (Exception e) {
-                e.printStackTrace();
-                callback.call(false, "Feedback exception");
+        try {
+            JSONObject body = new JSONObject();
+            body.put("appId", Authing.getAppId());
+            body.put("phone", contact);
+            body.put("type", type);
+            body.put("description", description);
+            if (images != null && images.size() > 0) {
+                body.put("images", new JSONArray(images));
             }
-        }));
+            Guardian.post("/api/v2/feedback", body, (data)-> {
+                if (data.getCode() == 200) {
+                    callback.call(true, null);
+                } else {
+                    callback.call(false, data.getMessage());
+                }
+            });
+        } catch (Exception e) {
+            e.printStackTrace();
+            callback.call(false, "Feedback exception");
+        }
     }
 }
