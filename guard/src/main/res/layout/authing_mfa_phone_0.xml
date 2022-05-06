@@ -65,4 +65,12 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:minHeight="16dp"
+        android:layout_weight="1"/>
+
+    <include layout="@layout/authing_powered_by" />
+
 </LinearLayout>

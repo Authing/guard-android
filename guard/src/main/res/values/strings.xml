@@ -38,6 +38,7 @@
     <string name="authing_bind_phone">Bind mobile phone number</string>
     <string name="authing_bind_phone_tip">You have not bound your phone number, please enter your phone number to bind</string>
     <string name="authing_code_sent_to">Code was sent to</string>
+    <string name="authing_input_sms_code">Please input SMS code</string>
     <string name="authing_account_login_verify">Login verification</string>
     <string name="authing_security_code_tip">Please enter 6 digits security number</string>
     <string name="authing_lost_security_code">Lost security code?</string>

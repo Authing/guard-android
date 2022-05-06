@@ -102,7 +102,7 @@ public class MFAListView extends LinearLayout implements View.OnClickListener {
             button.setBackgroundColor(0xFFF5F5F5);
             button.setOrientation(HORIZONTAL);
             button.setGravity(Gravity.CENTER);
-//            button.addView(iv);
+            button.addView(iv);
             button.addView(tv);
             button.setTag(option);
             button.setOnClickListener(this);

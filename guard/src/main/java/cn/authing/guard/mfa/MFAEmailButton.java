@@ -14,6 +14,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import cn.authing.guard.EmailEditText;
+import cn.authing.guard.GetEmailCodeButton;
 import cn.authing.guard.R;
 import cn.authing.guard.VerifyCodeEditText;
 import cn.authing.guard.activity.AuthActivity;
@@ -51,12 +52,44 @@ public class MFAEmailButton extends LoadingButton implements AuthActivity.EventL
             AuthFlow flow = activity.getFlow();
             String email = (String) flow.getData().get(AuthFlow.KEY_MFA_EMAIL);
             if (!TextUtils.isEmpty(email)) {
-                startLoadingVisualEffect();
-                AuthClient.sendMFAEmail(email, (code, message, data) -> activity.runOnUiThread(this::stopLoadingVisualEffect));
+                post(() -> {
+                    beforeSendEmailCode();
+                    AuthClient.sendMFAEmail(email, this::handleSMSResult);
+                });
             }
 
             activity.subscribe(EVENT_VERIFY_CODE_ENTERED, this);
+            post(this::initGetEmailCodeButton);
         }
+    }
+
+    private void beforeSendEmailCode(){
+        GetEmailCodeButton getEmailCodeButton = getEmailCodeButton();
+        if (getEmailCodeButton != null){
+            getEmailCodeButton.beforeSendEmailCode();
+        }
+    }
+
+    private void handleSMSResult(int code, String message, Object ignore){
+        GetEmailCodeButton getEmailCodeButton = getEmailCodeButton();
+        if (getEmailCodeButton != null){
+            getEmailCodeButton.handleResult(code, message, ignore);
+        }
+    }
+
+    private void initGetEmailCodeButton(){
+        GetEmailCodeButton getEmailCodeButton = getEmailCodeButton();
+        if (getEmailCodeButton != null){
+            getEmailCodeButton.setScene("MFA_VERIFY");
+        }
+    }
+
+    private GetEmailCodeButton getEmailCodeButton(){
+        View v = Util.findViewByClass(this, GetEmailCodeButton.class);
+        if (v != null) {
+            return (GetEmailCodeButton)v;
+        }
+        return null;
     }
 
     private void click(View clickedView) {

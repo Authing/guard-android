@@ -14,7 +14,7 @@
         android:layout_marginTop="64dp"
         android:textSize="24sp"
         android:textColor="#000"
-        android:text="@string/authing_verify_code_edit_text_hint" />
+        android:text="@string/authing_input_sms_code" />
 
     <LinearLayout
         android:layout_marginTop="8dp"
@@ -72,5 +72,13 @@
         android:layout_marginTop="16dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:minHeight="16dp"
+        android:layout_weight="1"/>
+
+    <include layout="@layout/authing_powered_by" />
 
 </LinearLayout>

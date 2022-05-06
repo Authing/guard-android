@@ -13,6 +13,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import cn.authing.guard.CountryCodePicker;
+import cn.authing.guard.GetVerifyCodeButton;
 import cn.authing.guard.PhoneNumberEditText;
 import cn.authing.guard.R;
 import cn.authing.guard.VerifyCodeEditText;
@@ -52,10 +53,44 @@ public class MFAPhoneButton extends LoadingButton {
             String phone = (String) flow.getData().get(AuthFlow.KEY_MFA_PHONE);
             String phoneCountryCode = (String) flow.getData().get(AuthFlow.KEY_MFA_PHONE_COUNTRY_CODE);
             if (!TextUtils.isEmpty(phone)) {
-                startLoadingVisualEffect();
-                AuthClient.sendSms(phoneCountryCode, phone, (code, message, data)-> activity.runOnUiThread(this::stopLoadingVisualEffect));
+                post(() -> {
+                    if (canSendSms()){
+                        beforeSendSms();
+                        AuthClient.sendSms(phoneCountryCode, phone, this::handleSmsResult);
+                    }
+                });
             }
         }
+    }
+
+    private boolean canSendSms(){
+        GetVerifyCodeButton getVerifyCodeButton = getVerifyCodeButton();
+        if (null == getVerifyCodeButton){
+            return true;
+        }
+        return getVerifyCodeButton.isEnabled();
+    }
+
+    private void beforeSendSms(){
+        GetVerifyCodeButton getVerifyCodeButton = getVerifyCodeButton();
+        if (getVerifyCodeButton != null) {
+            getVerifyCodeButton.beforeSendSmsCode();
+        }
+    }
+
+    private void handleSmsResult(int code, String message, Object ignore){
+        GetVerifyCodeButton getVerifyCodeButton = getVerifyCodeButton();
+        if (getVerifyCodeButton != null) {
+            getVerifyCodeButton.handleSMSResult(code, message, ignore);
+        }
+    }
+
+    private GetVerifyCodeButton getVerifyCodeButton(){
+        View v = Util.findViewByClass(this, GetVerifyCodeButton.class);
+        if (v != null) {
+            return (GetVerifyCodeButton)v;
+        }
+        return null;
     }
 
     private void click(View clickedView) {

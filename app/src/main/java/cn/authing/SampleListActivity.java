@@ -78,7 +78,9 @@ public class SampleListActivity extends AppCompatActivity {
                 Intent intent = new Intent(SampleListActivity.this, OneClickActivity.class);
                 startActivityForResult(intent, RC_LOGIN);
             } else if (pos == 2) {
+                // only return idToken
                 //OneClick oneClick = new OneClick(SampleListActivity.this);
+                // return refreshToken、idToken、refreshToken
                 OneClick oneClick = new OneClick(SampleListActivity.this, AuthContainer.AuthProtocol.EOIDC);
                 oneClick.start(((code, message, userInfo) -> {
                     if (code != 200) {

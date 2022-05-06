@@ -3,6 +3,7 @@ package cn.authing.guard;
 import static cn.authing.guard.util.Const.NS_ANDROID;
 
 import android.content.Context;
+import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.view.View;
@@ -62,18 +63,26 @@ public class GetEmailCodeButton extends LoadingButton {
             email = (String) AuthFlow.get(getContext(), AuthFlow.KEY_ACCOUNT);
         }
 
+        if (TextUtils.isEmpty(email)) {
+            email = (String) AuthFlow.get(getContext(), AuthFlow.KEY_MFA_EMAIL);
+        }
+
         if (!Validator.isValidEmail(email)) {
             Util.setErrorText(this, getContext().getString(R.string.authing_invalid_email));
             return;
         }
 
-        startLoadingVisualEffect();
-        Util.setErrorText(this, null);
+        beforeSendEmailCode();
 
         AuthClient.sendEmail(email, scene, this::handleResult);
     }
 
-    private void handleResult(int code, String message, Object ignore) {
+    public void beforeSendEmailCode(){
+        startLoadingVisualEffect();
+        Util.setErrorText(this, null);
+    }
+
+    public void handleResult(int code, String message, Object ignore) {
         post(()->{
             stopLoadingVisualEffect();
             if (code != 200) {

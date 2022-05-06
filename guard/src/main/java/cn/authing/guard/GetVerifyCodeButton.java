@@ -62,13 +62,17 @@ public class GetVerifyCodeButton extends LoadingButton {
         String phoneCountryCode = Util.getPhoneCountryCode(this);
         String phoneNumber = Util.getPhoneNumber(this);
         if (!TextUtils.isEmpty(phoneNumber)) {
-            startLoadingVisualEffect();
-            Util.setErrorText(this, null);
+            beforeSendSmsCode();
             AuthClient.sendSms(phoneCountryCode, phoneNumber, this::handleSMSResult);
         }
     }
 
-    private void handleSMSResult(int code, String message, Object ignore) {
+    public void beforeSendSmsCode(){
+        startLoadingVisualEffect();
+        Util.setErrorText(this, null);
+    }
+
+    public void handleSMSResult(int code, String message, Object ignore) {
         post(()->{
             stopLoadingVisualEffect();
             // in stopLoadingVisualEffect it will setEnabled to true

@@ -38,6 +38,7 @@
     <string name="authing_bind_phone">绑定手机号</string>
     <string name="authing_bind_phone_tip">您未绑定手机号，请输入手机号绑定</string>
     <string name="authing_code_sent_to">验证码已发送至</string>
+    <string name="authing_input_sms_code">请输入短信验证码</string>
     <string name="authing_account_login_verify">帐号登录验证</string>
     <string name="authing_security_code_tip">请输入获取的 6 位数字安全码</string>
     <string name="authing_lost_security_code">安全码丢失？</string>

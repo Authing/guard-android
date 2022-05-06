@@ -39,6 +39,14 @@
         android:layout_height="wrap_content"
         app:codeMode="frame"/>
 
+    <cn.authing.guard.GetEmailCodeButton
+        android:layout_gravity="center_horizontal"
+        android:background="@null"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:textColor="@color/button_text" />
+
     <cn.authing.guard.ErrorTextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -64,5 +72,13 @@
         android:layout_marginTop="16dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:minHeight="16dp"
+        android:layout_weight="1"/>
+
+    <include layout="@layout/authing_powered_by" />
 
 </LinearLayout>
