@@ -14,9 +14,11 @@ import java.util.Map;
 
 import cn.authing.guard.AuthCallback;
 import cn.authing.guard.Authing;
+import cn.authing.guard.container.AuthContainer;
 import cn.authing.guard.data.Config;
 import cn.authing.guard.data.UserInfo;
 import cn.authing.guard.network.AuthClient;
+import cn.authing.guard.network.OIDCClient;
 import cn.authing.guard.util.Const;
 
 public class Alipay extends SocialAuthenticator {
@@ -59,12 +61,12 @@ public class Alipay extends SocialAuthenticator {
                 (i, s, bundle) -> {
                     final Context ref = ctxRef.get();
                     if (ref != null) {
-                        handleResult(bundle, callback);
+                        handleResult(context, bundle, callback);
                     }
                 },true); // 是否需要在用户未安装支付宝 App 时，使用 H5 中间页中转。建议设置为 true。
     }
 
-    private static void handleResult(Bundle bundle, @NotNull AuthCallback<UserInfo> callback) {
+    private void handleResult(Context context, Bundle bundle, @NotNull AuthCallback<UserInfo> callback) {
         if (bundle == null) {
             callback.call(500, "alipay error", null);
             return;
@@ -76,6 +78,11 @@ public class Alipay extends SocialAuthenticator {
         }
 
         String code = bundle.get("auth_code").toString();
-        AuthClient.loginByAlipay(code, callback);
+        AuthContainer.AuthProtocol authProtocol = getAuthProtocol(context);
+        if (authProtocol == AuthContainer.AuthProtocol.EInHouse) {
+            AuthClient.loginByAlipay(code, callback);
+        } else if (authProtocol == AuthContainer.AuthProtocol.EOIDC) {
+            OIDCClient.loginByAlipay(code, callback);
+        }
     }
 }

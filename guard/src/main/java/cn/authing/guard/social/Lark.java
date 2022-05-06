@@ -13,8 +13,10 @@ import java.util.ArrayList;
 
 import cn.authing.guard.AuthCallback;
 import cn.authing.guard.Authing;
+import cn.authing.guard.container.AuthContainer;
 import cn.authing.guard.data.UserInfo;
 import cn.authing.guard.network.AuthClient;
+import cn.authing.guard.network.OIDCClient;
 import cn.authing.guard.util.ALog;
 import cn.authing.guard.util.Const;
 
@@ -39,7 +41,12 @@ public class Lark extends SocialAuthenticator {
 
                 @Override
                 public void onSuccess(CallBackData callBackData) {
-                    AuthClient.loginByLark(callBackData.code, callback);
+                    AuthContainer.AuthProtocol authProtocol = getAuthProtocol(context);
+                    if (authProtocol == AuthContainer.AuthProtocol.EInHouse) {
+                        AuthClient.loginByLark(callBackData.code, callback);
+                    } else if (authProtocol == AuthContainer.AuthProtocol.EOIDC) {
+                        OIDCClient.loginByLark(callBackData.code, callback);
+                    }
                 }
 
                 @Override

@@ -11,8 +11,10 @@ import org.jetbrains.annotations.NotNull;
 
 import cn.authing.guard.AuthCallback;
 import cn.authing.guard.Authing;
+import cn.authing.guard.container.AuthContainer;
 import cn.authing.guard.data.UserInfo;
 import cn.authing.guard.network.AuthClient;
+import cn.authing.guard.network.OIDCClient;
 import cn.authing.guard.util.Const;
 
 public class WeCom extends SocialAuthenticator {
@@ -44,7 +46,12 @@ public class WeCom extends SocialAuthenticator {
                         Log.i(TAG, "登录失败");
                         fireCallback(callback, null);
                     } else if (rsp.errCode == WWAuthMessage.ERR_OK) {
-                        AuthClient.loginByWecom(rsp.code, callback);
+                        AuthContainer.AuthProtocol authProtocol = getAuthProtocol(context);
+                        if (authProtocol == AuthContainer.AuthProtocol.EInHouse) {
+                            AuthClient.loginByWecom(rsp.code, callback);
+                        } else if (authProtocol == AuthContainer.AuthProtocol.EOIDC) {
+                            OIDCClient.loginByWecom(rsp.code, callback);
+                        }
                     }
                 }
             });

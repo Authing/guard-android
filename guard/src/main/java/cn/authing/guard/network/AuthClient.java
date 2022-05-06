@@ -375,13 +375,30 @@ public class AuthClient {
     }
 
     public static void loginByWecom(String authCode, @NotNull AuthCallback<UserInfo> callback) {
+        loginByWecom(null, authCode, callback);
+    }
+
+    public static void loginByWecom(AuthRequest authData, String authCode, @NotNull AuthCallback<UserInfo> callback) {
         Authing.getPublicConfig(config -> {
             try {
                 JSONObject body = new JSONObject();
                 body.put("connId", config.getSocialConnectionId(Const.EC_TYPE_WECHAT_COM));
                 body.put("code", authCode);
                 String endpoint = "/api/v2/ecConn/wechat-work/authByCode";
-                Guardian.post(endpoint, body, (data)-> createUserInfoFromResponse(data, callback));
+                Guardian.post(endpoint, body, (data)-> {
+                    if (authData == null) {
+                        createUserInfoFromResponse(data, callback);
+                    } else {
+                        createUserInfoFromResponse(data, (c, m, d)->{
+                            if (c == 200) {
+                                authData.setToken(d.getIdToken());
+                                OIDCClient.oidcInteraction(authData, callback);
+                            } else {
+                                callback.call(c, m, d);
+                            }
+                        });
+                    }
+                });
             } catch (Exception e) {
                 e.printStackTrace();
                 callback.call(500, "Exception", null);
@@ -390,13 +407,30 @@ public class AuthClient {
     }
 
     public static void loginByAlipay(String authCode, @NotNull AuthCallback<UserInfo> callback) {
+        loginByAlipay(null, authCode, callback);
+    }
+
+    public static void loginByAlipay(AuthRequest authData, String authCode, @NotNull AuthCallback<UserInfo> callback) {
         Authing.getPublicConfig(config -> {
             try {
                 JSONObject body = new JSONObject();
                 body.put("connId", config.getSocialConnectionId("alipay"));
                 body.put("code", authCode);
                 String endpoint = "/api/v2/ecConn/alipay/authByCode";
-                Guardian.post(endpoint, body, (data)-> createUserInfoFromResponse(data, callback));
+                Guardian.post(endpoint, body, (data)-> {
+                    if (authData == null) {
+                        createUserInfoFromResponse(data, callback);
+                    } else {
+                        createUserInfoFromResponse(data, (c, m, d)->{
+                            if (c == 200) {
+                                authData.setToken(d.getIdToken());
+                                OIDCClient.oidcInteraction(authData, callback);
+                            } else {
+                                callback.call(c, m, d);
+                            }
+                        });
+                    }
+                });
             } catch (Exception e) {
                 e.printStackTrace();
                 callback.call(500, "Exception", null);
@@ -405,6 +439,10 @@ public class AuthClient {
     }
 
     public static void loginByLark(String authCode, @NotNull AuthCallback<UserInfo> callback) {
+        loginByLark(null, authCode, callback);
+    }
+
+    public static void loginByLark(AuthRequest authData, String authCode, @NotNull AuthCallback<UserInfo> callback) {
         Authing.getPublicConfig(config -> {
             try {
                 JSONObject body = new JSONObject();
@@ -413,7 +451,20 @@ public class AuthClient {
                 body.put("connId", connId);
                 body.put("code", authCode);
                 String endpoint = "/api/v2/ecConn/lark/authByCode";
-                Guardian.post(endpoint, body, (data)-> createUserInfoFromResponse(data, callback));
+                Guardian.post(endpoint, body, (data)-> {
+                    if (authData == null) {
+                        createUserInfoFromResponse(data, callback);
+                    } else {
+                        createUserInfoFromResponse(data, (c, m, d)->{
+                            if (c == 200) {
+                                authData.setToken(d.getIdToken());
+                                OIDCClient.oidcInteraction(authData, callback);
+                            } else {
+                                callback.call(c, m, d);
+                            }
+                        });
+                    }
+                });
             } catch (Exception e) {
                 e.printStackTrace();
                 callback.call(500, "Exception", null);

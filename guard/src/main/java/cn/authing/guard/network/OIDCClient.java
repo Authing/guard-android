@@ -156,6 +156,36 @@ public class OIDCClient {
         })));
     }
 
+    public static void loginByWecom(String authCode, @NotNull AuthCallback<UserInfo> callback) {
+        Authing.getPublicConfig((config -> OIDCClient.prepareLogin(config, (code, message, authRequest) -> {
+            if (code == 200) {
+                AuthClient.loginByWecom(authRequest, authCode, callback);
+            } else {
+                callback.call(code, message, null);
+            }
+        })));
+    }
+
+    public static void loginByAlipay(String authCode, @NotNull AuthCallback<UserInfo> callback) {
+        Authing.getPublicConfig((config -> OIDCClient.prepareLogin(config, (code, message, authRequest) -> {
+            if (code == 200) {
+                AuthClient.loginByAlipay(authRequest, authCode, callback);
+            } else {
+                callback.call(code, message, null);
+            }
+        })));
+    }
+
+    public static void loginByLark(String authCode, @NotNull AuthCallback<UserInfo> callback) {
+        Authing.getPublicConfig((config -> OIDCClient.prepareLogin(config, (code, message, authRequest) -> {
+            if (code == 200) {
+                AuthClient.loginByLark(authRequest, authCode, callback);
+            } else {
+                callback.call(code, message, null);
+            }
+        })));
+    }
+
     public static void oidcInteraction(AuthRequest authData, @NotNull AuthCallback<UserInfo> callback) {
         Authing.getPublicConfig((config -> {
             try {
