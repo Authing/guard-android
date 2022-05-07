@@ -1,7 +1,7 @@
 package cn.authing.guard.social;
 
 import android.content.Context;
-import android.util.Log;
+import androidx.annotation.NonNull;
 
 import com.tencent.wework.api.IWWAPI;
 import com.tencent.wework.api.WWAPIFactory;
@@ -11,10 +11,10 @@ import org.jetbrains.annotations.NotNull;
 
 import cn.authing.guard.AuthCallback;
 import cn.authing.guard.Authing;
-import cn.authing.guard.container.AuthContainer;
 import cn.authing.guard.data.UserInfo;
 import cn.authing.guard.network.AuthClient;
 import cn.authing.guard.network.OIDCClient;
+import cn.authing.guard.util.ALog;
 import cn.authing.guard.util.Const;
 
 public class WeCom extends SocialAuthenticator {
@@ -29,10 +29,11 @@ public class WeCom extends SocialAuthenticator {
     public void login(Context context, @NotNull AuthCallback<UserInfo> callback) {
         Authing.getPublicConfig(config -> {
             IWWAPI iwwapi = WWAPIFactory.createWWAPI(context);
-            iwwapi.registerApp(schema);
+            String sch = (schema != null ) ? schema : config.getSocialSchema(Const.EC_TYPE_WECHAT_COM);;
+            iwwapi.registerApp(sch);
 
             final WWAuthMessage.Req req = new WWAuthMessage.Req();
-            req.sch = (schema != null ) ? schema : config.getSocialSchema(Const.EC_TYPE_WECHAT_COM);
+            req.sch = sch;
             req.agentId = (agentId != null ) ? agentId : config.getSocialAgentId(Const.EC_TYPE_WECHAT_COM);
             req.appId = (corpId != null ) ? corpId : config.getSocialAppId(Const.EC_TYPE_WECHAT_COM);
             req.state = Const.EC_TYPE_WECHAT_COM;
@@ -40,25 +41,33 @@ public class WeCom extends SocialAuthenticator {
                 if (resp instanceof WWAuthMessage.Resp) {
                     WWAuthMessage.Resp rsp = (WWAuthMessage.Resp) resp;
                     if (rsp.errCode == WWAuthMessage.ERR_CANCEL) {
-                        Log.i(TAG, "登录取消");
+                        ALog.i(TAG, "登录取消");
                         fireCallback(callback, null);
                     } else if (rsp.errCode == WWAuthMessage.ERR_FAIL) {
-                        Log.i(TAG, "登录失败");
+                        ALog.i(TAG, "登录失败");
                         fireCallback(callback, null);
                     } else if (rsp.errCode == WWAuthMessage.ERR_OK) {
-                        AuthContainer.AuthProtocol authProtocol = getAuthProtocol(context);
-                        if (authProtocol == AuthContainer.AuthProtocol.EInHouse) {
-                            AuthClient.loginByWecom(rsp.code, callback);
-                        } else if (authProtocol == AuthContainer.AuthProtocol.EOIDC) {
-                            OIDCClient.loginByWecom(rsp.code, callback);
-                        }
+                        ALog.i(TAG, "Auth onSuccess");
+                        login(context, rsp.code, callback);
                     }
+                } else {
+                    ALog.e(TAG, "Auth Failed, resp error");
                 }
             });
         });
     }
 
-    private static void fireCallback(AuthCallback<UserInfo> callback, UserInfo info) {
+    @Override
+    protected void standardLogin(String authCode, @NonNull AuthCallback<UserInfo> callback) {
+        AuthClient.loginByWecom(authCode, callback);
+    }
+
+    @Override
+    protected void oidcLogin(String authCode, @NonNull AuthCallback<UserInfo> callback) {
+        OIDCClient.loginByWecom(authCode, callback);
+    }
+
+    private void fireCallback(AuthCallback<UserInfo> callback, UserInfo info) {
         if (callback != null) {
             callback.call(0, "", info);
         }

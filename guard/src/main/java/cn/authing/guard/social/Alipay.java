@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+
 import com.alipay.sdk.app.OpenAuthTask;
 
 import org.jetbrains.annotations.NotNull;
@@ -19,10 +21,12 @@ import cn.authing.guard.data.Config;
 import cn.authing.guard.data.UserInfo;
 import cn.authing.guard.network.AuthClient;
 import cn.authing.guard.network.OIDCClient;
+import cn.authing.guard.util.ALog;
 import cn.authing.guard.util.Const;
 
 public class Alipay extends SocialAuthenticator {
 
+    private static final String TAG = "Alipay";
     public static String appId;
 
     /**
@@ -76,13 +80,18 @@ public class Alipay extends SocialAuthenticator {
             callback.call(500, "alipay auth error", null);
             return;
         }
-
+        ALog.i(TAG, "Auth onSuccess");
         String code = bundle.get("auth_code").toString();
-        AuthContainer.AuthProtocol authProtocol = getAuthProtocol(context);
-        if (authProtocol == AuthContainer.AuthProtocol.EInHouse) {
-            AuthClient.loginByAlipay(code, callback);
-        } else if (authProtocol == AuthContainer.AuthProtocol.EOIDC) {
-            OIDCClient.loginByAlipay(code, callback);
-        }
+        login(context, code, callback);
+    }
+
+    @Override
+    protected void standardLogin(String authCode, @NonNull AuthCallback<UserInfo> callback) {
+        AuthClient.loginByAlipay(authCode, callback);
+    }
+
+    @Override
+    protected void oidcLogin(String authCode, @NonNull AuthCallback<UserInfo> callback) {
+        OIDCClient.loginByAlipay(authCode, callback);
     }
 }

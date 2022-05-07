@@ -3,6 +3,8 @@ package cn.authing.guard.social;
 import android.app.Activity;
 import android.content.Context;
 
+import androidx.annotation.NonNull;
+
 import com.ss.android.larksso.CallBackData;
 import com.ss.android.larksso.IGetDataCallback;
 import com.ss.android.larksso.LarkSSO;
@@ -41,12 +43,12 @@ public class Lark extends SocialAuthenticator {
 
                 @Override
                 public void onSuccess(CallBackData callBackData) {
-                    AuthContainer.AuthProtocol authProtocol = getAuthProtocol(context);
-                    if (authProtocol == AuthContainer.AuthProtocol.EInHouse) {
-                        AuthClient.loginByLark(callBackData.code, callback);
-                    } else if (authProtocol == AuthContainer.AuthProtocol.EOIDC) {
-                        OIDCClient.loginByLark(callBackData.code, callback);
+                    if (null == callBackData){
+                        ALog.e(TAG, "Auth Failed, callBackData is null");
+                        return;
                     }
+                    ALog.i(TAG, "Auth onSuccess");
+                    login(context, callBackData.code, callback);
                 }
 
                 @Override
@@ -56,5 +58,15 @@ public class Lark extends SocialAuthenticator {
                 }
             });
         });
+    }
+
+    @Override
+    protected void standardLogin(String authCode, @NonNull AuthCallback<UserInfo> callback) {
+        AuthClient.loginByLark(authCode, callback);
+    }
+
+    @Override
+    protected void oidcLogin(String authCode, @NonNull AuthCallback<UserInfo> callback) {
+        OIDCClient.loginByLark(authCode, callback);
     }
 }

@@ -34,7 +34,7 @@ dependencies {
 
     compileOnly 'io.github.yidun:quicklogin:3.1.1'
     compileOnly 'com.tencent.mm.opensdk:wechat-sdk-android:6.8.0'
-    compileOnly files('libs/wechatwork.jar')
+    compileOnly files('libs/lib_wwapi-2.0.12.11.aar')
     compileOnly files('libs/alipaysdk.aar')
     compileOnly files ('libs/larksso-3.0.8.aar')
 }

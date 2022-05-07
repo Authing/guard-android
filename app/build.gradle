@@ -63,7 +63,7 @@ dependencies {
     implementation files('libs/alipaysdk.aar')
 
     // 企业微信
-    implementation files('libs/wechatwork.jar')
+    implementation files('libs/lib_wwapi-2.0.12.11.aar')
 
     // 飞书
     implementation files ('libs/larksso-3.0.8.aar')

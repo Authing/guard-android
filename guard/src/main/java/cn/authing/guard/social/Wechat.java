@@ -2,6 +2,8 @@ package cn.authing.guard.social;
 
 import android.content.Context;
 
+import androidx.annotation.NonNull;
+
 import com.tencent.mm.opensdk.modelmsg.SendAuth;
 import com.tencent.mm.opensdk.openapi.IWXAPI;
 import com.tencent.mm.opensdk.openapi.WXAPIFactory;
@@ -37,5 +39,15 @@ public class Wechat extends SocialAuthenticator {
             req.state = "wechat_sdk_demo_test";
             api.sendReq(req);
         });
+    }
+
+    @Override
+    protected void standardLogin(String authCode, @NonNull AuthCallback<UserInfo> callback) {
+
+    }
+
+    @Override
+    protected void oidcLogin(String authCode, @NonNull AuthCallback<UserInfo> callback) {
+
     }
 }

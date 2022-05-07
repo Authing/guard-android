@@ -50,10 +50,6 @@ public class App extends android.app.Application {
     public void onCreate() {
         super.onCreate();
 
-        WeCom.corpId = "ww2fe68893d538b6c1";
-        WeCom.agentId = "1000003";
-        WeCom.schema = "wwauth2fe68893d538b6c1000003";
-
         // one click
         OneClick.bizId = "74ae90bd84f74b69a88b578bbbbcdcfd";
 
