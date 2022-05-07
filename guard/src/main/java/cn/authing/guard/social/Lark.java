@@ -15,7 +15,6 @@ import java.util.ArrayList;
 
 import cn.authing.guard.AuthCallback;
 import cn.authing.guard.Authing;
-import cn.authing.guard.container.AuthContainer;
 import cn.authing.guard.data.UserInfo;
 import cn.authing.guard.network.AuthClient;
 import cn.authing.guard.network.OIDCClient;

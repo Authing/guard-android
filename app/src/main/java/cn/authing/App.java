@@ -5,8 +5,7 @@ import android.content.SharedPreferences;
 
 import cn.authing.guard.Authing;
 import cn.authing.guard.oneclick.OneClick;
-import cn.authing.guard.social.Lark;
-import cn.authing.guard.social.WeCom;
+
 
 public class App extends android.app.Application {
 
@@ -52,8 +51,6 @@ public class App extends android.app.Application {
 
         // one click
         OneClick.bizId = "74ae90bd84f74b69a88b578bbbbcdcfd";
-
-        Lark.appId = "cli_a2afd2f1e53cd00e";
 
         String schema = loadScheme(this);
         String host = loadHost(this);

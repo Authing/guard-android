@@ -10,6 +10,7 @@ import android.util.AttributeSet;
 import cn.authing.guard.AuthCallback;
 import cn.authing.guard.R;
 import cn.authing.guard.activity.AuthActivity;
+import cn.authing.guard.container.AuthContainer;
 import cn.authing.guard.data.UserInfo;
 import cn.authing.guard.flow.AuthFlow;
 import cn.authing.guard.flow.FlowHelper;
@@ -75,5 +76,11 @@ public abstract class SocialLoginButton extends androidx.appcompat.widget.AppCom
 
     public void setOnLoginListener(AuthCallback<UserInfo> callback) {
         this.callback = callback;
+    }
+
+    public void setAuthProtocol(AuthContainer.AuthProtocol authProtocol){
+        if (authenticator != null) {
+            authenticator.setAuthProtocol(authProtocol);
+        }
     }
 }
