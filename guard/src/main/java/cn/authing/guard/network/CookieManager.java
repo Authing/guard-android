@@ -43,4 +43,8 @@ public class CookieManager {
         }
         return s;
     }
+
+    public static void removeAllCookies() {
+        cookies.clear();
+    }
 }

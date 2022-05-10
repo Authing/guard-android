@@ -106,8 +106,10 @@ public class AuthClient {
                 }
                 if (authData == null) {
                     createUserInfoFromResponse(data, callback);
-                } else {
+                } else if (data.getCode() == 200) {
                     startOidcInteraction(authData, data.getData(), callback);
+                } else {
+                    callback.call(data.getCode(), data.getMessage(), null);
                 }
             });
         } catch (Exception e) {
@@ -958,6 +960,7 @@ public class AuthClient {
             Guardian.get(endpoint, (data)-> {
                 Safe.logoutUser(Authing.getCurrentUser());
                 Authing.setCurrentUser(null);
+                CookieManager.removeAllCookies();
                 callback.call(data.getCode(), data.getMessage(), null);
             });
         } catch (Exception e) {
@@ -969,7 +972,14 @@ public class AuthClient {
     public static void deleteAccount(AuthCallback<JSONObject> callback) {
         try {
             String endpoint = "/api/v2/users/delete";
-            Guardian.delete(endpoint, (data)-> callback.call(data.getCode(), data.getMessage(), data.getData()));
+            Guardian.delete(endpoint, (data)-> {
+                if (data.getCode() == 200) {
+                    Safe.logoutUser(Authing.getCurrentUser());
+                    Authing.setCurrentUser(null);
+                    CookieManager.removeAllCookies();
+                }
+                callback.call(data.getCode(), data.getMessage(), data.getData());
+            });
         } catch (Exception e) {
             e.printStackTrace();
             callback.call(500, "Exception", null);
