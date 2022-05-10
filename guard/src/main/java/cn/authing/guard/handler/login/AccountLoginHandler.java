@@ -6,6 +6,7 @@ import android.view.View;
 import cn.authing.guard.AccountEditText;
 import cn.authing.guard.LoginButton;
 import cn.authing.guard.PasswordEditText;
+import cn.authing.guard.R;
 import cn.authing.guard.container.AuthContainer;
 import cn.authing.guard.network.AuthClient;
 import cn.authing.guard.network.OIDCClient;
@@ -27,7 +28,7 @@ public class AccountLoginHandler extends AbsLoginHandler {
             final String account = ((AccountEditText) accountET).getText().toString();
             final String password = ((PasswordEditText) passwordET).getText().toString();
             if (TextUtils.isEmpty(account) || TextUtils.isEmpty(password)) {
-                fireCallback("Account or password is invalid");
+                fireCallback(accountET.getContext().getString(R.string.authing_account_or_password_empty));
                 return false;
             }
 

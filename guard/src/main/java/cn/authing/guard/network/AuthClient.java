@@ -88,13 +88,15 @@ public class AuthClient {
 
     public static void registerByPhoneCode(AuthRequest authData, String phoneCountryCode, String phone, String code, String password, @NotNull AuthCallback<UserInfo> callback) {
         try {
-            String encryptPassword = Util.encryptPassword(password);
             JSONObject body = new JSONObject();
             if (!Util.isNull(phoneCountryCode)){
                 body.put("phoneCountryCode", phoneCountryCode);
             }
             body.put("phone", phone);
-            body.put("password", encryptPassword);
+            if (!Util.isNull(password)) {
+                String encryptPassword = Util.encryptPassword(password);
+                body.put("password", encryptPassword);
+            }
             body.put("code", code);
             body.put("forceLogin", true);
             Guardian.post("/api/v2/register/phone-code", body, (data)-> {

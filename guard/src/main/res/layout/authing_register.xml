@@ -68,22 +68,6 @@
                     android:textSize="16sp"
                     android:textColor="#6D7784" />
             </cn.authing.guard.PhoneNumberEditText>
-            <cn.authing.guard.PasswordEditText
-                android:background="@null"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:leftIconDrawable="@drawable/ic_authing_password"
-                app:clearAllEnabled="false"
-                app:errorEnabled="true"
-                android:layout_marginTop="4dp"/>
-            <cn.authing.guard.PasswordConfirmEditText
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@null"
-                app:leftIconDrawable="@drawable/ic_authing_password"
-                app:clearAllEnabled="false"
-                app:errorEnabled="true"
-                android:layout_marginTop="4dp"/>
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

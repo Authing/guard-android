@@ -129,4 +129,5 @@
     <string name="authing_email_already_bound">The email has been bound</string>
     <string name="authing_sms_already_sent">SMS already send within the last 60 seconds</string>
     <string name="authing_field_cannot_be_empty">%1$s cannot be empty</string>
+    <string name="authing_account_or_password_empty">Account and password can not be empty</string>
 </resources>

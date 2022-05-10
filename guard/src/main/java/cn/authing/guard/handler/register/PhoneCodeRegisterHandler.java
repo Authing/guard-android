@@ -26,11 +26,9 @@ public class PhoneCodeRegisterHandler extends AbsRegisterHandler {
     protected boolean register() {
         View phoneCountryCodeET = Util.findViewByClass(mRegisterButton, CountryCodePicker.class);
         View phoneNumberET = Util.findViewByClass(mRegisterButton, PhoneNumberEditText.class);
-        View passwordET = Util.findViewByClass(mRegisterButton, PasswordEditText.class);
         View phoneCodeET = Util.findViewByClass(mRegisterButton, VerifyCodeEditText.class);
 
         if (phoneNumberET != null && phoneNumberET.isShown()
-                && passwordET != null && passwordET.isShown()
                 && phoneCodeET != null && phoneCodeET.isShown()) {
 
             String phoneCountryCode = "";
@@ -59,14 +57,8 @@ public class PhoneCodeRegisterHandler extends AbsRegisterHandler {
                 return false;
             }
 
-            final String password = ((PasswordEditText) passwordET).getText().toString();
-            if (TextUtils.isEmpty(password)) {
-                fireCallback("Password is invalid");
-                return false;
-            }
-
             mRegisterButton.startLoadingVisualEffect();
-            registerByPhoneCode(phoneCountryCode, phone, code, password);
+            registerByPhoneCode(phoneCountryCode, phone, code, "");
             return true;
         }
         return false;
