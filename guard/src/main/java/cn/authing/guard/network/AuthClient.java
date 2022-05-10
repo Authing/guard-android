@@ -52,11 +52,7 @@ public class AuthClient {
                 if (data.getCode() == 200 || data.getCode() == EC_MFA_REQUIRED) {
                     Safe.saveAccount(email);
                 }
-                if (authData == null) {
-                    createUserInfoFromResponse(data, callback);
-                } else {
-                    startOidcInteraction(authData, data.getData(), callback);
-                }
+                startOidcInteraction(authData, data, callback);
             });
         } catch (Exception e) {
             e.printStackTrace();
@@ -104,13 +100,7 @@ public class AuthClient {
                     Safe.saveAccount(phone);
                     Safe.savePhoneCountryCode(phoneCountryCode);
                 }
-                if (authData == null) {
-                    createUserInfoFromResponse(data, callback);
-                } else if (data.getCode() == 200) {
-                    startOidcInteraction(authData, data.getData(), callback);
-                } else {
-                    callback.call(data.getCode(), data.getMessage(), null);
-                }
+                startOidcInteraction(authData, data, callback);
             });
         } catch (Exception e) {
             e.printStackTrace();
@@ -167,11 +157,7 @@ public class AuthClient {
                     Safe.saveAccount(phone);
                     Safe.savePhoneCountryCode(phoneCountryCode);
                 }
-                if (authData == null) {
-                    createUserInfoFromResponse(data, callback);
-                } else {
-                    startOidcInteraction(authData, data.getData(), callback);
-                }
+                startOidcInteraction(authData, data, callback);
             });
         } catch (Exception e) {
             e.printStackTrace();
@@ -192,11 +178,7 @@ public class AuthClient {
                 if (data.getCode() == 200 || data.getCode() == EC_MFA_REQUIRED) {
                     Safe.saveAccount(email);
                 }
-                if (authData == null) {
-                    createUserInfoFromResponse(data, callback);
-                } else {
-                    startOidcInteraction(authData, data.getData(), callback);
-                }
+                startOidcInteraction(authData, data, callback);
             });
         } catch (Exception e) {
             e.printStackTrace();
@@ -1062,14 +1044,20 @@ public class AuthClient {
         }
     }
 
-    private static void startOidcInteraction(AuthRequest authData, JSONObject data, @NotNull AuthCallback<UserInfo> callback){
-        try {
-            UserInfo userInfo = UserInfo.createUserInfo(data);
-            String token = userInfo.getIdToken();
-            authData.setToken(token);
-            OIDCClient.oidcInteraction(authData, callback);
-        } catch (JSONException e) {
-            e.printStackTrace();
+    private static void startOidcInteraction(AuthRequest authData, Response data, @NotNull AuthCallback<UserInfo> callback){
+        if (authData == null) {
+            createUserInfoFromResponse(data, callback);
+        } else if (data.getCode() == 200) {
+            try {
+                UserInfo userInfo = UserInfo.createUserInfo(data.getData());
+                String token = userInfo.getIdToken();
+                authData.setToken(token);
+                OIDCClient.oidcInteraction(authData, callback);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        } else {
+            callback.call(data.getCode(), data.getMessage(), null);
         }
     }
 }
