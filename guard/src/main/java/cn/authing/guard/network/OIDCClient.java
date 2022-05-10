@@ -102,6 +102,30 @@ public class OIDCClient {
         }.start();
     }
 
+    public static void registerByEmail(String email, String password, @NotNull AuthCallback<UserInfo> callback) {
+        Authing.getPublicConfig((config -> OIDCClient.prepareLogin(config, (code, message, authRequest) -> {
+            if (code == 200) {
+                AuthClient.registerByEmail(authRequest, email, password, callback);
+            } else {
+                callback.call(code, message, null);
+            }
+        })));
+    }
+
+    public static void registerByPhoneCode(String phone, String vCode, String password, @NotNull AuthCallback<UserInfo> callback) {
+        registerByPhoneCode(null, phone, vCode, password, callback);
+    }
+
+    public static void registerByPhoneCode(String phoneCountryCode, String phone, String vCode, String password, @NotNull AuthCallback<UserInfo> callback) {
+        Authing.getPublicConfig((config -> OIDCClient.prepareLogin(config, (code, message, authRequest) -> {
+            if (code == 200) {
+                AuthClient.registerByPhoneCode(authRequest, phoneCountryCode, phone, vCode, password, callback);
+            } else {
+                callback.call(code, message, null);
+            }
+        })));
+    }
+
     public static void loginByPhoneCode(String phone, String vCode, @NotNull AuthCallback<UserInfo> callback) {
         loginByPhoneCode(null, phone, vCode, callback);
     }

@@ -108,7 +108,15 @@ public class LoginButton extends PrimaryButton implements ILoginRequestCallBack 
                 Util.setErrorText(this, message);
             }
             post(()-> callback.call(code, message, userInfo));
-        } else if (code == 200) {
+            return;
+        }
+
+        if (userInfo == null){
+            Util.setErrorText(this, message);
+            return;
+        }
+
+        if (code == 200) {
             Authing.getPublicConfig((config)->{
                 if (getContext() instanceof AuthActivity) {
                     AuthActivity activity = (AuthActivity) getContext();

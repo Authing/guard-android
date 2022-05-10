@@ -38,13 +38,26 @@ public class AuthClient {
     }
 
     public static void registerByEmail(String email, String password, @NotNull AuthCallback<UserInfo> callback) {
+        registerByEmail(null, email, password, callback);
+    }
+
+    public static void registerByEmail(AuthRequest authData, String email, String password, @NotNull AuthCallback<UserInfo> callback) {
         try {
             String encryptPassword = Util.encryptPassword(password);
             JSONObject body = new JSONObject();
             body.put("email", email);
             body.put("password", encryptPassword);
             body.put("forceLogin", true);
-            Guardian.post("/api/v2/register/email", body, (data)-> createUserInfoFromResponse(data, callback));
+            Guardian.post("/api/v2/register/email", body, (data)-> {
+                if (data.getCode() == 200 || data.getCode() == EC_MFA_REQUIRED) {
+                    Safe.saveAccount(email);
+                }
+                if (authData == null) {
+                    createUserInfoFromResponse(data, callback);
+                } else {
+                    startOidcInteraction(authData, data.getData(), callback);
+                }
+            });
         } catch (Exception e) {
             e.printStackTrace();
             callback.call(500, "Exception", null);
@@ -70,6 +83,10 @@ public class AuthClient {
     }
 
     public static void registerByPhoneCode(String phoneCountryCode, String phone, String code, String password, @NotNull AuthCallback<UserInfo> callback) {
+        registerByPhoneCode(null, phoneCountryCode, phone, code, password, callback);
+    }
+
+    public static void registerByPhoneCode(AuthRequest authData, String phoneCountryCode, String phone, String code, String password, @NotNull AuthCallback<UserInfo> callback) {
         try {
             String encryptPassword = Util.encryptPassword(password);
             JSONObject body = new JSONObject();
@@ -80,7 +97,17 @@ public class AuthClient {
             body.put("password", encryptPassword);
             body.put("code", code);
             body.put("forceLogin", true);
-            Guardian.post("/api/v2/register/phone-code", body, (data)-> createUserInfoFromResponse(data, callback));
+            Guardian.post("/api/v2/register/phone-code", body, (data)-> {
+                if (data.getCode() == 200 || data.getCode() == EC_MFA_REQUIRED) {
+                    Safe.saveAccount(phone);
+                    Safe.savePhoneCountryCode(phoneCountryCode);
+                }
+                if (authData == null) {
+                    createUserInfoFromResponse(data, callback);
+                } else {
+                    startOidcInteraction(authData, data.getData(), callback);
+                }
+            });
         } catch (Exception e) {
             e.printStackTrace();
             callback.call(500, "Exception", null);
@@ -139,14 +166,7 @@ public class AuthClient {
                 if (authData == null) {
                     createUserInfoFromResponse(data, callback);
                 } else {
-                    try {
-                        UserInfo userInfo = UserInfo.createUserInfo(data.getData());
-                        String token = userInfo.getIdToken();
-                        authData.setToken(token);
-                        OIDCClient.oidcInteraction(authData, callback);
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
+                    startOidcInteraction(authData, data.getData(), callback);
                 }
             });
         } catch (Exception e) {
@@ -171,14 +191,7 @@ public class AuthClient {
                 if (authData == null) {
                     createUserInfoFromResponse(data, callback);
                 } else {
-                    try {
-                        UserInfo userInfo = UserInfo.createUserInfo(data.getData());
-                        String token = userInfo.getIdToken();
-                        authData.setToken(token);
-                        OIDCClient.oidcInteraction(authData, callback);
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
+                    startOidcInteraction(authData, data.getData(), callback);
                 }
             });
         } catch (Exception e) {
@@ -1034,6 +1047,17 @@ public class AuthClient {
         } catch (JSONException e) {
             e.printStackTrace();
             callback.call(500, "Cannot parse data into UserInfo", null);
+        }
+    }
+
+    private static void startOidcInteraction(AuthRequest authData, JSONObject data, @NotNull AuthCallback<UserInfo> callback){
+        try {
+            UserInfo userInfo = UserInfo.createUserInfo(data);
+            String token = userInfo.getIdToken();
+            authData.setToken(token);
+            OIDCClient.oidcInteraction(authData, callback);
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
     }
 }

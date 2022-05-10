@@ -8,7 +8,9 @@ import cn.authing.guard.PasswordConfirmEditText;
 import cn.authing.guard.PasswordEditText;
 import cn.authing.guard.R;
 import cn.authing.guard.RegisterButton;
+import cn.authing.guard.container.AuthContainer;
 import cn.authing.guard.network.AuthClient;
+import cn.authing.guard.network.OIDCClient;
 import cn.authing.guard.util.ALog;
 import cn.authing.guard.util.Util;
 
@@ -51,14 +53,11 @@ public class EmailRegisterHandler extends AbsRegisterHandler {
     }
 
     private void registerByEmail(String email, String password) {
-        AuthClient.registerByEmail(email, password, (code, message, data)->{
-            if (code == 200) {
-                fireCallback(200, "", data);
-            } else {
-                Util.setErrorText(mRegisterButton, message);
-                fireCallback(code, message, null);
-            }
-        });
+        if (getAuthProtocol() == AuthContainer.AuthProtocol.EInHouse) {
+            AuthClient.registerByEmail(email, password, this::fireCallback);
+        } else if (getAuthProtocol() == AuthContainer.AuthProtocol.EOIDC) {
+            OIDCClient.registerByEmail(email, password, this::fireCallback);
+        }
         ALog.d(TAG, "register by email");
     }
 

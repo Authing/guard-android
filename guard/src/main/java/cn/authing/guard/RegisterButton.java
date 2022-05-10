@@ -125,7 +125,14 @@ public class RegisterButton extends LoadingButton implements IRegisterRequestCal
 
         if (callback != null) {
             post(()-> callback.call(code, message, userInfo));
-        } else if (code == 200) {
+        }
+
+        if (userInfo == null){
+            Util.setErrorText(this, message);
+            return;
+        }
+
+        if (code == 200) {
             Authing.getPublicConfig((config)-> {
                 if (getContext() instanceof AuthActivity) {
                     AuthActivity activity = (AuthActivity) getContext();
@@ -147,6 +154,8 @@ public class RegisterButton extends LoadingButton implements IRegisterRequestCal
                     }
                 }
             });
+        } else {
+            Util.setErrorText(this, message);
         }
     }
 

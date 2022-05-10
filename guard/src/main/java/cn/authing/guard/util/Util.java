@@ -61,6 +61,9 @@ public class Util {
     }
 
     public static String encryptPassword(String password) {
+        if (isNull(password)){
+            return null;
+        }
         try {
             byte[] keyBytes = Base64.decode(Authing.getPublicKey(), Base64.NO_WRAP);
             X509EncodedKeySpec keySpec = new X509EncodedKeySpec(keyBytes);

@@ -9,7 +9,10 @@ import cn.authing.guard.PhoneNumberEditText;
 import cn.authing.guard.R;
 import cn.authing.guard.RegisterButton;
 import cn.authing.guard.VerifyCodeEditText;
+import cn.authing.guard.container.AuthContainer;
 import cn.authing.guard.network.AuthClient;
+import cn.authing.guard.network.OIDCClient;
+import cn.authing.guard.util.ALog;
 import cn.authing.guard.util.Util;
 
 public class PhoneCodeRegisterHandler extends AbsRegisterHandler {
@@ -71,13 +74,12 @@ public class PhoneCodeRegisterHandler extends AbsRegisterHandler {
 
 
     private void registerByPhoneCode(String phoneCountryCode, String phone, String phoneCode, String password) {
-        AuthClient.registerByPhoneCode(phoneCountryCode, phone, phoneCode, password, (code, message, data)->{
-            if (code == 200) {
-                fireCallback(200, "", data);
-            } else {
-                Util.setErrorText(mRegisterButton, message);
-                fireCallback(code, message, null);
-            }
-        });
+        if (getAuthProtocol() == AuthContainer.AuthProtocol.EInHouse) {
+            AuthClient.registerByPhoneCode(phoneCountryCode, phone, phoneCode, password, this::fireCallback);
+        } else if (getAuthProtocol() == AuthContainer.AuthProtocol.EOIDC) {
+            OIDCClient.registerByPhoneCode(phoneCountryCode, phone, phoneCode, password, this::fireCallback);
+        }
+        ALog.d(TAG, "register by phone code");
     }
+
 }

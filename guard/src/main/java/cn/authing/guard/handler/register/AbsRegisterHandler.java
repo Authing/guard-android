@@ -3,7 +3,10 @@ package cn.authing.guard.handler.register;
 import android.content.Context;
 
 import cn.authing.guard.RegisterButton;
+import cn.authing.guard.activity.AuthActivity;
+import cn.authing.guard.container.AuthContainer;
 import cn.authing.guard.data.UserInfo;
+import cn.authing.guard.flow.AuthFlow;
 
 public abstract class AbsRegisterHandler {
 
@@ -39,6 +42,16 @@ public abstract class AbsRegisterHandler {
         if (null != mCallBack){
             mCallBack.callback(code, message, userInfo);
         }
+    }
+
+    protected AuthContainer.AuthProtocol getAuthProtocol() {
+        if (!(mContext instanceof AuthActivity)) {
+            return AuthContainer.AuthProtocol.EInHouse;
+        }
+
+        AuthActivity activity = (AuthActivity) mContext;
+        AuthFlow flow = (AuthFlow) activity.getIntent().getSerializableExtra(AuthActivity.AUTH_FLOW);
+        return flow.getAuthProtocol();
     }
 
 }
