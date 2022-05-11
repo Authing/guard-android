@@ -24,13 +24,6 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:layout_gravity="center_horizontal">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@color/authing_app_name"
-                android:textStyle="bold"
-                android:textSize="24sp"
-                android:text="@string/authing_login"/>
             <cn.authing.guard.AppName
                 android:layout_marginStart="8dp"
                 android:layout_width="wrap_content"
@@ -87,7 +80,7 @@
                     android:layout_marginStart="4dp"
                     android:paddingStart="4dp"
                     android:paddingEnd="4dp"
-                    android:textColor="@color/button_text" />
+                    android:textColor="@color/authing_get_verify_code_button_text_color" />
             </LinearLayout>
         </cn.authing.guard.LoginContainer>
 
@@ -127,7 +120,7 @@
                     android:layout_marginStart="4dp"
                     android:paddingStart="4dp"
                     android:paddingEnd="4dp"
-                    android:textColor="@color/button_text" />
+                    android:textColor="@color/authing_get_verify_code_button_text_color" />
             </LinearLayout>
         </cn.authing.guard.LoginContainer>
 
@@ -192,11 +185,10 @@
 
         <cn.authing.guard.LoginButton
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="42dp"
             android:layout_marginStart="@dimen/authing_form_start_end_margin"
             android:layout_marginEnd="@dimen/authing_form_start_end_margin"
-            android:layout_marginTop="16dp"
-            android:textStyle="bold" />
+            android:layout_marginTop="16dp" />
 
         <LinearLayout
             android:layout_width="match_parent"

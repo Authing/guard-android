@@ -151,6 +151,8 @@ public class EditTextLayout extends LinearLayout implements TextWatcher, View.On
         int m = (int) Util.dp2px(context, ICON_LEFT_RIGHT_MARGIN);
         iconParam.setMargins(m, 0, 0, 0);
         leftIcon.setImageDrawable(leftDrawable);
+        int p = (int) Util.dp2px(context, 4);
+        leftIcon.setPadding(p, p, p, p);
         root.addView(leftIcon);
         if (leftDrawable == null) {
             leftIcon.setVisibility(View.GONE);
@@ -396,7 +398,7 @@ public class EditTextLayout extends LinearLayout implements TextWatcher, View.On
             if (editText.hasFocus()) {
                 bgPaint.setColor(Color.WHITE);
             } else {
-                bgPaint.setColor(0xfff4f5f6);
+                bgPaint.setColor(0xfff5f6f7);
             }
             canvas.drawRoundRect(0, 0, getRight(), getBottom(), corner, corner, bgPaint);
 

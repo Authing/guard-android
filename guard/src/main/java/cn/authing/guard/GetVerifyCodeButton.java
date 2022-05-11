@@ -6,6 +6,7 @@ import android.content.Context;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.util.TypedValue;
+import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -75,12 +76,16 @@ public class GetVerifyCodeButton extends LoadingButton {
     public void handleSMSResult(int code, String message, Object ignore) {
         post(()->{
             stopLoadingVisualEffect();
-            // in stopLoadingVisualEffect it will setEnabled to true
-            setEnabled(false);
             if (code == 200) {
+                // in stopLoadingVisualEffect it will setEnabled to true
+                setEnabled(false);
                 countDown();
+                View v = Util.findViewByClass(this, VerifyCodeEditText.class);
+                if (v != null) {
+                    v.requestFocus();
+                }
             } else {
-                Util.setErrorText(this, getContext().getString(R.string.authing_get_verify_code_failed));
+                Util.setErrorText(this, message);
             }
         });
     }

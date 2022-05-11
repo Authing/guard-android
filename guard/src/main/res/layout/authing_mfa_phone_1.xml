@@ -45,7 +45,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:textColor="@color/button_text" />
+        android:textColor="@color/authing_get_verify_code_button_text_color" />
 
     <cn.authing.guard.ErrorTextView
         android:layout_width="match_parent"

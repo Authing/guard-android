@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<shape xmlns:android="http://schemas.android.com/apk/res/android"
-    android:shape="rectangle">
-    <solid android:color="#ffecf0f1"/>
-    <stroke android:width="1px"  android:color="@color/authing_main"/>
-    <corners android:radius="4dp"/>
-</shape>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- pressed -->
+    <item android:drawable="@drawable/authing_get_code_button_background_pressed" android:state_pressed="true"/>
+    <!-- focused -->
+    <item android:drawable="@drawable/authing_get_code_button_background_pressed" android:state_focused="true"/>
+    <!-- default -->
+    <item android:drawable="@drawable/authing_get_code_button_background_normal"/>
+</selector>
