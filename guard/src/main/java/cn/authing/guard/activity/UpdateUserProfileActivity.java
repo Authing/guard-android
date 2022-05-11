@@ -27,14 +27,18 @@ public class UpdateUserProfileActivity extends BaseAuthActivity {
         String label = getIntent().getStringExtra("label");
         data = (UserInfo.CustomData) getIntent().getSerializableExtra("data");
 
-        UserInfo userInfo = Authing.getCurrentUser();
+
         EditTextLayout et = findViewById(R.id.et_value);
         if (label != null) {
             et.getEditText().setHint(label);
         }
+
         if (key != null) {
-            String v = userInfo.getMappedData(key);
-            et.getEditText().setText(Util.isNull(v) ? "" : v);
+            UserInfo userInfo = Authing.getCurrentUser();
+            if(userInfo != null){
+                String v = userInfo.getMappedData(key);
+                et.getEditText().setText(Util.isNull(v) ? "" : v);
+            }
         } else if (data != null) {
             et.getEditText().setText(data.getValue());
         }
