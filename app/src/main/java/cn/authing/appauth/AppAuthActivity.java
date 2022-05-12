@@ -1,13 +1,12 @@
 package cn.authing.appauth;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.TextView;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import net.openid.appauth.AuthState;
 import net.openid.appauth.AuthorizationException;
@@ -51,40 +50,54 @@ public class AppAuthActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_app_auth);
-
         btn = findViewById(R.id.btn_loading);
 
-        btn.startLoadingVisualEffect();
+        if (Authing.getCurrentUser() == null){
+            btn.startLoadingVisualEffect();
+            Authing.getPublicConfig(config -> {
+                String identifier = config.getIdentifier();
+                Uri authEndpoint = Uri.parse(Authing.getScheme() + "://" + identifier + "." + Authing.getHost() + "/oidc/auth");
+                Uri tokenEndpoint = Uri.parse(Authing.getScheme() + "://" + identifier + "." + Authing.getHost() + "/oidc/token");
+                Uri regEndpoint = Uri.parse(Authing.getScheme() + "://" + identifier + "." + Authing.getHost() + "/oidc/reg");
+                String host = Util.getHost(config);
+                Uri endEndpoint = Uri.parse(Authing.getScheme() + "://" + host + "/login/profile/logout?redirect_uri=" + REDIRECT_URL);
+                configuration = new AuthorizationServiceConfiguration(authEndpoint, tokenEndpoint, regEndpoint, endEndpoint);
+                AuthorizationServiceConfiguration.fetchFromIssuer(Uri.parse(Authing.getScheme() + "://" + identifier + "." + Authing.getHost() + "/oidc"),
+                        (serviceConfiguration, ex) -> {
+                            if (ex != null) {
+                                Log.e(TAG, "failed to fetch configuration");
+                                return;
+                            }
 
-        Authing.getPublicConfig(config -> {
-            String host = config.getIdentifier();
-            Uri authEndpoint = Uri.parse("https://" + host + ".authing.cn/oidc/auth");
-            Uri tokenEndpoint = Uri.parse("https://" + host + ".authing.cn/oidc/token");
-            Uri regEndpoint = Uri.parse("https://" + host + ".authing.cn/oidc/reg");
-            Uri endEndpoint = Uri.parse("https://guard-mobile.authing.cn/login/profile/logout?redirect_uri=cn.guard://authing.cn/redirect");
-            configuration = new AuthorizationServiceConfiguration(authEndpoint, tokenEndpoint, regEndpoint, endEndpoint);
-            AuthorizationServiceConfiguration.fetchFromIssuer(Uri.parse("https://" + host + ".authing.cn/oidc"),
-                    (serviceConfiguration, ex) -> {
-                        if (ex != null) {
-                            Log.e(TAG, "failed to fetch configuration");
-                            return;
-                        }
+                            authState = new AuthState(serviceConfiguration);
+                            startAuth(serviceConfiguration);
+                        });
+            });
+        }
 
-                        authState = new AuthState(serviceConfiguration);
-                        startAuth(serviceConfiguration);
-                    });
-        });
 
         findViewById(R.id.btn_user_profile).setOnClickListener(v -> {
             Intent intent = new Intent(this, UserProfileActivity.class);
             startActivity(intent);
         });
 
+        findViewById(R.id.btn_user_profile_web).setOnClickListener(v -> {
+            Authing.getPublicConfig(config -> {
+                Intent browserIntent = new Intent();
+                browserIntent.setAction("android.intent.action.VIEW");
+                //browserIntent.setPackage("com.android.chrome");
+                String url = Authing.getScheme() + "://" + Util.getHost(config) + "/u?app_id=" + Authing.getAppId() + "&back_app_url=" + REDIRECT_URL;
+                Uri content_url = Uri.parse(url);
+                browserIntent.setData(content_url);
+                startActivity(browserIntent);
+            });
+        });
+
         findViewById(R.id.btn_logout).setOnClickListener((v -> {
             Authing.getPublicConfig(config -> {
                 EndSessionRequest request = new EndSessionRequest.Builder(configuration)
                         .setIdTokenHint(userInfo.getIdToken())
-                        .setPostLogoutRedirectUri(Uri.parse("cn.guard://authing.cn/redirect"))
+                        .setPostLogoutRedirectUri(Uri.parse(REDIRECT_URL))
                         .build();
 
                 authService = new AuthorizationService(this);
