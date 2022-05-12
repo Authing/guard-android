@@ -13,7 +13,7 @@
 
 [中文文档请移步至这里查看](https://docs.authing.cn/v2/reference/sdk-for-android/)
 
-[Click me for English documentation](./doc/index_en.md)
+[Click me for English documentation](https://docs.authing.cn/v2/en/reference/sdk-for-android/)
 
 </div>
 
