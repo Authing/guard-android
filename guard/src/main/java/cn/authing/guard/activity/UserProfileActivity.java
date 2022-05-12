@@ -5,7 +5,7 @@ import android.os.Bundle;
 import cn.authing.guard.R;
 import cn.authing.guard.util.Util;
 
-public class UserProfileActivity extends BaseAuthActivity {
+public class UserProfileActivity extends BaseAuthActivity implements UserProfileFragment.onAccountStateListener {
 
     private UserProfileFragment fragment;
 
@@ -15,6 +15,9 @@ public class UserProfileActivity extends BaseAuthActivity {
         Util.setStatusBarColor(this, R.color.authing_background);
         setContentView(R.layout.authing_activity_user_profile);
         fragment = (UserProfileFragment)getSupportFragmentManager().findFragmentById(R.id.fragment_user_profile);
+        if (null != fragment){
+            fragment.setOnAccountStateListener(this);
+        }
     }
 
     @Override
@@ -25,4 +28,15 @@ public class UserProfileActivity extends BaseAuthActivity {
             fragment.uploadAvatar(data.getData());
         }
     }
+
+    @Override
+    public void onLogoutSuccess() {
+        finish();
+    }
+
+    @Override
+    public void onAccountDeletedSuccess() {
+        finish();
+    }
+
 }

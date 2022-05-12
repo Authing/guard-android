@@ -42,13 +42,7 @@ public class SplashActivity extends AppCompatActivity {
 
         // both condition meets
         if (flag == 3) {
-            Intent intent;
-            if (Authing.getCurrentUser() != null) {
-                intent = new Intent(this, MainActivity.class);
-                intent.putExtra("user", Authing.getCurrentUser());
-            } else {
-                intent = new Intent(this, SampleListActivity.class);
-            }
+            Intent intent = new Intent(this, SampleListActivity.class);
             startActivity(intent);
             finish();
         }

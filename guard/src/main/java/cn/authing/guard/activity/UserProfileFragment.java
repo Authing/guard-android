@@ -38,6 +38,7 @@ public class UserProfileFragment extends Fragment {
     private UserProfileContainer userProfileContainer;
     private LinearLayout customDataContainer;
     private final Map<String, TextView> customDataViews = new HashMap<>();
+    private onAccountStateListener onAccountStateListener;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -130,7 +131,12 @@ public class UserProfileFragment extends Fragment {
     }
 
     private void logout() {
-        AuthClient.logout((code, message, data)-> AuthFlow.start(getActivity()));
+        AuthClient.logout((code, message, data)-> {
+            AuthFlow.start(getActivity());
+            if (null != onAccountStateListener){
+                onAccountStateListener.onLogoutSuccess();
+            }
+        });
     }
 
     private void deleteAccount() {
@@ -139,6 +145,9 @@ public class UserProfileFragment extends Fragment {
                 .setPositiveButton(android.R.string.yes, (dialog, which) -> AuthClient.deleteAccount((code, message, data) -> {
                     if (code == 200) {
                         AuthFlow.start(getActivity());
+                        if (null != onAccountStateListener){
+                            onAccountStateListener.onAccountDeletedSuccess();
+                        }
                     } else {
                         getActivity().runOnUiThread(()-> Toast.makeText(getContext(), message, Toast.LENGTH_LONG).show());
                     }
@@ -160,5 +169,16 @@ public class UserProfileFragment extends Fragment {
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
+    }
+
+    public void setOnAccountStateListener(UserProfileFragment.onAccountStateListener onAccountStateListener) {
+        this.onAccountStateListener = onAccountStateListener;
+    }
+
+    public interface onAccountStateListener{
+
+        void onLogoutSuccess();
+
+        void onAccountDeletedSuccess();
     }
 }

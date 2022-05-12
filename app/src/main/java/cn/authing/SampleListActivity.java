@@ -15,7 +15,6 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -65,13 +64,24 @@ public class SampleListActivity extends AppCompatActivity {
         setContentView(R.layout.activity_sample_list);
 
         ListView listView = findViewById(R.id.lv_samples);
-
         final ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
                 R.layout.sample_list_item, from);
-
         listView.setAdapter(adapter);
-
         listView.setOnItemClickListener((arg0, arg1, arg2, pos) -> {
+            if (pos == 7) {
+                Intent intent = new Intent(SampleListActivity.this, AppAuthActivity.class);
+                startActivity(intent);
+                return;
+            } else if (pos == 12) {
+                Intent intent = new Intent(SampleListActivity.this, ScanAuthActivity.class);
+                startActivity(intent);
+                return;
+            }
+
+            if (null != Authing.getCurrentUser()){
+                gotoMain();
+                return;
+            }
             if (pos == AUTHING_LOGIN) {
                 AuthFlow.start(this);
             } else if (pos == 1) {
@@ -103,9 +113,6 @@ public class SampleListActivity extends AppCompatActivity {
                 flow.setAuthProtocol(AuthContainer.AuthProtocol.EOIDC);
 //                Intent intent = new Intent(SampleListActivity.this, NissanVirtualKeyAuthActivity.class);
 //                startActivity(intent);
-            } else if (pos == 7) {
-                Intent intent = new Intent(SampleListActivity.this, AppAuthActivity.class);
-                startActivity(intent);
             } else if (pos == 8) {
                 AuthFlow flow = AuthFlow.startWeb(this);
 //                flow.setScope("openid");
@@ -119,9 +126,6 @@ public class SampleListActivity extends AppCompatActivity {
             } else if (pos == 11) {
                 Authing.init(SampleListActivity.this, "61ae0c9807451d6f30226bd4");
                 AuthFlow.start(this);
-            } else if (pos == 12) {
-                Intent intent = new Intent(SampleListActivity.this, ScanAuthActivity.class);
-                startActivity(intent);
             } else if (pos == 13) {
                 biometric = true;
                 AuthFlow.start(this);
@@ -209,12 +213,8 @@ public class SampleListActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-//    private static void gotoMain(Context context, int code, String message, UserInfo data) {
-//        if (code != 200) {
-//            return;
-//        }
-//        Intent intent = new Intent(context, MainActivity.class);
-//        intent.putExtra("user", data);
-//        context.startActivity(intent);
-//    }
+    private void gotoMain() {
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
+    }
 }
