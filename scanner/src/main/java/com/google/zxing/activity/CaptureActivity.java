@@ -1,33 +1,23 @@
 package com.google.zxing.activity;
 
 import android.app.ProgressDialog;
-import android.content.ContentResolver;
-import android.content.Context;
-import android.content.CursorLoader;
 import android.content.Intent;
 import android.content.res.AssetFileDescriptor;
-import android.database.Cursor;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.media.MediaPlayer.OnCompletionListener;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.Message;
 import android.os.Vibrator;
-import android.provider.MediaStore;
 import android.text.TextUtils;
-import android.view.Menu;
-import android.view.MenuItem;
+import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceHolder.Callback;
 import android.view.SurfaceView;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -35,7 +25,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.dommy.qrcode.util.BitmapUtil;
 import com.dommy.qrcode.util.Constant;
-import com.dommy.qrcode.util.UriUtil;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.BinaryBitmap;
 import com.google.zxing.ChecksumException;
@@ -71,7 +60,7 @@ public class CaptureActivity extends AppCompatActivity implements Callback {
     private ViewfinderView viewfinderView;
     private ImageButton back;
     private ImageButton btnFlash;
-    private Button btnAlbum; // 相册
+    private TextView btnAlbum; // 相册
     private boolean isFlashOn = false;
     private boolean hasSurface;
     private Vector<BarcodeFormat> decodeFormats;
@@ -106,7 +95,7 @@ public class CaptureActivity extends AppCompatActivity implements Callback {
         btnFlash = (ImageButton) findViewById(R.id.btn_flash);
         btnFlash.setOnClickListener(flashListener);
 
-        btnAlbum = (Button) findViewById(R.id.btn_album);
+        btnAlbum = findViewById(R.id.btn_album);
         btnAlbum.setOnClickListener(albumOnClick);
 
 //		cancelScanButton = (Button) this.findViewById(R.id.btn_cancel_scan);
@@ -143,6 +132,7 @@ public class CaptureActivity extends AppCompatActivity implements Callback {
      * @param data
      */
     private void handleAlbumPic(Intent data) {
+        Log.e("ScanAuthActivity", "handleAlbumPic");
         //获取选中图片的路径
         final Uri uri = data.getData();
 
