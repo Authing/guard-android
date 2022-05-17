@@ -1,6 +1,7 @@
 package cn.authing.guard.flow;
 
 import static cn.authing.guard.util.Const.MFA_POLICY_EMAIL;
+import static cn.authing.guard.util.Const.MFA_POLICY_OTP;
 import static cn.authing.guard.util.Const.MFA_POLICY_SMS;
 import static cn.authing.guard.util.Util.isNull;
 
@@ -65,6 +66,8 @@ public class FlowHelper {
             handleSMSMFA((AuthActivity) context, currentView, data.getPhoneCountryCode(), data.getPhone());
         } else if (MFA_POLICY_EMAIL.equals(firstOption)) {
             handleEmailMFA((AuthActivity) context, currentView, data.getEmail());
+        } else if (MFA_POLICY_OTP.equals(firstOption)) {
+            handleOTPMFA((AuthActivity) context);
         }
     }
 
