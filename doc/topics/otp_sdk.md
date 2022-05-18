@@ -5,7 +5,7 @@
 ## 添加依赖
 
 ```groovy
-implementation 'cn.authing.otp:+'
+implementation 'cn.authing:otp:+'
 ```
 
 ## 绑定帐号
@@ -27,7 +27,7 @@ public class TOTP {
 示例：
 
 ```java
-String data = "otpauth://totp/GuardPool:maolongdong%40gmail.com?secret=GN4XCFDLDY4FWMQM&period=30&digits=6&algorithm=SHA1&issuer=GuardPool"
+String data = "otpauth://totp/GuardPool:maolongdong%40gmail.com?secret=GN4XCFDLDY4FWMQM&period=30&digits=6&algorithm=SHA1&issuer=GuardPool";
 TOTP.bind(this, data); // this is your context
 ```
 
@@ -48,6 +48,7 @@ TOTP.bind(this, data); // this is your context
     android:layout_width="match_parent"
     android:layout_height="match_parent">
     <fragment
+        android:id="@+id/fragment_authenticator"
         android:name="cn.authing.otp.AuthenticatorFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
