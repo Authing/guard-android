@@ -13,13 +13,12 @@ import android.webkit.WebViewClient;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import java.net.URL;
+import java.net.URI;
 import java.util.List;
 import java.util.Map;
 
 import cn.authing.guard.activity.AuthActivity;
 import cn.authing.guard.analyze.Analyzer;
-import cn.authing.guard.data.Config;
 import cn.authing.guard.data.UserInfo;
 import cn.authing.guard.flow.AuthFlow;
 import cn.authing.guard.network.AuthRequest;
@@ -144,7 +143,7 @@ public class WebAuthView extends WebView {
                 ALog.d(TAG, "onPageFinished:" + url);
                 if (listener != null && "login".equals(Uri.parse(url).getLastPathSegment())) {
                     try {
-                        URL u = new URL(url);
+                        URI u = new URI(url);
                         Map<String, List<String>> map = Util.splitQuery(u);
                         if (map.containsKey("uuid")) {
                             if (count == 1) {

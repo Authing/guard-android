@@ -22,12 +22,12 @@ import java.util.concurrent.Executor;
 
 import cn.authing.abao.AbaoActivity;
 import cn.authing.appauth.AppAuthActivity;
+import cn.authing.authenticator.AuthenticatorActivity;
 import cn.authing.guard.Authing;
 import cn.authing.guard.container.AuthContainer;
 import cn.authing.guard.data.UserInfo;
 import cn.authing.guard.flow.AuthFlow;
 import cn.authing.guard.oneclick.OneClick;
-import cn.authing.nissan.NissanVirtualKeyAuthActivity;
 import cn.authing.oneclick.OneClickActivity;
 import cn.authing.scan.ScanAuthActivity;
 import cn.authing.theragun.TheragunAuthActivity;
@@ -55,7 +55,7 @@ public class SampleListActivity extends AppCompatActivity {
             "登录/注册后用户信息完善",
             "扫码登录",
             "生物二次验证",
-            "Android 默认风格登录",
+            "Authenticator",
     };
 
     @Override
@@ -130,7 +130,7 @@ public class SampleListActivity extends AppCompatActivity {
                 biometric = true;
                 AuthFlow.start(this);
             } else if (pos == 14) {
-                Intent intent = new Intent(SampleListActivity.this, AndroidAuthActivity.class);
+                Intent intent = new Intent(SampleListActivity.this, AuthenticatorActivity.class);
                 startActivity(intent);
             }
         });

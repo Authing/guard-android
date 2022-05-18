@@ -9,3 +9,4 @@ rootProject.name = "Guard"
 include ':app'
 include ':guard'
 include ':scanner'
+include ':otp'

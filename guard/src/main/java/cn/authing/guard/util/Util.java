@@ -18,7 +18,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
-import java.net.URL;
+import java.net.URI;
 import java.net.URLDecoder;
 import java.security.KeyFactory;
 import java.security.PublicKey;
@@ -243,7 +243,7 @@ public class Util {
         });
     }
 
-    public static Map<String, List<String>> splitQuery(URL url) throws UnsupportedEncodingException {
+    public static Map<String, List<String>> splitQuery(URI url) throws UnsupportedEncodingException {
         final Map<String, List<String>> queryPairs = new LinkedHashMap<>();
         final String query = url.getQuery();
         if (TextUtils.isEmpty(query)) {
@@ -269,7 +269,7 @@ public class Util {
 
     public static String getQueryParam(String url, String key) {
         try {
-            URL u = new URL(url);
+            URI u = new URI(url);
             Map<String, List<String>> map = Util.splitQuery(u);
             if (map != null && map.containsKey(key)) {
                 List<String> list = map.get(key);

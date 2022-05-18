@@ -117,6 +117,9 @@
             </intent-filter>
         </activity>
         <activity
+            android:name=".authenticator.AuthenticatorActivity"
+            android:exported="false" />
+        <activity
             android:name=".guard.wxapi.WXEntryActivity"
             android:exported="true" />
     </application>
