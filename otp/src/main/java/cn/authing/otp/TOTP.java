@@ -22,11 +22,23 @@ public class TOTP {
             Map<String, String> map = splitQuery(uri);
             if (map != null) {
                 String secret = map.get("secret");
+                String algorithm = map.get("algorithm");
+                int digits = TotpUtils.CODE_DIGITS;
+                try {
+                    digits = Integer.parseInt(map.get("digits"));
+                } catch (Exception e) {}
+                int period = TotpUtils.TIME_STEP;
+                try {
+                    period = Integer.parseInt(map.get("period"));
+                } catch (Exception e) {}
                 String issuer = map.get("issuer");
                 if (secret != null && issuer != null) {
                     TOTPEntity totp = new TOTPEntity();
                     totp.setAccount(path);
                     totp.setSecret(secret);
+                    totp.setAlgorithm(algorithm);
+                    totp.setDigits(digits);
+                    totp.setPeriod(period);
                     totp.setIssuer(issuer);
                     DatabaseHelper db = new DatabaseHelper(context);
                     db.addOTP(totp);

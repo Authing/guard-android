@@ -13,7 +13,6 @@ import java.util.List;
 
 public class AuthenticatorFragment extends Fragment implements CountDownListener {
 
-    private ListView listView;
     private List<TOTPEntity> totpList;
     private TOTPAdapter adapter;
     private float degree = 360;
@@ -27,7 +26,7 @@ public class AuthenticatorFragment extends Fragment implements CountDownListener
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
-        listView = getView().findViewById(R.id.lv_otps);
+        ListView listView = getView().findViewById(R.id.lv_otps);
         adapter = new TOTPAdapter();
         listView.setAdapter(adapter);
     }
@@ -51,6 +50,7 @@ public class AuthenticatorFragment extends Fragment implements CountDownListener
     private void countDown() {
         if (countingDown) {
             getView().postDelayed(this::countDown, 1000);
+            // TODO each item might have different period
             int delta = TotpUtils.getRemainingMilliSeconds();
             degree = 360f / TotpUtils.TIME_STEP * delta / 1000;
             adapter.notifyDataSetChanged();

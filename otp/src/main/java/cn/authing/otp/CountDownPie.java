@@ -9,7 +9,6 @@ import android.view.View;
 public class CountDownPie extends View {
 
     private final Paint piePaint = new Paint();
-    private float degree = 360;
     private CountDownListener listener;
 
     public CountDownPie(Context context) {
@@ -24,22 +23,11 @@ public class CountDownPie extends View {
         super(context, attrs, defStyleAttr);
 
         piePaint.setColor(0xff396aff);
-//        countDown();
     }
 
     public void setListener(CountDownListener listener) {
         this.listener = listener;
     }
-
-//    private void countDown() {
-//        postDelayed(this::countDown, 1000);
-//        float timeout = 60;
-//        degree -= 360 / timeout;
-//        if (degree < 0) {
-//            degree = 360;
-//        }
-//        invalidate();
-//    }
 
     @Override
     protected void onDraw(Canvas canvas) {

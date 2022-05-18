@@ -8,8 +8,8 @@ public class TOTPEntity {
     private int uuid;
     private String account;
     private String secret;
-    private String period;
-    private String digits;
+    private int period;
+    private int digits;
     private String algorithm;
     private String issuer;
     private String totpCode;
@@ -62,19 +62,19 @@ public class TOTPEntity {
         this.secret = secret;
     }
 
-    public String getPeriod() {
+    public int getPeriod() {
         return period;
     }
 
-    public void setPeriod(String period) {
+    public void setPeriod(int period) {
         this.period = period;
     }
 
-    public String getDigits() {
+    public int getDigits() {
         return digits;
     }
 
-    public void setDigits(String digits) {
+    public void setDigits(int digits) {
         this.digits = digits;
     }
 

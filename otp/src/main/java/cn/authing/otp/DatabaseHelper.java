@@ -17,6 +17,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String KEY_ID = "id";
     private static final String KEY_ACCOUNT = "account";
     private static final String KEY_SECRET = "secret";
+    private static final String KEY_ALGORITHM = "algorithm";
+    private static final String KEY_DIGITS = "digits";
+    private static final String KEY_INTERVAL = "interval";
     private static final String KEY_ISSUER = "issuer";
 
     public DatabaseHelper(Context context) {
@@ -29,6 +32,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 + KEY_ID + " INTEGER PRIMARY KEY,"
                 + KEY_ACCOUNT + " TEXT,"
                 + KEY_SECRET + " TEXT,"
+                + KEY_ALGORITHM + " TEXT,"
+                + KEY_DIGITS + " INT,"
+                + KEY_INTERVAL + " INT,"
                 + KEY_ISSUER + " TEXT" + ")";
         sqLiteDatabase.execSQL(CREATE_CONTACTS_TABLE);
     }
@@ -44,6 +50,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         ContentValues values = new ContentValues();
         values.put(KEY_ACCOUNT, totp.getAccount());
         values.put(KEY_SECRET, totp.getSecret());
+        values.put(KEY_ALGORITHM, totp.getAlgorithm());
+        values.put(KEY_DIGITS, totp.getDigits());
+        values.put(KEY_INTERVAL, totp.getPeriod());
         values.put(KEY_ISSUER, totp.getIssuer());
 
         db.insert(TABLE_OTP, null, values);
@@ -63,7 +72,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 contact.setUuid(Integer.parseInt(cursor.getString(0)));
                 contact.setAccount(cursor.getString(1));
                 contact.setSecret(cursor.getString(2));
-                contact.setIssuer(cursor.getString(3));
+                contact.setAlgorithm(cursor.getString(3));
+                contact.setDigits(cursor.getInt(4));
+                contact.setPeriod(cursor.getInt(5));
+                contact.setIssuer(cursor.getString(6));
                 list.add(contact);
             } while (cursor.moveToNext());
         }
