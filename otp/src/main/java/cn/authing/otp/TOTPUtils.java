@@ -5,7 +5,7 @@ import java.nio.ByteBuffer;
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
 
-public class TotpUtils {
+public class TOTPUtils {
 
     public static final int TIME_STEP = 30;
     public static final int CODE_DIGITS = 6;
@@ -16,21 +16,25 @@ public class TotpUtils {
     }
 
     public static String generateTOTP(String secret) {
-        return TotpUtils.generateTOTP(secret, TotpUtils.getCurrentInterval(), CODE_DIGITS);
+        return generateTOTP(secret, getCurrentInterval(), CODE_DIGITS);
     }
 
     public static String generateTOTP(String secret, int codeDigits) {
-        return TotpUtils.generateTOTP(secret, TotpUtils.getCurrentInterval(), codeDigits);
+        return generateTOTP(secret, getCurrentInterval(), codeDigits);
+    }
+
+    public static String generateTOTP(String secret, int period, int codeDigits) {
+        return generateTOTP(secret, getCurrentInterval(period), codeDigits);
     }
 
     public static boolean verify(String secret, String code) {
-        return TotpUtils.verify(secret, code, CODE_DIGITS);
+        return verify(secret, code, CODE_DIGITS);
     }
 
     public static boolean verify(String secret, String code, int codeDigits) {
-        long currentInterval = TotpUtils.getCurrentInterval();
+        long currentInterval = getCurrentInterval();
         for (int i = 0; i <= 1; i++) {
-            String tmpCode = TotpUtils.generateTOTP(secret, currentInterval - i, codeDigits);
+            String tmpCode = generateTOTP(secret, currentInterval - i, codeDigits);
             if (tmpCode.equals(code)) {
                 return true;
             }
@@ -51,7 +55,7 @@ public class TotpUtils {
             throw new UnsupportedOperationException("不支持" + codeDigits + "位数的动态口令");
         }
         byte[] content = ByteBuffer.allocate(8).putLong(currentInterval).array();
-        byte[] hash = TotpUtils.hmacsha("HmacSHA1", content, secret);
+        byte[] hash = hmacsha("HmacSHA1", content, secret);
         if(hash == null){
             return "";
         }
@@ -61,13 +65,17 @@ public class TotpUtils {
                         ((hash[offset + 1] & 0xff) << 16) |
                         ((hash[offset + 2] & 0xff) << 8) |
                         (hash[offset + 3] & 0xff);
-        long digitsPower = Long.parseLong(TotpUtils.rightPadding("1", codeDigits + 1));
+        long digitsPower = Long.parseLong(rightPadding("1", codeDigits + 1));
         long code = binary % digitsPower;
-        return TotpUtils.leftPadding(Long.toString(code), codeDigits);
+        return leftPadding(Long.toString(code), codeDigits);
     }
 
     private static long getCurrentInterval() {
         return System.currentTimeMillis() / 1000 / TIME_STEP;
+    }
+
+    private static long getCurrentInterval(int period) {
+        return System.currentTimeMillis() / 1000 / period;
     }
 
     private static String leftPadding(String value, int length) {
@@ -86,7 +94,7 @@ public class TotpUtils {
 
     private static byte[] hmacsha(String crypto, byte[] content, String key) {
         try {
-            byte[] byteKey = new Base32().decode(key);
+            byte[] byteKey = Base32.decode(key);
             Mac hmac = Mac.getInstance(crypto);
             SecretKeySpec keySpec = new SecretKeySpec(byteKey, crypto);
             hmac.init(keySpec);

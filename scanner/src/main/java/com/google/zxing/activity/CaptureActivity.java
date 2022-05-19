@@ -21,6 +21,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.dommy.qrcode.util.BitmapUtil;
@@ -80,6 +81,10 @@ public class CaptureActivity extends AppCompatActivity implements Callback {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        ActionBar bar = getSupportActionBar();
+        if (bar != null) {
+            bar.hide();
+        }
         setContentView(R.layout.activity_scanner);
         //ViewUtil.addTopView(getApplicationContext(), this, R.string.scan_card);
         CameraManager.init(getApplication());

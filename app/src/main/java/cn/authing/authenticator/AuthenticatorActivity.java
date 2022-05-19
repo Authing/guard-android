@@ -5,6 +5,8 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -18,7 +20,6 @@ import com.google.zxing.activity.CaptureActivity;
 
 import cn.authing.R;
 import cn.authing.guard.util.ALog;
-import cn.authing.otp.AuthenticatorFragment;
 import cn.authing.otp.TOTP;
 
 public class AuthenticatorActivity extends AppCompatActivity {
@@ -30,10 +31,22 @@ public class AuthenticatorActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_authenticator);
+    }
 
-        findViewById(R.id.btn_scan).setOnClickListener((v -> {
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.scan, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        if (id == R.id.menu_scan) {
             startQrCode();
-        }));
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
@@ -44,8 +57,7 @@ public class AuthenticatorActivity extends AppCompatActivity {
                 Bundle bundle = data.getExtras();
                 String scanResult = bundle.getString(Constant.INTENT_EXTRA_KEY_QR_SCAN);
                 ALog.d(TAG, "scan result:" + scanResult);
-                String totpcode = TOTP.bind(this, scanResult);
-                ALog.d(TAG, "totp code:" + totpcode);
+                TOTP.bind(this, scanResult);
             }
         }
     }

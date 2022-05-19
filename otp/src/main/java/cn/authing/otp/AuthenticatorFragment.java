@@ -13,8 +13,10 @@ import java.util.List;
 
 public class AuthenticatorFragment extends Fragment implements CountDownListener {
 
+    private ListView listView;
     private List<TOTPEntity> totpList;
     private TOTPAdapter adapter;
+    private TextView textView;
     private float degree = 360;
     private boolean countingDown;
 
@@ -26,9 +28,10 @@ public class AuthenticatorFragment extends Fragment implements CountDownListener
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
-        ListView listView = getView().findViewById(R.id.lv_otps);
+        listView = getView().findViewById(R.id.lv_otps);
         adapter = new TOTPAdapter();
         listView.setAdapter(adapter);
+        textView = getView().findViewById(R.id.no_data);
     }
 
     @Override
@@ -36,10 +39,31 @@ public class AuthenticatorFragment extends Fragment implements CountDownListener
         super.onResume();
         DatabaseHelper db = new DatabaseHelper(getActivity());
         totpList = db.getOTPs();
+        if (null == totpList || totpList.size() == 0){
+            textView.setVisibility(View.VISIBLE);
+            listView.setVisibility(View.GONE);
+            return;
+        }
+        textView.setVisibility(View.GONE);
+        listView.setVisibility(View.VISIBLE);
         adapter.notifyDataSetChanged();
         countingDown = true;
         countDown();
+        listView.setOnItemClickListener((parent, view, position, id) -> {
+            if (null == totpList || position >= totpList.size()){
+                return;
+            }
+            TOTPEntity totpEntity = totpList.get(position);
+            if (null == dialog){
+                dialog = new AuthenticatorDetailDialog(getActivity(), R.style.BaseDialog);
+                dialog.setOnDismissListener(dialog -> onResume());
+            }
+            dialog.setData(totpEntity);
+            dialog.show();
+        });
     }
+
+    private AuthenticatorDetailDialog dialog;
 
     @Override
     public void onPause() {
@@ -51,8 +75,8 @@ public class AuthenticatorFragment extends Fragment implements CountDownListener
         if (countingDown) {
             getView().postDelayed(this::countDown, 1000);
             // TODO each item might have different period
-            int delta = TotpUtils.getRemainingMilliSeconds();
-            degree = 360f / TotpUtils.TIME_STEP * delta / 1000;
+            int delta = TOTPUtils.getRemainingMilliSeconds();
+            degree = 360f / TOTPUtils.TIME_STEP * delta / 1000;
             adapter.notifyDataSetChanged();
         }
     }
@@ -95,6 +119,15 @@ public class AuthenticatorFragment extends Fragment implements CountDownListener
             countDownPie.setListener(AuthenticatorFragment.this);
             countDownPie.invalidate();
             return view;
+        }
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if (null != dialog){
+            dialog.dismiss();
+            dialog = null;
         }
     }
 }
