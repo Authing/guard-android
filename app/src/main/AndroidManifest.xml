@@ -55,7 +55,8 @@
         <activity
             android:name=".SampleListActivity"
             android:exported="false"
-            android:launchMode="singleTask" />
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".MainActivity"
             android:exported="false"
@@ -118,7 +119,8 @@
         </activity>
         <activity
             android:name=".authenticator.AuthenticatorActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".guard.wxapi.WXEntryActivity"
             android:exported="true" />
