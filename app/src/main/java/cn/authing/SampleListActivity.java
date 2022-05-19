@@ -67,17 +67,17 @@ public class SampleListActivity extends AppCompatActivity {
         setContentView(R.layout.activity_sample_list);
 
         ListView listView = findViewById(R.id.lv_samples);
-        final ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
-                R.layout.sample_list_item, from);
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, R.layout.sample_list_item, from);
         listView.setAdapter(adapter);
         listView.setOnItemClickListener((arg0, arg1, arg2, pos) -> {
             if (pos == 7) {
-                Intent intent = new Intent(SampleListActivity.this, AppAuthActivity.class);
-                startActivity(intent);
+                startActivity(AppAuthActivity.class);
                 return;
             } else if (pos == 12) {
-                Intent intent = new Intent(SampleListActivity.this, ScanAuthActivity.class);
-                startActivity(intent);
+                startActivity(ScanAuthActivity.class);
+                return;
+            } else if (pos == 14) {
+                startActivity(AuthenticatorActivity.class);
                 return;
             }
 
@@ -103,14 +103,11 @@ public class SampleListActivity extends AppCompatActivity {
                     }
                 }));
             } else if (pos == 3) {
-                Intent intent = new Intent(SampleListActivity.this, WechatAuthActivity.class);
-                startActivity(intent);
+                startActivity(WechatAuthActivity.class);
             } else if (pos == 4) {
-                Intent intent = new Intent(SampleListActivity.this, TheragunAuthActivity.class);
-                startActivity(intent);
+                startActivity(TheragunAuthActivity.class);
             } else if (pos == 5) {
-                Intent intent = new Intent(SampleListActivity.this, AbaoActivity.class);
-                startActivity(intent);
+                startActivity(AbaoActivity.class);
             } else if (pos == 6) {
                 AuthFlow flow = AuthFlow.start(this);
                 flow.setAuthProtocol(AuthContainer.AuthProtocol.EOIDC);
@@ -121,8 +118,7 @@ public class SampleListActivity extends AppCompatActivity {
 //                flow.setScope("openid");
                 flow.setSkipConsent(true);
             } else if (pos == 9) {
-                Intent intent = new Intent(SampleListActivity.this, AuthingWebViewActivity.class);
-                startActivity(intent);
+                startActivity(AuthingWebViewActivity.class);
             } else if (pos == 10) {
                 Authing.init(SampleListActivity.this, "61c173ada0e3aec651b1a1d1");
                 AuthFlow.start(this);
@@ -132,14 +128,16 @@ public class SampleListActivity extends AppCompatActivity {
             } else if (pos == 13) {
                 biometric = true;
                 AuthFlow.start(this);
-            } else if (pos == 14) {
-                Intent intent = new Intent(SampleListActivity.this, AuthenticatorActivity.class);
-                startActivity(intent);
             } else if (pos == 15) {
                 Intent intent = new Intent(SampleListActivity.this, LoginByPushNotificationActivity.class);
                 startActivity(intent);
             }
         });
+    }
+
+    private void startActivity(Class<?> cls){
+        Intent intent = new Intent(SampleListActivity.this, cls);
+        startActivity(intent);
     }
 
     @Override

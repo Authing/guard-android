@@ -12,7 +12,7 @@ import java.util.Map;
 
 public class TOTP {
 
-    public static String bind(Context context, String data) {
+    public static void bind(Context context, String data) {
         try {
             URI uri = new URI(data);
             String path = uri.getPath();
@@ -23,14 +23,20 @@ public class TOTP {
             if (map != null) {
                 String secret = map.get("secret");
                 String algorithm = map.get("algorithm");
-                int digits = TotpUtils.CODE_DIGITS;
-                try {
-                    digits = Integer.parseInt(map.get("digits"));
-                } catch (Exception e) {}
-                int period = TotpUtils.TIME_STEP;
-                try {
-                    period = Integer.parseInt(map.get("period"));
-                } catch (Exception e) {}
+                String digitsStr = map.get("digits");
+                String periodStr = map.get("period");
+                int digits = TOTPUtils.CODE_DIGITS;
+                if (null != digitsStr){
+                    try {
+                        digits = Integer.parseInt(digitsStr);
+                    } catch (Exception ignored) {}
+                }
+                int period = TOTPUtils.TIME_STEP;
+                if (null != periodStr){
+                    try {
+                        period = Integer.parseInt(periodStr);
+                    } catch (Exception ignored) {}
+                }
                 String issuer = map.get("issuer");
                 if (secret != null && issuer != null) {
                     TOTPEntity totp = new TOTPEntity();
@@ -42,15 +48,11 @@ public class TOTP {
                     totp.setIssuer(issuer);
                     DatabaseHelper db = new DatabaseHelper(context);
                     db.addOTP(totp);
-
-                    return TotpUtils.generateTOTP(secret);
                 }
             }
         } catch (UnsupportedEncodingException | URISyntaxException e) {
             e.printStackTrace();
         }
-
-        return null;
     }
 
     private static Map<String, String> splitQuery(URI url) throws UnsupportedEncodingException {
@@ -68,5 +70,10 @@ public class TOTP {
             queryPairs.put(key, value);
         }
         return queryPairs;
+    }
+
+    public static void delete(Context context, TOTPEntity totp){
+        DatabaseHelper db = new DatabaseHelper(context);
+        db.deleteOTP(totp);
     }
 }

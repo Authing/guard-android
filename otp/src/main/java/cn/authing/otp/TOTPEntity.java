@@ -95,7 +95,7 @@ public class TOTPEntity {
     }
 
     public String getTotpCode() {
-        totpCode = TotpUtils.generateTOTP(secret);
+        totpCode = TOTPUtils.generateTOTP(secret, period, digits);
         return totpCode;
     }
 

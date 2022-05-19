@@ -1,1 +1,9 @@
-<resources></resources>
+<resources>
+
+    <string name="no_data">no data</string>
+    <string name="delete">delete</string>
+    <string name="sure_delete">Confirm to delete the account</string>
+    <string name="cancel">Cancel</string>
+    <string name="ok">OK</string>
+
+</resources>
