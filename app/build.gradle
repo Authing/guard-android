@@ -1,5 +1,6 @@
 plugins {
     id 'com.android.application'
+    id 'com.huawei.agconnect'
 }
 
 android {
@@ -53,6 +54,7 @@ dependencies {
     implementation project(':guard')
     implementation project(':scanner')
     implementation project(':otp')
+    implementation project(':push')
 
     // 通过网易云盾实现一键登录
     implementation 'io.github.yidun:quicklogin:3.1.1'

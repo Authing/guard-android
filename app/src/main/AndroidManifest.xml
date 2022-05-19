@@ -17,6 +17,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Guard">
         <activity
+            android:name=".push.LoginByPushNotificationActivity"
+            android:exported="false" />
+        <activity
             android:name=".scan.ScanAuthActivity"
             android:exported="false" />
         <activity

@@ -29,6 +29,8 @@ import cn.authing.guard.data.UserInfo;
 import cn.authing.guard.flow.AuthFlow;
 import cn.authing.guard.oneclick.OneClick;
 import cn.authing.oneclick.OneClickActivity;
+import cn.authing.push.LoginByPushNotificationActivity;
+import cn.authing.push.Push;
 import cn.authing.scan.ScanAuthActivity;
 import cn.authing.theragun.TheragunAuthActivity;
 import cn.authing.webview.AuthingWebViewActivity;
@@ -56,6 +58,7 @@ public class SampleListActivity extends AppCompatActivity {
             "扫码登录",
             "生物二次验证",
             "Authenticator",
+            "Login by push notification",
     };
 
     @Override
@@ -132,6 +135,9 @@ public class SampleListActivity extends AppCompatActivity {
             } else if (pos == 14) {
                 Intent intent = new Intent(SampleListActivity.this, AuthenticatorActivity.class);
                 startActivity(intent);
+            } else if (pos == 15) {
+                Intent intent = new Intent(SampleListActivity.this, LoginByPushNotificationActivity.class);
+                startActivity(intent);
             }
         });
     }
@@ -143,10 +149,7 @@ public class SampleListActivity extends AppCompatActivity {
             if (biometric) {
                 startBiometric();
             } else {
-                Intent intent = new Intent(this, MainActivity.class);
-                UserInfo userInfo = (UserInfo) data.getSerializableExtra("user");
-                intent.putExtra("user", userInfo);
-                startActivity(intent);
+                gotoMain();
             }
         }
     }
@@ -168,8 +171,7 @@ public class SampleListActivity extends AppCompatActivity {
             public void onAuthenticationSucceeded(
                     @NonNull BiometricPrompt.AuthenticationResult result) {
                 super.onAuthenticationSucceeded(result);
-                Intent intent = new Intent(SampleListActivity.this, MainActivity.class);
-                startActivity(intent);
+                gotoMain();
             }
 
             @Override
@@ -214,6 +216,7 @@ public class SampleListActivity extends AppCompatActivity {
     }
 
     private void gotoMain() {
+        new Push().registerDevice(this);
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
     }

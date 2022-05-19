@@ -52,7 +52,7 @@ public class AccountEditText extends EditTextLayout {
             if (getContext() instanceof AuthActivity) {
                 AuthActivity activity = (AuthActivity) getContext();
                 AuthFlow flow = (AuthFlow) activity.getIntent().getSerializableExtra(AuthActivity.AUTH_FLOW);
-                if (flow.isSyncData()) {
+                if (flow != null && flow.isSyncData()) {
                     syncData();
                 }
             } else {

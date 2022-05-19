@@ -3,6 +3,7 @@ dependencyResolutionManagement {
     repositories {
         google()
         mavenCentral()
+        maven {url 'https://developer.huawei.com/repo/'}
     }
 }
 rootProject.name = "Guard"
@@ -10,3 +11,4 @@ include ':app'
 include ':guard'
 include ':scanner'
 include ':otp'
+include ':push'
