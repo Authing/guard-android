@@ -38,7 +38,8 @@ public class UserProfileFragment extends Fragment {
     private UserProfileContainer userProfileContainer;
     private LinearLayout customDataContainer;
     private final Map<String, TextView> customDataViews = new HashMap<>();
-    private onAccountStateListener onAccountStateListener;
+    private Button mLogoutButton;
+    private Button mDeleteButton;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -57,11 +58,11 @@ public class UserProfileFragment extends Fragment {
         customDataContainer = getView().findViewById(R.id.ll_custom_data);
         setupCustomDataUI(customDataContainer, userInfo);
 
-        Button btn = getView().findViewById(R.id.btn_logout);
-        btn.setOnClickListener(v -> logout());
+        mLogoutButton = getView().findViewById(R.id.btn_logout);
+        mLogoutButton.setOnClickListener(v -> logout());
 
-        btn = getView().findViewById(R.id.btn_delete);
-        btn.setOnClickListener(v -> deleteAccount());
+        mDeleteButton = getView().findViewById(R.id.btn_delete);
+        mDeleteButton.setOnClickListener(v -> deleteAccount());
     }
 
     @Override
@@ -133,9 +134,6 @@ public class UserProfileFragment extends Fragment {
     private void logout() {
         AuthClient.logout((code, message, data)-> {
             AuthFlow.start(getActivity());
-            if (null != onAccountStateListener){
-                onAccountStateListener.onLogoutSuccess();
-            }
         });
     }
 
@@ -145,9 +143,6 @@ public class UserProfileFragment extends Fragment {
                 .setPositiveButton(android.R.string.yes, (dialog, which) -> AuthClient.deleteAccount((code, message, data) -> {
                     if (code == 200) {
                         AuthFlow.start(getActivity());
-                        if (null != onAccountStateListener){
-                            onAccountStateListener.onAccountDeletedSuccess();
-                        }
                     } else {
                         getActivity().runOnUiThread(()-> Toast.makeText(getContext(), message, Toast.LENGTH_LONG).show());
                     }
@@ -171,14 +166,12 @@ public class UserProfileFragment extends Fragment {
         }
     }
 
-    public void setOnAccountStateListener(UserProfileFragment.onAccountStateListener onAccountStateListener) {
-        this.onAccountStateListener = onAccountStateListener;
+    public Button getLogoutButton() {
+        return mLogoutButton;
     }
 
-    public interface onAccountStateListener{
-
-        void onLogoutSuccess();
-
-        void onAccountDeletedSuccess();
+    public Button getDeleteButton() {
+        return mDeleteButton;
     }
+
 }

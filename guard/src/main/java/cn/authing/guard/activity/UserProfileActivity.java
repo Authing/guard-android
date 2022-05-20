@@ -2,12 +2,16 @@ package cn.authing.guard.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.widget.Button;
+
 import cn.authing.guard.R;
 import cn.authing.guard.util.Util;
 
-public class UserProfileActivity extends BaseAuthActivity implements UserProfileFragment.onAccountStateListener {
+public class UserProfileActivity extends BaseAuthActivity {
 
     private UserProfileFragment fragment;
+    protected Button logoutButton;
+    protected Button deleteButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -16,7 +20,8 @@ public class UserProfileActivity extends BaseAuthActivity implements UserProfile
         setContentView(R.layout.authing_activity_user_profile);
         fragment = (UserProfileFragment)getSupportFragmentManager().findFragmentById(R.id.fragment_user_profile);
         if (null != fragment){
-            fragment.setOnAccountStateListener(this);
+            logoutButton = fragment.getLogoutButton();
+            deleteButton = fragment.getDeleteButton();
         }
     }
 
@@ -27,16 +32,6 @@ public class UserProfileActivity extends BaseAuthActivity implements UserProfile
         if (resultCode == RESULT_OK && requestCode == 1000) {
             fragment.uploadAvatar(data.getData());
         }
-    }
-
-    @Override
-    public void onLogoutSuccess() {
-        finish();
-    }
-
-    @Override
-    public void onAccountDeletedSuccess() {
-        finish();
     }
 
 }
