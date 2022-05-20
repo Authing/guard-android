@@ -130,7 +130,7 @@ public class SampleListActivity extends AppCompatActivity {
                 AuthFlow.start(this);
             } else if (pos == 15) {
                 Intent intent = new Intent(SampleListActivity.this, LoginByPushNotificationActivity.class);
-                startActivity(intent);
+                startActivityForResult(intent, RC_LOGIN);
             }
         });
     }

@@ -16,7 +16,13 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
 
-    <cn.authing.push.component.PushAuthRequestButton
+    <cn.authing.guard.ErrorTextView
+        android:layout_marginStart="@dimen/authing_form_start_end_margin"
+        android:layout_marginEnd="@dimen/authing_form_start_end_margin"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <cn.authing.push.PushAuthRequestButton
         android:layout_marginTop="16dp"
         android:layout_marginStart="@dimen/authing_form_start_end_margin"
         android:layout_marginEnd="@dimen/authing_form_start_end_margin"

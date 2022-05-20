@@ -32,4 +32,5 @@ dependencies {
 
     // huawei push
     implementation 'com.huawei.hms:push:6.3.0.304'
+    implementation 'com.google.android.material:material:1.6.0'
 }

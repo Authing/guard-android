@@ -1,18 +1,17 @@
 package cn.authing.push;
 
 import android.content.Context;
-import android.text.TextUtils;
-
-import com.huawei.hms.aaid.HmsInstanceId;
-import com.huawei.hms.common.ApiException;
 
 import java.nio.charset.StandardCharsets;
 import java.util.Objects;
 
 import cn.authing.guard.Authing;
+import cn.authing.guard.Callback;
+import cn.authing.guard.data.Config;
 import cn.authing.guard.data.UserInfo;
 import cn.authing.guard.util.ALog;
 import cn.authing.guard.util.Const;
+import cn.authing.push.huawei.HuaweiPush;
 import okhttp3.Call;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -26,71 +25,92 @@ public class Push {
     public static final String BASE_URL = "https://developer-beta.authing.cn";
 
     public void registerDevice(Context context) {
-        getHuaweiToken(context);
+        HuaweiPush.registerDevice(context);
     }
 
-    public void getHuaweiToken(Context context) {
-        // 创建一个新线程
-        new Thread() {
-            @Override
-            public void run() {
+    public static void unregister(Context context, Callback<String> callback) {
+        HuaweiPush.unregisterDevice(context, ((ok, token) -> {
+            if (ok) {
+                UserInfo userInfo = Authing.getCurrentUser();
+                if (userInfo == null) {
+                    ALog.w(TAG, "push not registered. user not logged in");
+                    callback.call(false, null);
+                    return;
+                }
+
+                ALog.i(TAG, "unregister push token:" + token);
+                Request.Builder builder = new Request.Builder();
+                builder.url(Push.BASE_URL + "/ams/push/unregister");
+                builder.addHeader("authorization", "Bearer " + userInfo.getIdToken());
+                String body = "{\"token\":\"" + token + "\"}";
+                builder.post(RequestBody.create(body, Const.JSON));
+
+                Request request = builder.build();
+                OkHttpClient client = new OkHttpClient();
+                Call call = client.newCall(request);
+                okhttp3.Response response;
                 try {
-                    // 从agconnect-services.json文件中读取APP_ID
-                    String appId = "106247535";
-
-                    // 输入token标识"HCM"
-                    String tokenScope = "HCM";
-                    String token = HmsInstanceId.getInstance(context).getToken(appId, tokenScope);
-                    ALog.i(TAG, "get token: " + token);
-
-                    // 判断token是否为空
-                    if(!TextUtils.isEmpty(token)) {
-                        sendRegTokenToHMSServer(token);
+                    response = call.execute();
+                    if (response.code() == 201 || response.code() == 200) {
+                        ALog.i(TAG, "unregister token success");
+                    } else {
+                        String s = new String(Objects.requireNonNull(response.body()).bytes(), StandardCharsets.UTF_8);
+                        ALog.e(TAG, "unregister token failed:" + s);
                     }
-                } catch (ApiException e) {
-                    ALog.e(TAG, "get token failed, " + e);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    ALog.e(TAG, "unregister token exception:", e);
                 }
             }
-        }.start();
+        }));
     }
 
-    public static void sendRegTokenToHMSServer(String token) {
+    public static void authConfirm(String sessionId, Callback<String> callback) {
         UserInfo userInfo = Authing.getCurrentUser();
         if (userInfo == null) {
-            ALog.w(TAG, "push not registered. user not logged in");
+            ALog.w(TAG, "user not logged in");
             return;
         }
 
         Authing.getPublicConfig(config -> {
             if (config == null) {
-                ALog.w(TAG, "push registered failed. uninitialized");
+                ALog.w(TAG, "push failed. uninitialized");
                 return;
             }
-            ALog.i(TAG, "sending token to server. token:" + token);
-            Request.Builder builder = new Request.Builder();
-            builder.url(BASE_URL + "/ams/push/register");
-            builder.addHeader("authorization", userInfo.getIdToken());
-            builder.addHeader("x-authing-app-id", Authing.getAppId());
-            builder.addHeader("x-authing-userpool-id", config.getUserPoolId());
-            String body = "{\"channel\":\"huawei\", \"token\":\"" + token + "\"}";
-            builder.post(RequestBody.create(body, Const.JSON));
-
-            Request request = builder.build();
-            OkHttpClient client = new OkHttpClient();
-            Call call = client.newCall(request);
-            okhttp3.Response response;
-            try {
-                response = call.execute();
-                if (response.code() == 201 || response.code() == 200) {
-                    ALog.i(TAG, "register huawei token success");
-                } else {
-                    String s = new String(Objects.requireNonNull(response.body()).bytes(), StandardCharsets.UTF_8);
-                    ALog.e(TAG, "register huawei token failed:" + s);
+            new Thread() {
+                @Override
+                public void run() {
+                    _authConfirm(userInfo, config, sessionId, callback);
                 }
-            } catch (Exception e) {
-                e.printStackTrace();
-                ALog.e(TAG, "register huawei token failed:", e);
-            }
+            }.start();
         });
+    }
+
+    private static void _authConfirm(UserInfo userInfo, Config config, String sessionId, Callback<String> callback) {
+        Request.Builder builder = new Request.Builder();
+        builder.url(BASE_URL + "/ams/push/auth-confirm?sessionId=" + sessionId);
+        builder.addHeader("authorization", "Bearer " + userInfo.getIdToken());
+        builder.addHeader("x-authing-app-id", Authing.getAppId());
+        builder.addHeader("x-authing-userpool-id", config.getUserPoolId());
+
+        Request request = builder.build();
+        OkHttpClient client = new OkHttpClient();
+        Call call = client.newCall(request);
+        okhttp3.Response response;
+        try {
+            response = call.execute();
+            if (response.code() == 201 || response.code() == 200) {
+                ALog.i(TAG, "auth confirm success");
+                callback.call(true, null);
+            } else {
+                String s = new String(Objects.requireNonNull(response.body()).bytes(), StandardCharsets.UTF_8);
+                ALog.e(TAG, "auth confirm failed:" + s);
+                callback.call(false, s);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            ALog.e(TAG, "auth confirm failed:", e);
+            callback.call(false, e.toString());
+        }
     }
 }

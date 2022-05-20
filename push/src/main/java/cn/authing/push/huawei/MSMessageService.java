@@ -1,4 +1,4 @@
-package cn.authing.push;
+package cn.authing.push.huawei;
 
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -24,6 +24,6 @@ public class MSMessageService extends HmsMessageService {
 
     private void refreshedTokenToServer(String token) {
         ALog.i(TAG, "sending token to server. token:" + token);
-        Push.sendRegTokenToHMSServer(token);
+        HuaweiPush.sendRegTokenToHMSServer(token);
     }
 }
