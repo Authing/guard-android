@@ -46,7 +46,7 @@ public class HuaweiPush {
         }.start();
     }
 
-    private static void getHuaweiToken(Context context, Callback<String> callback) {
+    public static void getHuaweiToken(Context context, Callback<String> callback) {
         try {
             // 从agconnect-services.json文件中读取APP_ID
             String appId = "106247535";

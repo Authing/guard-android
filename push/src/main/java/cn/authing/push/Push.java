@@ -29,40 +29,58 @@ public class Push {
     }
 
     public static void unregister(Context context, Callback<String> callback) {
-        HuaweiPush.unregisterDevice(context, ((ok, token) -> {
-            if (ok) {
-                UserInfo userInfo = Authing.getCurrentUser();
-                if (userInfo == null) {
-                    ALog.w(TAG, "push not registered. user not logged in");
-                    callback.call(false, null);
-                    return;
-                }
-
-                ALog.i(TAG, "unregister push token:" + token);
-                Request.Builder builder = new Request.Builder();
-                builder.url(Push.BASE_URL + "/ams/push/unregister");
-                builder.addHeader("authorization", "Bearer " + userInfo.getIdToken());
-                String body = "{\"token\":\"" + token + "\"}";
-                builder.post(RequestBody.create(body, Const.JSON));
-
-                Request request = builder.build();
-                OkHttpClient client = new OkHttpClient();
-                Call call = client.newCall(request);
-                okhttp3.Response response;
-                try {
-                    response = call.execute();
-                    if (response.code() == 201 || response.code() == 200) {
-                        ALog.i(TAG, "unregister token success");
-                    } else {
-                        String s = new String(Objects.requireNonNull(response.body()).bytes(), StandardCharsets.UTF_8);
-                        ALog.e(TAG, "unregister token failed:" + s);
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    ALog.e(TAG, "unregister token exception:", e);
-                }
+        new Thread() {
+            @Override
+            public void run() {
+                HuaweiPush.getHuaweiToken(context, ((ok, token) -> unregister(token, callback)));
             }
-        }));
+        }.start();
+    }
+
+    private static void unregister(String token, Callback<String> callback) {
+        UserInfo userInfo = Authing.getCurrentUser();
+        if (userInfo == null) {
+            ALog.w(TAG, "push not registered. user not logged in");
+            callback.call(false, null);
+            return;
+        }
+
+        Authing.getPublicConfig(config -> {
+            if (config == null) {
+                ALog.w(TAG, "push registered failed. uninitialized");
+                callback.call(false, null);
+                return;
+            }
+
+            ALog.i(TAG, "unregister push token:" + token);
+            Request.Builder builder = new Request.Builder();
+            builder.url(Push.BASE_URL + "/ams/push/unregister");
+            builder.addHeader("x-authing-app-id", Authing.getAppId());
+            builder.addHeader("x-authing-userpool-id", config.getUserPoolId());
+            builder.addHeader("authorization", "Bearer " + userInfo.getIdToken());
+            String body = "{\"token\":\"" + token + "\"}";
+            builder.post(RequestBody.create(body, Const.JSON));
+
+            Request request = builder.build();
+            OkHttpClient client = new OkHttpClient();
+            Call call = client.newCall(request);
+            okhttp3.Response response;
+            try {
+                response = call.execute();
+                if (response.code() == 201 || response.code() == 200) {
+                    ALog.i(TAG, "unregister token success");
+                    callback.call(true, null);
+                } else {
+                    String s = new String(Objects.requireNonNull(response.body()).bytes(), StandardCharsets.UTF_8);
+                    ALog.e(TAG, "unregister token failed:" + s);
+                    callback.call(false, null);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+                ALog.e(TAG, "unregister token exception:", e);
+                callback.call(false, null);
+            }
+        });
     }
 
     public static void authConfirm(String sessionId, Callback<String> callback) {
