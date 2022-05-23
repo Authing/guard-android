@@ -24,12 +24,15 @@ import cn.authing.guard.data.Resource;
 import cn.authing.guard.data.Role;
 import cn.authing.guard.data.Safe;
 import cn.authing.guard.data.UserInfo;
+import cn.authing.guard.util.ALog;
 import cn.authing.guard.util.Const;
 import cn.authing.guard.util.GlobalCountDown;
 import cn.authing.guard.util.Util;
 import cn.authing.guard.util.Validator;
 
 public class AuthClient {
+
+    private static final String TAG = "AuthClient";
 
     enum PasswordStrength {
         EWeak,
@@ -192,11 +195,13 @@ public class AuthClient {
 
     public static void loginByAccount(AuthRequest authData, String account, String password, @NotNull AuthCallback<UserInfo> callback) {
         try {
+            long now = System.currentTimeMillis();
             String encryptPassword = Util.encryptPassword(password);
             JSONObject body = new JSONObject();
             body.put("account", account);
             body.put("password", encryptPassword);
             Guardian.post("/api/v2/login/account", body, (data)-> {
+                ALog.d(TAG, "loginByAccount cost:" + (System.currentTimeMillis() - now) + "ms");
                 if (data.getCode() == 200 || data.getCode() == EC_MFA_REQUIRED) {
                     Safe.saveAccount(account);
 //                        Safe.savePassword(password);

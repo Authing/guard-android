@@ -16,6 +16,7 @@ import cn.authing.guard.Authing;
 import cn.authing.guard.Callback;
 import cn.authing.guard.data.Config;
 import cn.authing.guard.data.UserInfo;
+import cn.authing.guard.util.ALog;
 import cn.authing.guard.util.Const;
 import cn.authing.guard.util.PKCE;
 import cn.authing.guard.util.Util;
@@ -26,7 +27,7 @@ import okhttp3.RequestBody;
 
 public class OIDCClient {
 
-    private static final String TAG = "AuthClientInternal";
+    private static final String TAG = "OIDCClient";
 
     public static void buildAuthorizeUrl(AuthRequest authRequest, Callback<String> callback) {
         Authing.getPublicConfig(config -> {
@@ -56,6 +57,7 @@ public class OIDCClient {
         new Thread() {
             @Override
             public void run() {
+                long now = System.currentTimeMillis();
                 AuthRequest authData = new AuthRequest();
                 if (config.getRedirectUris().size() > 0) {
                     authData.setRedirectURL(config.getRedirectUris().get(0));
@@ -89,6 +91,8 @@ public class OIDCClient {
                         String location = response.header("location");
                         String uuid = Uri.parse(location).getLastPathSegment();
                         authData.setUuid(uuid);
+                        long delta = System.currentTimeMillis() - now;
+                        ALog.d(TAG, "prepareLogin cost:" + delta + "ms");
                         callback.call(200, "", authData);
                     } else {
                         String s = new String(Objects.requireNonNull(response.body()).bytes(), StandardCharsets.UTF_8);
@@ -151,9 +155,13 @@ public class OIDCClient {
     }
 
     public static void loginByAccount(String account, String password, @NotNull AuthCallback<UserInfo> callback) {
+        long now = System.currentTimeMillis();
         Authing.getPublicConfig((config -> OIDCClient.prepareLogin(config, (code, message, authRequest) -> {
             if (code == 200) {
-                AuthClient.loginByAccount(authRequest, account, password, callback);
+                AuthClient.loginByAccount(authRequest, account, password, ((c, m, data) -> {
+                    ALog.d(TAG, "OIDCClient.loginByAccount cost:" + (System.currentTimeMillis() - now) + "ms");
+                    callback.call(c, m, data);
+                }));
             } else {
                 callback.call(code, message, null);
             }
@@ -224,6 +232,7 @@ public class OIDCClient {
     }
 
     private static void _oidcInteraction(String url, AuthRequest authData, String body, @NotNull AuthCallback<UserInfo> callback) {
+        long now = System.currentTimeMillis();
         Request.Builder builder = new Request.Builder();
         builder.url(url);
         RequestBody requestBody = RequestBody.create(body, Const.FORM);
@@ -242,6 +251,7 @@ public class OIDCClient {
         okhttp3.Response response;
         try {
             response = call.execute();
+            ALog.d(TAG, "_oidcInteraction cost:" + (System.currentTimeMillis() - now) + "ms");
             if (response.code() == 302) {
                 CookieManager.addCookies(response);
                 String location = response.header("location");
@@ -257,6 +267,7 @@ public class OIDCClient {
     }
 
     public static void oidcLogin(String url, AuthRequest authData, @NotNull AuthCallback<UserInfo> callback) {
+        long now = System.currentTimeMillis();
         Request.Builder builder = new Request.Builder();
         builder.url(url);
         String cookie = CookieManager.getCookie();
@@ -273,6 +284,7 @@ public class OIDCClient {
         okhttp3.Response response;
         try {
             response = call.execute();
+            ALog.d(TAG, "oidcLogin cost:" + (System.currentTimeMillis() - now) + "ms");
             if (response.code() == 302) {
                 CookieManager.addCookies(response);
                 String location = response.header("location");
@@ -300,6 +312,7 @@ public class OIDCClient {
     }
 
     private static void _oidcInteractionScopeConfirm(String url, AuthRequest authData, @NotNull AuthCallback<UserInfo> callback) {
+        long now = System.currentTimeMillis();
         Request.Builder builder = new Request.Builder();
         builder.url(url);
         String body = authData.getScopesAsConsentBody();
@@ -319,6 +332,7 @@ public class OIDCClient {
         okhttp3.Response response;
         try {
             response = call.execute();
+            ALog.d(TAG, "_oidcInteractionScopeConfirm cost:" + (System.currentTimeMillis() - now) + "ms");
             if (response.code() == 302) {
                 CookieManager.addCookies(response);
                 String location = response.header("location");
@@ -334,6 +348,7 @@ public class OIDCClient {
     }
 
     public static void authByCode(String code, AuthRequest authRequest, @NotNull AuthCallback<UserInfo> callback) {
+        long now = System.currentTimeMillis();
         Authing.getPublicConfig(config -> {
             try {
                 String url = Authing.getScheme() + "://" + Util.getHost(config) + "/oidc/token";
@@ -345,6 +360,7 @@ public class OIDCClient {
                         + "&code_verifier=" + authRequest.getCodeVerifier()
                         + "&redirect_uri=" + URLEncoder.encode(authRequest.getRedirectURL(), "utf-8");
                 Guardian.authRequest(url, "post", body, (data)-> {
+                    ALog.d(TAG, "authByCode cost:" + (System.currentTimeMillis() - now) + "ms");
                     if (data.getCode() == 200) {
                         try {
                             UserInfo userInfo = UserInfo.createUserInfo(new UserInfo(), data.getData());
@@ -373,6 +389,7 @@ public class OIDCClient {
     }
 
     public static void _getUserInfoByAccessToken(UserInfo userInfo, @NotNull AuthCallback<UserInfo> callback) {
+        long now = System.currentTimeMillis();
         Authing.getPublicConfig(config -> {
             try {
                 String url = Authing.getScheme() + "://" + Util.getHost(config) + "/oidc/me";
@@ -384,6 +401,7 @@ public class OIDCClient {
                 Call call = client.newCall(request);
                 okhttp3.Response response;
                 response = call.execute();
+                ALog.d(TAG, "getUserInfoByAccessToken cost:" + (System.currentTimeMillis() - now) + "ms");
                 String s = new String(Objects.requireNonNull(response.body()).bytes(), StandardCharsets.UTF_8);
                 if (response.code() == 200) {
                     Response resp = new Response();
