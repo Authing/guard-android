@@ -7,6 +7,7 @@ import android.widget.Toast;
 
 import cn.authing.guard.activity.UserProfileActivity;
 import cn.authing.guard.network.AuthClient;
+import cn.authing.guard.util.ALog;
 import cn.authing.push.Push;
 
 public class MainActivity extends UserProfileActivity {
@@ -20,11 +21,15 @@ public class MainActivity extends UserProfileActivity {
     }
 
     private void logout() {
-        Push.unregister(this, ((ok, msg) -> AuthClient.logout((code, message, data)->{
-            Intent intent = new Intent(this, SampleListActivity.class);
-            startActivity(intent);
-            finish();
-        })));
+        long now = System.currentTimeMillis();
+        Push.unregister(this, ((ok, msg) -> {
+            ALog.d("MainActivity", "Push.unregister cost:" + (System.currentTimeMillis() - now));
+            AuthClient.logout((code, message, data)->{
+                Intent intent = new Intent(this, SampleListActivity.class);
+                startActivity(intent);
+                finish();
+            });
+        }));
     }
 
     private void delete() {

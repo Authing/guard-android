@@ -62,6 +62,7 @@ public class HuaweiPush {
             }
         } catch (ApiException e) {
             ALog.e(TAG, "get token failed, " + e);
+            callback.call(false, null);
         }
     }
 
