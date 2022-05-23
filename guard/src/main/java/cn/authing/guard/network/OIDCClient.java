@@ -1,7 +1,6 @@
 package cn.authing.guard.network;
 
 import android.net.Uri;
-import android.util.Log;
 
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONException;
@@ -96,7 +95,7 @@ public class OIDCClient {
                         callback.call(200, "", authData);
                     } else {
                         String s = new String(Objects.requireNonNull(response.body()).bytes(), StandardCharsets.UTF_8);
-                        Log.w(TAG, "OIDC prepare login failed. " + response.code() + " message:" + s);
+                        ALog.w(TAG, "OIDC prepare login failed. " + response.code() + " message:" + s);
                         callback.call(response.code(), s,null);
                     }
                 } catch (Exception e) {
@@ -169,9 +168,13 @@ public class OIDCClient {
     }
 
     public static void loginByOneAuth(String account, String password, @NotNull AuthCallback<UserInfo> callback) {
+        long now = System.currentTimeMillis();
         Authing.getPublicConfig((config -> OIDCClient.prepareLogin(config, (code, message, authRequest) -> {
             if (code == 200) {
-                AuthClient.loginByOneAuth(authRequest, account, password, callback);
+                AuthClient.loginByOneAuth(authRequest, account, password, (AuthCallback<UserInfo>) (c, m, data) -> {
+                    ALog.d(TAG, "OIDCClient.loginByOneAuth cost:" + (System.currentTimeMillis() - now) + "ms");
+                    callback.call(c, m, data);
+                });
             } else {
                 callback.call(code, message, null);
             }
@@ -258,7 +261,7 @@ public class OIDCClient {
                 oidcLogin(location, authData, callback);
             } else {
                 String s = new String(Objects.requireNonNull(response.body()).bytes(), StandardCharsets.UTF_8);
-                Log.w(TAG, "oidcInteraction failed. " + response.code() + " message:" + s);
+                ALog.w(TAG, "oidcInteraction failed. " + response.code() + " message:" + s);
                 callback.call(response.code(), s,null);
             }
         } catch (Exception e) {
@@ -302,7 +305,7 @@ public class OIDCClient {
                 }
             } else {
                 String s = new String(Objects.requireNonNull(response.body()).bytes(), StandardCharsets.UTF_8);
-                Log.w(TAG, "oidcLogin failed. " + response.code() + " message:" + s);
+                ALog.w(TAG, "oidcLogin failed. " + response.code() + " message:" + s);
                 callback.call(response.code(), s,null);
             }
         } catch (Exception e) {
@@ -339,7 +342,7 @@ public class OIDCClient {
                 oidcLogin(location, authData, callback);
             } else {
                 String s = new String(Objects.requireNonNull(response.body()).bytes(), StandardCharsets.UTF_8);
-                Log.w(TAG, "oidcInteraction failed. " + response.code() + " message:" + s);
+                ALog.w(TAG, "oidcInteraction failed. " + response.code() + " message:" + s);
                 callback.call(response.code(), s,null);
             }
         } catch (Exception e) {
@@ -416,7 +419,7 @@ public class OIDCClient {
                         callback.call(500, s,null);
                     }
                 } else {
-                    Log.w(TAG, "_getUserInfoByAccessToken failed. " + response.code() + " message:" + s);
+                    ALog.w(TAG, "_getUserInfoByAccessToken failed. " + response.code() + " message:" + s);
                     callback.call(response.code(), s,null);
                 }
             } catch (Exception e) {

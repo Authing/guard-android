@@ -169,7 +169,6 @@ public class Guardian {
                     } catch(JSONException ignored){
                     }
                 } else {
-                    Log.w(TAG, "Response has no data:" + url + " msg:" + json);
                     if (!json.has("code")) {
                         resp.setCode(200);
                         resp.setData(json);

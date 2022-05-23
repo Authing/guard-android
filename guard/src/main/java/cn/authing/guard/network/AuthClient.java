@@ -207,18 +207,7 @@ public class AuthClient {
 //                        Safe.savePassword(password);
                 }
 
-                if (authData == null) {
-                    createUserInfoFromResponse(data, callback);
-                } else {
-                    createUserInfoFromResponse(data, (c, m, d)->{
-                        if (c == 200) {
-                            authData.setToken(d.getIdToken());
-                            OIDCClient.oidcInteraction(authData, callback);
-                        } else {
-                            callback.call(c, m, d);
-                        }
-                    });
-                }
+                startOidcInteraction(authData, data, callback);
             });
         } catch (Exception e) {
             e.printStackTrace();
@@ -358,18 +347,7 @@ public class AuthClient {
                 body.put("connId", config.getSocialConnectionId("wechat:mobile"));
                 body.put("code", authCode);
                 Guardian.post("/api/v2/ecConn/wechatMobile/authByCode", body, (data)-> {
-                    if (authData == null) {
-                        createUserInfoFromResponse(data, callback);
-                    } else {
-                        createUserInfoFromResponse(data, (c, m, d)->{
-                            if (c == 200) {
-                                authData.setToken(d.getIdToken());
-                                OIDCClient.oidcInteraction(authData, callback);
-                            } else {
-                                callback.call(c, m, d);
-                            }
-                        });
-                    }
+                    startOidcInteraction(authData, data, callback);
                 });
             } catch (Exception e) {
                 e.printStackTrace();
@@ -390,18 +368,7 @@ public class AuthClient {
                 body.put("code", authCode);
                 String endpoint = "/api/v2/ecConn/wechat-work/authByCode";
                 Guardian.post(endpoint, body, (data)-> {
-                    if (authData == null) {
-                        createUserInfoFromResponse(data, callback);
-                    } else {
-                        createUserInfoFromResponse(data, (c, m, d)->{
-                            if (c == 200) {
-                                authData.setToken(d.getIdToken());
-                                OIDCClient.oidcInteraction(authData, callback);
-                            } else {
-                                callback.call(c, m, d);
-                            }
-                        });
-                    }
+                    startOidcInteraction(authData, data, callback);
                 });
             } catch (Exception e) {
                 e.printStackTrace();
@@ -422,18 +389,7 @@ public class AuthClient {
                 body.put("code", authCode);
                 String endpoint = "/api/v2/ecConn/alipay/authByCode";
                 Guardian.post(endpoint, body, (data)-> {
-                    if (authData == null) {
-                        createUserInfoFromResponse(data, callback);
-                    } else {
-                        createUserInfoFromResponse(data, (c, m, d)->{
-                            if (c == 200) {
-                                authData.setToken(d.getIdToken());
-                                OIDCClient.oidcInteraction(authData, callback);
-                            } else {
-                                callback.call(c, m, d);
-                            }
-                        });
-                    }
+                    startOidcInteraction(authData, data, callback);
                 });
             } catch (Exception e) {
                 e.printStackTrace();
@@ -456,18 +412,7 @@ public class AuthClient {
                 body.put("code", authCode);
                 String endpoint = "/api/v2/ecConn/lark/authByCode";
                 Guardian.post(endpoint, body, (data)-> {
-                    if (authData == null) {
-                        createUserInfoFromResponse(data, callback);
-                    } else {
-                        createUserInfoFromResponse(data, (c, m, d)->{
-                            if (c == 200) {
-                                authData.setToken(d.getIdToken());
-                                OIDCClient.oidcInteraction(authData, callback);
-                            } else {
-                                callback.call(c, m, d);
-                            }
-                        });
-                    }
+                    startOidcInteraction(authData, data, callback);
                 });
             } catch (Exception e) {
                 e.printStackTrace();
@@ -486,18 +431,7 @@ public class AuthClient {
             body.put("token", token);
             body.put("accessToken", accessToken);
             Guardian.post("/api/v2/ecConn/oneAuth/login", body, (data)-> {
-                if (authData == null) {
-                    createUserInfoFromResponse(data, callback);
-                } else {
-                    createUserInfoFromResponse(data, (c, m, d)->{
-                        if (c == 200) {
-                            authData.setToken(d.getIdToken());
-                            OIDCClient.oidcInteraction(authData, callback);
-                        } else {
-                            callback.call(c, m, d);
-                        }
-                    });
-                }
+                startOidcInteraction(authData, data, callback);
             });
         } catch (Exception e) {
             e.printStackTrace();
