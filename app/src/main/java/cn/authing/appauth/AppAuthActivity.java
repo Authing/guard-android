@@ -33,7 +33,7 @@ public class AppAuthActivity extends AppCompatActivity {
 
     private static final String TAG = "AppAuthActivity";
 
-    private static final String REDIRECT_URL = "cn.guard://authing.cn/redirect";
+    private static String REDIRECT_URL = "cn.guard://authing.cn/redirect";
 
     private static final int RC_AUTH = 1000;
     private static final int RC_END = 1001;
@@ -55,6 +55,9 @@ public class AppAuthActivity extends AppCompatActivity {
         if (Authing.getCurrentUser() == null){
             btn.startLoadingVisualEffect();
             Authing.getPublicConfig(config -> {
+                if (config != null && config.getRedirectUris().size() > 0) {
+                    REDIRECT_URL = config.getRedirectUris().get(0);
+                }
                 String identifier = config.getIdentifier();
                 Uri authEndpoint = Uri.parse(Authing.getScheme() + "://" + identifier + "." + Authing.getHost() + "/oidc/auth");
                 Uri tokenEndpoint = Uri.parse(Authing.getScheme() + "://" + identifier + "." + Authing.getHost() + "/oidc/token");
