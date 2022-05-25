@@ -89,7 +89,7 @@ public class AppAuthActivity extends AppCompatActivity {
                 Intent browserIntent = new Intent();
                 browserIntent.setAction("android.intent.action.VIEW");
                 //browserIntent.setPackage("com.android.chrome");
-                String url = Authing.getScheme() + "://" + Util.getHost(config) + "/u?app_id=" + Authing.getAppId() + "&back_app_url=" + REDIRECT_URL;
+                String url = Authing.getScheme() + "://" + Util.getHost(config) + "/u?app_id=" + Authing.getAppId() + "&back_app_url=cn.guard://appauth/redirect";
                 Uri content_url = Uri.parse(url);
                 browserIntent.setData(content_url);
                 startActivity(browserIntent);
@@ -187,4 +187,22 @@ public class AppAuthActivity extends AppCompatActivity {
             }
         });
     }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        String action = intent.getAction();
+        if(Intent.ACTION_VIEW.equals(action)) {
+            Uri uri = intent.getData();
+            Log.d(TAG, "onNewIntent uri = " + uri);
+            if (uri != null) {
+                boolean isAccountDeleted = uri.getBooleanQueryParameter("is_account_deleted", false);
+                if (isAccountDeleted){
+                    Safe.logoutUser(Authing.getCurrentUser());
+                    Authing.setCurrentUser(null);
+                }
+            }
+        }
+    }
+
 }

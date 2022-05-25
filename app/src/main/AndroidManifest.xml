@@ -88,7 +88,21 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".appauth.AppAuthActivity"
-            android:exported="false" />
+            android:exported="true"
+            android:launchMode="singleTop">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:scheme="cn.guard"
+                    android:host="appauth"
+                    android:path="/redirect" />
+            </intent-filter>
+        </activity>
+
         <activity
             android:name="net.openid.appauth.RedirectUriReceiverActivity"
             android:exported="true"
@@ -100,9 +114,9 @@
                 <category android:name="android.intent.category.BROWSABLE" />
 
                 <data
+                    android:scheme="cn.guard"
                     android:host="authing.cn"
-                    android:path="/redirect"
-                    android:scheme="cn.guard" />
+                    android:path="/redirect" />
             </intent-filter>
         </activity>
         <activity
@@ -116,8 +130,8 @@
                 <category android:name="android.intent.category.BROWSABLE" />
 
                 <data
-                    android:host="authing.cn"
-                    android:scheme="guard" />
+                    android:scheme="guard"
+                    android:host="authing.cn" />
             </intent-filter>
         </activity>
         <activity
