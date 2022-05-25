@@ -40,6 +40,8 @@ public class AuthingWebViewActivity extends AuthActivity {
             flLoading.setVisibility(View.GONE);
         });
         webView.setOnLoginCallback(this::setResult);
+
+//        webView.getAuthRequest().setClientSecret("92bc59a64f793d3a2bfcf6a75db2d207");
     }
 
     private void setResult(UserInfo userInfo) {

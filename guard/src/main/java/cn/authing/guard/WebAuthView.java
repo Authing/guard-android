@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.util.AttributeSet;
+import android.webkit.WebResourceError;
 import android.webkit.WebResourceRequest;
 import android.webkit.WebResourceResponse;
 import android.webkit.WebSettings;
@@ -70,7 +71,7 @@ public class WebAuthView extends WebView {
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
                 String url = request.getUrl().toString();
-//                ALog.d(TAG, "shouldOverrideUrlLoading:" + url);
+                ALog.d(TAG, "shouldOverrideUrlLoading:" + url);
 
                 Uri uri = Uri.parse(url);
                 String uuid = Util.getQueryParam(url, "uuid");
@@ -112,16 +113,26 @@ public class WebAuthView extends WebView {
 //                ALog.d(TAG, "onLoadResource:" + url);
             }
 
+            public void onReceivedError(WebView view, WebResourceRequest request, WebResourceError error) {
+//                ALog.e(TAG, "onReceivedError:" + request.getUrl());
+                handleAuthCode(request.getUrl().toString());
+            }
+
             @Override
             public void onReceivedHttpError(WebView view, WebResourceRequest request, WebResourceResponse errorResponse) {
                 super.onReceivedHttpError(view, request, errorResponse);
 //                ALog.e(TAG, "onReceivedHttpError:" + request.getUrl());
-                String url = request.getUrl().toString();
                 if (errorResponse.getStatusCode() == 400) {
                     if (listener != null) {
                         listener.onLoaded();
                     }
-                } else if (url.startsWith(authRequest.getRedirectURL())) {
+                } else {
+                    handleAuthCode(request.getUrl().toString());
+                }
+            }
+
+            private void handleAuthCode(String url) {
+                if (url.startsWith(authRequest.getRedirectURL())) {
                     try {
                         String authCode = Util.getAuthCode(url);
                         if (authCode != null) {
@@ -213,6 +224,7 @@ public class WebAuthView extends WebView {
         String js = "(function f(){\n" +
             "var url = \"" + url + "\";\n" +
             "var xhr = new XMLHttpRequest();\n" +
+            "console.log('executing skipping js');\n" +
             "xhr.onload = function() {\n" +
             "   console.log('status=' + xhr.status + ' responseURL=' + xhr.responseURL);" +
             "   if(xhr.status === 200) {\n" +
@@ -224,5 +236,9 @@ public class WebAuthView extends WebView {
             "xhr.send(\"" + body + "\");\n" +
         "})()";
         evaluateJavascript(js, null);
+    }
+
+    public AuthRequest getAuthRequest() {
+        return authRequest;
     }
 }

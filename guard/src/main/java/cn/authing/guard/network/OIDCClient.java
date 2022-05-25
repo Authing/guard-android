@@ -38,6 +38,7 @@ public class OIDCClient {
     }
 
     public static String buildAuthorizeUrl(Config config, AuthRequest authRequest) {
+        String secret = authRequest.getClientSecret();
         return Authing.getScheme() + "://" + Util.getHost(config) + "/oidc/auth?_authing_lang="
                 + Util.getLangHeader()
                 + "&app_id=" + Authing.getAppId()
@@ -48,8 +49,7 @@ public class OIDCClient {
                 + "&scope=" + authRequest.getScope()
                 + "&prompt=consent"
                 + "&state=" + authRequest.getState()
-                + "&code_challenge=" + authRequest.getCodeChallenge()
-                + "&code_challenge_method=" + PKCE.getCodeChallengeMethod();
+                + (secret == null ? "&code_challenge=" + authRequest.getCodeChallenge() + "&code_challenge_method=" + PKCE.getCodeChallengeMethod() : "");
     }
 
     static void prepareLogin(Config config, @NotNull AuthCallback<AuthRequest> callback) {
@@ -355,12 +355,13 @@ public class OIDCClient {
         Authing.getPublicConfig(config -> {
             try {
                 String url = Authing.getScheme() + "://" + Util.getHost(config) + "/oidc/token";
+                String secret = authRequest.getClientSecret();
                 String body = "client_id="+Authing.getAppId()
                         + "&grant_type=authorization_code"
                         + "&code=" + code
                         + "&scope=" + authRequest.getScope()
                         + "&prompt=" + "consent"
-                        + "&code_verifier=" + authRequest.getCodeVerifier()
+                        + (secret == null ? "&code_verifier=" + authRequest.getCodeVerifier() : "&client_secret=" + secret)
                         + "&redirect_uri=" + URLEncoder.encode(authRequest.getRedirectURL(), "utf-8");
                 Guardian.authRequest(url, "post", body, (data)-> {
                     ALog.d(TAG, "authByCode cost:" + (System.currentTimeMillis() - now) + "ms");
@@ -453,5 +454,12 @@ public class OIDCClient {
                 callback.call(500, "Exception", null);
             }
         });
+    }
+
+    public static void getAuthCode(@NotNull AuthCallback<UserInfo> callback) {
+        Authing.getPublicConfig(config -> OIDCClient.prepareLogin(config, (code, message, authRequest) -> {
+            authRequest.setToken(Authing.getCurrentUser().getIdToken());
+            oidcInteraction(authRequest, callback);
+        }));
     }
 }

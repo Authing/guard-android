@@ -10,6 +10,7 @@ import cn.authing.guard.util.Util;
 
 public class AuthRequest {
     private String client_id;
+    private String client_secret;
     private String finish_login_url;
     private String nonce;
     private String redirect_url;
@@ -82,6 +83,14 @@ public class AuthRequest {
 
     public void setClient_id(String client_id) {
         this.client_id = client_id;
+    }
+
+    public String getClientSecret() {
+        return client_secret;
+    }
+
+    public void setClientSecret(String client_secret) {
+        this.client_secret = client_secret;
     }
 
     public String getFinish_login_url() {
