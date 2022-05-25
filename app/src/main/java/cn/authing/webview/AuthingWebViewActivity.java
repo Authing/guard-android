@@ -10,10 +10,12 @@ import android.widget.TextView;
 import cn.authing.MainActivity;
 import cn.authing.R;
 import cn.authing.guard.WebAuthView;
+import cn.authing.guard.activity.AuthActivity;
 import cn.authing.guard.activity.BaseAuthActivity;
 import cn.authing.guard.data.UserInfo;
+import cn.authing.guard.flow.AuthFlow;
 
-public class AuthingWebViewActivity extends BaseAuthActivity {
+public class AuthingWebViewActivity extends AuthActivity {
 
     WebAuthView webView;
     LinearLayout llRes;
@@ -22,6 +24,11 @@ public class AuthingWebViewActivity extends BaseAuthActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        final AuthFlow flow = new AuthFlow();
+        flow.setSkipConsent(true);
+        getIntent().putExtra(AuthActivity.AUTH_FLOW, flow);
+
         setContentView(R.layout.activity_authing_web_view);
 
         llRes = findViewById(R.id.ll_res);
