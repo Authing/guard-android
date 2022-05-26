@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.Display;
 import android.view.LayoutInflater;
@@ -64,6 +65,7 @@ public class AuthenticatorDetailDialog extends Dialog {
         mAlgorithm = view.findViewById(R.id.text_algorithm);
         mIssuer = view.findViewById(R.id.text_issuer);
         Button button = view.findViewById(R.id.btn_delete);
+        button.setBackgroundColor(Color.parseColor("#d81e06"));
         button.setOnClickListener(v -> {
             if (null == mData){
                 Toast.makeText(mContext, mContext.getString(R.string.no_data), Toast.LENGTH_SHORT).show();
