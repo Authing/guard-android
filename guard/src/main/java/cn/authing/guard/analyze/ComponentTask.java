@@ -1,7 +1,5 @@
 package cn.authing.guard.analyze;
 
-import android.util.Log;
-
 import org.json.JSONObject;
 
 import cn.authing.guard.Authing;
@@ -40,12 +38,8 @@ public class ComponentTask implements Runnable {
         okhttp3.Response response;
         try {
             response = call.execute();
-            if (response.code() != 200) {
-                Log.e(TAG, "Trace failed:" + response.code());
-            }
             Analyzer.clearComponents();
         } catch (Exception e){
-            Log.e(TAG, "Trace exception:" + e.toString());
             e.printStackTrace();
             Analyzer.clearComponents();
         }

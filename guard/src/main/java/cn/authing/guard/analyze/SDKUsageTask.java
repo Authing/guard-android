@@ -1,7 +1,6 @@
 package cn.authing.guard.analyze;
 
 import android.provider.Settings;
-import android.util.Log;
 
 import cn.authing.guard.Authing;
 import cn.authing.guard.util.Const;
@@ -29,11 +28,8 @@ public class SDKUsageTask implements Runnable {
         okhttp3.Response response;
         try {
             response = call.execute();
-            if (response.code() != 200) {
-                Log.e(TAG, "Trace failed:" + response.code());
-            }
-        } catch (Exception e){
-            Log.e(TAG, "Trace exception:" + e.toString());
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 }
