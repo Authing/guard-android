@@ -79,6 +79,7 @@ public class RegisterMethodTab extends LinearLayout {
             return;
         }
 
+        boolean addDefaultTab = false;
         for (String s : tabList) {
             RegisterMethodTabItem b = new RegisterMethodTabItem(getContext());
             if ("phone".equals(s)) {
@@ -92,12 +93,16 @@ public class RegisterMethodTab extends LinearLayout {
             if (config.getDefaultRegisterMethod().equals(s)) {
                 b.gainFocus(null);
                 container.addView(b, 0);
+                addDefaultTab = true;
             } else {
                 b.loseFocus();
                 container.addView(b);
             }
             addClickListener(b);
             items.add(b);
+        }
+        if (!addDefaultTab && container.getChildCount() > 0) {
+            ((RegisterMethodTabItem)container.getChildAt(0)).gainFocus(null);
         }
     }
 

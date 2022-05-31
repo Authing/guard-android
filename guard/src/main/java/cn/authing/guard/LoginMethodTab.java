@@ -79,6 +79,7 @@ public class LoginMethodTab extends LinearLayout {
             return;
         }
 
+        boolean addDefaultTab = false;
         for (String s : loginTabList) {
             LoginMethodTabItem b = new LoginMethodTabItem(getContext());
             if ("phone-code".equals(s)) {
@@ -97,12 +98,16 @@ public class LoginMethodTab extends LinearLayout {
             if (config.getDefaultLoginMethod().equals(s)) {
                 b.gainFocus(null);
                 container.addView(b, 0);
+                addDefaultTab = true;
             } else {
                 b.loseFocus();
                 container.addView(b);
             }
             addClickListener(b);
             items.add(b);
+        }
+        if (!addDefaultTab && container.getChildCount() > 0) {
+            ((LoginMethodTabItem)container.getChildAt(0)).gainFocus(null);
         }
     }
 
