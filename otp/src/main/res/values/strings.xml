@@ -3,6 +3,7 @@
     <string name="no_data">no data</string>
     <string name="delete">delete</string>
     <string name="sure_delete">Confirm to delete the account</string>
+    <string name="sure_delete_message">Removing your account will prevent you from generating a captcha, but it will not turn off two-factor authentication, and you may not be able to log in to your account. Before removing the account, perform the following operations：\n 1.Disable two-factor authentication for this account, or\n2.Make sure you can generate captcha by other means</string>
     <string name="cancel">Cancel</string>
     <string name="ok">OK</string>
 

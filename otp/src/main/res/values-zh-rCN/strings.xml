@@ -3,6 +3,7 @@
     <string name="no_data">暂无数据</string>
     <string name="delete">删除</string>
     <string name="sure_delete">确定删除该账号？</string>
+    <string name="sure_delete_message">删除改账号会让您无法生成验证码，但不会关闭双重身份验证，您可能会因此无法登录自己的账号。在移除该账号之前，请执行以下操作：\n 1.关闭该账号的双重身份验证功能，或者\n2.确保您可以通过其它方法生成验证码</string>
     <string name="cancel">取消</string>
     <string name="ok">确定</string>
 
