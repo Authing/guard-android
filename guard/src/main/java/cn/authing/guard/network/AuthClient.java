@@ -63,6 +63,28 @@ public class AuthClient {
         }
     }
 
+    public static void registerByEmailCode(String email, String code, @NotNull AuthCallback<UserInfo> callback) {
+        registerByEmailCode(null, email, code, callback);
+    }
+
+    public static void registerByEmailCode(AuthRequest authData, String email, String code, @NotNull AuthCallback<UserInfo> callback) {
+        try {
+            JSONObject body = new JSONObject();
+            body.put("email", email);
+            body.put("code", code);
+            body.put("forceLogin", true);
+            Guardian.post("/api/v2/register/email-code", body, (data)-> {
+                if (data.getCode() == 200 || data.getCode() == EC_MFA_REQUIRED) {
+                    Safe.saveAccount(email);
+                }
+                startOidcInteraction(authData, data, callback);
+            });
+        } catch (Exception e) {
+            e.printStackTrace();
+            callback.call(500, "Exception", null);
+        }
+    }
+
     public static void registerByUserName(String username, String password, @NotNull AuthCallback<UserInfo> callback) {
         try {
             String encryptPassword = Util.encryptPassword(password);

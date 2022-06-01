@@ -88,6 +88,9 @@ public class RegisterMethodTab extends LinearLayout {
             } else if ("email".equals(s)) {
                 b.setText(getResources().getString(R.string.authing_register_by_email));
                 b.setType(RegisterContainer.RegisterType.EByEmailPassword);
+            } else if ("email-code".equals(s)) {
+                b.setText(getResources().getString(R.string.authing_register_by_email_code));
+                b.setType(RegisterContainer.RegisterType.EByEmailCode);
             }
 
             if (null != config.getDefaultRegisterMethod() && config.getDefaultRegisterMethod().equals(s)) {

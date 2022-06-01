@@ -48,6 +48,7 @@ public class EmailRegisterHandler extends AbsRegisterHandler {
 
             mRegisterButton.startLoadingVisualEffect();
             registerByEmail(account, password);
+            return true;
         }
         return false;
     }

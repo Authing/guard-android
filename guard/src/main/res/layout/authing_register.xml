@@ -120,6 +120,46 @@
                 android:layout_marginTop="4dp"/>
         </cn.authing.guard.RegisterContainer>
 
+        <cn.authing.guard.RegisterContainer
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/authing_form_start_end_margin"
+            android:layout_marginTop="14dp"
+            android:layout_marginEnd="@dimen/authing_form_start_end_margin"
+            android:clipChildren="false"
+            app:type="emailCode">
+            <cn.authing.guard.EmailEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@null"
+                app:errorEnabled="true"
+                app:leftIconDrawable="@drawable/ic_authing_email"
+                app:pageType="register"/>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:clipChildren="false"
+                android:gravity="center_vertical">
+                <cn.authing.guard.VerifyCodeEditText
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@null"
+                    app:errorEnabled="false"
+                    app:leftIconDrawable="@drawable/ic_authing_shield_check"/>
+                <cn.authing.guard.GetEmailCodeButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="42dp"
+                    android:layout_marginStart="4dp"
+                    android:background="@drawable/authing_get_code_button_background"
+                    android:paddingStart="4dp"
+                    android:paddingEnd="4dp"
+                    android:stateListAnimator="@null"
+                    android:textColor="@color/authing_get_verify_code_button_text_color" />
+            </LinearLayout>
+        </cn.authing.guard.RegisterContainer>
+
         <cn.authing.guard.ErrorTextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

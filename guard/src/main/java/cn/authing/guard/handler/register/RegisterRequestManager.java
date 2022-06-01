@@ -12,6 +12,8 @@ public class RegisterRequestManager {
         mEmailRegisterHandler = new EmailRegisterHandler(registerButton, callBack);
         PhoneCodeRegisterHandler phoneCodeRegisterHandler = new PhoneCodeRegisterHandler(registerButton, callBack);
         phoneCodeRegisterHandler.setNextHandler(mEmailRegisterHandler);
+        EmailCodeRegisterHandler emailCodeRegisterHandler = new EmailCodeRegisterHandler(registerButton, callBack);
+        mEmailRegisterHandler.setNextHandler(emailCodeRegisterHandler);
         mFirstRegisterHandler = phoneCodeRegisterHandler;
     }
 

@@ -115,6 +115,16 @@ public class OIDCClient {
         }));
     }
 
+    public static void registerByEmailCode(String email, String password, @NotNull AuthCallback<UserInfo> callback) {
+        Authing.getPublicConfig(config -> OIDCClient.prepareLogin(config, (code, message, authRequest) -> {
+            if (code == 200) {
+                AuthClient.registerByEmailCode(authRequest, email, password, callback);
+            } else {
+                callback.call(code, message, null);
+            }
+        }));
+    }
+
     public static void registerByPhoneCode(String phone, String vCode, String password, @NotNull AuthCallback<UserInfo> callback) {
         registerByPhoneCode(null, phone, vCode, password, callback);
     }
