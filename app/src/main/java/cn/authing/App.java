@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.SharedPreferences;
 
 import cn.authing.guard.Authing;
-import cn.authing.guard.oneclick.OneClick;
 
 
 public class App extends android.app.Application {
@@ -48,9 +47,6 @@ public class App extends android.app.Application {
     @Override
     public void onCreate() {
         super.onCreate();
-
-        // one click
-        OneClick.bizId = "74ae90bd84f74b69a88b578bbbbcdcfd";
 
         String schema = loadScheme(this);
         String host = loadHost(this);

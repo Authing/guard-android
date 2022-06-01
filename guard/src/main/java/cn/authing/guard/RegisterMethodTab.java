@@ -90,7 +90,7 @@ public class RegisterMethodTab extends LinearLayout {
                 b.setType(RegisterContainer.RegisterType.EByEmailPassword);
             }
 
-            if (config.getDefaultRegisterMethod().equals(s)) {
+            if (null != config.getDefaultRegisterMethod() && config.getDefaultRegisterMethod().equals(s)) {
                 b.gainFocus(null);
                 container.addView(b, 0);
                 addDefaultTab = true;

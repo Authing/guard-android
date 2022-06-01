@@ -37,11 +37,13 @@ import cn.authing.guard.data.UserInfo;
 import cn.authing.guard.flow.AuthFlow;
 import cn.authing.guard.network.AuthClient;
 import cn.authing.guard.network.OIDCClient;
+import cn.authing.guard.social.SocialAuthenticator;
 import cn.authing.guard.social.SocialLoginListView;
 import cn.authing.guard.util.ALog;
+import cn.authing.guard.util.Const;
 import cn.authing.guard.util.Util;
 
-public class OneClick implements Serializable {
+public class OneClick extends SocialAuthenticator implements Serializable {
 
     private static final String TAG = "OneClick";
     private static final int MSG_LOGIN = 1;
@@ -50,22 +52,14 @@ public class OneClick implements Serializable {
 
     private final Context context;
     private final Handler handler;
-    private UnifyUiConfig config;
+    private UnifyUiConfig uiConfig;
     private AuthCallback<UserInfo> callback;
     private QuickLogin quickLogin;
 
     private int screenWidth; // dp
-    private AuthContainer.AuthProtocol authProtocol = AuthContainer.AuthProtocol.EInHouse;
 
     public OneClick(Context context) {
-        this(context, null);
-    }
-
-    public OneClick(Context context, AuthContainer.AuthProtocol authProtocol) {
         this.context = context;
-        if (null != authProtocol){
-            this.authProtocol = authProtocol;
-        }
         handler = new Handler(Looper.getMainLooper()) {
             @Override
             public void handleMessage(@NonNull Message msg) {
@@ -83,33 +77,36 @@ public class OneClick implements Serializable {
         start(bizId, config, callback);
     }
 
-    public void start(String bid, UnifyUiConfig config, @NotNull AuthCallback<UserInfo> callback) {
+    public void start(String bid, UnifyUiConfig uiConfig, @NotNull AuthCallback<UserInfo> callback) {
         String _bid = TextUtils.isEmpty(bid) ? bizId : bid;
-        this.config = config;
+        this.uiConfig = uiConfig;
         this.callback = callback;
 
         getAndroidScreenProperty();
 
-        quickLogin = QuickLogin.getInstance(context, _bid);
-        quickLogin.prefetchMobileNumber(new QuickLoginPreMobileListener() {
-            @Override
-            public void onGetMobileNumberSuccess(String YDToken, String mobileNumber) {
-                //预取号成功
-                ALog.d(TAG, "Got phone:" + mobileNumber);
-                handler.sendEmptyMessageDelayed(MSG_LOGIN, 1000);
-            }
+        Authing.getPublicConfig(config -> {
+            String businessId = (_bid != null ) ? _bid : config.getSocialBusinessId(Const.EC_TYPE_YI_DUN);
+            quickLogin = QuickLogin.getInstance(context, businessId);
+            quickLogin.prefetchMobileNumber(new QuickLoginPreMobileListener() {
+                @Override
+                public void onGetMobileNumberSuccess(String YDToken, String mobileNumber) {
+                    //预取号成功
+                    ALog.d(TAG, "Got phone:" + mobileNumber);
+                    handler.sendEmptyMessageDelayed(MSG_LOGIN, 1000);
+                }
 
-            @Override
-            public void onGetMobileNumberError(String YDToken, String msg) {
-                ALog.e(TAG, "Got phone error:" + msg);
-                callback.call(500, msg, null);
-            }
+                @Override
+                public void onGetMobileNumberError(String YDToken, String msg) {
+                    ALog.e(TAG, "Got phone error:" + msg);
+                    callback.call(500, msg, null);
+                }
+            });
         });
     }
 
     private void startLogin() {
-        if (config != null) {
-            quickLogin.setUnifyUiConfig(config);
+        if (uiConfig != null) {
+            quickLogin.setUnifyUiConfig(uiConfig);
             startOnePass();
             return;
         }
@@ -153,9 +150,9 @@ public class OneClick implements Serializable {
     }
 
     private void authingLogin(String t, String ac) {
-        if (authProtocol == AuthContainer.AuthProtocol.EInHouse) {
+        if (getAuthProtocol() == AuthContainer.AuthProtocol.EInHouse) {
             AuthClient.loginByOneAuth(t, ac, this::fireCallback);
-        } else if (authProtocol == AuthContainer.AuthProtocol.EOIDC) {
+        } else if (getAuthProtocol() == AuthContainer.AuthProtocol.EOIDC) {
             OIDCClient.loginByOneAuth(t, ac, this::fireCallback);
         }
     }
@@ -199,7 +196,7 @@ public class OneClick implements Serializable {
         RelativeLayout.LayoutParams layoutParamsOther = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
         layoutParamsOther.setMargins(0, topMargin, 0, 0);
         layoutParamsOther.addRule(RelativeLayout.CENTER_HORIZONTAL);
-        layoutParamsOther.addRule(RelativeLayout.BELOW, R.id.oauth_login);
+        layoutParamsOther.addRule(RelativeLayout.BELOW, com.netease.nis.quicklogin.R.id.oauth_login);
         otherLoginRel.setLayoutParams(layoutParamsOther);
 
         Button other = new Button(context);
@@ -217,6 +214,7 @@ public class OneClick implements Serializable {
         other.setOnClickListener((v)-> {
             quickLogin.quitActivity();
             AuthFlow.start((Activity) context);
+            callback.call(500, "cancel", null);
         });
 
         RelativeLayout socialRel = new RelativeLayout(context);
@@ -259,5 +257,18 @@ public class OneClick implements Serializable {
                 .setPrivacySize(14)
                 .build(context);
         quickLogin.setUnifyUiConfig(c);
+    }
+
+    @Override
+    public void login(Context context, @NonNull AuthCallback<UserInfo> callback) {
+        start(callback);
+    }
+
+    @Override
+    protected void standardLogin(String authCode, @NonNull AuthCallback<UserInfo> callback) {
+    }
+
+    @Override
+    protected void oidcLogin(String authCode, @NonNull AuthCallback<UserInfo> callback) {
     }
 }

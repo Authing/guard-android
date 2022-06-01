@@ -24,6 +24,10 @@ public abstract class SocialAuthenticator {
         this.authProtocol = authProtocol;
     }
 
+    public AuthContainer.AuthProtocol getAuthProtocol() {
+        return authProtocol;
+    }
+
     protected void login(Context context, String authCode, @NotNull AuthCallback<UserInfo> callback){
         AuthContainer.AuthProtocol authProtocol = getAuthProtocol(context);
         if (authProtocol == AuthContainer.AuthProtocol.EInHouse) {

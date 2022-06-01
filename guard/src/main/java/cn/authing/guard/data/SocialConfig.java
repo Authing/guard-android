@@ -6,6 +6,7 @@ public class SocialConfig {
     private String appId;
     private String agentId;
     private String schema;
+    private String businessId;
 
     public String getId() {
         return id;
@@ -45,5 +46,13 @@ public class SocialConfig {
 
     public void setSchema(String schema) {
         this.schema = schema;
+    }
+
+    public String getBusinessId() {
+        return businessId;
+    }
+
+    public void setBusinessId(String businessId) {
+        this.businessId = businessId;
     }
 }

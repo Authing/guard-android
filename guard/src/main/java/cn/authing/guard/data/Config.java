@@ -289,32 +289,6 @@ public class Config {
         return getSocialValue(type, "schema");
     }
 
-    public String getSocialValue(String type, String fieldName) {
-        String value = "";
-        List<SocialConfig> configs = getSocialConfigs();
-        for (SocialConfig c : configs) {
-            String provider = c.getType();
-            if (type.equalsIgnoreCase(provider)) {
-                switch (fieldName){
-                    case "connectionId":
-                        value = c.getId();
-                        break;
-                    case "appId":
-                        value = c.getAppId();
-                        break;
-                    case "agentId":
-                        value = c.getAgentId();
-                        break;
-                    case "schema":
-                        value = c.getSchema();
-                        break;
-                }
-                break;
-            }
-        }
-        return value;
-    }
-
     private static List<SocialConfig> toSocialList(JSONArray array) throws JSONException {
         List<SocialConfig> list = new ArrayList<>();
         int size = array.length();
@@ -347,10 +321,46 @@ public class Config {
                 if (fields.has("schema")) {
                     config.setSchema(fields.getString("schema"));
                 }
+                if (fields.has("businessId")) {
+                    config.setBusinessId(fields.getString("businessId"));
+                }
             }
             list.add(config);
         }
         return list;
+    }
+
+    public String getSocialBusinessId(String type) {
+        return getSocialValue(type, "businessId");
+    }
+
+    public String getSocialValue(String type, String fieldName) {
+        String value = "";
+        List<SocialConfig> configs = getSocialConfigs();
+        for (SocialConfig c : configs) {
+            String provider = c.getType();
+            if (type.equalsIgnoreCase(provider)) {
+                switch (fieldName){
+                    case "connectionId":
+                        value = c.getId();
+                        break;
+                    case "appId":
+                        value = c.getAppId();
+                        break;
+                    case "agentId":
+                        value = c.getAgentId();
+                        break;
+                    case "schema":
+                        value = c.getSchema();
+                        break;
+                    case "businessId":
+                        value = c.getBusinessId();
+                        break;
+                }
+                break;
+            }
+        }
+        return value;
     }
 
     private static List<Agreement> toAgreementList(JSONArray array) throws JSONException {
