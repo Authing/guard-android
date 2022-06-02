@@ -96,7 +96,7 @@ public class WebAuthView extends WebView {
                     if (getContext() instanceof AuthActivity) {
                         AuthActivity activity = (AuthActivity) getContext();
                         AuthFlow flow = (AuthFlow) activity.getIntent().getSerializableExtra(AuthActivity.AUTH_FLOW);
-                        if (flow.isSkipConsent()) {
+                        if (flow != null && flow.isSkipConsent()) {
                             skipConsent(uri);
                             return true;
                         }
