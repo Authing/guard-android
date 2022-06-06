@@ -37,7 +37,7 @@ public class RoundImageView extends AppCompatImageView {
     @Override
     protected void onDraw(Canvas canvas) {
         Drawable drawable = getDrawable();
-        if (null != drawable) {
+        if (drawable instanceof BitmapDrawable) {
             Bitmap bitmap = ((BitmapDrawable) drawable).getBitmap();
             Bitmap b = getCircleBitmap(bitmap, 14);
             Rect rectSrc = new Rect(0, 0, b.getWidth(), b.getHeight());
