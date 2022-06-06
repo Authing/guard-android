@@ -8,8 +8,6 @@ import android.graphics.drawable.Drawable;
 import android.widget.ImageView;
 
 import androidx.appcompat.content.res.AppCompatResources;
-import androidx.core.graphics.drawable.RoundedBitmapDrawable;
-import androidx.core.graphics.drawable.RoundedBitmapDrawableFactory;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -77,13 +75,13 @@ public class ImageLoader {
         String fileName = "" + Authing.getAppId();
         File file = new File(context.getExternalCacheDir(), fileName);
         if (file.exists()) {
-            BitmapDrawable drawable = new BitmapDrawable(context.getResources(), BitmapFactory.decodeStream(new FileInputStream(file)));
-            updateImage(drawable.getBitmap());
+            Drawable drawable = new BitmapDrawable(context.getResources(), BitmapFactory.decodeStream(new FileInputStream(file)));
+            updateImage(drawable);
         }
 
         InputStream in = new java.net.URL(url).openStream();
         BitmapDrawable drawable = new BitmapDrawable(context.getResources(), BitmapFactory.decodeStream(in));
-        updateImage(drawable.getBitmap());
+        updateImage(drawable);
 
         Bitmap bitmap = drawable.getBitmap();
         FileOutputStream outputStream = new FileOutputStream(file);
@@ -97,23 +95,5 @@ public class ImageLoader {
         if (imageView != null) {
             imageView.post(() -> imageView.setImageDrawable(drawable));
         }
-    }
-
-    private void updateImage(Bitmap image) {
-        RoundedBitmapDrawable roundedBitmapDrawable = roundBitmap(image);
-        updateImage(roundedBitmapDrawable);
-    }
-
-    private RoundedBitmapDrawable roundBitmap(Bitmap image){
-        Bitmap bitmap;
-        if (image.getWidth() == image.getHeight()) {
-            bitmap = Bitmap.createBitmap(image, image.getWidth() / 2 - image.getHeight() / 2, 0, image.getHeight(), image.getHeight());
-        } else {
-            bitmap = Bitmap.createBitmap(image, 0, image.getHeight() / 2 - image.getWidth() / 2, image.getWidth(), image.getWidth());
-        }
-        RoundedBitmapDrawable roundedBitmapDrawable = RoundedBitmapDrawableFactory.create(context.getResources(), bitmap);
-        roundedBitmapDrawable.setCornerRadius(bitmap.getWidth() >> 1);
-        roundedBitmapDrawable.setAntiAlias(true);
-        return roundedBitmapDrawable;
     }
 }

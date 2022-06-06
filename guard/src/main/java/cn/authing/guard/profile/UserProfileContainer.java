@@ -18,6 +18,7 @@ import java.util.List;
 
 import cn.authing.guard.Authing;
 import cn.authing.guard.R;
+import cn.authing.guard.RoundImageView;
 import cn.authing.guard.activity.ApplicationActivity;
 import cn.authing.guard.activity.AuthorizedResourcesActivity;
 import cn.authing.guard.activity.BindEmailActivity;
@@ -92,7 +93,7 @@ public class UserProfileContainer extends LinearLayout {
         layout.addView(createLabel(getContext().getString(R.string.authing_avatar)));
         layout.addView(createSpace());
 
-        ivAvatar = new ImageView(getContext());
+        ivAvatar = new RoundImageView(getContext());
         int size = (int)Util.dp2px(getContext(), AVATAR_HEIGHT);
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(size, size);
         int m = (int)Util.dp2px(getContext(), AVATAR_MARGIN);
