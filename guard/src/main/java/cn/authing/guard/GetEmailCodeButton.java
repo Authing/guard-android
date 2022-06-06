@@ -20,7 +20,7 @@ import cn.authing.guard.util.Validator;
 
 public class GetEmailCodeButton extends LoadingButton {
 
-    private String scene = "RESET_PASSWORD";
+    private String scene = "VERIFY_CODE";
 
     public GetEmailCodeButton(@NonNull Context context) {
         this(context, null);

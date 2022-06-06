@@ -84,28 +84,6 @@ public class Config {
             config.setDefaultRegisterMethod(registerTabs.getString("default"));
         }
 
-        if (data.has("registerTabsConfig")) {
-            JSONObject registerTabs = data.getJSONObject("registerTypeConfig");
-            JSONArray registerTabList = registerTabs.getJSONArray("list");
-            config.setRegisterTabList(toStringList(registerTabList));
-            config.setDefaultRegisterMethod(registerTabs.getString("default"));
-            if (registerTabs.has("registerTypeConfig")){
-                JSONObject registerTypeConfig = registerTabs.getJSONObject("registerTypeConfig");
-                List<String> newRegisterTabList = new ArrayList<>();
-                if (registerTypeConfig.has("phoneRegisterType")){
-                    JSONArray phoneRegisterType = registerTabs.getJSONArray("phoneRegisterType");
-                    newRegisterTabList.addAll(toStringList(phoneRegisterType));
-                }
-                if (registerTypeConfig.has("emailRegisterType")){
-                    JSONArray emailRegisterType = registerTabs.getJSONArray("emailRegisterType");
-                    newRegisterTabList.addAll(toStringList(emailRegisterType));
-                }
-                if (!newRegisterTabList.isEmpty()){
-                    config.setRegisterTabList(newRegisterTabList);
-                }
-            }
-        }
-
         if (data.has("passwordTabConfig")) {
             JSONObject passwordTabConfig = data.getJSONObject("passwordTabConfig");
             JSONArray enabledLoginMethods = passwordTabConfig.getJSONArray("enabledLoginMethods");

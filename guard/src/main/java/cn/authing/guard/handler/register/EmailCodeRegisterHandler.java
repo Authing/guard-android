@@ -4,7 +4,6 @@ import android.text.TextUtils;
 import android.view.View;
 
 import cn.authing.guard.AccountEditText;
-import cn.authing.guard.PasswordEditText;
 import cn.authing.guard.RegisterButton;
 import cn.authing.guard.VerifyCodeEditText;
 import cn.authing.guard.container.AuthContainer;
@@ -27,7 +26,7 @@ public class EmailCodeRegisterHandler extends AbsRegisterHandler {
         if (emailET != null && emailET.isShown()
                 && verifyCodeET != null && verifyCodeET.isShown()) {
             final String account = ((AccountEditText) emailET).getText().toString();
-            final String verifyCode = ((PasswordEditText) verifyCodeET).getText().toString();
+            final String verifyCode = ((VerifyCodeEditText) verifyCodeET).getText().toString();
             if (TextUtils.isEmpty(account) || TextUtils.isEmpty(verifyCode)) {
                 Util.setErrorText(mRegisterButton, "Email or verifyCode is invalid");
                 fireCallback("Email or verifyCode is invalid");
