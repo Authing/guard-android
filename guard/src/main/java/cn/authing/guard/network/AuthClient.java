@@ -884,7 +884,7 @@ public class AuthClient {
                 if (data.getCode() == 200) {
                     JSONObject obj = data.getData();
                     try {
-                        userInfo.parseCustomData(obj.getJSONArray("data"));
+                        userInfo.parseCustomData(obj.getJSONArray("result"));
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
