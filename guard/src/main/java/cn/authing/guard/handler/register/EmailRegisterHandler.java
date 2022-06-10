@@ -57,7 +57,7 @@ public class EmailRegisterHandler extends AbsRegisterHandler {
         if (getAuthProtocol() == AuthContainer.AuthProtocol.EInHouse) {
             AuthClient.registerByEmail(email, password, this::fireCallback);
         } else if (getAuthProtocol() == AuthContainer.AuthProtocol.EOIDC) {
-            OIDCClient.registerByEmail(email, password, this::fireCallback);
+            new OIDCClient().registerByEmail(email, password, this::fireCallback);
         }
         ALog.d(TAG, "register by email");
     }

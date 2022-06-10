@@ -85,7 +85,7 @@ public class PhoneCodeLoginHandler extends AbsLoginHandler{
         if (getAuthProtocol() == AuthContainer.AuthProtocol.EInHouse) {
             AuthClient.loginByPhoneCode(phoneCountryCode, phone, verifyCode, this::fireCallback);
         } else if (getAuthProtocol() == AuthContainer.AuthProtocol.EOIDC) {
-            OIDCClient.loginByPhoneCode(phoneCountryCode, phone, verifyCode, this::fireCallback);
+            new OIDCClient().loginByPhoneCode(phoneCountryCode, phone, verifyCode, this::fireCallback);
         }
         ALog.d(TAG, "login by phone code");
     }

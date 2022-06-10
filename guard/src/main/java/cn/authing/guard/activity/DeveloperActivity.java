@@ -90,7 +90,7 @@ public class DeveloperActivity extends BaseAuthActivity {
         refreshButton.setOnClickListener((v)->{
             if (!Util.isNull(refreshToken)) {
                 refreshButton.startLoadingVisualEffect();
-                OIDCClient.getNewAccessTokenByRefreshToken(refreshToken, (code, message, user)->{
+                new OIDCClient().getNewAccessTokenByRefreshToken(refreshToken, (code, message, user)->{
                     refreshButton.stopLoadingVisualEffect();
                     if (code == 200) {
                         runOnUiThread(()-> updateData(user));

@@ -167,7 +167,7 @@ public class AppAuthActivity extends AppCompatActivity {
     private void getUserInfo(String accessToken, String refreshToken) {
         userInfo.setAccessToken(accessToken);
         userInfo.setRefreshToken(refreshToken);
-        OIDCClient.getUserInfoByAccessToken(userInfo, (code, message, data)->{
+        new OIDCClient().getUserInfoByAccessToken(userInfo, (code, message, data)->{
             if (code == 200) {
 //                updateToken(data.getRefreshToken());
             }
@@ -175,7 +175,7 @@ public class AppAuthActivity extends AppCompatActivity {
     }
 
     private void updateToken(String rt) {
-        OIDCClient.getNewAccessTokenByRefreshToken(rt, (code, message, data)->{
+        new OIDCClient().getNewAccessTokenByRefreshToken(rt, (code, message, data)->{
             if (code == 200) {
                 Log.d(TAG, "new at:" + data.getAccessToken());
                 Log.d(TAG, "new id token:" + data.getIdToken());

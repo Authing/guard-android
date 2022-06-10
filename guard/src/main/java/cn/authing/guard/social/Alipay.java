@@ -92,6 +92,6 @@ public class Alipay extends SocialAuthenticator {
 
     @Override
     protected void oidcLogin(String authCode, @NonNull AuthCallback<UserInfo> callback) {
-        OIDCClient.loginByAlipay(authCode, callback);
+        new OIDCClient().loginByAlipay(authCode, callback);
     }
 }

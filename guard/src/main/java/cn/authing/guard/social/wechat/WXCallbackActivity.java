@@ -53,7 +53,7 @@ public class WXCallbackActivity extends AppCompatActivity implements IWXAPIEvent
                 if (authProtocol == AuthContainer.AuthProtocol.EInHouse) {
                     AuthClient.loginByWechat(((SendAuth.Resp) resp).code, callback);
                 } else if (authProtocol == AuthContainer.AuthProtocol.EOIDC) {
-                    OIDCClient.loginByWechat(((SendAuth.Resp) resp).code, callback);
+                    new OIDCClient().loginByWechat(((SendAuth.Resp) resp).code, callback);
                 }
                 break;
             case BaseResp.ErrCode.ERR_USER_CANCEL:

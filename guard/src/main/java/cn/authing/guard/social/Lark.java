@@ -66,6 +66,6 @@ public class Lark extends SocialAuthenticator {
 
     @Override
     protected void oidcLogin(String authCode, @NonNull AuthCallback<UserInfo> callback) {
-        OIDCClient.loginByLark(authCode, callback);
+        new OIDCClient().loginByLark(authCode, callback);
     }
 }

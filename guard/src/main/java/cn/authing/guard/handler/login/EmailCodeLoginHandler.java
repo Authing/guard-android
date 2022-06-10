@@ -66,7 +66,7 @@ public class EmailCodeLoginHandler extends AbsLoginHandler{
         if (getAuthProtocol() == AuthContainer.AuthProtocol.EInHouse) {
             AuthClient.loginByEmailCode(email, verifyCode, this::fireCallback);
         } else if (getAuthProtocol() == AuthContainer.AuthProtocol.EOIDC) {
-            OIDCClient.loginByEmailCode(email, verifyCode, this::fireCallback);
+            new OIDCClient().loginByEmailCode(email, verifyCode, this::fireCallback);
         }
         ALog.d(TAG, "login by email code");
     }

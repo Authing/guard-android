@@ -69,7 +69,7 @@ public class PhoneCodeRegisterHandler extends AbsRegisterHandler {
         if (getAuthProtocol() == AuthContainer.AuthProtocol.EInHouse) {
             AuthClient.registerByPhoneCode(phoneCountryCode, phone, phoneCode, password, this::fireCallback);
         } else if (getAuthProtocol() == AuthContainer.AuthProtocol.EOIDC) {
-            OIDCClient.registerByPhoneCode(phoneCountryCode, phone, phoneCode, password, this::fireCallback);
+            new OIDCClient().registerByPhoneCode(phoneCountryCode, phone, phoneCode, password, this::fireCallback);
         }
         ALog.d(TAG, "register by phone code");
     }

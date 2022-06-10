@@ -64,7 +64,7 @@ public class WeCom extends SocialAuthenticator {
 
     @Override
     protected void oidcLogin(String authCode, @NonNull AuthCallback<UserInfo> callback) {
-        OIDCClient.loginByWecom(authCode, callback);
+        new OIDCClient().loginByWecom(authCode, callback);
     }
 
     private void fireCallback(AuthCallback<UserInfo> callback, UserInfo info) {

@@ -43,7 +43,7 @@ public class AccountLoginHandler extends AbsLoginHandler {
         if (getAuthProtocol() == AuthContainer.AuthProtocol.EInHouse) {
             AuthClient.loginByAccount(account, password, this::fireCallback);
         } else if (getAuthProtocol() == AuthContainer.AuthProtocol.EOIDC) {
-            OIDCClient.loginByAccount(account, password, this::fireCallback);
+            new OIDCClient().loginByAccount(account, password, this::fireCallback);
         }
         ALog.d(TAG, "login by account");
     }

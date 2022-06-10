@@ -37,7 +37,7 @@ public class AuthRequest {
         client_id = Authing.getAppId();
         nonce = Util.randomString(10);
         response_type = "code";
-        scope = "openid profile email phone username address offline_access role extended_fields";
+        scope = "openid profile email phone username address offline_access roles extended_fields";
         state = Util.randomString(10);
         _authing_lang = Util.getLangHeader();
         codeVerifier = PKCE.generateCodeVerifier();
