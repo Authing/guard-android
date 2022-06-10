@@ -70,7 +70,6 @@ public class OIDCClient {
                 if (null == authRequest){
                     authRequest = new AuthRequest();
                 }
-                //AuthRequest authData = new AuthRequest();
                 if (config.getRedirectUris().size() > 0) {
                     authRequest.setRedirectURL(config.getRedirectUris().get(0));
                 }
