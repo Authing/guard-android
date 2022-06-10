@@ -37,6 +37,9 @@ public class OIDCClient {
 
     public OIDCClient(AuthRequest authRequest) {
         this.authRequest = authRequest;
+        if (null == authRequest){
+            this.authRequest = new AuthRequest();
+        }
     }
 
     public void buildAuthorizeUrl(Callback<String> callback) {
