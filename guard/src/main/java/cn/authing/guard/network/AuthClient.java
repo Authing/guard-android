@@ -1013,7 +1013,7 @@ public class AuthClient {
                 UserInfo userInfo = UserInfo.createUserInfo(data.getData());
                 String token = userInfo.getIdToken();
                 authData.setToken(token);
-                new OIDCClient().oidcInteraction(authData, callback);
+                new OIDCClient(authData).oidcInteraction(callback);
             } catch (JSONException e) {
                 e.printStackTrace();
             }

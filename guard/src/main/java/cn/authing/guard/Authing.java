@@ -95,7 +95,7 @@ public class Authing {
                     }
                 });
             } else {
-                OIDCClient.getNewAccessTokenByRefreshToken(refreshToken, (code, message, userInfo) -> {
+                new OIDCClient().getNewAccessTokenByRefreshToken(refreshToken, (code, message, userInfo) -> {
                     if (code != 200) {
                         if (code == 2020) {
                             ALog.d(TAG, "auto login token expired");
@@ -104,7 +104,7 @@ public class Authing {
                         sCurrentUser = null;
                         callback.call(code, message, userInfo);
                     } else {
-                        OIDCClient.getUserInfoByAccessToken(getCurrentUser(), callback);
+                        new OIDCClient().getUserInfoByAccessToken(getCurrentUser(), callback);
                     }
                 });
             }

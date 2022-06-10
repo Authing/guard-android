@@ -184,7 +184,7 @@ public class WebAuthView extends WebView {
                 AuthFlow flow = (AuthFlow) activity.getIntent().getSerializableExtra(AuthActivity.AUTH_FLOW);
                 authRequest.setScope(flow.getScope());
             }
-            post(()-> new OIDCClient().buildAuthorizeUrl(authRequest, (ok, data) -> loadUrl(data)));
+            post(()-> new OIDCClient(authRequest).buildAuthorizeUrl((ok, data) -> loadUrl(data)));
         });
     }
 
