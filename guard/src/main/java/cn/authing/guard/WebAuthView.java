@@ -83,7 +83,7 @@ public class WebAuthView extends WebView {
                     try {
                         String authCode = Util.getAuthCode(url);
                         if (authCode != null) {
-                            new OIDCClient().authByCode(authCode, authRequest, (code, message, userInfo) -> fireCallback(code, message, userInfo));
+                            new OIDCClient(authRequest).authByCode(authCode, (code, message, userInfo) -> fireCallback(code, message, userInfo));
                         } else {
                             ALog.e(TAG, url);
                             fireCallback(500, "login failed", null);
@@ -136,7 +136,7 @@ public class WebAuthView extends WebView {
                     try {
                         String authCode = Util.getAuthCode(url);
                         if (authCode != null) {
-                            new OIDCClient().authByCode(authCode, authRequest, (code, message, userInfo) -> fireCallback(code, message, userInfo));
+                            new OIDCClient(authRequest).authByCode(authCode, (code, message, userInfo) -> fireCallback(code, message, userInfo));
                         } else {
                             ALog.e(TAG, url);
                             fireCallback(500, "login failed", null);

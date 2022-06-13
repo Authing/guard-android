@@ -523,7 +523,7 @@ public class OIDCClient {
                 Uri uri = Uri.parse(location);
                 String authCode = uri.getQueryParameter("code");
                 if (authCode != null) {
-                    authByCode(authCode, authRequest, callback);
+                    authByCode(authCode, callback);
                 } else if (uri.getLastPathSegment().equals("authz")) {
                     url = request.url().scheme() + "://" + request.url().host() + "/interaction/oidc/" + authRequest.getUuid() + "/confirm";
                     _oidcInteractionScopeConfirm(url, callback);
@@ -660,7 +660,7 @@ public class OIDCClient {
         }
     }
 
-    public void authByCode(String code, AuthRequest authRequest, @NotNull AuthCallback<UserInfo> callback) {
+    public void authByCode(String code, @NotNull AuthCallback<UserInfo> callback) {
         long now = System.currentTimeMillis();
         Authing.getPublicConfig(config -> {
             try {
