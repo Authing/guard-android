@@ -1,5 +1,6 @@
 package cn.authing.guard.analyze;
 
+import android.os.Build;
 import android.provider.Settings;
 
 import cn.authing.guard.Authing;
@@ -16,6 +17,8 @@ public class SDKUsageTask implements Runnable {
         String url = "https://developer-beta.authing.cn/stats/sdk-trace/?appid=" + Authing.getAppId()
                 + "&sdk=android&version=" + Const.SDK_VERSION
                 + "&host=" + Authing.getHost()
+                + "&device=" + Build.MODEL
+                + "&os-version=" + Build.VERSION.RELEASE
                 + "&ip=" + ssaid;
 
         Request.Builder builder = new Request.Builder();
