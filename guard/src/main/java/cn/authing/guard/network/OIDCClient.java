@@ -71,6 +71,7 @@ public class OIDCClient {
                 if (null == authRequest){
                     authRequest = new AuthRequest();
                 }
+                String secret = authRequest.getClientSecret();
                 String url = Authing.getScheme() + "://" + Util.getHost(config) + "/oidc/auth?_authing_lang="
                         + Util.getLangHeader()
                         + "&app_id=" + Authing.getAppId()
@@ -81,8 +82,7 @@ public class OIDCClient {
                         + "&scope=" + authRequest.getScope()
                         + "&prompt=consent"
                         + "&state=" + authRequest.getState()
-                        + "&code_challenge=" + authRequest.getCodeChallenge()
-                        + "&code_challenge_method=" + PKCE.getCodeChallengeMethod();
+                        + (secret == null ? "&code_challenge=" + authRequest.getCodeChallenge() + "&code_challenge_method=" + PKCE.getCodeChallengeMethod() : "");
                 Request.Builder builder = new Request.Builder();
                 builder.url(url);
 
@@ -744,9 +744,11 @@ public class OIDCClient {
         Authing.getPublicConfig(config -> {
             try {
                 String url = Authing.getScheme() + "://" + Util.getHost(config) + "/oidc/token";
+                String secret = authRequest.getClientSecret();
                 String body = "client_id=" + Authing.getAppId()
                         + "&grant_type=refresh_token"
-                        + "&refresh_token=" + refreshToken;
+                        + "&refresh_token=" + refreshToken
+                        + (secret == null ? "&code_verifier=" + authRequest.getCodeVerifier() : "&client_secret=" + secret);
                 Guardian.authRequest(url, "post", body, (data)-> {
                     if (data.getCode() == 200) {
                         UserInfo userInfo = Authing.getCurrentUser();
