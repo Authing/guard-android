@@ -29,24 +29,24 @@ public class Analyzer {
     }
 
     public static void report(String name) {
-        try {
-            synchronized (componentMap) {
-                if (componentMap.has(name)) {
-                    int count = componentMap.getInt(name);
-                    componentMap.put(name, ++count);
-                } else {
-                    componentMap.put(name, 1);
-                }
-            }
-
-            if (sTimer != null) {
-                sTimer.cancel();
-            }
-            sTimer = new Timer();
-            sTimer.schedule(new ReportTimerTask(), 3000);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+//        try {
+//            synchronized (componentMap) {
+//                if (componentMap.has(name)) {
+//                    int count = componentMap.getInt(name);
+//                    componentMap.put(name, ++count);
+//                } else {
+//                    componentMap.put(name, 1);
+//                }
+//            }
+//
+//            if (sTimer != null) {
+//                sTimer.cancel();
+//            }
+//            sTimer = new Timer();
+//            sTimer.schedule(new ReportTimerTask(), 3000);
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
     }
 
     static void clearComponents() {
