@@ -43,11 +43,12 @@ public class RoundImageView extends AppCompatImageView {
         }
         if (drawable instanceof BitmapDrawable) {
             Bitmap bitmap = ((BitmapDrawable) drawable).getBitmap();
-            Bitmap b = getCircleBitmap(bitmap, getWidth());
-            if (b == null){
+            if (bitmap == null){
                 super.onDraw(canvas);
                 return;
             }
+            int radius = Math.min(bitmap.getWidth(), bitmap.getHeight());
+            Bitmap b = getCircleBitmap(bitmap, radius);
             Rect rectSrc = new Rect(0, 0, b.getWidth(), b.getHeight());
             Rect rectDest = new Rect(0,0, getWidth(), getHeight());
             paint.reset();
@@ -59,9 +60,6 @@ public class RoundImageView extends AppCompatImageView {
     }
 
     private Bitmap getCircleBitmap(Bitmap bitmap, int radius) {
-        if (bitmap == null){
-            return null;
-        }
         Bitmap swapBitmap;
         if(bitmap.getWidth() != radius || bitmap.getHeight() != radius){
             swapBitmap = Bitmap.createScaledBitmap(bitmap, radius, radius, false);

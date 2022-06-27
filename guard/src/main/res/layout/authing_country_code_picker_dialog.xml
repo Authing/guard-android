@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white"
+    android:fitsSystemWindows="false"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="64dp"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:paddingStart="10dp"
+        android:paddingEnd="16dp">
+
+        <ImageView
+            android:id="@+id/img_back"
+            android:layout_width="25dp"
+            android:layout_height="match_parent"
+            android:paddingStart="0dp"
+            android:paddingEnd="0dp"
+            android:src="@mipmap/authing_back" />
+
+        <TextView
+            android:id="@+id/txt_tittle"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="@string/authing_select_country_code"
+            android:textColor="#171717"
+            android:textSize="18sp" />
+
+        <EditText
+            android:id="@+id/et_search"
+            android:layout_width="0dp"
+            android:layout_height="32dp"
+            android:layout_marginStart="6dp"
+            android:layout_marginEnd="10dp"
+            android:layout_weight="1"
+            android:background="@drawable/authing_edit_text_background_normal"
+            android:ems="10"
+            android:hint="@string/authing_search"
+            android:paddingStart="6dp"
+            android:paddingEnd="6dp"
+            android:textSize="16sp"
+            android:visibility="gone" />
+
+        <ImageView
+            android:id="@+id/img_search"
+            android:layout_width="20dp"
+            android:layout_height="match_parent"
+            android:src="@mipmap/authing_search" />
+
+        <TextView
+            android:id="@+id/txt_cancel"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="@string/authing_cancel"
+            android:textColor="#171717"
+            android:visibility="gone" />
+
+    </LinearLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ListView
+            android:id="@+id/lv_area"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:divider="@null"
+            android:listSelector="@android:color/transparent" />
+
+        <cn.authing.guard.dialog.LetterSideBar
+            android:id="@+id/sb_index"
+            android:layout_width="30dp"
+            android:layout_height="match_parent"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="70dp"
+            android:layout_marginBottom="70dp"
+            app:letterBackground="#FFFFFFFF"
+            app:showTextDialog="false"/>
+    </RelativeLayout>
+
+</LinearLayout>

@@ -60,6 +60,16 @@ public class Util {
         return px / context.getResources().getDisplayMetrics().density;
     }
 
+    public static int sp2px(Context context, float sp) {
+        float scaledDensity = context.getResources().getDisplayMetrics().scaledDensity;
+        return (int) (sp * scaledDensity + 0.5f);
+    }
+
+    public static int px2sp(Context context, float px) {
+        float scaledDensity = context.getResources().getDisplayMetrics().scaledDensity;
+        return (int) (px / scaledDensity + 0.5f);
+    }
+
     public static String encryptPassword(String password) {
         if (isNull(password)){
             return null;
@@ -319,7 +329,9 @@ public class Util {
                 line = reader.readLine();
                 if (line != null) {
                     String[] data = line.split(",");
-                    Country country = new Country(data[0], data[3], data[4], data[2], data[1]);
+                    Country country = new Country(data[0], data[3], data[5], data[4], data[2], data[1]);
+                    String firstSpell = isCn() ? data[5].substring(0, 1) : data[4].substring(0, 1);
+                    country.setFirstSpell(firstSpell);
                     countries.add(country);
                 }
             } while (line != null);

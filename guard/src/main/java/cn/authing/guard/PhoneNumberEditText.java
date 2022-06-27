@@ -4,14 +4,15 @@ import static cn.authing.guard.util.Const.NS_ANDROID;
 
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.graphics.Color;
 import android.text.Editable;
 import android.text.InputType;
 import android.text.Spannable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.AttributeSet;
-import android.view.View;
-import android.view.ViewGroup;
+import android.util.TypedValue;
+import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -27,6 +28,7 @@ public class PhoneNumberEditText extends AccountEditText implements TextWatcher 
 
     private final List<Integer> dividerPattern;
     private final float padding;
+    private CountryCodePicker countryCodePicker;
 
     public PhoneNumberEditText(@NonNull Context context) {
         this(context, null);
@@ -53,14 +55,35 @@ public class PhoneNumberEditText extends AccountEditText implements TextWatcher 
         padding = Util.dp2px(context, 6);
 
         getEditText().addTextChangedListener(this);
+
+        Authing.getPublicConfig(config -> {
+            boolean isEnable = config != null && config.isInternationalSmsEnable();
+            if (isEnable) {
+                addCountryCodePicker();
+            }else {
+                addLeftIcon();
+            }
+        });
     }
 
-    @Override
-    public void addView(@NonNull View child, int index, @NonNull final ViewGroup.LayoutParams params) {
-        if (child instanceof CountryCodePicker) {
-            root.addView(child, 0, params);
-        } else {
-            super.addView(child, index, params);
+    private void addCountryCodePicker() {
+        if (root != null){
+            countryCodePicker = new CountryCodePicker(getContext());
+            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
+                    LayoutParams.WRAP_CONTENT, LayoutParams.MATCH_PARENT);
+            layoutParams.setMarginEnd((int) Util.dp2px(getContext(), 4));
+            countryCodePicker.setLayoutParams(layoutParams);
+            countryCodePicker.setPadding((int) Util.dp2px(getContext(), 12), 0, 0, 0);
+            countryCodePicker.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
+            countryCodePicker.setTextColor(Color.parseColor("#6D7784"));
+            root.addView(countryCodePicker, 0);
+        }
+    }
+
+    private void addLeftIcon(){
+        if (leftIcon != null){
+            leftIcon.setImageDrawable(getResources().getDrawable(R.drawable.ic_authing_cellphone));
+            leftIcon.setVisibility(VISIBLE);
         }
     }
 
@@ -126,17 +149,10 @@ public class PhoneNumberEditText extends AccountEditText implements TextWatcher 
         Analyzer.report("PhoneNumberEditText");
     }
 
-    @Override
-    protected void onAttachedToWindow() {
-        super.onAttachedToWindow();
-
-        // add left icon
-        if (leftIcon != null){
-            View child = Util.findChildViewByClass(this, CountryCodePicker.class, false);
-            if (child instanceof CountryCodePicker && child.getVisibility() == GONE){
-                leftIcon.setImageDrawable(getResources().getDrawable(R.drawable.ic_authing_cellphone));
-                leftIcon.setVisibility(VISIBLE);
-            }
+    public void showCountryCodePicker(boolean show){
+        if (countryCodePicker != null){
+            countryCodePicker.setVisibility(show ? VISIBLE : GONE);
         }
     }
+
 }

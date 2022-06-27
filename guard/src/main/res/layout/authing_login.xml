@@ -49,16 +49,7 @@
                 android:background="@null"
                 app:errorEnabled="true"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-                <cn.authing.guard.CountryCodePicker
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:paddingStart="12dp"
-                    android:paddingEnd="0dp"
-                    android:layout_marginEnd="4dp"
-                    android:textSize="16sp"
-                    android:textColor="#6D7784" />
-            </cn.authing.guard.PhoneNumberEditText>
+                android:layout_height="wrap_content"/>
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

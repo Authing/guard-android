@@ -119,4 +119,18 @@
             <enum name="OIDC" value="1"/>
         </attr>
     </declare-styleable>
+
+    <declare-styleable name="LetterSideBar">
+        <attr name="letterTextArray" format="reference" />
+        <attr name="letterTextColor" format="color" />
+        <attr name="letterTextSelectColor" format="color" />
+        <attr name="letterTextSize" format="dimension" />
+        <attr name="letterBackground" format="reference|color" />
+        <attr name="showTextDialog" format="boolean" />
+        <attr name="dialogTextColor" format="color" />
+        <attr name="dialogTextSize" format="dimension" />
+        <attr name="dialogTextBackground" format="reference|color" />
+        <attr name="dialogTextBackgroundWidth" format="dimension" />
+        <attr name="dialogTextBackgroundHeight" format="dimension" />
+    </declare-styleable>
 </resources>

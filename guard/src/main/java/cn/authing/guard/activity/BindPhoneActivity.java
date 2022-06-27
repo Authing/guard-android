@@ -19,8 +19,8 @@ public class BindPhoneActivity extends BaseAuthActivity {
         if (Authing.getCurrentUser() != null && !Util.isNull(Authing.getCurrentUser().getPhone_number())) {
             editText.getEditText().setText(Authing.getCurrentUser().getPhone_number());
             editText.disable();
+            editText.showCountryCodePicker(false);
             findViewById(R.id.ll_get_code).setVisibility(View.GONE);
-            findViewById(R.id.ccp).setVisibility(View.GONE);
         }
     }
 }

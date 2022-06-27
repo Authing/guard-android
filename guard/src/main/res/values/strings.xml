@@ -66,6 +66,9 @@
     <string name="authing_delete_account">Delete account</string>
     <string name="authing_biometric_title">Biometric authentication</string>
     <string name="authing_biometric_tip">Log in using your biometric credential</string>
+    <string name="authing_select_country_code">Select country/region code</string>
+    <string name="authing_search">Search</string>
+    <string name="authing_cancel">Cancel</string>
 
     <!--user profile-->
     <string name="authing_user_profile">User profile</string>
