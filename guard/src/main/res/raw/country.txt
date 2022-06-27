@@ -1,180 +1,180 @@
-CN,🇨🇳,86,中国大陆,Chinese Mainland
-AD,🇦🇩,376,安道尔共和国,Andorra
-AE,🇦🇪,971,阿拉伯联合酋长国,United Arab Emirates
-AF,🇦🇫,93,阿富汗,Afghanistan
-AG,🇦🇬,1268,安提瓜和巴布达,Antigua and Barbuda
-AI,🇦🇮,1264,安圭拉岛,anguilla
-AL,🇦🇱,355,阿尔巴尼亚,Albania
-AM,🇦🇲,374,阿美尼亚,Armenia
-AO,🇦🇴,244,安哥拉,Angola
-AR,🇦🇷,54,阿根廷,Argentina
-AT,🇦🇹,43,奥地利,Austria
-AU,🇦🇺,61,澳大利亚,Australia
-AZ,🇦🇿,994,阿塞拜疆,azerbaijan
-BB,🇧🇧,1246,巴巴多斯,Barbados
-BD,🇧🇩,880,孟加拉国,Bangladesh
-BE,🇧🇪,32,比利时,Belgium
-BF,🇧🇫,226,布基纳法索,Burkina Faso
-BG,🇧🇬,359,保加利亚,Bulgaria
-BH,🇧🇭,973,巴林,bahrain
-BI,🇧🇮,257,布隆迪,Burundi
-BJ,🇧🇯,229,贝宁,benin
-BL,🇧🇱,970,巴勒斯坦,The Palestinian
-BM,🇧🇲,1441,百慕大群岛,Bermuda
-BN,🇧🇳,673,文莱,brunei
-BO,🇧🇴,591,玻利维亚,Bolivia
-BR,🇧🇷,55,巴西,Brazil
-BS,🇧🇸,1242,巴哈马,The Bahamas
-BW,🇧🇼,267,博茨瓦纳,Botswana
-BY,🇧🇾,375,白俄罗斯,Belarus
-BZ,🇧🇿,501,伯利兹,Belize
-CA,🇨🇦,1,加拿大,Canada
-CF,🇨🇫,236,中非共和国,Central African Republic
-CG,🇨🇬,242,刚果,Republic of the Congo
-CH,🇨🇭,41,瑞士,The Swiss
-CK,🇨🇰,682,库克群岛,The cook islands
-CL,🇨🇱,56,智利,Chile
-CM,🇨🇲,237,喀麦隆,Cameroon
-CO,🇨🇴,57,哥伦比亚,Colombia
-CR,🇨🇷,506,哥斯达黎加,Costa Rica
-CU,🇨🇺,53,古巴,Cuba
-CY,🇨🇾,357,塞浦路斯,Cyprus
-CZ,🇨🇿,420,捷克,The Czech republic
-DE,🇩🇪,49,德国,Germany
-DJ,🇩🇯,253,吉布提,djibouti
-DK,🇩🇰,45,丹麦,The Danish
-DO,🇩🇴,1890,多米尼加共和国,Dominican Republic
-DZ,🇩🇿,213,阿尔及利亚,Algeria
-EC,🇪🇨,593,厄瓜多尔,Ecuador
-EE,🇪🇪,372,爱沙尼亚,Estonia
-EG,🇪🇬,20,埃及,Egypt
-ES,🇪🇸,34,西班牙,Spain
-ET,🇪🇹,251,埃塞俄比亚,Ethiopia
-FI,🇫🇮,358,芬兰,Finland
-FJ,🇫🇯,679,斐济,Fiji
-FR,🇫🇷,33,法国,The French
-GA,🇬🇦,241,加蓬,Gabon
-GB,🇬🇧,44,英国,Britain
-GD,🇬🇩,1809,格林纳达,grenada
-GE,🇬🇪,995,格鲁吉亚,Georgia
-GF,🇬🇫,594,法属圭亚那,French Guiana
-GH,🇬🇭,233,加纳,Ghana
-GI,🇬🇮,350,直布罗陀,Gibraltar
-GM,🇬🇲,220,冈比亚,The Gambia
-GN,🇬🇳,224,几内亚,guinea
-GR,🇬🇷,30,希腊,The Greek
-GT,🇬🇹,502,危地马拉,Guatemala
-GU,🇬🇺,1671,关岛,Guam
-GY,🇬🇾,592,圭亚那,Guyana
-HK,🇭🇰,852,香港(中国),HongKong (China)
-HN,🇭🇳,504,洪都拉斯,Honduras
-HT,🇭🇹,509,海地,In Haiti
-HU,🇭🇺,36,匈牙利,In Hungary
-ID,🇮🇩,62,印度尼西亚,Indonesia
-IE,🇮🇪,353,爱尔兰,The Irish
-IL,🇮🇱,972,以色列,Israel
-IN,🇮🇳,91,印度,India
-IQ,🇮🇶,964,伊拉克,Iraq
-IR,🇮🇷,98,伊朗,Iran
-IS,🇮🇸,354,冰岛,Iceland
-IT,🇮🇹,39,意大利,Italy
-JM,🇯🇲,1876,牙买加,Jamaica
-JO,🇯🇴,962,约旦,Jordan
-JP,🇯🇵,81,日本,Japan
-KE,🇰🇪,254,肯尼亚,Kenya
-KG,🇰🇬,331,吉尔吉斯坦,Kyrgyzstan
-KH,🇰🇭,855,柬埔寨,In Cambodia
-KP,🇰🇵,850,朝鲜,North Korea
-KR,🇰🇷,82,韩国,South Korea
-KW,🇰🇼,965,科威特,Kuwait
-KZ,🇰🇿,327,哈萨克斯坦,Kazakhstan
-LA,🇱🇦,856,老挝,Laos
-LB,🇱🇧,961,黎巴嫩,Lebanon
-LC,🇱🇨,1758,圣卢西亚,St. Lucia
-LI,🇱🇮,423,列支敦士登,Liechtenstein
-LK,🇱🇰,94,斯里兰卡,Sri Lanka
-LR,🇱🇷,231,利比里亚,Liberia
-LS,🇱🇸,266,莱索托,lesotho
-LT,🇱🇹,370,立陶宛,Lithuania
-LU,🇱🇺,352,卢森堡,Luxembourg
-LV,🇱🇻,371,拉脱维亚,Latvia
-LY,🇱🇾,218,利比亚,Libya
-MA,🇲🇦,212,摩洛哥,Morocco
-MC,🇲🇨,377,摩纳哥,Monaco
-MD,🇲🇩,373,摩尔多瓦,moldova
-MG,🇲🇬,261,马达加斯加,Madagascar
-ML,🇲🇱,223,马里,Mali
-MM,🇲🇲,95,缅甸,myanmar
-MN,🇲🇳,976,蒙古,Mongolia
-MO,🇲🇴,853,澳门（中国）,Macau (China)
-MS,🇲🇸,1664,蒙特塞拉特岛,Montserrat
-MT,🇲🇹,356,马耳他,Malta
-MU,🇲🇺,230,毛里求斯,Mauritius
-MV,🇲🇻,960,马尔代夫,The maldives
-MW,🇲🇼,265,马拉维,Malawi
-MX,🇲🇽,52,墨西哥,Mexico
-MY,🇲🇾,60,马来西亚,Malaysia
-MZ,🇲🇿,258,莫桑比克,mozambique
-NA,🇳🇦,264,纳米比亚,namibia
-NE,🇳🇪,977,尼日尔,Niger
-NG,🇳🇬,234,尼日利亚,Nigeria
-NI,🇳🇮,505,尼加拉瓜,Nicaragua
-NL,🇳🇱,31,荷兰,In the Netherlands
-NO,🇳🇴,47,挪威,The Norwegian
-NP,🇳🇵,977,尼泊尔,Nepal
-NR,🇳🇷,674,瑙鲁,nauru
-NZ,🇳🇿,64,新西兰,New Zealand
-OM,🇴🇲,968,阿曼,Oman
-PA,🇵🇦,507,巴拿马,panama
-PE,🇵🇪,51,秘鲁,Peru
-PF,🇵🇫,689,法属玻利尼西亚,French Polynesia
-PG,🇵🇬,675,巴布亚新几内亚,Papua New Guinea
-PH,🇵🇭,63,菲律宾,The Philippines
-PK,🇵🇰,92,巴基斯坦,Pakistan
-PL,🇵🇱,48,波兰,Poland
-PR,🇵🇷,1787,波多黎各,Puerto Rico
-PT,🇵🇹,351,葡萄牙,Portugal
-PY,🇵🇾,595,巴拉圭,Paraguay
-QA,🇶🇦,974,卡塔尔,Qatar
-RO,🇷🇴,40,罗马尼亚,Romania
-RU,🇷🇺,7,俄罗斯,Russia
-SA,🇸🇦,966,沙特阿拉伯,Saudi Arabia
-SB,🇸🇧,677,所罗门群岛,Solomon Islands
-SC,🇸🇨,248,塞舌尔,The seychelles
-SD,🇸🇩,249,苏丹,Sudan
-SE,🇸🇪,46,瑞典,The Swedish
-SG,🇸🇬,65,新加坡,Singapore
-SI,🇸🇮,386,斯洛文尼亚,Slovenia
-SK,🇸🇰,421,斯洛伐克,Slovakia
-SL,🇸🇱,232,塞拉利昂,Sierra leone
-SM,🇸🇲,378,圣马力诺,SAN marino
-SN,🇸🇳,221,塞内加尔,Senegal
-SO,🇸🇴,252,索马里,somalia
-SR,🇸🇷,597,苏里南,suriname
-ST,🇸🇹,239,圣多美和普林西比,SAO Tome and Principe
-SV,🇸🇻,503,萨尔瓦多,El Salvador
-SY,🇸🇾,963,叙利亚,Syria
-SZ,🇸🇿,268,斯威士兰,Eswatini
-TD,🇹🇩,235,乍得,Chad
-TG,🇹🇬,228,多哥,Togo
-TH,🇹🇭,66,泰国,Thailand
-TJ,🇹🇯,992,塔吉克斯坦,Tajikistan
-TM,🇹🇲,993,土库曼斯坦,Turkmenistan
-TN,🇹🇳,216,突尼斯,Tunisia
-TO,🇹🇴,676,汤加,tonga
-TR,🇹🇷,90,土耳其,Turkey
-TT,🇹🇹,1809,特立尼达和多巴哥,Trinidad and Tobago
-TW,🇹🇼,886,台湾（中国）,Taiwan (China)
-TZ,🇹🇿,255,坦桑尼亚,In Tanzania
-UA,🇺🇦,380,乌克兰,Ukraine
-UG,🇺🇬,256,乌干达,Uganda
-US,🇺🇸,1,美国,The United States
-UY,🇺🇾,598,乌拉圭,Uruguay
-UZ,🇺🇿,233,乌兹别克斯坦,Uzbekistan
-VC,🇻🇨,1784,圣文森特岛,Saint Vincent
-VE,🇻🇪,58,委内瑞拉,venezuela
-VN,🇻🇳,84,越南,Vietnam
-YE,🇾🇪,967,也门,yemen
-ZA,🇿🇦,27,南非,South Africa
-ZM,🇿🇲,260,赞比亚,In Zambia
-ZW,🇿🇼,263,津巴布韦,Zimbabwe
+CN,🇨🇳,86,中国大陆,Chinese Mainland,zhong guo da lu
+AD,🇦🇩,376,安道尔共和国,Andorra,an dao er gong he guo
+AE,🇦🇪,971,阿拉伯联合酋长国,United Arab Emirates,a la bo lian he qiu zhang guo
+AF,🇦🇫,93,阿富汗,Afghanistan,a fu han
+AG,🇦🇬,1268,安提瓜和巴布达,Antigua & Barbuda,an ti gua he ba bu da
+AI,🇦🇮,1264,安圭拉岛,Anguilla,an gui la dao
+AL,🇦🇱,355,阿尔巴尼亚,Albania,a er ba ni ya
+AM,🇦🇲,374,阿美尼亚,Armenia,a mei ni ya
+AO,🇦🇴,244,安哥拉,Angola,an ge la
+AR,🇦🇷,54,阿根廷,Argentina,a gen ting
+AT,🇦🇹,43,奥地利,Austria,ao di li
+AU,🇦🇺,61,澳大利亚,Australia,ao da li ya
+AZ,🇦🇿,994,阿塞拜疆,Azerbaijan,a sai bai jiang
+BB,🇧🇧,1246,巴巴多斯,Barbados,ba ba duo si
+BD,🇧🇩,880,孟加拉国,Bangladesh,meng jia la guo
+BE,🇧🇪,32,比利时,Belgium,BiLiShi
+BF,🇧🇫,226,布基纳法索,Burkina Faso,bu ji na fa suo
+BG,🇧🇬,359,保加利亚,Bulgaria,bao jia li ya
+BH,🇧🇭,973,巴林,Bahrain,ba lin
+BI,🇧🇮,257,布隆迪,Burundi,bu long di
+BJ,🇧🇯,229,贝宁,Benin,bei ning
+BL,🇧🇱,970,巴勒斯坦,Palestine,ba le si tan
+BM,🇧🇲,1441,百慕大群岛,Bermuda,bai mu da qun dao
+BN,🇧🇳,673,文莱,Brunei,wen lai
+BO,🇧🇴,591,玻利维亚,Bolivia,bo li wei ya
+BR,🇧🇷,55,巴西,Brazil,ba xi
+BS,🇧🇸,1242,巴哈马,Bahamas,ba ha ma
+BW,🇧🇼,267,博茨瓦纳,Botswana,bo ci wa na
+BY,🇧🇾,375,白俄罗斯,Belarus,bai e luo si
+BZ,🇧🇿,501,伯利兹,Belize,bo li zi
+CA,🇨🇦,1,加拿大,Canada,jia na da
+CF,🇨🇫,236,中非共和国,Central African Republic,zhong fei gong he guo
+CG,🇨🇬,242,刚果,Republic of the Congo,gang guo
+CH,🇨🇭,41,瑞士,Switzerland,rui shi
+CK,🇨🇰,682,库克群岛,Cook Islands,ku ke qun dao
+CL,🇨🇱,56,智利,Chile,zhi li
+CM,🇨🇲,237,喀麦隆,Cameroon,ka mai long
+CO,🇨🇴,57,哥伦比亚,Colombia,ge lun bi ya
+CR,🇨🇷,506,哥斯达黎加,Costa Rica,ge si da li jia
+CU,🇨🇺,53,古巴,Cuba,gu ba
+CY,🇨🇾,357,塞浦路斯,Cyprus,sai pu lu si
+CZ,🇨🇿,420,捷克,Czech Republic,jie ke
+DE,🇩🇪,49,德国,Germany,de guo
+DJ,🇩🇯,253,吉布提,Djibouti,ji bu ti
+DK,🇩🇰,45,丹麦,Denmark,dan mai
+DO,🇩🇴,1809,多米尼加共和国,Dominican Republic,duo mi ni jia gong he guo
+DZ,🇩🇿,213,阿尔及利亚,Algeria,a er ji li ya
+EC,🇪🇨,593,厄瓜多尔,Ecuador,e gua duo er
+EE,🇪🇪,372,爱沙尼亚,Estonia,ai sha ni ya
+EG,🇪🇬,20,埃及,Egypt,ai ji
+ES,🇪🇸,34,西班牙,Spain,xi ban ya
+ET,🇪🇹,251,埃塞俄比亚,Ethiopia,ai sai e bi ya
+FI,🇫🇮,358,芬兰,Finland,fen lan
+FJ,🇫🇯,679,斐济,Fiji,fei ji
+FR,🇫🇷,33,法国,France,fa guo
+GA,🇬🇦,241,加蓬,Gabon,jia peng
+GB,🇬🇧,44,英国,Britain,ying guo
+GD,🇬🇩,1473,格林纳达,Grenada,ge lin na da
+GE,🇬🇪,995,格鲁吉亚,Georgia,ge lu ji ya
+GF,🇬🇫,594,法属圭亚那,French Guiana,fa shu gui ya na
+GH,🇬🇭,233,加纳,Ghana,jia na
+GI,🇬🇮,350,直布罗陀,Gibraltar,zhi bu luo tuo
+GM,🇬🇲,220,冈比亚,Gambia,gang bi ya
+GN,🇬🇳,224,几内亚,Guinea,ji nei ya
+GR,🇬🇷,30,希腊,Greece,xi la
+GT,🇬🇹,502,危地马拉,Guatemala,wei di ma la
+GU,🇬🇺,1671,关岛,Guam,guan dao
+GY,🇬🇾,592,圭亚那,Guyana,gui ya na
+HK,🇭🇰,852,香港(中国),Hong Kong (China),xiang gang
+HN,🇭🇳,504,洪都拉斯,Honduras,hong dou la si
+HT,🇭🇹,509,海地,Haiti,hai di
+HU,🇭🇺,36,匈牙利,Hungary,xiong ya li
+ID,🇮🇩,62,印度尼西亚,Indonesia,yin du ni xi ya
+IE,🇮🇪,353,爱尔兰,Ireland,ai er lan
+IL,🇮🇱,972,以色列,Israel,yi se lie
+IN,🇮🇳,91,印度,India,yin du
+IQ,🇮🇶,964,伊拉克,Iraq,yi la ke
+IR,🇮🇷,98,伊朗,Iran,yi lang
+IS,🇮🇸,354,冰岛,Iceland,bing dao
+IT,🇮🇹,39,意大利,Italy,yi da li
+JM,🇯🇲,1876,牙买加,Jamaica,ya mai jia
+JO,🇯🇴,962,约旦,Jordan,yue dan
+JP,🇯🇵,81,日本,Japan,ri ben
+KE,🇰🇪,254,肯尼亚,Kenya,ken ni ya
+KG,🇰🇬,996,吉尔吉斯坦,Kyrgyzstan,ji er ji si tan
+KH,🇰🇭,855,柬埔寨,Cambodia,jian pu zhai
+KP,🇰🇵,850,朝鲜,North Korea,chao xian
+KR,🇰🇷,82,韩国,South Korea,han guo
+KW,🇰🇼,965,科威特,Kuwait,ke wei te
+KZ,🇰🇿,7,哈萨克斯坦,Kazakhstan,ha sa ke si tan
+LA,🇱🇦,856,老挝,Laos,lao wo
+LB,🇱🇧,961,黎巴嫩,Lebanon,li ba nen
+LC,🇱🇨,1758,圣卢西亚,St. Lucia,sheng lu xi ya
+LI,🇱🇮,423,列支敦士登,Liechtenstein,lie zhi dun shi deng
+LK,🇱🇰,94,斯里兰卡,Sri Lanka,si li lan ka
+LR,🇱🇷,231,利比里亚,Liberia,li bi li ya
+LS,🇱🇸,266,莱索托,lesotho,lai suo tuo
+LT,🇱🇹,370,立陶宛,Lithuania,li tao wan
+LU,🇱🇺,352,卢森堡,Luxembourg,lu sen bao
+LV,🇱🇻,371,拉脱维亚,Latvia,la tuo wei ya
+LY,🇱🇾,218,利比亚,Libya,li bi ya
+MA,🇲🇦,212,摩洛哥,Morocco,mo luo ge
+MC,🇲🇨,377,摩纳哥,Monaco,mo na ge
+MD,🇲🇩,373,摩尔多瓦,Moldova,mo er duo wa
+MG,🇲🇬,261,马达加斯加,Madagascar,ma da jia si jia
+ML,🇲🇱,223,马里,Mali,ma li
+MM,🇲🇲,95,缅甸,Myanmar,mian dian
+MN,🇲🇳,976,蒙古,Mongolia,meng gu
+MO,🇲🇴,853,澳门（中国）,Macao (China),ao men
+MS,🇲🇸,1664,蒙特塞拉特岛,Montserrat,meng te sai la te dao
+MT,🇲🇹,356,马耳他,Malta,ma er ta
+MU,🇲🇺,230,毛里求斯,Mauritius,mao li qiu si
+MV,🇲🇻,960,马尔代夫,Maldives,ma er dai fu
+MW,🇲🇼,265,马拉维,Malawi,ma la wei
+MX,🇲🇽,52,墨西哥,Mexico,mo xi ge
+MY,🇲🇾,60,马来西亚,Malaysia,ma lai xi ya
+MZ,🇲🇿,258,莫桑比克,Mozambique,mo sang bi ke
+NA,🇳🇦,264,纳米比亚,Namibia,na mi bi ya
+NE,🇳🇪,977,尼日尔,Nepal,ni ri er
+NG,🇳🇬,234,尼日利亚,Nigeria,ni ri li ya
+NI,🇳🇮,505,尼加拉瓜,Nicaragua,ni jia la gua
+NL,🇳🇱,31,荷兰,Netherlands,he lan
+NO,🇳🇴,47,挪威,Norway,nuo wei
+NP,🇳🇵,977,尼泊尔,Nepal,ni bo er
+NR,🇳🇷,674,瑙鲁,Nauru,nao lu
+NZ,🇳🇿,64,新西兰,New Zealand,xin xi lan
+OM,🇴🇲,968,阿曼,Oman,a man
+PA,🇵🇦,507,巴拿马,Panama,ba na ma
+PE,🇵🇪,51,秘鲁,Peru,mi lu
+PF,🇵🇫,689,法属玻利尼西亚,French Polynesia,fa shu bo li ni xi ya
+PG,🇵🇬,675,巴布亚新几内亚,Papua New Guinea,ba bu ya xin ji nei ya
+PH,🇵🇭,63,菲律宾,Philippines,fei lü bin
+PK,🇵🇰,92,巴基斯坦,Pakistan,ba bu ya xin ji nei ya
+PL,🇵🇱,48,波兰,Poland,bo lan
+PR,🇵🇷,1787,波多黎各,Puerto Rico,bo duo li ge
+PT,🇵🇹,351,葡萄牙,Portugal,pu tao ya
+PY,🇵🇾,595,巴拉圭,Paraguay,ba la gui
+QA,🇶🇦,974,卡塔尔,Qatar,ka ta er
+RO,🇷🇴,40,罗马尼亚,Romania,luo ma ni ya
+RU,🇷🇺,7,俄罗斯,Russia,e luo si
+SA,🇸🇦,966,沙特阿拉伯,Saudi Arabia,sha te a la bo
+SB,🇸🇧,677,所罗门群岛,Solomon Islands,suo luo men qun dao
+SC,🇸🇨,248,塞舌尔,Seychelles,sai she er
+SD,🇸🇩,249,苏丹,Sudan,su dan
+SE,🇸🇪,46,瑞典,Sweden,rui dian
+SG,🇸🇬,65,新加坡,Singapore,xin jia po
+SI,🇸🇮,386,斯洛文尼亚,Slovenia,si luo wen ni ya
+SK,🇸🇰,421,斯洛伐克,Slovakia,si luo fa ke
+SL,🇸🇱,232,塞拉利昂,Sierra Leone,sai la li ang
+SM,🇸🇲,378,圣马力诺,San Marino,sheng ma li nuo
+SN,🇸🇳,221,塞内加尔,Senegal,sai nei jia er
+SO,🇸🇴,252,索马里,Somalia,suo ma li
+SR,🇸🇷,597,苏里南,Suriname,su li nan
+ST,🇸🇹,239,圣多美和普林西比,São Tomé & Príncipe,sheng duo mei he pu lin xi bi
+SV,🇸🇻,503,萨尔瓦多,El Salvador,sa er wa duo
+SY,🇸🇾,963,叙利亚,Syria,xu li ya
+SZ,🇸🇿,268,斯威士兰,Eswatini (Swaziland),si wei shi lan
+TD,🇹🇩,235,乍得,Chad,zha de
+TG,🇹🇬,228,多哥,Togo,duo ge
+TH,🇹🇭,66,泰国,Thailand,tai guo
+TJ,🇹🇯,992,塔吉克斯坦,Tajikistan,ta ji ke si tan
+TM,🇹🇲,993,土库曼斯坦,Turkmenistan,tu ku man si tan
+TN,🇹🇳,216,突尼斯,Tunisia,tu ni si
+TO,🇹🇴,676,汤加,Tonga,tang jia
+TR,🇹🇷,90,土耳其,Turkey,tu er qi
+TT,🇹🇹,1868,特立尼达和多巴哥,Trinidad & Tobago,te li ni da he duo ba ge
+TW,🇹🇼,886,台湾（中国）,Taiwan (China),tai wan
+TZ,🇹🇿,255,坦桑尼亚,Tanzania,tan sang ni ya
+UA,🇺🇦,380,乌克兰,Ukraine,wu ke lan
+UG,🇺🇬,256,乌干达,Uganda,wu gan da
+US,🇺🇸,1,美国,United States,mei guo
+UY,🇺🇾,598,乌拉圭,Uruguay,wu la gui
+UZ,🇺🇿,998,乌兹别克斯坦,Uzbekistan,wu zi bie ke si tan
+VC,🇻🇨,1784,圣文森特岛,St. Vincent & the Grenadines,sheng wen sen te dao
+VE,🇻🇪,58,委内瑞拉,Venezuela,wei nei rui la
+VN,🇻🇳,84,越南,Vietnam,yue nan
+YE,🇾🇪,967,也门,Yemen,ye men
+ZA,🇿🇦,27,南非,South Africa,nan fei
+ZM,🇿🇲,260,赞比亚,Zambia,zan bi ya
+ZW,🇿🇼,263,津巴布韦,Zimbabwe,jin ba bu wei
