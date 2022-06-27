@@ -18,7 +18,7 @@ import androidx.appcompat.widget.AppCompatImageView;
 
 public class RoundImageView extends AppCompatImageView {
 
-    private Paint paint;
+    private final Paint paint;
 
     public RoundImageView(@NonNull Context context) {
         this(context, null);
@@ -37,31 +37,53 @@ public class RoundImageView extends AppCompatImageView {
     @Override
     protected void onDraw(Canvas canvas) {
         Drawable drawable = getDrawable();
+        if (drawable == null || getWidth() == 0 || getHeight() == 0) {
+            super.onDraw(canvas);
+            return;
+        }
         if (drawable instanceof BitmapDrawable) {
             Bitmap bitmap = ((BitmapDrawable) drawable).getBitmap();
-            Bitmap b = getCircleBitmap(bitmap, 14);
+            Bitmap b = getCircleBitmap(bitmap, getWidth());
+            if (b == null){
+                super.onDraw(canvas);
+                return;
+            }
             Rect rectSrc = new Rect(0, 0, b.getWidth(), b.getHeight());
-            Rect rectDest = new Rect(0,0,getWidth(),getHeight());
+            Rect rectDest = new Rect(0,0, getWidth(), getHeight());
             paint.reset();
+            paint.setAntiAlias(true);
             canvas.drawBitmap(b, rectSrc, rectDest, paint);
         } else {
             super.onDraw(canvas);
         }
     }
 
-    private Bitmap getCircleBitmap(Bitmap bitmap, int pixels) {
-        Bitmap output = Bitmap.createBitmap(bitmap.getWidth(),
-                bitmap.getHeight(), Bitmap.Config.ARGB_8888);
+    private Bitmap getCircleBitmap(Bitmap bitmap, int radius) {
+        if (bitmap == null){
+            return null;
+        }
+        Bitmap swapBitmap;
+        if(bitmap.getWidth() != radius || bitmap.getHeight() != radius){
+            swapBitmap = Bitmap.createScaledBitmap(bitmap, radius, radius, false);
+        } else{
+            swapBitmap = bitmap;
+        }
+
+        Bitmap output = Bitmap.createBitmap(swapBitmap.getWidth(),
+                swapBitmap.getHeight(), Bitmap.Config.ARGB_8888);
         Canvas canvas = new Canvas(output);
         final int color = 0xff424242;
-        final Rect rect = new Rect(0, 0, bitmap.getWidth(), bitmap.getHeight());
+        final Rect rect = new Rect(0, 0, swapBitmap.getWidth(), swapBitmap.getHeight());
         paint.setAntiAlias(true);
+        paint.setFilterBitmap(true);
+        paint.setDither(true);
         canvas.drawARGB(0, 0, 0, 0);
         paint.setColor(color);
-        int x = bitmap.getWidth();
-        canvas.drawCircle((float) x / 2, (float) x / 2, (float) x / 2, paint);
+        canvas.drawCircle((float) swapBitmap.getWidth() / 2,
+                (float) swapBitmap.getHeight() / 2,
+                (float) swapBitmap.getWidth() / 2, paint);
         paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_IN));
-        canvas.drawBitmap(bitmap, rect, rect, paint);
+        canvas.drawBitmap(swapBitmap, rect, rect, paint);
         return output;
     }
 
