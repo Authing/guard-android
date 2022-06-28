@@ -47,3 +47,25 @@ new OneClick(this).start("your_yidun_business_id", config, ((code, message, user
     // logged in
 }));
 ```
+
+- 若想基于易盾自己实现一键登录流程，在拿到 token 和 access token 后，可以调用：
+
+```java
+public static void loginByOneAuth(String token, String accessToken, @NotNull AuthCallback<UserInfo> callback)
+```
+
+**参数**
+
+- *token* 运营商返回
+- *accessToken* 运营商返回
+
+**示例**
+
+```java
+AuthClient.loginByOneAuth(token, accessToken, ((code, message, userInfo) -> {
+		if (code == 200) {
+        // userInfo：用户信息
+    }
+}));
+```
+
