@@ -62,10 +62,10 @@ public static void loginByOneAuth(String token, String accessToken, @NotNull Aut
 **示例**
 
 ```java
-AuthClient.loginByOneAuth(token, accessToken, ((code, message, userInfo) -> {
-	if (code == 200) {
+AuthClient.loginByOneAuth(token, accessToken, (code, message, userInfo)->{
+    if (code == 200) {
         // userInfo：用户信息
     }
-}));
+});
 ```
 
