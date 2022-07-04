@@ -9,7 +9,6 @@ import org.json.JSONObject;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
-import cn.authing.guard.analyze.Analyzer;
 import cn.authing.guard.data.Config;
 import cn.authing.guard.data.Safe;
 import cn.authing.guard.data.UserInfo;
@@ -40,7 +39,6 @@ public class Authing {
         sAppContext = context.getApplicationContext();
         sAppId = appId;
         requestPublicConfig();
-        Analyzer.reportSDKUsage();
     }
 
     public static Context getAppContext() {
