@@ -237,42 +237,6 @@ public class AuthClient {
         }
     }
 
-    public static void loginByLDAP(String username, String password, @NotNull AuthCallback<UserInfo> callback) {
-        try {
-            String encryptPassword = Util.encryptPassword(password);
-            JSONObject body = new JSONObject();
-            body.put("username", username);
-            body.put("password", encryptPassword);
-            Guardian.post("/api/v2/login/ldap", body, (data)-> {
-                if (data.getCode() == 200 || data.getCode() == EC_MFA_REQUIRED) {
-                    Safe.saveAccount(username);
-                }
-                createUserInfoFromResponse(data, callback);
-            });
-        } catch (Exception e) {
-            e.printStackTrace();
-            callback.call(500, "Exception", null);
-        }
-    }
-
-    public static void loginByAD(String username, String password, @NotNull AuthCallback<UserInfo> callback) {
-        try {
-            String encryptPassword = Util.encryptPassword(password);
-            JSONObject body = new JSONObject();
-            body.put("username", username);
-            body.put("password", encryptPassword);
-            Guardian.post("/api/v2/login/ad", body, (data)-> {
-                if (data.getCode() == 200 || data.getCode() == EC_MFA_REQUIRED) {
-                    Safe.saveAccount(username);
-                }
-                createUserInfoFromResponse(data, callback);
-            });
-        } catch (Exception e) {
-            e.printStackTrace();
-            callback.call(500, "Exception", null);
-        }
-    }
-
     public static void sendResetPasswordEmail(String emailAddress, @NotNull AuthCallback<JSONObject> callback) {
         sendEmail(emailAddress, "RESET_PASSWORD", callback);
     }
@@ -1008,17 +972,19 @@ public class AuthClient {
     private static void startOidcInteraction(AuthRequest authData, Response data, @NotNull AuthCallback<UserInfo> callback){
         if (authData == null) {
             createUserInfoFromResponse(data, callback);
-        } else if (data.getCode() == 200) {
-            try {
-                UserInfo userInfo = UserInfo.createUserInfo(data.getData());
-                String token = userInfo.getIdToken();
-                authData.setToken(token);
-                new OIDCClient(authData).authByToken(token, callback);
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
         } else {
-            callback.call(data.getCode(), data.getMessage(), null);
+            if (data.getCode() == 200) {
+                try {
+                    UserInfo userInfo = UserInfo.createUserInfo(data.getData());
+                    String token = userInfo.getIdToken();
+                    authData.setToken(token);
+                    new OIDCClient(authData).authByToken(userInfo, token, callback);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            } else {
+               createUserInfoFromResponse(data, callback);
+            }
         }
     }
 }
