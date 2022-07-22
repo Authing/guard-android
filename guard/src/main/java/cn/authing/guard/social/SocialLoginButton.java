@@ -6,15 +6,17 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.AnimatedVectorDrawable;
 import android.util.AttributeSet;
+import android.view.View;
 
 import cn.authing.guard.AuthCallback;
+import cn.authing.guard.PrivacyConfirmBox;
 import cn.authing.guard.R;
 import cn.authing.guard.activity.AuthActivity;
-import cn.authing.guard.container.AuthContainer;
 import cn.authing.guard.data.UserInfo;
 import cn.authing.guard.flow.AuthFlow;
 import cn.authing.guard.flow.FlowHelper;
 import cn.authing.guard.util.Const;
+import cn.authing.guard.util.Util;
 
 public abstract class SocialLoginButton extends androidx.appcompat.widget.AppCompatImageButton {
 
@@ -66,6 +68,9 @@ public abstract class SocialLoginButton extends androidx.appcompat.widget.AppCom
         }
         backgroundDrawable = (AnimatedVectorDrawable)context.getDrawable(R.drawable.ic_authing_animated_loading_blue);
         setOnClickListener((v -> {
+            if (requiresAgreement()) {
+                return;
+            }
             setBackground(backgroundDrawable);
             backgroundDrawable.start();
             if (authenticator != null) {
@@ -74,13 +79,16 @@ public abstract class SocialLoginButton extends androidx.appcompat.widget.AppCom
         }));
     }
 
-    public void setOnLoginListener(AuthCallback<UserInfo> callback) {
-        this.callback = callback;
+    private boolean requiresAgreement() {
+        View box = Util.findViewByClass(this, PrivacyConfirmBox.class);
+        if (box == null) {
+            return false;
+        }
+
+        return ((PrivacyConfirmBox)box).require(true);
     }
 
-    public void setAuthProtocol(AuthContainer.AuthProtocol authProtocol){
-        if (authenticator != null) {
-            authenticator.setAuthProtocol(authProtocol);
-        }
+    public void setOnLoginListener(AuthCallback<UserInfo> callback) {
+        this.callback = callback;
     }
 }
