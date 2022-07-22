@@ -156,8 +156,7 @@ public class OIDCClient {
         });
     }
 
-
-    public void authByToken(String token, @NotNull AuthCallback<UserInfo> callback) {
+    public void authByToken(UserInfo userInfo, String token, @NotNull AuthCallback<UserInfo> callback) {
         long now = System.currentTimeMillis();
         Authing.getPublicConfig(config -> {
             try {
@@ -176,8 +175,8 @@ public class OIDCClient {
                     ALog.d(TAG, "authByToken cost:" + (System.currentTimeMillis() - now) + "ms");
                     if (data.getCode() == 200) {
                         try {
-                            UserInfo userInfo = UserInfo.createUserInfo(new UserInfo(), data.getData());
-                            getUserInfoByAccessToken(userInfo, callback);
+                            UserInfo newUserInfo = UserInfo.createUserInfo(userInfo == null ? new UserInfo() : userInfo, data.getData());
+                            getUserInfoByAccessToken(newUserInfo, callback);
                         } catch (JSONException e) {
                             e.printStackTrace();
                             callback.call(500, "Cannot parse data into UserInfo", null);
