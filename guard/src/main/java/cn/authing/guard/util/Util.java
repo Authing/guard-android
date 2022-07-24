@@ -12,6 +12,7 @@ import android.view.WindowManager;
 
 import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -24,6 +25,7 @@ import java.security.KeyFactory;
 import java.security.PublicKey;
 import java.security.spec.X509EncodedKeySpec;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -404,4 +406,43 @@ public class Util {
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
         window.setStatusBarColor(activity.getColor(colorResId));
     }
+
+    public static JSONObject pareUnderLine(JSONObject object){
+        if (object == null){
+            return object;
+        }
+        try {
+            JSONObject parsedObject = new JSONObject();
+            Iterator<String> sIterator = object.keys();
+            while(sIterator.hasNext()){
+                String key = sIterator.next();
+                String value = object.getString(key);
+                String newKey = underlineToHump(key);
+                parsedObject.put(newKey, value);
+            }
+            return parsedObject;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return object;
+    }
+
+    public static String underlineToHump(String str){
+        //正则匹配下划线及后一个字符，删除下划线并将匹配的字符转成大写
+        Matcher matcher = Pattern.compile("_([a-z])").matcher(str);
+        StringBuffer sb = new StringBuffer(str);
+        if (matcher.find()) {
+            sb = new StringBuffer();
+            //将当前匹配的子串替换成指定字符串，并且将替换后的子串及之前到上次匹配的子串之后的字符串添加到StringBuffer对象中
+            //正则之前的字符和被替换的字符
+            matcher.appendReplacement(sb, matcher.group(1).toUpperCase());
+            //把之后的字符串也添加到StringBuffer对象中
+            matcher.appendTail(sb);
+        } else {
+            //去除除字母之外的前面带的下划线
+            return sb.toString().replaceAll("_", "");
+        }
+        return underlineToHump(sb.toString());
+    }
+
 }

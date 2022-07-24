@@ -801,7 +801,8 @@ public class AuthClient {
     public static void updateProfile(JSONObject object, @NotNull AuthCallback<UserInfo> callback) {
         try {
             String endpoint = "/api/v2/users/profile/update";
-            Guardian.post(endpoint, object, (data)-> createUserInfoFromResponse(data, callback));
+            JSONObject parsedObject = Util.pareUnderLine(object);
+            Guardian.post(endpoint, parsedObject, (data)-> createUserInfoFromResponse(data, callback));
         } catch (Exception e) {
             e.printStackTrace();
             callback.call(500, "Exception", null);
