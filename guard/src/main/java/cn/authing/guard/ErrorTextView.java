@@ -4,6 +4,7 @@ import static cn.authing.guard.util.Const.NS_ANDROID;
 
 import android.content.Context;
 import android.util.AttributeSet;
+import android.util.TypedValue;
 import android.view.View;
 
 import androidx.annotation.NonNull;
@@ -31,6 +32,10 @@ public class ErrorTextView extends androidx.appcompat.widget.AppCompatTextView {
 
         if (attrs == null || attrs.getAttributeValue(NS_ANDROID, "textColor") == null) {
             setTextColor(context.getColor(R.color.authing_error));
+        }
+
+        if (attrs == null || attrs.getAttributeValue(NS_ANDROID, "textSize") == null) {
+            setTextSize(TypedValue.COMPLEX_UNIT_SP, 12);
         }
     }
 }

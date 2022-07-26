@@ -31,6 +31,14 @@ public class GlobalCountDown {
         return 0;
     }
 
+    public static int getCountDown(String phone) {
+        if (countDownMap.size() > 0) {
+            Integer cd = countDownMap.get(phone);
+            return cd != null ? cd : 0;
+        }
+        return 0;
+    }
+
     public static void setMaxCountDown(int cd) {
         maxCountDown = cd;
     }

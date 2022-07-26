@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#FFFFFF"
+    android:paddingStart="@dimen/authing_form_start_end_margin"
+    android:paddingEnd="@dimen/authing_form_start_end_margin">
+
+    <cn.authing.guard.TitleLayout
+        android:id="@+id/title_layout"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/authing_title_layout_height"
+        app:showBackIcon="true"
+        app:showTitleText="true"
+        app:titleText="@string/authing_delete_account"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/authing_background_pink"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
+        android:layout_marginTop="24dp"
+        android:text="@string/authing_delete_account_tips"
+        android:textColor="@color/authing_error"
+        android:textSize="@dimen/authing_text_middle_size"
+        android:gravity="center_vertical"
+        android:layout_gravity="center" />
+
+    <LinearLayout
+        android:id="@+id/layout_code_send_tip"
+        android:layout_gravity="center_horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/authing_form_start_end_margin"
+        android:visibility="gone"
+        android:orientation="horizontal">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:textSize="@dimen/authing_text_large_size"
+            android:textColor="@color/authing_text_black"
+            android:textStyle="bold"
+            android:text="@string/authing_code_sent_to_phone" />
+        <cn.authing.guard.PhoneLabel
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/authing_text_large_size"
+            android:textColor="@color/authing_text_black"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/layout_code_send"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/authing_edit_text_height"
+        android:layout_marginTop="@dimen/authing_form_top_margin"
+        android:visibility="gone"
+        android:gravity="center_vertical">
+        <cn.authing.guard.VerifyCodeEditText
+            android:id="@+id/et_code"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@null"
+            app:leftIconDrawable="@drawable/ic_authing_shield_check"/>
+        <cn.authing.guard.GetVerifyCodeButton
+            android:layout_width="112dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            android:textAppearance="@android:style/Widget.TextView"
+            android:gravity="center"
+            android:stateListAnimator="@null"
+            app:verifyCodeType="phone"/>
+    </LinearLayout>
+
+    <cn.authing.guard.PasswordEditText
+        android:id="@+id/et_password"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/authing_form_start_end_margin"
+        android:visibility="gone"
+        android:background="@null"
+        app:leftIconDrawable="@drawable/ic_authing_password"
+        app:clearAllEnabled="false"
+        app:errorEnabled="false"
+        app:inputHeight="@dimen/authing_edit_text_height"/>
+
+    <cn.authing.guard.ErrorTextView
+        android:id="@+id/tv_error"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minWidth="24dp"
+        android:textColor="@color/authing_error" />
+
+    <cn.authing.guard.DeleteAccountButton
+        android:id="@+id/btn_reset"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/authing_button_height"
+        android:background="@drawable/authing_button_background"
+        android:textColor="#FFF"
+        android:text="@string/authing_confirm"
+        android:textAppearance="@android:style/Widget.TextView"
+        android:gravity="center"
+        style="?android:attr/borderlessButtonStyle"/>
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:minHeight="16dp"
+        android:layout_weight="1"/>
+
+    <include layout="@layout/authing_powered_by" />
+
+</LinearLayout>

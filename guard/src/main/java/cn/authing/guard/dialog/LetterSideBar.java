@@ -70,7 +70,7 @@ public class LetterSideBar extends View {
     private void initView(@Nullable AttributeSet attrs) {
         final Resources res = getResources();
         final CharSequence[] defaultStringArray = res.getTextArray(R.array.dl_side_bar_def_list);
-        final int defaultSideTextColor = Color.parseColor("#353535");
+        final int defaultSideTextColor = Color.parseColor("#1D2129");
         final int defaultSideTextSelectColor = Color.parseColor("#ffffffff");
         final float defaultSideTextSize = Util.sp2px(getContext(), 10);
         final Drawable defaultSideBackground = new ColorDrawable(Color.parseColor("#ffb2b2b2"));

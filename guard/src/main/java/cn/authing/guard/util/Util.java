@@ -2,6 +2,10 @@ package cn.authing.guard.util;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+import android.provider.Settings;
 import android.text.TextUtils;
 import android.util.Base64;
 import android.util.TypedValue;
@@ -9,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -405,6 +410,29 @@ public class Util {
         window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
         window.setStatusBarColor(activity.getColor(colorResId));
+    }
+
+    public static boolean isNetworkConnected(Context context) {
+        ConnectivityManager conn = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo net = conn.getActiveNetworkInfo();
+        return net != null && net.isConnected();
+    }
+
+    public static void openSettingUI(Activity activity) {
+        Intent intent = new Intent(Settings.ACTION_SETTINGS);
+        activity.startActivity(intent);
+    }
+
+    public static void hideKeyboard(Activity activity) {
+        if (activity == null){
+            return;
+        }
+        InputMethodManager imm = (InputMethodManager)activity.getSystemService(Context.INPUT_METHOD_SERVICE);
+        if (imm!= null && activity.getWindow().getAttributes().softInputMode != WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN) {
+            if (activity.getCurrentFocus() != null){
+                imm.hideSoftInputFromWindow(activity.getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+            }
+        }
     }
 
     public static JSONObject pareUnderLine(JSONObject object){

@@ -1,11 +1,15 @@
 package cn.authing.guard;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.res.TypedArray;
+import android.graphics.Color;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,9 +19,10 @@ import cn.authing.guard.data.Config;
 import cn.authing.guard.internal.LoginMethodTabItem;
 import cn.authing.guard.util.Util;
 
-public class LoginMethodTab extends LinearLayout {
+public class LoginMethodTab extends RelativeLayout {
 
     private final List<LoginMethodTabItem> items = new ArrayList<>();
+    private int itemGravity;
 
     public LoginMethodTab(Context context) {
         this(context, null);
@@ -41,25 +46,30 @@ public class LoginMethodTab extends LinearLayout {
             return;
         }
 
-        setOrientation(LinearLayout.VERTICAL);
-        setBackgroundColor(0);
+        TypedArray array = context.obtainStyledAttributes(attrs, R.styleable.LoginMethodTab);
+        itemGravity = array.getInt(R.styleable.LoginMethodTab_itemGravity, 0);
+        array.recycle();
 
-        HorizontalScrollView scrollView = new HorizontalScrollView(context);
-        scrollView.setBackgroundColor(0);
-        scrollView.setHorizontalScrollBarEnabled(false);
-        addView(scrollView);
+        setBackgroundColor(0);
 
         View underLine = new View(context);
         int height = (int) Util.dp2px(context, 1);
-        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, height);
+        LayoutParams lp = new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, height);
+        lp.addRule(RelativeLayout.ALIGN_BOTTOM, R.id.authing_login_tab_scroll_view);
         underLine.setLayoutParams(lp);
-        underLine.setBackgroundColor(0xfff4f4f4);
+        underLine.setBackgroundColor(Color.parseColor("#EAEBEE"));
         addView(underLine);
+
+        HorizontalScrollView scrollView = new HorizontalScrollView(context);
+        scrollView.setBackgroundColor(0);
+        scrollView.setId(R.id.authing_login_tab_scroll_view);
+        scrollView.setHorizontalScrollBarEnabled(false);
+        addView(scrollView);
 
         // contents
         LinearLayout container = new LinearLayout(context);
         container.setClipChildren(false);
-        LinearLayout.LayoutParams containerParam = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT, 1f);
+        LinearLayout.LayoutParams containerParam = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT, 1f);
         container.setLayoutParams(containerParam);
         container.setOrientation(LinearLayout.HORIZONTAL);
         scrollView.addView(container);
@@ -95,6 +105,7 @@ public class LoginMethodTab extends LinearLayout {
                 continue;
             }
 
+            initItemGravity(b);
             if (null != config.getDefaultLoginMethod() && config.getDefaultLoginMethod().equals(s)) {
                 b.gainFocus(null);
                 container.addView(b, 0);
@@ -106,8 +117,29 @@ public class LoginMethodTab extends LinearLayout {
             addClickListener(b);
             items.add(b);
         }
-        if (!addDefaultTab && container.getChildCount() > 0) {
-            ((LoginMethodTabItem)container.getChildAt(0)).gainFocus(null);
+        if (container.getChildCount() > 0) {
+            LoginMethodTabItem firstItem = ((LoginMethodTabItem)container.getChildAt(0));
+            if (!addDefaultTab){
+                firstItem.gainFocus(null);
+            }
+            showForgotPassWord(firstItem.getType() == LoginContainer.LoginType.EByAccountPassword);
+        }
+
+    }
+
+    private void initItemGravity(LoginMethodTabItem view){
+        if (itemGravity == 0){
+            LayoutParams params = new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+            params.setMarginEnd((int) Util.dp2px(getContext(), 32));
+            view.setLayoutParams(params);
+        } else if (itemGravity == 1){
+            LayoutParams params = new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+            params.setMarginStart((int) Util.dp2px(getContext(), 32));
+            view.setLayoutParams(params);
+            view.setPadding(0, 0, 0, 0);
+        } else if (itemGravity == 2){
+            int padding = (int) Util.dp2px(getContext(), 16);
+            view.setPadding(padding, 0, padding, 0);
         }
     }
 
@@ -121,7 +153,18 @@ public class LoginMethodTab extends LinearLayout {
                 item.loseFocus();
             }
             ((LoginMethodTabItem)v).gainFocus(lastFocused);
+            showForgotPassWord(((LoginMethodTabItem)v).getType() == LoginContainer.LoginType.EByAccountPassword);
             Util.setErrorText(this, null);
+            Util.hideKeyboard((Activity) getContext());
+        });
+    }
+
+    private void showForgotPassWord(boolean show){
+        post(() -> {
+            View view = Util.findViewByClass(LoginMethodTab.this, GoForgotPasswordButton.class);
+            if (view != null){
+                view.setVisibility(show ? VISIBLE : GONE);
+            }
         });
     }
 

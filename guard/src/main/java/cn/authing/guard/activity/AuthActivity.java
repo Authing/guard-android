@@ -9,7 +9,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
@@ -27,6 +26,7 @@ import cn.authing.guard.R;
 import cn.authing.guard.data.UserInfo;
 import cn.authing.guard.flow.AuthFlow;
 import cn.authing.guard.internal.CircularAnimatedView;
+import cn.authing.guard.util.ToastUtil;
 import cn.authing.guard.util.Util;
 
 public class AuthActivity extends AppCompatActivity {
@@ -87,7 +87,7 @@ public class AuthActivity extends AppCompatActivity {
             // some tolerance for blank screen. otherwise the loading will blink
             new Handler().postDelayed(this::showLoading, 500);
         } else if (Authing.getAppId() == null) {
-            Toast.makeText(this, R.string.authing_uninitialized, Toast.LENGTH_LONG).show();
+            ToastUtil.showCenter(this, getString(R.string.authing_uninitialized));
         }
     }
 

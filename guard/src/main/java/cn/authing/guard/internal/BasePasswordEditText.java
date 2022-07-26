@@ -60,22 +60,23 @@ public class BasePasswordEditText extends EditTextLayout implements TextWatcher 
         if (toggleEnabled) {
             eyeOnDrawable = context.getDrawable(R.drawable.ic_authing_eye);
             eyeOffDrawable = context.getDrawable(R.drawable.ic_authing_eye_off);
-            eyeDrawable = eyeOnDrawable;
+            eyeDrawable = eyeOffDrawable;
 
             LinearLayout eyeTouchArea = new LinearLayout(context);
             eyeTouchArea.setOrientation(HORIZONTAL);
             eyeTouchArea.setGravity(Gravity.CENTER_VERTICAL);
             LayoutParams lp = new LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT);
+            int p = (int) Util.dp2px(context, RIGHT_ICON_MARGIN);
+            lp.setMargins(p, 0, p, 0);
             eyeTouchArea.setLayoutParams(lp);
 
             int length = (int) Util.dp2px(context, 24);
             eyeButton = new ImageView(context);
             LayoutParams iconParam = new LayoutParams(length, length);
-            int p = (int) Util.dp2px(context, 6);
-            iconParam.setMargins(p, 0, p, 0);
             eyeButton.setLayoutParams(iconParam);
-            eyeButton.setVisibility(View.GONE);
-            eyeButton.setBackground(eyeOnDrawable);
+            eyeButton.setVisibility(View.VISIBLE);
+            eyeButton.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
+            eyeButton.setImageDrawable(eyeDrawable);
             eyeTouchArea.setOnClickListener((v -> toggle()));
             eyeTouchArea.addView(eyeButton);
             root.addView(eyeTouchArea);
@@ -91,17 +92,18 @@ public class BasePasswordEditText extends EditTextLayout implements TextWatcher 
 
     @Override
     public void onTextChanged(CharSequence text, int start, int lengthBefore, int lengthAfter) {
-        if (eyeButton != null) {
-            if (text.toString().length() > 0) {
-                eyeButton.setVisibility(View.VISIBLE);
-            } else {
-                eyeButton.setVisibility(View.GONE);
-            }
-        }
+//        if (eyeButton != null) {
+//            if (text.toString().length() > 0) {
+//                eyeButton.setVisibility(View.VISIBLE);
+//            } else {
+//                eyeButton.setVisibility(View.GONE);
+//            }
+//        }
     }
 
     @Override
     public void afterTextChanged(Editable s) {
+        super.afterTextChanged(s);
         if (!errorEnabled) {
             return;
         }
@@ -148,7 +150,10 @@ public class BasePasswordEditText extends EditTextLayout implements TextWatcher 
                     }
                 }
 
-                showError(err);
+                if (!TextUtils.isEmpty(err)){
+                    showError(err);
+                    showErrorBackGround();
+                }
             }
         }));
     }
@@ -157,13 +162,13 @@ public class BasePasswordEditText extends EditTextLayout implements TextWatcher 
         int start = getEditText().getSelectionStart();
         int end = getEditText().getSelectionEnd();
         if (eyeDrawable == eyeOnDrawable) {
-            getEditText().setInputType(InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
+            getEditText().setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
             eyeDrawable = eyeOffDrawable;
         } else {
-            getEditText().setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+            getEditText().setInputType(InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
             eyeDrawable = eyeOnDrawable;
         }
-        eyeButton.setBackground(eyeDrawable);
+        eyeButton.setImageDrawable(eyeDrawable);
         getEditText().setSelection(start, end);
     }
 }

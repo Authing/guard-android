@@ -1,5 +1,6 @@
 package cn.authing.guard.activity;
 
+import android.annotation.SuppressLint;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
@@ -9,10 +10,11 @@ import android.text.SpannableString;
 import android.text.TextUtils;
 import android.text.style.ForegroundColorSpan;
 import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Switch;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import org.json.JSONObject;
 
@@ -22,82 +24,162 @@ import java.util.Date;
 import cn.authing.guard.Authing;
 import cn.authing.guard.R;
 import cn.authing.guard.data.UserInfo;
-import cn.authing.guard.internal.PrimaryButton;
 import cn.authing.guard.jwt.Jwt;
 import cn.authing.guard.network.OIDCClient;
+import cn.authing.guard.util.ToastUtil;
 import cn.authing.guard.util.Util;
 
 public class DeveloperActivity extends BaseAuthActivity {
 
     private UserInfo userInfo;
 
+    private LinearLayout layoutTitleAt;
+    private ImageView accessTokenArrow;
     private Switch switchAT;
+    private FrameLayout layoutValueAt;
     private TextView tvAccessToken;
     private ImageView ivCopyAccessToken;
+    private TextView tvAccessTokenIt;
+    private TextView tvAccessTokenEt;
 
+    private LinearLayout layoutTitleIt;
+    private ImageView iDTokenArrow;
     private Switch switchIDT;
+    private FrameLayout layoutValueIt;
     private TextView tvIDToken;
     private ImageView ivCopyIDToken;
+    private TextView tvIDTokenIt;
+    private TextView tvIDTokenEt;
 
+    private LinearLayout layoutTitleRt;
+    private ImageView refreshTokenArrow;
+    private FrameLayout layoutValueRt;
     private String refreshToken;
     private TextView tvRefreshToken;
     private ImageView ivCopyRefreshToken;
+    //private TextView tvRefreshTokenIt;
+    //private TextView tvRefreshTokenEt;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Util.setStatusBarColor(this, R.color.authing_developer_color);
         setContentView(R.layout.authing_developer);
 
+        findViewById(R.id.btn_back).setOnClickListener(v -> finish());
         userInfo = (UserInfo) getIntent().getSerializableExtra("user");
         if (userInfo == null) {
             return;
         }
 
+        initActionBar();
+        initAccessTokenModule();
+        initIdTokenModule();
+        initRefreshTokenModule();
+        updateData(userInfo);
+    }
+
+    private void initActionBar(){
+        findViewById(R.id.text_refresh).setOnClickListener((v)->{
+            if (Util.isNull(refreshToken)) {
+                return;
+            }
+            new OIDCClient().getNewAccessTokenByRefreshToken(refreshToken, (code, message, user)->{
+                if (code == 200) {
+                    runOnUiThread(() -> {
+                        updateData(user);
+                        ToastUtil.showCenter(DeveloperActivity.this,
+                                getString(R.string.authing_refresh_token_success));
+                    });
+                }
+            });
+        });
+    }
+
+    @SuppressLint("UseCompatLoadingForDrawables")
+    private void initAccessTokenModule(){
+        layoutTitleAt = findViewById(R.id.layout_title_at);
+        layoutTitleAt.setSelected(true);
+        layoutTitleAt.setOnClickListener(v -> {
+            boolean isSelected = layoutTitleAt.isSelected();
+            int visibility = isSelected ? View.GONE : View.VISIBLE;
+            //switchAT.setVisibility(visibility);
+            layoutValueAt.setVisibility(visibility);
+            tvAccessTokenIt.setVisibility(visibility);
+            tvAccessTokenEt.setVisibility(visibility);
+            accessTokenArrow.setImageDrawable(isSelected ? getDrawable(R.drawable.ic_authing_arrow_down)
+                    : getDrawable(R.drawable.ic_authing_arrow_up));
+            layoutTitleAt.setSelected(!isSelected);
+        });
+        accessTokenArrow = findViewById(R.id.arrow_at);
+        layoutValueAt = findViewById(R.id.layout_value_at);
+        tvAccessTokenIt = findViewById(R.id.tv_at_iat);
+        tvAccessTokenEt = findViewById(R.id.tv_at_exp);
         tvAccessToken = findViewById(R.id.tv_at);
         switchAT = findViewById(R.id.switch_decode_at);
         switchAT.setOnCheckedChangeListener((v, checked)-> updateAccessTokenData());
+        switchAT.setChecked(true);
         ivCopyAccessToken = findViewById(R.id.iv_copy_at);
         ivCopyAccessToken.setOnClickListener((v -> {
-            ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
-            ClipData clip = ClipData.newPlainText(userInfo.getAccessToken(), tvAccessToken.getText());
-            clipboard.setPrimaryClip(clip);
-            Toast.makeText(this, R.string.authing_copied, Toast.LENGTH_SHORT).show();
+            clipText(userInfo.getAccessToken(), tvAccessToken.getText());
         }));
+    }
 
+    private void initIdTokenModule(){
+        layoutTitleIt = findViewById(R.id.layout_title_it);
+        layoutTitleIt.setOnClickListener(v -> {
+            boolean isSelected = layoutTitleIt.isSelected();
+            int visibility = isSelected ? View.GONE : View.VISIBLE;
+            //switchIDT.setVisibility(visibility);
+            layoutValueIt.setVisibility(visibility);
+            tvIDTokenIt.setVisibility(visibility);
+            tvIDTokenEt.setVisibility(visibility);
+            iDTokenArrow.setImageDrawable(isSelected ? getDrawable(R.drawable.ic_authing_arrow_down)
+                    : getDrawable(R.drawable.ic_authing_arrow_up));
+            layoutTitleIt.setSelected(!isSelected);
+        });
+        iDTokenArrow = findViewById(R.id.arrow_it);
+        layoutValueIt = findViewById(R.id.layout_value_it);
+        tvIDTokenIt = findViewById(R.id.tv_it_iat);
+        tvIDTokenEt = findViewById(R.id.tv_it_exp);
         tvIDToken = findViewById(R.id.tv_id_token);
         switchIDT = findViewById(R.id.switch_decode_id_token);
         switchIDT.setOnCheckedChangeListener((v, checked)-> updateIdTokenData());
+        switchIDT.setChecked(true);
         ivCopyIDToken = findViewById(R.id.iv_copy_idt);
         ivCopyIDToken.setOnClickListener((v -> {
-            ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
-            ClipData clip = ClipData.newPlainText(userInfo.getIdToken(), tvIDToken.getText());
-            clipboard.setPrimaryClip(clip);
-            Toast.makeText(this, R.string.authing_copied, Toast.LENGTH_SHORT).show();
+            clipText(userInfo.getIdToken(), tvIDToken.getText());
         }));
+    }
 
+    private void initRefreshTokenModule(){
+        layoutTitleRt = findViewById(R.id.layout_title_rt);
+        layoutTitleRt.setOnClickListener(v -> {
+            boolean isSelected = layoutTitleRt.isSelected();
+            int visibility = isSelected ? View.GONE : View.VISIBLE;
+            layoutValueRt.setVisibility(visibility);
+            //tvRefreshTokenIt.setVisibility(visibility);
+            //tvRefreshTokenEt.setVisibility(visibility);
+            refreshTokenArrow.setImageDrawable(isSelected ? getDrawable(R.drawable.ic_authing_arrow_down)
+                    : getDrawable(R.drawable.ic_authing_arrow_up));
+            layoutTitleRt.setSelected(!isSelected);
+        });
+        refreshTokenArrow = findViewById(R.id.arrow_rt);
+        layoutValueRt = findViewById(R.id.layout_value_rt);
+        //tvRefreshTokenIt = findViewById(R.id.tv_rt_iat);
+        //tvRefreshTokenEt = findViewById(R.id.tv_rt_exp);
         tvRefreshToken = findViewById(R.id.tv_rt);
         ivCopyRefreshToken = findViewById(R.id.iv_copy_rt);
         ivCopyRefreshToken.setOnClickListener((v -> {
-            ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
-            ClipData clip = ClipData.newPlainText(userInfo.getRefreshToken(), tvRefreshToken.getText());
-            clipboard.setPrimaryClip(clip);
-            Toast.makeText(this, R.string.authing_copied, Toast.LENGTH_SHORT).show();
+            clipText(userInfo.getRefreshToken(), tvRefreshToken.getText());
         }));
+    }
 
-        updateData(userInfo);
-
-        PrimaryButton refreshButton = findViewById(R.id.btn_refresh_token);
-        refreshButton.setOnClickListener((v)->{
-            if (!Util.isNull(refreshToken)) {
-                refreshButton.startLoadingVisualEffect();
-                new OIDCClient().getNewAccessTokenByRefreshToken(refreshToken, (code, message, user)->{
-                    refreshButton.stopLoadingVisualEffect();
-                    if (code == 200) {
-                        runOnUiThread(()-> updateData(user));
-                    }
-                });
-            }
-        });
+    private void clipText(CharSequence label, CharSequence text){
+        ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
+        ClipData clip = ClipData.newPlainText(label, text);
+        clipboard.setPrimaryClip(clip);
+        ToastUtil.showCenter(DeveloperActivity.this, getString(R.string.authing_copied));
     }
 
     private void updateData(UserInfo userInfo) {
@@ -133,10 +215,10 @@ public class DeveloperActivity extends BaseAuthActivity {
                 tvAccessToken.setText(getJwtSpannable(at));
             }
 
-            TextView tv = findViewById(R.id.tv_at_iat);
-            tv.setText(getDate(accessTokenPayload.getString("iat")));
-            tv = findViewById(R.id.tv_at_exp);
-            tv.setText(getDate(accessTokenPayload.getString("exp")));
+            tvAccessTokenIt.setText(getString(R.string.authing_token_issued_time,
+                    getDate(accessTokenPayload.getString("iat"))));
+            tvAccessTokenEt.setText(getString(R.string.authing_token_expired_time,
+                    getDate(accessTokenPayload.getString("exp"))));
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -162,10 +244,10 @@ public class DeveloperActivity extends BaseAuthActivity {
                 tvIDToken.setText(getJwtSpannable(idt));
             }
 
-            TextView tv = findViewById(R.id.tv_idt_iat);
-            tv.setText(getDate(idTokenPayload.getString("iat")));
-            tv = findViewById(R.id.tv_idt_exp);
-            tv.setText(getDate(idTokenPayload.getString("exp")));
+            tvIDTokenIt.setText(getString(R.string.authing_token_issued_time,
+                    getDate(idTokenPayload.getString("iat"))));
+            tvIDTokenEt.setText(getString(R.string.authing_token_expired_time,
+                    getDate(idTokenPayload.getString("exp"))));
         } catch (Exception e) {
             e.printStackTrace();
         }

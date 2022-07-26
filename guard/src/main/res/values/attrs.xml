@@ -17,6 +17,14 @@
         <enum name="register" value="1"/>
     </attr>
 
+    <attr name="itemGravity" format="enum">
+        <enum name="left" value="0" />
+        <enum name="start" value="0" />
+        <enum name="center" value="1" />
+        <enum name="right" value="2" />
+        <enum name="end" value="2" />
+    </attr>
+
     <declare-styleable name="LoadingButton">
         <attr name="android:tint" format="reference|color" />
         <attr name="loadingLocation" format="enum">
@@ -27,8 +35,16 @@
         </attr>
     </declare-styleable>
 
+    <declare-styleable name="LoginMethodTab">
+        <attr name="itemGravity" />
+    </declare-styleable>
+
     <declare-styleable name="LoginContainer">
         <attr name="type" />
+    </declare-styleable>
+
+    <declare-styleable name="RegisterMethodTab">
+        <attr name="itemGravity" />
     </declare-styleable>
 
     <declare-styleable name="RegisterContainer">
@@ -37,6 +53,8 @@
 
     <declare-styleable name="EditTextLayout">
         <attr name="pageType" />
+        <attr name="inputHeight" format="dimension"/>
+        <attr name="errorHeight" format="dimension"/>
         <attr name="leftIconDrawable" format="reference" />
         <attr name="hintMode" format="enum">
             <enum name="normal" value="0"/>
@@ -50,6 +68,7 @@
         <attr name="android:maxLines" format="integer" />
         <attr name="android:singleLine" format="boolean" />
         <attr name="android:inputType" format="enum" />
+        <attr name="errorTextSize" format="dimension"/>
         <attr name="hintColor" format="reference|color" />
         <attr name="errorEnabled" format="boolean" />
         <attr name="enabled" format="boolean" />
@@ -95,6 +114,9 @@
         <attr name="uncheckedColor" format="reference|color" />
         <attr name="checkedColor" format="reference|color" />
         <attr name="isRound" format="boolean" />
+        <attr name="isShowInternal" format="boolean" />
+        <attr name="isRememberSate" format="boolean" />
+        <attr name="dialogMessage" format="reference|string" />
     </declare-styleable>
 
     <declare-styleable name="MandatoryField">
@@ -120,6 +142,63 @@
         </attr>
     </declare-styleable>
 
+    <declare-styleable name="OneClickAuthButton">
+        <attr name="showByConfig" format="boolean" />
+        <attr name="showLoading" format="boolean" />
+    </declare-styleable>
+
+    <declare-styleable name="GetVerifyCodeButton">
+        <attr name="verifyCodeType" format="enum" >
+            <enum name="none" value="0"/>
+            <enum name="phone" value="1"/>
+            <enum name="email" value="2"/>
+        </attr>
+        <attr name="verifyAuthType" format="enum" >
+            <enum name="none" value="0"/>
+            <enum name="login" value="1"/>
+            <enum name="register" value="2"/>
+            <enum name="resetPassword" value="3"/>
+        </attr>
+    </declare-styleable>
+
+    <declare-styleable name="TitleLayout">
+        <attr name="showBackIcon" format="boolean" />
+        <attr name="showTitleText" format="boolean" />
+        <attr name="showSkipText" format="boolean" />
+        <attr name="showSkipIcon" format="boolean" />
+        <attr name="titleText" format="string" />
+        <attr name="titleTextColor" format="reference|color" />
+        <attr name="titleTextSize" format="dimension" />
+        <attr name="titleTextBold" format="boolean" />
+        <attr name="skipText" format="string" />
+        <attr name="skipTextColor" format="reference|color" />
+        <attr name="skipTextSize" format="dimension" />
+        <attr name="skipTextBold" format="boolean" />
+        <attr name="checkNetWork" format="boolean" />
+        <attr name="onlyCheckNetWork" format="boolean" />
+    </declare-styleable>
+
+    <declare-styleable name="ContinueWithTextView">
+        <attr name="middleText" format="string" />
+        <attr name="middleTextColor" format="reference|color"/>
+        <attr name="middleTextSize" format="dimension"/>
+    </declare-styleable>
+
+    <declare-styleable name="GoLoginTipsText">
+        <attr name="countDownTime" format="integer" />
+    </declare-styleable>
+
+    <declare-styleable name="FeedbackDescriptionEditText">
+        <attr name="android:textColor" />
+        <attr name="android:textSize" />
+        <attr name="android:hint" format="string" />
+        <attr name="android:lines" format="integer" />
+        <attr name="android:maxLines" format="integer" />
+        <attr name="android:singleLine" format="boolean" />
+        <attr name="hintTextColor" format="reference|color" />
+        <attr name="maxNumberOfWords" format="string" />
+    </declare-styleable>
+
     <declare-styleable name="LetterSideBar">
         <attr name="letterTextArray" format="reference" />
         <attr name="letterTextColor" format="color" />
@@ -133,4 +212,9 @@
         <attr name="dialogTextBackgroundWidth" format="dimension" />
         <attr name="dialogTextBackgroundHeight" format="dimension" />
     </declare-styleable>
+
+    <declare-styleable name="CircleImageView">
+        <attr name="circleImageRadius" format="dimension"/>
+    </declare-styleable>
+
 </resources>

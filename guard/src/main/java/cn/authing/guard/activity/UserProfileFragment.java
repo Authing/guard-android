@@ -14,7 +14,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Space;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -31,6 +30,7 @@ import cn.authing.guard.data.UserInfo;
 import cn.authing.guard.flow.AuthFlow;
 import cn.authing.guard.network.AuthClient;
 import cn.authing.guard.profile.UserProfileContainer;
+import cn.authing.guard.util.ToastUtil;
 import cn.authing.guard.util.Util;
 
 public class UserProfileFragment extends Fragment {
@@ -144,7 +144,7 @@ public class UserProfileFragment extends Fragment {
                     if (code == 200) {
                         AuthFlow.start(getActivity());
                     } else {
-                        getActivity().runOnUiThread(()-> Toast.makeText(getContext(), message, Toast.LENGTH_LONG).show());
+                        getActivity().runOnUiThread(()-> ToastUtil.showTop(getContext(), message));
                     }
                 }))
                 .setNegativeButton(android.R.string.no, null).show();

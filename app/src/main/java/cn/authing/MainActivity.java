@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Toast;
 
+import cn.authing.guard.activity.DeleteAccountActivity;
 import cn.authing.guard.activity.UserProfileActivity;
 import cn.authing.guard.network.AuthClient;
 import cn.authing.guard.util.ALog;
@@ -33,10 +34,13 @@ public class MainActivity extends UserProfileActivity {
     }
 
     private void delete() {
-        new AlertDialog.Builder(this).setIcon(android.R.drawable.ic_dialog_alert)
-                .setTitle(cn.authing.guard.R.string.authing_delete_account).setMessage(cn.authing.guard.R.string.authing_delete_account_tip)
-                .setPositiveButton(android.R.string.yes, (dialog, which) -> deleteConfirmed())
-                .setNegativeButton(android.R.string.no, null).show();
+//        new AlertDialog.Builder(this).setIcon(android.R.drawable.ic_dialog_alert)
+//                .setTitle(cn.authing.guard.R.string.authing_delete_account).setMessage(cn.authing.guard.R.string.authing_delete_account_tip)
+//                .setPositiveButton(android.R.string.yes, (dialog, which) -> deleteConfirmed())
+//                .setNegativeButton(android.R.string.no, null).show();
+
+        Intent intent = new Intent(this, DeleteAccountActivity.class);
+        startActivity(intent);
     }
 
     private void deleteConfirmed() {

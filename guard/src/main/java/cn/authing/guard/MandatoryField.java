@@ -2,7 +2,6 @@ package cn.authing.guard;
 
 import android.content.Context;
 import android.content.res.TypedArray;
-import android.graphics.Color;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.style.ForegroundColorSpan;
@@ -48,11 +47,13 @@ public class MandatoryField extends TextView {
         Spannable span;
         if (asteriskPosition == 2) {
             span = new SpannableString("* " + text);
-            span.setSpan(new ForegroundColorSpan(Color.parseColor("#ff831827")), 0, 1, Spannable.SPAN_INCLUSIVE_INCLUSIVE);
+            span.setSpan(new ForegroundColorSpan(getContext().getColor(R.color.authing_error)),
+                    0, 1, Spannable.SPAN_INCLUSIVE_INCLUSIVE);
         } else if (asteriskPosition == 1) {
             span = new SpannableString(text + " *");
             int length = span.length();
-            span.setSpan(new ForegroundColorSpan(Color.parseColor("#ff831827")), length - 1, length, Spannable.SPAN_INCLUSIVE_INCLUSIVE);
+            span.setSpan(new ForegroundColorSpan(getContext().getColor(R.color.authing_error)),
+                    length - 1, length, Spannable.SPAN_INCLUSIVE_INCLUSIVE);
         } else {
             span = new SpannableString(text);
         }

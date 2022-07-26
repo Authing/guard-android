@@ -21,16 +21,12 @@ public class AuthFlow implements Serializable {
 
 //    public static final String KEY_PHONE_NUMBER = "phoneNumber";
     public static final String KEY_ACCOUNT = "account";
-
     public static final String KEY_USER_INFO = "user_info";
-
     public static final String KEY_MFA_PHONE = "mfa_phone";
     public static final String KEY_MFA_PHONE_COUNTRY_CODE = "mfa_phoneCountryCode";
     public static final String KEY_MFA_EMAIL = "mfa_email";
     public static final String KEY_MFA_RECOVERY_CODE = "mfa_recovery_code";
-
     public static final String KEY_EXTENDED_FIELDS = "extended_fields";
-
     private Map<String, Object> data = new HashMap<>();
 
     private int indexLayoutId;
@@ -38,6 +34,9 @@ public class AuthFlow implements Serializable {
     private int forgotPasswordLayoutId;
     private int resetPasswordByEmailLayoutId;
     private int resetPasswordByPhoneLayoutId;
+    private int resetPasswordLayoutId;
+    private int resetPasswordSuccessLayoutId;
+    private int accountCancellationLayoutId;
     private int authHelpLayoutId;
 
     // MFA
@@ -164,6 +163,32 @@ public class AuthFlow implements Serializable {
         return this;
     }
 
+    public int getRestPasswordLayoutId() {
+        if (resetPasswordLayoutId == 0) {
+            return R.layout.authing_reset_password;
+        } else {
+            return resetPasswordLayoutId;
+        }
+    }
+
+    public AuthFlow setResetPasswordLayoutId(int resetPasswordLayoutId) {
+        this.resetPasswordLayoutId = resetPasswordLayoutId;
+        return this;
+    }
+
+    public int getRestPasswordSuccessLayoutId() {
+        if (resetPasswordSuccessLayoutId == 0) {
+            return R.layout.authing_reset_password_success;
+        } else {
+            return resetPasswordSuccessLayoutId;
+        }
+    }
+
+    public AuthFlow setResetPasswordSuccessLayoutId(int resetPasswordSuccessLayoutId) {
+        this.resetPasswordSuccessLayoutId = resetPasswordSuccessLayoutId;
+        return this;
+    }
+
     public int getResetPasswordByEmailLayoutId() {
         if (resetPasswordByPhoneLayoutId == 0) {
             return R.layout.authing_reset_password_by_email;
@@ -187,6 +212,19 @@ public class AuthFlow implements Serializable {
 
     public AuthFlow setResetPasswordByPhoneLayoutId(int resetPasswordByPhoneLayoutId) {
         this.resetPasswordByPhoneLayoutId = resetPasswordByPhoneLayoutId;
+        return this;
+    }
+
+    public int getAccountCancellationLayoutId() {
+        if (accountCancellationLayoutId == 0) {
+            return R.layout.authing_delete_account;
+        } else {
+            return accountCancellationLayoutId;
+        }
+    }
+
+    public AuthFlow setAccountCancellationLayoutId(int accountCancellationLayoutId) {
+        this.accountCancellationLayoutId = accountCancellationLayoutId;
         return this;
     }
 

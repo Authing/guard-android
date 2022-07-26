@@ -53,7 +53,8 @@ public class EditTextLayout extends LinearLayout implements TextWatcher, View.On
     protected ValueAnimator fadeInAnimator;
     boolean clearEditTextBg = false;
 
-    protected static final int ICON_LEFT_RIGHT_MARGIN = 8;
+    protected static final int LEFT_ICON_MARGIN = 8;
+    protected static final int RIGHT_ICON_MARGIN = 10;
     protected static final int LEFT_PADDING = 4;
     protected static final int TOP_PADDING = 4; // in dp
     protected static final int HINT_ANIM_DURATION = 167;
@@ -67,6 +68,7 @@ public class EditTextLayout extends LinearLayout implements TextWatcher, View.On
     protected ValueAnimator hintYAnimator;
     protected ValueAnimator hintSizeAnimator;
     protected boolean isUp;
+    private boolean canDraw;
 
     public EditTextLayout(@NonNull Context context) {
         this(context, null);
@@ -88,15 +90,11 @@ public class EditTextLayout extends LinearLayout implements TextWatcher, View.On
         TypedArray array = context.obtainStyledAttributes(attrs, R.styleable.EditTextLayout);
         pageType = array.getInt(R.styleable.EditTextLayout_pageType,0);
         hintMode = array.getInt(R.styleable.EditTextLayout_hintMode, ENormal);
-        Drawable leftDrawable = array.getDrawable(R.styleable.EditTextLayout_leftIconDrawable);
         boolean clearAllEnabled = array.getBoolean(R.styleable.EditTextLayout_clearAllEnabled, true);
         errorEnabled = array.getBoolean(R.styleable.EditTextLayout_errorEnabled, false);
-        float textSize = array.getDimension(R.styleable.EditTextLayout_android_textSize, Util.dp2px(context, 16));
         hintText = array.getString(R.styleable.EditTextLayout_android_hint);
-        boolean enabled = array.getBoolean(R.styleable.EditTextLayout_enabled, true);
-        int maxLines = array.getInt(R.styleable.EditTextLayout_android_maxLines, 1);
-        boolean singleLine = array.getBoolean(R.styleable.EditTextLayout_android_singleLine, true);
 //        int inputType = array.getInt(R.styleable.EditTextLayout_android_inputType, 0x00000001);
+
 
         setWillNotDraw(false);
         setClipChildren(false);
@@ -144,41 +142,8 @@ public class EditTextLayout extends LinearLayout implements TextWatcher, View.On
         root.setPadding(paddingStart, paddingTop, paddingEnd, paddingBottom);
         setPadding(0, 0, 0, 0);
 
-        leftIcon = new ImageView(context);
-        leftIconSize = (int) Util.dp2px(context, 24);
-        LayoutParams iconParam = new LayoutParams(leftIconSize, leftIconSize);
-        leftIcon.setLayoutParams(iconParam);
-        int m = (int) Util.dp2px(context, ICON_LEFT_RIGHT_MARGIN);
-        iconParam.setMargins(m, 0, 0, 0);
-        leftIcon.setImageDrawable(leftDrawable);
-        int p = (int) Util.dp2px(context, 4);
-        leftIcon.setPadding(p, p, p, p);
-        root.addView(leftIcon);
-        if (leftDrawable == null) {
-            leftIcon.setVisibility(View.GONE);
-        }
-
-        editText = new AppCompatEditText(context);
-        if (clearEditTextBg) {
-            editText.setBackground(null);
-        }
-        editText.setTextSize(TypedValue.COMPLEX_UNIT_PX, textSize);
-        editText.setHint(hintText);
-        editText.setHintTextColor(array.getColor(R.styleable.EditTextLayout_hintColor, 0xff808080));
-        editText.setTextColor(array.getColor(R.styleable.EditTextLayout_android_textColor, 0xff000000));
-        editText.setMaxLines(maxLines);
-        editText.setSingleLine(singleLine);
-        editText.setEnabled(enabled);
-//        editText.setInputType(inputType);
-        editText.setOnFocusChangeListener(this);
-        LayoutParams lp = new LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, 1f);
-        editText.setLayoutParams(lp);
-        if (GlobalStyle.isIsEditTextBackgroundSet()) {
-            int background = GlobalStyle.getEditTextBackground();
-            editText.setBackgroundResource(background);
-        }
-        root.addView(editText);
-
+        addLeftIcon(context, array);
+        addInputEditText(context, array);
         if (clearAllEnabled) {
             addClearAllButton();
         }
@@ -192,12 +157,60 @@ public class EditTextLayout extends LinearLayout implements TextWatcher, View.On
             topPaddingPx = Util.dp2px(context, TOP_PADDING);
         }
 
-        errorTextView = new TextView(context);
-        errorTextView.setTextColor(context.getColor(R.color.authing_error));
-        setErrorEnabled(errorEnabled);
-        addView(errorTextView);
+        addErrorText(context, array);
 
         array.recycle();
+    }
+
+    private void addLeftIcon(Context context, TypedArray array){
+        Drawable leftDrawable = array.getDrawable(R.styleable.EditTextLayout_leftIconDrawable);
+
+        leftIcon = new ImageView(context);
+        leftIconSize = (int) Util.dp2px(context, 24);
+        LayoutParams iconParam = new LayoutParams(leftIconSize, leftIconSize);
+        leftIcon.setLayoutParams(iconParam);
+        int m = (int) Util.dp2px(context, LEFT_ICON_MARGIN);
+        iconParam.setMargins(m, 0, 0, 0);
+        leftIcon.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
+        leftIcon.setImageDrawable(leftDrawable);
+        int p = (int) Util.dp2px(context, 4);
+        leftIcon.setPadding(p, p, p, p);
+        root.addView(leftIcon);
+        if (leftDrawable == null) {
+            leftIcon.setVisibility(View.GONE);
+        }
+    }
+
+    private void addInputEditText(Context context, TypedArray array){
+        float textSize = array.getDimension(R.styleable.EditTextLayout_android_textSize, Util.sp2px(context, 16));
+        boolean enabled = array.getBoolean(R.styleable.EditTextLayout_enabled, true);
+        int maxLines = array.getInt(R.styleable.EditTextLayout_android_maxLines, 1);
+        boolean singleLine = array.getBoolean(R.styleable.EditTextLayout_android_singleLine, true);
+        float inputHeight = array.getDimension(R.styleable.EditTextLayout_inputHeight, 0);
+
+        editText = new AppCompatEditText(context);
+        if (clearEditTextBg) {
+            editText.setBackground(null);
+        }
+        editText.setTextSize(TypedValue.COMPLEX_UNIT_PX, textSize);
+        editText.setHint(hintText);
+        editText.setHintTextColor(array.getColor(R.styleable.EditTextLayout_hintColor, context.getColor(R.color.authing_text_gray)));
+        editText.setTextColor(array.getColor(R.styleable.EditTextLayout_android_textColor, context.getColor(R.color.authing_text_black)));
+        editText.setMaxLines(maxLines);
+        editText.setSingleLine(singleLine);
+        editText.setEnabled(enabled);
+//        editText.setInputType(inputType);
+        editText.setOnFocusChangeListener(this);
+        LayoutParams lp = new LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, 1f);
+        if (inputHeight != 0){
+            lp.height = (int)inputHeight;
+        }
+        editText.setLayoutParams(lp);
+        if (GlobalStyle.isIsEditTextBackgroundSet()) {
+            int background = GlobalStyle.getEditTextBackground();
+            editText.setBackgroundResource(background);
+        }
+        root.addView(editText);
     }
 
     private void addClearAllButton() {
@@ -206,22 +219,40 @@ public class EditTextLayout extends LinearLayout implements TextWatcher, View.On
         clearAllTouchArea.setOrientation(HORIZONTAL);
         clearAllTouchArea.setGravity(Gravity.CENTER_VERTICAL);
         LayoutParams lp = new LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT);
+        int p = (int) Util.dp2px(context, RIGHT_ICON_MARGIN);
+        lp.setMargins(p, 0, p, 0);
         clearAllTouchArea.setLayoutParams(lp);
 
         Drawable clearDrawable = context.getDrawable(R.drawable.ic_authing_clear_all);
         int length = (int) Util.dp2px(context, 24);
         clearAllButton = new ImageView(context);
         LayoutParams iconParam = new LayoutParams(length, length);
-        int p = (int) Util.dp2px(context, ICON_LEFT_RIGHT_MARGIN);
-        iconParam.setMargins(p, 0, p, 0);
         clearAllButton.setLayoutParams(iconParam);
         clearAllButton.setVisibility(View.GONE);
-        clearAllButton.setBackground(clearDrawable);
+        clearAllButton.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
+        clearAllButton.setImageDrawable(clearDrawable);
         clearAllTouchArea.setOnClickListener(this::clearAllText);
         clearAllTouchArea.addView(clearAllButton);
         root.addView(clearAllTouchArea);
 
         editText.addTextChangedListener(this);
+    }
+
+    private void addErrorText(Context context, TypedArray array){
+        float errorHeight = array.getDimension(R.styleable.EditTextLayout_errorHeight, 0);
+        float errorTextSize = array.getDimension(R.styleable.EditTextLayout_errorTextSize, Util.sp2px(context, 12));
+
+        errorTextView = new TextView(context);
+        errorTextView.setTextColor(context.getColor(R.color.authing_error));
+        errorTextView.setTextSize(TypedValue.COMPLEX_UNIT_PX, errorTextSize);
+        errorTextView.setGravity(Gravity.CENTER_VERTICAL);
+        if (errorHeight != 0){
+            LayoutParams params = new LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            params.height = (int)errorHeight;
+            errorTextView.setLayoutParams(params);
+        }
+        setErrorEnabled(errorEnabled);
+        addView(errorTextView);
     }
 
     public EditText getEditText() {
@@ -237,7 +268,7 @@ public class EditTextLayout extends LinearLayout implements TextWatcher, View.On
     }
 
     public void showError(String error) {
-        if (errorEnabled) {
+        if (errorEnabled && errorTextView != null) {
 //            post(()->{
                 errorText = error;
                 if (TextUtils.isEmpty(error)) {
@@ -248,6 +279,11 @@ public class EditTextLayout extends LinearLayout implements TextWatcher, View.On
                 }
 //            });
         }
+    }
+
+    public void showErrorBackGround(){
+        ((RootContainer)root).showErrorBackground();
+        canDraw = true;
     }
 
     public void disable() {
@@ -280,7 +316,9 @@ public class EditTextLayout extends LinearLayout implements TextWatcher, View.On
 
     @Override
     public void afterTextChanged(Editable s) {
-
+        if (!TextUtils.isEmpty(s)){
+            clearErrorText();
+        }
     }
 
     @Override
@@ -319,6 +357,32 @@ public class EditTextLayout extends LinearLayout implements TextWatcher, View.On
                 fadeInAnimator.start();
             }
             root.invalidate();
+        }
+
+        if (hasFocus){
+            ((RootContainer)root).showNormalBackground();
+        } else {
+            clearErrorText();
+        }
+    }
+
+    protected void clearErrorText(){
+        ((RootContainer)root).showNormalBackground();
+        if (errorEnabled){
+            showError("");
+            errorTextView.setVisibility(View.INVISIBLE);
+        } else {
+            Util.setErrorText(this, "");
+        }
+    }
+
+    @Override
+    protected void onVisibilityChanged(@NonNull View changedView, int visibility) {
+        super.onVisibilityChanged(changedView, visibility);
+        if (visibility == GONE){
+            if (errorEnabled){
+                showError("");
+            }
         }
     }
 
@@ -367,11 +431,17 @@ public class EditTextLayout extends LinearLayout implements TextWatcher, View.On
         hintSizeAnimator.start();
     }
 
-    private class RootContainer extends LinearLayout {
+    protected class RootContainer extends LinearLayout {
 
         Paint bgPaint;
         Paint outlinePaint;
         int corner;
+        int outLineColor;
+        public static final int STATUS_NORMAL = 0;
+        public static final int STATUS_INPUT = 1;
+        public static final int STATUS_ERROR = 2;
+        public static final int STATUS_DISABLE = 3;
+        private int currentState = STATUS_NORMAL;
 
         public RootContainer(Context context) {
             this(context, null);
@@ -388,6 +458,22 @@ public class EditTextLayout extends LinearLayout implements TextWatcher, View.On
         public RootContainer(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
             super(context, attrs, defStyleAttr, defStyleRes);
             corner = (int) Util.dp2px(getContext(), 4);
+            outLineColor = context.getColor(R.color.authing_main);
+        }
+
+        public void showErrorBackground() {
+            currentState = STATUS_ERROR;
+            this.outLineColor = getContext().getColor(R.color.authing_error);
+            invalidate();
+        }
+
+        public void showNormalBackground() {
+            if (currentState == STATUS_ERROR){
+                invalidate();
+                currentState = STATUS_INPUT;
+            } else {
+                this.outLineColor = getContext().getColor(R.color.authing_main);
+            }
         }
 
         private void drawAnimatedBackground(Canvas canvas) {
@@ -395,36 +481,34 @@ public class EditTextLayout extends LinearLayout implements TextWatcher, View.On
                 bgPaint = new Paint();
                 outlinePaint = new Paint();
             }
-            if (editText.hasFocus()) {
-                bgPaint.setColor(Color.WHITE);
-            } else {
-                bgPaint.setColor(0xfff5f6f7);
-            }
+
+            bgPaint.setColor(Color.parseColor("#F7F8FA"));
             canvas.drawRoundRect(0, 0, getRight(), getBottom(), corner, corner, bgPaint);
 
             if (fadeInAnimator != null && fadeInAnimator.isRunning()) {
                 float v = (float) fadeInAnimator.getAnimatedValue();
                 drawFocusOutline(canvas, v);
                 invalidate();
-            } else if (editText.hasFocus()) {
+            } else if (editText.hasFocus() || canDraw) {
                 drawFocusOutline(canvas, 1);
+                canDraw = false;
             }
         }
 
         private void drawFocusOutline(Canvas canvas, float v) {
             canvas.save();
-            int pix = (int) Util.dp2px(getContext(), 2 * v);
+            int pix = (int) Util.dp2px(getContext(), v);
             Paint p = outlinePaint;
             p.setColor(0xffd2dbfc);
             p.setStyle(Paint.Style.STROKE);
             p.setStrokeWidth(pix);
 
             p.setAlpha((int) (v * 255));
-            canvas.drawRoundRect(new RectF(-pix/2, -pix/2, getRight() + pix/2, getBottom() + pix/2), corner, corner, p);
+            canvas.drawRoundRect(new RectF(pix, pix, getRight() - pix, getBottom() - pix), corner, corner, p);
 
-            p.setColor(getContext().getColor(R.color.authing_main));
+            p.setColor(outLineColor);
             p.setStrokeWidth((int) Util.dp2px(getContext(), 1));
-            canvas.drawRoundRect(new RectF(0, 0, getRight(), getBottom()), corner, corner, p);
+            canvas.drawRoundRect(new RectF(pix, pix, getRight() - pix, getBottom() - pix), corner, corner, p);
             canvas.restore();
         }
 
@@ -479,5 +563,9 @@ public class EditTextLayout extends LinearLayout implements TextWatcher, View.On
         } else {
             errorTextView.setVisibility(View.GONE);
         }
+    }
+
+    public boolean isErrorEnabled() {
+        return errorEnabled;
     }
 }

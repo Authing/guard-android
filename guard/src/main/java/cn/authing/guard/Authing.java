@@ -102,7 +102,7 @@ public class Authing {
                         sCurrentUser = null;
                         callback.call(code, message, userInfo);
                     } else {
-                        new OIDCClient().getUserInfoByAccessToken(getCurrentUser(), callback);
+                        AuthClient.getCurrentUser(getCurrentUser(), callback);
                     }
                 });
             }

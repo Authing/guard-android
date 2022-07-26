@@ -105,6 +105,7 @@ public class UserInfo implements Serializable {
     private MFAData mfaData;
     private String firstTimeLoginToken;
     private String recoveryCode;
+    private String password;
 
     public String getId() {
         return id == null ? getSub() : id;
@@ -515,6 +516,14 @@ public class UserInfo implements Serializable {
         this.recoveryCode = recoveryCode;
     }
 
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
     public static UserInfo createUserInfo(JSONObject data) throws JSONException {
         UserInfo userInfo = new UserInfo();
         return createUserInfo(userInfo, data);
@@ -524,7 +533,6 @@ public class UserInfo implements Serializable {
         if (userInfo == null || data == null) {
             return null;
         }
-
         if (data.has("id")) {
             String id = data.getString("id");
             userInfo.setId(id);
@@ -692,6 +700,10 @@ public class UserInfo implements Serializable {
         if (data.has("recoveryCode")) {
             String s = data.getString("recoveryCode");
             userInfo.setRecoveryCode(s);
+        }
+        if (data.has("password")) {
+            String s = data.getString("password");
+            userInfo.setPassword(s);
         }
         if (data.has("role")) {
             List<String> list = Util.toStringList(data.getJSONArray("role"));

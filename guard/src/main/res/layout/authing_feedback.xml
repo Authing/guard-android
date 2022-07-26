@@ -3,6 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#FFFFFF"
+    android:scrollbars="none"
     android:fitsSystemWindows="true"
     android:fillViewport="true">
 
@@ -12,60 +14,87 @@
         android:layout_marginStart="@dimen/authing_form_start_end_margin"
         android:layout_marginEnd="@dimen/authing_form_start_end_margin"
         android:orientation="vertical">
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:textColor="@color/authing_app_name"
-            android:textStyle="bold"
-            android:textSize="24sp"
-            android:text="@string/authing_feedback"/>
+
+        <cn.authing.guard.TitleLayout
+            android:layout_width="match_parent"
+            android:layout_height="44dp"
+            app:showBackIcon="true"
+            app:showTitleText="true"
+            app:titleText="@string/authing_feedback"/>
 
         <cn.authing.guard.MandatoryField
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="@dimen/authing_form_start_end_margin"
             android:text="@string/authing_contact_info"
-            app:asteriskPosition="left"/>
+            android:textSize="@dimen/authing_text_large_size"
+            android:textColor="@color/authing_text_black"
+            android:textStyle="bold"
+            app:asteriskPosition="right"/>
 
         <cn.authing.guard.AccountEditText
-            android:background="@drawable/authing_edit_text_layout_background"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
-            android:hint="" />
+            android:layout_height="@dimen/authing_edit_text_height"
+            android:layout_marginTop="@dimen/authing_small_top_margin"
+            android:background="@drawable/authing_edit_text_layout_background"
+            android:hint="@string/authing_phone_or_email_hint"
+            app:inputHeight="@dimen/authing_edit_text_height"/>
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:text="@string/authing_related_issue" />
+            android:layout_marginTop="@dimen/authing_form_start_end_margin"
+            android:text="@string/authing_related_issue"
+            android:textStyle="bold"
+            android:textSize="@dimen/authing_text_large_size"
+            android:textColor="@color/authing_text_black"/>
 
         <cn.authing.guard.feedback.IssueLayout
-            android:layout_marginTop="4dp"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="@dimen/authing_edit_text_height"
+            android:layout_marginTop="@dimen/authing_small_top_margin"/>
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:text="@string/authing_feedback_description" />
+            android:layout_marginTop="@dimen/authing_form_start_end_margin"
+            android:text="@string/authing_reset_password_tips"
+            android:textSize="@dimen/authing_text_middle_size"
+            android:textColor="@color/authing_text_gray"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/authing_form_start_end_margin"
+            android:text="@string/authing_feedback_description"
+            android:textStyle="bold"
+            android:textSize="@dimen/authing_text_large_size"
+            android:textColor="@color/authing_text_black"/>
 
         <cn.authing.guard.feedback.FeedbackDescriptionEditText
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
+            android:layout_height="100dp"
+            android:layout_marginTop="@dimen/authing_small_top_margin"
             android:gravity="top"
-            android:padding="8dp"
+            android:paddingStart="12dp"
+            android:paddingEnd="12dp"
+            android:paddingTop="11dp"
+            android:paddingBottom="11dp"
             android:background="@drawable/authing_edit_text_layout_background"
-            android:lines="3" />
+            android:lines="3"
+            android:textSize="@dimen/authing_text_large_size"
+            android:textColor="@color/authing_text_black"
+            android:hint="@string/authing_input_tip_hint"
+            app:hintTextColor="@color/authing_text_gray" />
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:text="@string/authing_feedback_screenshot" />
+            android:layout_marginTop="@dimen/authing_form_start_end_margin"
+            android:text="@string/authing_feedback_screenshot"
+            android:textStyle="bold"
+            android:textSize="@dimen/authing_text_large_size"
+            android:textColor="@color/authing_text_black"/>
 
         <cn.authing.guard.feedback.ImagePickerView
             android:id="@+id/gv_image_picker"
@@ -76,19 +105,22 @@
             android:stretchMode="spacingWidth"
             android:horizontalSpacing="4dp"
             android:verticalSpacing="4dp"
-            android:layout_marginTop="4dp" />
+            android:layout_marginTop="@dimen/authing_small_top_margin" />
 
         <cn.authing.guard.ErrorTextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:textSize="@dimen/authing_text_small_size"
             android:layout_marginTop="4dp"
             android:layout_marginBottom="4dp" />
 
         <cn.authing.guard.feedback.FeedbackSubmitButton
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="32dp"
-            android:text="@string/authing_submit" />
+            android:layout_height="@dimen/authing_button_height"
+            android:text="@string/authing_submit"
+            android:textAppearance="@android:style/Widget.TextView"
+            android:gravity="center"
+            style="?android:attr/borderlessButtonStyle"/>
     </LinearLayout>
 
 </ScrollView>

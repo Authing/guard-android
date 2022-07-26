@@ -17,6 +17,8 @@ import cn.authing.guard.analyze.Analyzer;
 import cn.authing.guard.data.Config;
 import cn.authing.guard.data.ExtendedField;
 import cn.authing.guard.data.UserInfo;
+import cn.authing.guard.dialog.PrivacyConfirmDialog;
+import cn.authing.guard.feedback.GoFeedbackImage;
 import cn.authing.guard.flow.AuthFlow;
 import cn.authing.guard.flow.FlowHelper;
 import cn.authing.guard.handler.login.ILoginRequestCallBack;
@@ -29,6 +31,7 @@ public class LoginButton extends PrimaryButton implements ILoginRequestCallBack 
 
     protected AuthCallback<UserInfo> callback;
     private LoginRequestManager mLoginRequestManager;
+    private int loginFailCount;
 
     public LoginButton(@NonNull Context context) {
         this(context, null);
@@ -48,6 +51,7 @@ public class LoginButton extends PrimaryButton implements ILoginRequestCallBack 
         }
 
         setOnClickListener((v -> login()));
+        refreshFeedBackView(false);
     }
 
     public void setOnLoginListener(AuthCallback<UserInfo> callback) {
@@ -92,7 +96,17 @@ public class LoginButton extends PrimaryButton implements ILoginRequestCallBack 
             return false;
         }
 
-        return ((PrivacyConfirmBox)box).require(true);
+        return ((PrivacyConfirmBox)box).require(new PrivacyConfirmDialog.OnItemClickListener() {
+            @Override
+            public void onCancelClick() {
+
+            }
+
+            @Override
+            public void onAgreeClick() {
+                performClick();
+            }
+        });
     }
 
     @Override
@@ -102,7 +116,6 @@ public class LoginButton extends PrimaryButton implements ILoginRequestCallBack 
 
     private void fireCallback(int code, String message, UserInfo userInfo) {
         stopLoadingVisualEffect();
-
         if (callback != null) {
             if (code != 200 && code != Const.EC_MFA_REQUIRED && code != Const.EC_FIRST_TIME_LOGIN) {
                 Util.setErrorText(this, message);
@@ -113,6 +126,7 @@ public class LoginButton extends PrimaryButton implements ILoginRequestCallBack 
 
         if (userInfo == null){
             Util.setErrorText(this, message);
+            refreshFeedBackView(true);
             return;
         }
 
@@ -131,10 +145,12 @@ public class LoginButton extends PrimaryButton implements ILoginRequestCallBack 
                             cb.call(getContext(), code, message, userInfo);
                         }
 
-                        Intent intent = new Intent();
-                        intent.putExtra("user", userInfo);
-                        activity.setResult(AuthActivity.OK, intent);
-                        activity.finish();
+                        post(() -> {
+                            Intent intent = new Intent();
+                            intent.putExtra("user", userInfo);
+                            activity.setResult(AuthActivity.OK, intent);
+                            activity.finish();
+                        });
                     }
                 }
             });
@@ -151,7 +167,20 @@ public class LoginButton extends PrimaryButton implements ILoginRequestCallBack 
             FlowHelper.handleCaptcha(this);
         } else {
             Util.setErrorText(this, message);
+            refreshFeedBackView(true);
         }
+    }
+
+    private void refreshFeedBackView(boolean add){
+        post(() -> {
+            GoFeedbackImage feedbackImage = (GoFeedbackImage)Util.findViewByClass(LoginButton.this, GoFeedbackImage.class);
+            if(feedbackImage != null){
+                if (add){
+                    loginFailCount++;
+                }
+                feedbackImage.setVisibility(loginFailCount >= 2 ? VISIBLE : GONE);
+            }
+        });
     }
 
     private boolean shouldCompleteAfterLogin(Config config) {

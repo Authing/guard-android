@@ -4,7 +4,6 @@ import android.text.TextUtils;
 import android.view.View;
 
 import cn.authing.guard.CountryCodePicker;
-import cn.authing.guard.PasswordEditText;
 import cn.authing.guard.PhoneNumberEditText;
 import cn.authing.guard.R;
 import cn.authing.guard.RegisterButton;
@@ -30,30 +29,32 @@ public class PhoneCodeRegisterHandler extends AbsRegisterHandler {
 
         if (phoneNumberET != null && phoneNumberET.isShown()
                 && phoneCodeET != null && phoneCodeET.isShown()) {
-
+            boolean showError = false;
             String phoneCountryCode = "";
+            PhoneNumberEditText phoneNumberEditText = (PhoneNumberEditText)phoneNumberET;
             if (phoneCountryCodeET != null && phoneCountryCodeET.isShown()){
                 CountryCodePicker countryCodePicker = (CountryCodePicker)phoneCountryCodeET;
                 phoneCountryCode = countryCodePicker.getCountryCode();
                 if (TextUtils.isEmpty(phoneCountryCode)) {
-                    Util.setErrorText(mRegisterButton, mContext.getString(R.string.authing_invalid_phone_country_code));
-                    fireCallback(mContext.getString(R.string.authing_invalid_phone_country_code));
-                    return false;
+                    showError(phoneNumberEditText, mContext.getString(R.string.authing_phone_country_code_empty));
+                    showError = true;
                 }
             }
 
-            PhoneNumberEditText phoneNumberEditText = (PhoneNumberEditText)phoneNumberET;
             if (!phoneNumberEditText.isContentValid()) {
-                Util.setErrorText(mRegisterButton, mContext.getString(R.string.authing_invalid_phone_number));
-                fireCallback(mContext.getString(R.string.authing_invalid_phone_number));
-                return false;
+                showError(phoneNumberEditText, mContext.getString(R.string.authing_phone_number_empty));
+                showError = true;
             }
 
             final String phone = phoneNumberEditText.getText().toString();
-            final String code = ((VerifyCodeEditText) phoneCodeET).getText().toString();
+            VerifyCodeEditText verifyCodeEditText = ((VerifyCodeEditText) phoneCodeET);
+            final String code = verifyCodeEditText.getText().toString();
             if (TextUtils.isEmpty(code)) {
-                Util.setErrorText(mRegisterButton, mContext.getString(R.string.authing_incorrect_verify_code));
-                fireCallback(mContext.getString(R.string.authing_incorrect_verify_code));
+                showError(verifyCodeEditText, mContext.getString(R.string.authing_verify_code_empty));
+                showError = true;
+            }
+
+            if (showError){
                 return false;
             }
 
@@ -66,6 +67,7 @@ public class PhoneCodeRegisterHandler extends AbsRegisterHandler {
 
 
     private void registerByPhoneCode(String phoneCountryCode, String phone, String phoneCode, String password) {
+        clearError();
         if (getAuthProtocol() == AuthContainer.AuthProtocol.EInHouse) {
             AuthClient.registerByPhoneCode(phoneCountryCode, phone, phoneCode, password, this::fireCallback);
         } else if (getAuthProtocol() == AuthContainer.AuthProtocol.EOIDC) {

@@ -21,7 +21,7 @@ public class GoFeedbackButton extends GoSomewhereButton {
     }
 
     public GoFeedbackButton(@NonNull Context context, @Nullable AttributeSet attrs) {
-        this(context, attrs, R.attr.buttonStyle);
+        this(context, attrs, 0);
     }
 
     public GoFeedbackButton(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr) {

@@ -19,12 +19,13 @@ import cn.authing.guard.activity.IndexAuthActivity;
 import cn.authing.guard.analyze.Analyzer;
 import cn.authing.guard.data.UserInfo;
 import cn.authing.guard.flow.AuthFlow;
-import cn.authing.guard.internal.LoadingButton;
+import cn.authing.guard.internal.EditTextLayout;
+import cn.authing.guard.internal.PrimaryButton;
 import cn.authing.guard.network.AuthClient;
 import cn.authing.guard.util.Util;
 import cn.authing.guard.util.Validator;
 
-public class ResetPasswordButton extends LoadingButton {
+public class ResetPasswordButton extends PrimaryButton {
 
     public ResetPasswordButton(@NonNull Context context) {
         this(context, null);
@@ -58,10 +59,7 @@ public class ResetPasswordButton extends LoadingButton {
 
         View v = Util.findViewByClass(this, PasswordEditText.class);
         if (v != null) {
-            String password = Util.getPassword(this);
-            if (!TextUtils.isEmpty(password)) {
-                handleResetPassword(flow, password);
-            }
+            handleResetPassword(flow, (PasswordEditText)v);
         } else {
             View view = Util.findViewByClass(this, PhoneNumberEditText.class);
             if (view != null) {
@@ -94,21 +92,66 @@ public class ResetPasswordButton extends LoadingButton {
         }
     }
 
-    private void handleResetPassword(AuthFlow flow, String password) {
+    private void handleResetPassword(AuthFlow flow, PasswordEditText v) {
+        String password = v.getText().toString();
         Object o = flow.getData().get(AuthFlow.KEY_USER_INFO);
         if (o instanceof UserInfo) {
             UserInfo userInfo = (UserInfo) o;
             if (!Util.isNull(userInfo.getFirstTimeLoginToken())) {
+                if (TextUtils.isEmpty(password)) {
+                    v.showError(getContext().getString(R.string.authing_password_empty));
+                    return;
+                }
+                View passwordConfirmView = Util.findViewByClass(this, PasswordConfirmEditText.class);
+                if (passwordConfirmView != null) {
+                    PasswordConfirmEditText passwordConfirmEditText = (PasswordConfirmEditText)passwordConfirmView;
+                    String passwordConfirm = passwordConfirmEditText.getText().toString();
+                    if (!password.equals(passwordConfirm)) {
+                        showError(passwordConfirmEditText, getContext().getString(R.string.authing_password_not_match));
+                        return;
+                    }
+                }
                 resetPasswordByFirstTimeLoginToken(userInfo.getFirstTimeLoginToken(), password);
                 return;
             }
         }
 
-        String account = Util.getAccount(this);
+        boolean showError = false;
+        String account = null;
+        View accountView = Util.findViewByClass(this, AccountEditText.class);
+        if (accountView != null) {
+            AccountEditText accountEditText = (AccountEditText)accountView;
+            account = accountEditText.getText().toString();
+            if (TextUtils.isEmpty(account)){
+                showError(accountEditText, getContext().getString(R.string.authing_phone_or_email_empty));
+                showError = true;
+            }
+        }
+
+        String verifyCode = null;
+        View verifyView = Util.findViewByClass(this, VerifyCodeEditText.class);
+        if (verifyView != null) {
+            VerifyCodeEditText verifyCodeEditText = (VerifyCodeEditText)verifyView;
+            verifyCode = verifyCodeEditText.getText().toString();
+            if (TextUtils.isEmpty(verifyCode)){
+                showError(verifyCodeEditText, getContext().getString(R.string.authing_verify_code_empty));
+                showError = true;
+            }
+        }
+
+        if (TextUtils.isEmpty(password)) {
+            showError(v, getContext().getString(R.string.authing_password_empty));
+            showError = true;
+        }
+
+        if (showError){
+            return;
+        }
+
         if (Validator.isValidEmail(account)) {
-            resetPasswordByEmail(account, password);
+            resetPasswordByEmail(account, password, verifyCode);
         } else if (Validator.isValidPhoneNumber(account)) {
-            resetPasswordByPhone(account, password);
+            resetPasswordByPhone(account, password, verifyCode);
         }
     }
 
@@ -118,7 +161,7 @@ public class ResetPasswordButton extends LoadingButton {
         AuthFlow flow = (AuthFlow) activity.getIntent().getSerializableExtra(AuthActivity.AUTH_FLOW);
         AuthClient.resetPasswordByFirstTimeLoginToken(token, password, (code, message, data)-> activity.runOnUiThread(()->{
             if (code == 200) {
-                gotoLogin(flow);
+                gotoResetSuccess(flow);
             } else {
                 Util.setErrorText(this, message);
             }
@@ -126,16 +169,15 @@ public class ResetPasswordButton extends LoadingButton {
         }));
     }
 
-    private void resetPasswordByPhone(String phone, String password) {
+    private void resetPasswordByPhone(String phone, String password, String verifyCode) {
         startLoadingVisualEffect();
         AuthActivity activity = (AuthActivity) getContext();
         AuthFlow flow = (AuthFlow) activity.getIntent().getSerializableExtra(AuthActivity.AUTH_FLOW);
-        String vCode = Util.getVerifyCode(this);
         CountryCodePicker countryCodePicker = (CountryCodePicker)Util.findViewByClass(this, CountryCodePicker.class);
         String phoneCountryCode = (null == countryCodePicker) ? null :  countryCodePicker.getCountryCode();
-        AuthClient.resetPasswordByPhoneCode(phoneCountryCode, phone, vCode, password, (code, message, data)-> activity.runOnUiThread(()->{
+        AuthClient.resetPasswordByPhoneCode(phoneCountryCode, phone, verifyCode, password, (code, message, data)-> activity.runOnUiThread(()->{
             if (code == 200) {
-                gotoLogin(flow);
+                gotoResetSuccess(flow);
             } else {
                 Util.setErrorText(this, message);
             }
@@ -143,19 +185,29 @@ public class ResetPasswordButton extends LoadingButton {
         }));
     }
 
-    private void resetPasswordByEmail(String email, String password) {
+    private void resetPasswordByEmail(String email, String password, String verifyCode) {
         startLoadingVisualEffect();
         AuthActivity activity = (AuthActivity) getContext();
         AuthFlow flow = (AuthFlow) activity.getIntent().getSerializableExtra(AuthActivity.AUTH_FLOW);
-        String vCode = Util.getVerifyCode(this);
-        AuthClient.resetPasswordByEmailCode(email, vCode, password, (code, message, data)-> activity.runOnUiThread(()->{
+        AuthClient.resetPasswordByEmailCode(email, verifyCode, password, (code, message, data)-> activity.runOnUiThread(()->{
             if (code == 200) {
-                gotoLogin(flow);
+                gotoResetSuccess(flow);
             } else {
                 Util.setErrorText(this, message);
             }
             stopLoadingVisualEffect();
         }));
+    }
+
+    private void showError(EditTextLayout editTextLayout, String errorMsg){
+        editTextLayout.showError("");
+        Util.setErrorText(this, "");
+        if (editTextLayout.isErrorEnabled()) {
+            editTextLayout.showError(errorMsg);
+        } else {
+            Util.setErrorText(this, errorMsg);
+        }
+        editTextLayout.showErrorBackGround();
     }
 
     private void next(AuthFlow flow, int layout) {
@@ -173,5 +225,12 @@ public class ResetPasswordButton extends LoadingButton {
         intent.putExtra(AuthActivity.CONTENT_LAYOUT_ID, flow.getIndexLayoutId());
         getContext().startActivity(intent);
         activity.finish();
+    }
+
+    private void gotoResetSuccess(AuthFlow flow) {
+        Intent intent = new Intent(getContext(), AuthActivity.class);
+        intent.putExtra(AuthActivity.AUTH_FLOW, flow);
+        intent.putExtra(AuthActivity.CONTENT_LAYOUT_ID, flow.getRestPasswordSuccessLayoutId());
+        getContext().startActivity(intent);
     }
 }

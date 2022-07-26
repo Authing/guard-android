@@ -1,22 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_width="@dimen/authing_image_picker_item_size"
     android:layout_height="@dimen/authing_image_picker_item_size"
     android:background="@drawable/authing_dashed_outline">
 
-    <ImageView
+    <cn.authing.guard.internal.CircleImageView
         android:id="@+id/iv_image_picked"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scaleType="centerCrop"
-        android:layout_gravity="center_horizontal" />
+        android:layout_gravity="center_horizontal"
+        app:circleImageRadius="4dp"/>
 
     <ImageView
         android:id="@+id/iv_delete_image"
-        android:layout_width="24dp"
-        android:layout_height="24dp"
-        android:src="@drawable/ic_authing_clear_all"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:paddingTop="5dp"
+        android:paddingBottom="13dp"
+        android:paddingEnd="5dp"
+        android:paddingStart="13dp"
+        android:src="@drawable/ic_authing_clear"
+        android:scaleType="centerInside"
         android:layout_gravity="end" />
 
 </FrameLayout>

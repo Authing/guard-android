@@ -46,13 +46,14 @@
                 app:leftIconDrawable="@drawable/ic_authing_shield_check"/>
             <cn.authing.guard.GetVerifyCodeButton
                 android:stateListAnimator="@null"
-                android:background="@drawable/authing_get_code_button_background"
-                android:layout_width="wrap_content"
-                android:layout_height="42dp"
-                android:layout_marginStart="4dp"
-                android:paddingStart="4dp"
-                android:paddingEnd="4dp"
-                android:textColor="@color/authing_get_verify_code_button_text_color" />
+                android:background="@drawable/authing_get_code_button_background_normal"
+                android:layout_width="112dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp"
+                android:textAppearance="@android:style/Widget.TextView"
+                android:gravity="center" />
         </LinearLayout>
 
         <cn.authing.guard.ErrorTextView

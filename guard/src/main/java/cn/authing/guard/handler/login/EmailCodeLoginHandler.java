@@ -42,16 +42,22 @@ public class EmailCodeLoginHandler extends AbsLoginHandler{
 
         if (emailNumberET != null && emailNumberET.isShown()
                 && emailCodeET != null && emailCodeET.isShown()) {
+            boolean showError = false;
             EmailEditText emailNumberEditText = (EmailEditText)emailNumberET;
             if (!emailNumberEditText.isContentValid()) {
-                fireCallback(mContext.getString(R.string.authing_invalid_phone_number));
-                return false;
+                showError(emailNumberEditText, mContext.getString(R.string.authing_email_address_empty));
+                showError = true;
             }
 
             final String email = emailNumberEditText.getText().toString();
-            final String code = ((VerifyCodeEditText) emailCodeET).getText().toString();
+            VerifyCodeEditText verifyCodeEditText = ((VerifyCodeEditText) emailCodeET);
+            final String code = verifyCodeEditText.getText().toString();
             if (TextUtils.isEmpty(code)) {
-                fireCallback(mContext.getString(R.string.authing_incorrect_verify_code));
+                showError(verifyCodeEditText, mContext.getString(R.string.authing_verify_code_empty));
+                showError = true;
+            }
+
+            if (showError){
                 return false;
             }
 
@@ -63,6 +69,7 @@ public class EmailCodeLoginHandler extends AbsLoginHandler{
     }
 
     private void loginByEmailCode(String email, String verifyCode) {
+        clearError();
         if (getAuthProtocol() == AuthContainer.AuthProtocol.EInHouse) {
             AuthClient.loginByEmailCode(email, verifyCode, this::fireCallback);
         } else if (getAuthProtocol() == AuthContainer.AuthProtocol.EOIDC) {

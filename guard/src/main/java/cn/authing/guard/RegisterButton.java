@@ -21,6 +21,7 @@ import cn.authing.guard.analyze.Analyzer;
 import cn.authing.guard.data.Config;
 import cn.authing.guard.data.ExtendedField;
 import cn.authing.guard.data.UserInfo;
+import cn.authing.guard.dialog.PrivacyConfirmDialog;
 import cn.authing.guard.flow.AuthFlow;
 import cn.authing.guard.flow.FlowHelper;
 import cn.authing.guard.handler.register.IRegisterRequestCallBack;
@@ -111,7 +112,17 @@ public class RegisterButton extends LoadingButton implements IRegisterRequestCal
             return false;
         }
 
-        return ((PrivacyConfirmBox)box).require(true);
+        return ((PrivacyConfirmBox)box).require(new PrivacyConfirmDialog.OnItemClickListener() {
+            @Override
+            public void onCancelClick() {
+
+            }
+
+            @Override
+            public void onAgreeClick() {
+                performClick();
+            }
+        });
     }
 
 
@@ -147,10 +158,12 @@ public class RegisterButton extends LoadingButton implements IRegisterRequestCal
                             cb.call(getContext(), code, message, userInfo);
                         }
 
-                        Intent intent = new Intent();
-                        intent.putExtra("user", userInfo);
-                        activity.setResult(AuthActivity.OK, intent);
-                        activity.finish();
+                        post(() -> {
+                            Intent intent = new Intent();
+                            intent.putExtra("user", userInfo);
+                            activity.setResult(AuthActivity.OK, intent);
+                            activity.finish();
+                        });
                     }
                 }
             });

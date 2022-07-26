@@ -2,14 +2,15 @@ package cn.authing.guard.internal;
 
 import android.content.Context;
 import android.util.AttributeSet;
+import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.DecelerateInterpolator;
 import android.view.animation.TranslateAnimation;
-import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 
@@ -18,7 +19,7 @@ import cn.authing.guard.util.Util;
 
 public class BaseTabItem extends LinearLayout {
 
-    protected final Button button;
+    protected final TextView button;
     protected final View underLine;
     protected boolean isFocused;
 
@@ -40,14 +41,18 @@ public class BaseTabItem extends LinearLayout {
         setOrientation(VERTICAL);
         setGravity(Gravity.CENTER_HORIZONTAL);
 
-        button = new Button(context);
+        button = new TextView(context);
         button.setBackground(null);
         button.setClickable(false);
+        button.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
+        int color = getResources().getColor(R.color.authing_text_gray, null);
+        button.setTextColor(color);
         addView(button);
 
         underLine = new View(context);
-        int height = (int) Util.dp2px(context, 2);
+        int height = (int) Util.dp2px(context, 1);
         LayoutParams lp = new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, height);
+        lp.topMargin = (int) Util.dp2px(context, 7);
         underLine.setLayoutParams(lp);
         addView(underLine);
 
@@ -77,7 +82,8 @@ public class BaseTabItem extends LinearLayout {
 
     public void loseFocus() {
         isFocused = false;
-        button.setTextColor(0xffaaaaaa);
+        int color = getResources().getColor(R.color.authing_text_gray, null);
+        button.setTextColor(color);
         underLine.setBackgroundColor(0);
     }
 

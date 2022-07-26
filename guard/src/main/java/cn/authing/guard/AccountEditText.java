@@ -19,12 +19,12 @@ import cn.authing.guard.util.Validator;
 
 public class AccountEditText extends EditTextLayout {
 
-    protected final static String LOGIN_METHOD_UN = "username-password";
-    protected final static String LOGIN_METHOD_EMAIL = "email-password";
     protected final static String LOGIN_METHOD_PHONE = "phone-password";
+    protected final static String LOGIN_METHOD_EMAIL = "email-password";
+    protected final static String LOGIN_METHOD_UN = "username-password";
 
-    protected final static int EMAIL_VALIDATOR = 1;
-    protected final static int PHONE_VALIDATOR = 2;
+    protected final static int PHONE_VALIDATOR = 1;
+    protected final static int EMAIL_VALIDATOR = 2;
 
     protected int validator;
 
@@ -63,14 +63,14 @@ public class AccountEditText extends EditTextLayout {
 
     private String getHintByConfig(Config config, Context context) {
         StringBuilder s = new StringBuilder(context.getString(R.string.authing_account_edit_text_hint));
-        String username = context.getString(R.string.authing_username);
-        String email = context.getString(R.string.authing_email);
         String phone = context.getString(R.string.authing_phone);
+        String email = context.getString(R.string.authing_email);
+        String username = context.getString(R.string.authing_username);
 
         if (pageType == 1) {
             return s.append(email).toString();
         } else {
-            String defaultHint = s + username + " / " + email + " / " + phone;
+            String defaultHint = s + phone + " / " + email + " / " + username;
             if (config == null) {
                 return defaultHint;
             }
@@ -78,24 +78,18 @@ public class AccountEditText extends EditTextLayout {
             if (enabledLoginMethods == null || enabledLoginMethods.size() == 0) {
                 return defaultHint;
             }
-            for (int i = 0, n = enabledLoginMethods.size(); i < n; ++i) {
-                String opt = enabledLoginMethods.get(i);
-                switch (opt) {
-                    case LOGIN_METHOD_UN:
-                        s.append(username);
-                        break;
-                    case LOGIN_METHOD_EMAIL:
-                        s.append(email);
-                        validator |= EMAIL_VALIDATOR;
-                        break;
-                    case LOGIN_METHOD_PHONE:
-                        s.append(phone);
-                        validator |= PHONE_VALIDATOR;
-                        break;
-                }
-                if (i < n - 1) {
-                    s.append(" / ");
-                }
+            if (enabledLoginMethods.contains(LOGIN_METHOD_PHONE)){
+                s.append(phone);
+                validator |= PHONE_VALIDATOR;
+                s.append(" / ");
+            }
+            if (enabledLoginMethods.contains(LOGIN_METHOD_EMAIL)){
+                s.append(email);
+                validator |= EMAIL_VALIDATOR;
+                s.append(" / ");
+            }
+            if (enabledLoginMethods.contains(LOGIN_METHOD_UN)){
+                s.append(username);
             }
             return s.toString();
         }
@@ -113,13 +107,13 @@ public class AccountEditText extends EditTextLayout {
             if (enabledLoginMethods.size() == 1) {
                 String opt = enabledLoginMethods.get(0);
                 switch (opt) {
-                    case LOGIN_METHOD_UN:
+                    case LOGIN_METHOD_PHONE:
+                        editText.setInputType(InputType.TYPE_CLASS_PHONE);
                         break;
                     case LOGIN_METHOD_EMAIL:
                         editText.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
                         break;
-                    case LOGIN_METHOD_PHONE:
-                        editText.setInputType(InputType.TYPE_CLASS_PHONE);
+                    case LOGIN_METHOD_UN:
                         break;
                 }
             }
@@ -137,18 +131,21 @@ public class AccountEditText extends EditTextLayout {
         }
 
         boolean valid = false;
-        if ((validator & EMAIL_VALIDATOR) != 0) {
-            valid = Validator.isValidEmail(s.toString());
-        }
         if ((validator & PHONE_VALIDATOR) != 0) {
-            valid |= Validator.isValidPhoneNumber(s.toString());
+            valid = Validator.isValidPhoneNumber(s.toString());
+        }
+        if ((validator & EMAIL_VALIDATOR) != 0) {
+            valid |= Validator.isValidEmail(s.toString());
         }
 
+        clearErrorText();
         if (!valid) {
-            if (validator == EMAIL_VALIDATOR) {
-                showError(getResources().getString(R.string.authing_invalid_email));
-            } else if (validator == PHONE_VALIDATOR) {
+            if (validator == PHONE_VALIDATOR) {
                 showError(getResources().getString(R.string.authing_invalid_phone));
+                showErrorBackGround();
+            } else if (validator == EMAIL_VALIDATOR) {
+                showError(getResources().getString(R.string.authing_invalid_email));
+                showErrorBackGround();
             }
         }
     }

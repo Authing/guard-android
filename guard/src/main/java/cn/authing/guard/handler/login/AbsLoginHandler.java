@@ -7,6 +7,8 @@ import cn.authing.guard.activity.AuthActivity;
 import cn.authing.guard.container.AuthContainer;
 import cn.authing.guard.data.UserInfo;
 import cn.authing.guard.flow.AuthFlow;
+import cn.authing.guard.internal.EditTextLayout;
+import cn.authing.guard.util.Util;
 
 public abstract class AbsLoginHandler {
 
@@ -33,6 +35,21 @@ public abstract class AbsLoginHandler {
     }
 
     abstract boolean login();
+
+    protected void showError(EditTextLayout editTextLayout, String errorMsg){
+        editTextLayout.showError("");
+        clearError();
+        if (editTextLayout.isErrorEnabled()) {
+            editTextLayout.showError(errorMsg);
+        } else {
+            fireCallback(errorMsg);
+        }
+        editTextLayout.showErrorBackGround();
+    }
+
+    protected void clearError(){
+        Util.setErrorText(loginButton, "");
+    }
 
     protected void fireCallback(String message) {
         fireCallback(500, message, null);

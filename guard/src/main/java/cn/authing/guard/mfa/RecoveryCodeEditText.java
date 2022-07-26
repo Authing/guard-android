@@ -14,7 +14,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -22,6 +21,7 @@ import androidx.annotation.Nullable;
 import cn.authing.guard.AccountEditText;
 import cn.authing.guard.R;
 import cn.authing.guard.analyze.Analyzer;
+import cn.authing.guard.util.ToastUtil;
 import cn.authing.guard.util.Util;
 
 public class RecoveryCodeEditText extends AccountEditText implements TextWatcher {
@@ -75,7 +75,7 @@ public class RecoveryCodeEditText extends AccountEditText implements TextWatcher
         ClipboardManager clipboard = (ClipboardManager) getContext().getSystemService(Context.CLIPBOARD_SERVICE);
         ClipData clip = ClipData.newPlainText("RecoveryCode", getText());
         clipboard.setPrimaryClip(clip);
-        Toast.makeText(getContext(), R.string.authing_copied, Toast.LENGTH_SHORT).show();
+        ToastUtil.showTop(getContext(), getContext().getString(R.string.authing_copied));
     }
 
     @Override

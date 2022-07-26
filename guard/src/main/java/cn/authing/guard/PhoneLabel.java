@@ -7,9 +7,12 @@ import android.util.AttributeSet;
 import androidx.annotation.Nullable;
 
 import cn.authing.guard.activity.AuthActivity;
+import cn.authing.guard.activity.DeleteAccountActivity;
 import cn.authing.guard.analyze.Analyzer;
+import cn.authing.guard.data.UserInfo;
 import cn.authing.guard.flow.AuthFlow;
 import cn.authing.guard.internal.MaskLabel;
+import cn.authing.guard.util.Util;
 
 public class PhoneLabel extends MaskLabel {
     public PhoneLabel(Context context) {
@@ -35,6 +38,13 @@ public class PhoneLabel extends MaskLabel {
             String s = (String) flow.getData().get(AuthFlow.KEY_MFA_PHONE);
             if (!TextUtils.isEmpty(s)) {
                 setTextWithMask(s);
+            }
+        }
+
+        if (context instanceof DeleteAccountActivity) {
+            UserInfo userInfo = Authing.getCurrentUser();
+            if (userInfo != null && !Util.isNull(userInfo.getPhone_number())) {
+                setTextWithMask(userInfo.getPhone_number());
             }
         }
     }

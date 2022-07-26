@@ -35,7 +35,7 @@ public class GoForgotPasswordButton extends GoSomewhereButton {
         if (getContext() instanceof AuthActivity) {
             AuthActivity activity = (AuthActivity) getContext();
             AuthFlow flow = (AuthFlow) activity.getIntent().getSerializableExtra(AuthActivity.AUTH_FLOW);
-            return flow.getForgotPasswordLayoutId();
+            return flow.getRestPasswordLayoutId();
         }
         return super.getTargetLayoutId();
     }

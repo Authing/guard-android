@@ -12,7 +12,6 @@ import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.AttributeSet;
 import android.util.TypedValue;
-import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -29,6 +28,7 @@ public class PhoneNumberEditText extends AccountEditText implements TextWatcher 
     private final List<Integer> dividerPattern;
     private final float padding;
     private CountryCodePicker countryCodePicker;
+    private boolean isInternationalSmsEnable;
 
     public PhoneNumberEditText(@NonNull Context context) {
         this(context, null);
@@ -57,8 +57,8 @@ public class PhoneNumberEditText extends AccountEditText implements TextWatcher 
         getEditText().addTextChangedListener(this);
 
         Authing.getPublicConfig(config -> {
-            boolean isEnable = config != null && config.isInternationalSmsEnable();
-            if (isEnable) {
+            isInternationalSmsEnable = config != null && config.isInternationalSmsEnable();
+            if (isInternationalSmsEnable) {
                 addCountryCodePicker();
             }else {
                 addLeftIcon();
@@ -69,7 +69,7 @@ public class PhoneNumberEditText extends AccountEditText implements TextWatcher 
     private void addCountryCodePicker() {
         if (root != null){
             countryCodePicker = new CountryCodePicker(getContext());
-            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
+            LayoutParams layoutParams = new LayoutParams(
                     LayoutParams.WRAP_CONTENT, LayoutParams.MATCH_PARENT);
             layoutParams.setMarginEnd((int) Util.dp2px(getContext(), 4));
             countryCodePicker.setLayoutParams(layoutParams);
@@ -98,6 +98,13 @@ public class PhoneNumberEditText extends AccountEditText implements TextWatcher 
             return;
         }
 
+        if (!isInternationalSmsEnable && s.length() > 11){
+            editText.removeTextChangedListener(this);
+            editText.setText(s.toString().substring(0, 11));
+            editText.setSelection(11);
+            editText.addTextChangedListener(this);
+        }
+
         Spannable spannableString = editText.getText();
         if (spannableString == null) {
             return;
@@ -123,17 +130,15 @@ public class PhoneNumberEditText extends AccountEditText implements TextWatcher 
 
     @Override
     public void afterTextChanged(Editable s) {
-
+        super.afterTextChanged(s);
     }
 
     public boolean isContentValid() {
         String text = getText().toString();
-        return !TextUtils.isEmpty(text);
-
-        // TODO validate number with country code
-//        if (text.length() != 11) {
-//            return false;
-//        }
+        if (TextUtils.isEmpty(text)){
+            return false;
+        }
+        return isInternationalSmsEnable || text.length() == 11;
     }
 
     @Override

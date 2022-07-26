@@ -2,10 +2,18 @@
 <resources>
     <dimen name="authing_form_start_end_margin">24dp</dimen>
     <dimen name="authing_form_top_margin">16dp</dimen>
+    <dimen name="authing_small_top_margin">8dp</dimen>
     <dimen name="authing_action_bar_height">54dp</dimen>
     <dimen name="authing_user_profile_padding">12dp</dimen>
-    <dimen name="authing_image_picker_item_size">108dp</dimen>
-    <dimen name="authing_image_picker_add_size">32dp</dimen>
+    <dimen name="authing_image_picker_item_size">75dp</dimen>
+    <dimen name="authing_image_picker_add_size">24dp</dimen>
     <dimen name="authing_des_text_size">12sp</dimen>
     <dimen name="authing_title_text_size">24sp</dimen>
+    <dimen name="authing_text_small_size">12sp</dimen>
+    <dimen name="authing_text_middle_size">14sp</dimen>
+    <dimen name="authing_text_large_size">16sp</dimen>
+    <dimen name="authing_edit_text_height">48dp</dimen>
+    <dimen name="authing_button_height">44dp</dimen>
+    <dimen name="authing_title_layout_height">44dp</dimen>
+    <dimen name="authing_login_height">40dp</dimen>
 </resources>

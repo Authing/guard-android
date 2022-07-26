@@ -1,4 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <item name="loading_button_image_view" type="id"/>
+    <item name="authing_skip_image_view" type="id"/>
+    <item name="authing_tip_image_view" type="id"/>
+    <item name="authing_login_tab_scroll_view" type="id"/>
+    <item name="authing_register_tab_scroll_view" type="id"/>
 </resources>

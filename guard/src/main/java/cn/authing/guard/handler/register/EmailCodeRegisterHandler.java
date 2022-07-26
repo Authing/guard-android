@@ -3,7 +3,8 @@ package cn.authing.guard.handler.register;
 import android.text.TextUtils;
 import android.view.View;
 
-import cn.authing.guard.AccountEditText;
+import cn.authing.guard.EmailEditText;
+import cn.authing.guard.R;
 import cn.authing.guard.RegisterButton;
 import cn.authing.guard.VerifyCodeEditText;
 import cn.authing.guard.container.AuthContainer;
@@ -21,26 +22,38 @@ public class EmailCodeRegisterHandler extends AbsRegisterHandler {
 
     @Override
     protected boolean register() {
-        View emailET = Util.findViewByClass(mRegisterButton, AccountEditText.class);
+        View emailET = Util.findViewByClass(mRegisterButton, EmailEditText.class);
         View verifyCodeET = Util.findViewByClass(mRegisterButton, VerifyCodeEditText.class);
         if (emailET != null && emailET.isShown()
                 && verifyCodeET != null && verifyCodeET.isShown()) {
-            final String account = ((AccountEditText) emailET).getText().toString();
-            final String verifyCode = ((VerifyCodeEditText) verifyCodeET).getText().toString();
-            if (TextUtils.isEmpty(account) || TextUtils.isEmpty(verifyCode)) {
-                Util.setErrorText(mRegisterButton, "Email or verifyCode is invalid");
-                fireCallback("Email or verifyCode is invalid");
+            boolean showError = false;
+            EmailEditText emailEditText = (EmailEditText)emailET;
+            if (!emailEditText.isContentValid()) {
+                showError(emailEditText, mContext.getString(R.string.authing_email_address_empty));
+                showError = true;
+            }
+
+            final String email = emailEditText.getText().toString();
+            VerifyCodeEditText verifyCodeEditText = ((VerifyCodeEditText) verifyCodeET);
+            final String code = verifyCodeEditText.getText().toString();
+            if (TextUtils.isEmpty(code)) {
+                showError(verifyCodeEditText, mContext.getString(R.string.authing_verify_code_empty));
+                showError = true;
+            }
+
+            if (showError){
                 return false;
             }
 
             mRegisterButton.startLoadingVisualEffect();
-            registerByEmailCode(account, verifyCode);
+            registerByEmailCode(email, code);
             return true;
         }
         return false;
     }
 
     private void registerByEmailCode(String email, String verifyCode) {
+        clearError();
         if (getAuthProtocol() == AuthContainer.AuthProtocol.EInHouse) {
             AuthClient.registerByEmailCode(email, verifyCode, this::fireCallback);
         } else if (getAuthProtocol() == AuthContainer.AuthProtocol.EOIDC) {

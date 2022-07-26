@@ -16,6 +16,7 @@ public class Safe {
     private static final String SP_KEY_TOKEN = "SP_TOKEN";
     private static final String SP_KEY_REFRESH_TOKEN = "SP_REFRESH_TOKEN";
     private static final String SP_KEY_PHONE_COUNTRY_CODE = "SP_PHONE_COUNTRY_CODE";
+    private static final String SP_KEY_PRIVACY_CONFIRM = "SP_PRIVACY_CONFIRM";
 
     public static void saveAccount(String account) {
         SharedPreferences sp = Authing.getAppContext().getSharedPreferences(SP_NAME, MODE_PRIVATE);
@@ -55,6 +56,22 @@ public class Safe {
             return sp.getString(SP_KEY_PHONE_COUNTRY_CODE, "");
         } else {
             return "";
+        }
+    }
+
+    public static void savePrivacyConfirmState(boolean isConfirm) {
+        if (Authing.getAppContext() != null) {
+            SharedPreferences sp = Authing.getAppContext().getSharedPreferences(SP_NAME, MODE_PRIVATE);
+            sp.edit().putBoolean(SP_KEY_PRIVACY_CONFIRM, isConfirm).commit();
+        }
+    }
+
+    public static boolean loadPrivacyConfirmState() {
+        if (Authing.getAppContext() != null) {
+            SharedPreferences sp = Authing.getAppContext().getSharedPreferences(SP_NAME, 0);
+            return sp.getBoolean(SP_KEY_PRIVACY_CONFIRM, false);
+        } else {
+            return false;
         }
     }
 

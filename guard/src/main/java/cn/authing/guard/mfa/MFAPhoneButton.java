@@ -125,7 +125,10 @@ public class MFAPhoneButton extends LoadingButton {
                             sendSms(flow, phoneCountryCode, phone);
                         } else {
                             stopLoadingVisualEffect();
-                            post(()->editText.showError(activity.getString(R.string.authing_phone_number_already_bound)));
+                            post(() -> {
+                                editText.showError(activity.getString(R.string.authing_phone_number_already_bound));
+                                editText.showErrorBackGround();
+                            });
                         }
                     } else {
                         stopLoadingVisualEffect();

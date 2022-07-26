@@ -116,7 +116,10 @@ public class MFAEmailButton extends LoadingButton implements AuthActivity.EventL
                             sendEmail(flow, email);
                         } else {
                             stopLoadingVisualEffect();
-                            post(()-> editText.showError(activity.getString(R.string.authing_email_already_bound)));
+                            post(() -> {
+                                editText.showError(activity.getString(R.string.authing_email_already_bound));
+                                editText.showErrorBackGround();
+                            });
                         }
                     } else {
                         stopLoadingVisualEffect();

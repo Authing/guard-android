@@ -19,7 +19,7 @@ public class GoRegisterButton extends GoSomewhereButton {
     }
 
     public GoRegisterButton(@NonNull Context context, @Nullable AttributeSet attrs) {
-        this(context, attrs, R.attr.buttonStyle);
+        this(context, attrs, 0);
     }
 
     public GoRegisterButton(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr) {

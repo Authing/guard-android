@@ -5,24 +5,24 @@ import static cn.authing.guard.util.Const.NS_ANDROID;
 import android.content.Context;
 import android.content.Intent;
 import android.util.AttributeSet;
-import android.widget.TextView;
+import android.util.TypedValue;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.widget.AppCompatButton;
+import androidx.appcompat.widget.AppCompatTextView;
 
 import cn.authing.guard.R;
 import cn.authing.guard.activity.AuthActivity;
 import cn.authing.guard.flow.AuthFlow;
 
-public class GoSomewhereButton extends AppCompatButton {
+public class GoSomewhereButton extends AppCompatTextView {
 
     public GoSomewhereButton(@NonNull Context context) {
         this(context, null);
     }
 
     public GoSomewhereButton(@NonNull Context context, @Nullable AttributeSet attrs) {
-        this(context, attrs, R.attr.buttonStyle);
+        this(context, attrs, 0);
     }
 
     public GoSomewhereButton(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
@@ -34,6 +34,10 @@ public class GoSomewhereButton extends AppCompatButton {
 
         if (attrs == null || attrs.getAttributeValue(NS_ANDROID, "text") == null) {
             setText(getDefaultText());
+        }
+
+        if (attrs == null || attrs.getAttributeValue(NS_ANDROID, "textSize") == null) {
+            setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
         }
 
         if (attrs == null || attrs.getAttributeValue(NS_ANDROID, "background") == null) {

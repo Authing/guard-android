@@ -68,8 +68,11 @@ public class Config {
                     JSONArray enabledLoginMethods = verifyCodeTabConfig.getJSONArray("enabledLoginMethods");
                     List<String> enabledLoginMethodsList = toStringList(enabledLoginMethods);
                     if (!enabledLoginMethodsList.isEmpty()){
-                        loginTab.remove("phone-code");
-                        loginTab.addAll(enabledLoginMethodsList);
+                        for (String method : enabledLoginMethodsList){
+                            if (!loginTab.contains(method)){
+                                loginTab.add(method);
+                            }
+                        }
                     }
                 }
             }

@@ -37,17 +37,21 @@ public class GetEmailCodeButton extends LoadingButton {
 
         loadingLocation = OVER;
 
+        if (attrs == null || attrs.getAttributeValue(NS_ANDROID, "textColor") == null) {
+            setTextColor(context.getColor(R.color.authing_main));
+        }
+
         if (attrs == null || attrs.getAttributeValue(NS_ANDROID, "text") == null) {
             String text = getContext().getString(R.string.authing_get_verify_code);
             setText(text);
         }
 
         if (attrs == null || attrs.getAttributeValue(NS_ANDROID, "textSize") == null) {
-            setTextSize(TypedValue.COMPLEX_UNIT_DIP, 12);
+            setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
         }
 
         if (attrs == null || attrs.getAttributeValue(NS_ANDROID, "background") == null) {
-            setBackgroundResource(R.drawable.authing_verify_code_background);
+            setBackgroundResource(R.drawable.authing_get_code_button_background_normal);
         }
 
         setOnClickListener((v -> getEmailCode()));
@@ -68,7 +72,16 @@ public class GetEmailCodeButton extends LoadingButton {
         }
 
         if (!Validator.isValidEmail(email)) {
-            Util.setErrorText(this, getContext().getString(R.string.authing_invalid_email));
+            if (v != null){
+                ((AccountEditText)v).showError("");
+            }
+            Util.setErrorText(this, "");
+            String errorMsg = getContext().getString(R.string.authing_invalid_email);
+            if (v != null && ((AccountEditText)v).isErrorEnabled()){
+                ((AccountEditText)v).showError(errorMsg);
+            } else {
+                Util.setErrorText(this, errorMsg);
+            }
             return;
         }
 
@@ -80,12 +93,19 @@ public class GetEmailCodeButton extends LoadingButton {
     public void beforeSendEmailCode(){
         startLoadingVisualEffect();
         Util.setErrorText(this, null);
+        setText("");
     }
 
     public void handleResult(int code, String message, Object ignore) {
         post(()->{
             stopLoadingVisualEffect();
-            if (code != 200) {
+            setText(getContext().getString(R.string.authing_get_verify_code_resend));
+            if (code == 200) {
+                View v = Util.findViewByClass(this, VerifyCodeEditText.class);
+                if (v != null) {
+                    v.requestFocus();
+                }
+            } else {
                 Util.setErrorText(this, getContext().getString(R.string.authing_get_email_code_failed));
             }
         });

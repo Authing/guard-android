@@ -3,7 +3,7 @@ package cn.authing.guard.handler.register;
 import android.text.TextUtils;
 import android.view.View;
 
-import cn.authing.guard.AccountEditText;
+import cn.authing.guard.EmailEditText;
 import cn.authing.guard.PasswordConfirmEditText;
 import cn.authing.guard.PasswordEditText;
 import cn.authing.guard.R;
@@ -24,26 +24,36 @@ public class EmailRegisterHandler extends AbsRegisterHandler {
 
     @Override
     protected boolean register() {
-        View emailET = Util.findViewByClass(mRegisterButton, AccountEditText.class);
+        View emailET = Util.findViewByClass(mRegisterButton, EmailEditText.class);
         View passwordET = Util.findViewByClass(mRegisterButton, PasswordEditText.class);
         if ((email != null || emailET != null && emailET.isShown())
                 && passwordET != null && passwordET.isShown()) {
-            final String account = email != null ? email : ((AccountEditText) emailET).getText().toString();
-            final String password = ((PasswordEditText) passwordET).getText().toString();
-            if (TextUtils.isEmpty(account) || TextUtils.isEmpty(password)) {
-                Util.setErrorText(mRegisterButton, "Account or password is invalid");
-                fireCallback("Account or password is invalid");
-                return false;
+            boolean showError = false;
+            EmailEditText emailEditText = ((EmailEditText) emailET);
+            final String account = email != null ? email : emailEditText.getText().toString();
+            if (!emailEditText.isContentValid()) {
+                showError(emailEditText, mContext.getString(R.string.authing_email_address_empty));
+                showError = true;
+            }
+
+            PasswordEditText passwordEditText = ((PasswordEditText) passwordET);
+            final String password = passwordEditText.getText().toString();
+            if (TextUtils.isEmpty(password)) {
+                showError(passwordEditText, mContext.getString(R.string.authing_password_empty));
+                showError = true;
             }
 
             View v = Util.findViewByClass(mRegisterButton, PasswordConfirmEditText.class);
             if (v != null) {
                 PasswordConfirmEditText passwordConfirmEditText = (PasswordConfirmEditText)v;
                 if (!password.equals(passwordConfirmEditText.getText().toString())) {
-                    Util.setErrorText(mRegisterButton, mContext.getResources().getString(R.string.authing_password_not_match));
-                    fireCallback(mContext.getResources().getString(R.string.authing_password_not_match));
-                    return false;
+                    showError(passwordConfirmEditText, mContext.getString(R.string.authing_password_not_match));
+                    showError = true;
                 }
+            }
+
+            if (showError){
+                return false;
             }
 
             mRegisterButton.startLoadingVisualEffect();
@@ -54,6 +64,7 @@ public class EmailRegisterHandler extends AbsRegisterHandler {
     }
 
     private void registerByEmail(String email, String password) {
+        clearError();
         if (getAuthProtocol() == AuthContainer.AuthProtocol.EInHouse) {
             AuthClient.registerByEmail(email, password, this::fireCallback);
         } else if (getAuthProtocol() == AuthContainer.AuthProtocol.EOIDC) {

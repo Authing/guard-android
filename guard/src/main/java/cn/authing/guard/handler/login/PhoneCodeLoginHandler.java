@@ -49,27 +49,32 @@ public class PhoneCodeLoginHandler extends AbsLoginHandler{
 
         if (phoneNumberET != null && phoneNumberET.isShown()
                 && phoneCodeET != null && phoneCodeET.isShown()) {
-
             String countryCode = "";
+            boolean showError = false;
+            PhoneNumberEditText phoneNumberEditText = (PhoneNumberEditText)phoneNumberET;
             if (phoneCountryCodeET != null && phoneCountryCodeET.isShown()){
                 CountryCodePicker countryCodePicker = (CountryCodePicker)phoneCountryCodeET;
                 countryCode = countryCodePicker.getCountryCode();
                 if (TextUtils.isEmpty(countryCode)) {
-                    fireCallback(mContext.getString(R.string.authing_invalid_phone_country_code));
-                    return false;
+                    showError(phoneNumberEditText, mContext.getString(R.string.authing_phone_country_code_empty));
+                    showError = true;
                 }
             }
 
-            PhoneNumberEditText phoneNumberEditText = (PhoneNumberEditText)phoneNumberET;
             if (!phoneNumberEditText.isContentValid()) {
-                fireCallback(mContext.getString(R.string.authing_invalid_phone_number));
-                return false;
+                showError(phoneNumberEditText, mContext.getString(R.string.authing_phone_number_empty));
+                showError = true;
             }
 
             final String phone = phoneNumberEditText.getText().toString();
-            final String code = ((VerifyCodeEditText) phoneCodeET).getText().toString();
+            VerifyCodeEditText verifyCodeEditText = ((VerifyCodeEditText) phoneCodeET);
+            final String code = verifyCodeEditText.getText().toString();
             if (TextUtils.isEmpty(code)) {
-                fireCallback(mContext.getString(R.string.authing_incorrect_verify_code));
+                showError(verifyCodeEditText, mContext.getString(R.string.authing_verify_code_empty));
+                showError = true;
+            }
+
+            if (showError){
                 return false;
             }
 
@@ -82,6 +87,7 @@ public class PhoneCodeLoginHandler extends AbsLoginHandler{
     }
 
     private void loginByPhoneCode(String phoneCountryCode, String phone, String verifyCode) {
+        clearError();
         if (getAuthProtocol() == AuthContainer.AuthProtocol.EInHouse) {
             AuthClient.loginByPhoneCode(phoneCountryCode, phone, verifyCode, this::fireCallback);
         } else if (getAuthProtocol() == AuthContainer.AuthProtocol.EOIDC) {

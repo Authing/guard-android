@@ -25,10 +25,22 @@ public class AccountLoginHandler extends AbsLoginHandler {
         View passwordET = Util.findViewByClass(loginButton, PasswordEditText.class);
         if (accountET != null && accountET.isShown()
                 && passwordET != null && passwordET.isShown()) {
-            final String account = ((AccountEditText) accountET).getText().toString();
-            final String password = ((PasswordEditText) passwordET).getText().toString();
-            if (TextUtils.isEmpty(account) || TextUtils.isEmpty(password)) {
-                fireCallback(accountET.getContext().getString(R.string.authing_account_or_password_empty));
+            boolean showError = false;
+            AccountEditText accountEditText = ((AccountEditText) accountET);
+            final String account = accountEditText.getText().toString();
+            if (TextUtils.isEmpty(account)) {
+                showError(accountEditText, mContext.getString(R.string.authing_account_empty));
+                showError = true;
+            }
+
+            PasswordEditText passwordEditText = ((PasswordEditText) passwordET);
+            final String password = passwordEditText.getText().toString();
+            if (TextUtils.isEmpty(password)) {
+                showError(passwordEditText, mContext.getString(R.string.authing_password_empty));
+                showError = true;
+            }
+
+            if (showError){
                 return false;
             }
 
@@ -40,6 +52,7 @@ public class AccountLoginHandler extends AbsLoginHandler {
     }
 
     private void loginByAccount(String account, String password) {
+        clearError();
         if (getAuthProtocol() == AuthContainer.AuthProtocol.EInHouse) {
             AuthClient.loginByAccount(account, password, this::fireCallback);
         } else if (getAuthProtocol() == AuthContainer.AuthProtocol.EOIDC) {

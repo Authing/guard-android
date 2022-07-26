@@ -5,7 +5,6 @@ import android.content.Context;
 import android.net.Uri;
 import android.util.AttributeSet;
 import android.view.View;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -22,6 +21,7 @@ import cn.authing.guard.analyze.Analyzer;
 import cn.authing.guard.internal.PrimaryButton;
 import cn.authing.guard.network.FeedbackClient;
 import cn.authing.guard.network.Uploader;
+import cn.authing.guard.util.ToastUtil;
 import cn.authing.guard.util.Util;
 
 public class FeedbackSubmitButton extends PrimaryButton {
@@ -65,7 +65,7 @@ public class FeedbackSubmitButton extends PrimaryButton {
         v = Util.findViewByClass(this, FeedbackDescriptionEditText.class);
         if (v != null) {
             FeedbackDescriptionEditText et = (FeedbackDescriptionEditText)v;
-            des = et.getText().toString();
+            des = et.getText();
         }
 
         List<Uri> uriList = null;
@@ -122,7 +122,7 @@ public class FeedbackSubmitButton extends PrimaryButton {
         FeedbackClient.feedback(contact, type, des, images, ((ok, data) -> {
             stopLoadingVisualEffect();
             if (ok) {
-                post(()->Toast.makeText(getContext(), getContext().getString(R.string.authing_submit_success), Toast.LENGTH_SHORT).show());
+                post(()-> ToastUtil.showTop(getContext(), getContext().getString(R.string.authing_submit_success)));
                 postDelayed(() -> {
                     Activity activity = (Activity) getContext();
                     activity.finish();
