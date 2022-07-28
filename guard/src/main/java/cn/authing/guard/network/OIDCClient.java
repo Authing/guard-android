@@ -4,7 +4,6 @@ import org.jetbrains.annotations.NotNull;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.Objects;
 
@@ -132,8 +131,8 @@ public class OIDCClient {
                         .add("code", code)
                         .add("scope", authRequest.getScope())
                         .add("prompt", "consent")
-                        .add(secret == null ? "code_verifier=" : "client_secret", secret == null ? authRequest.getCodeVerifier() : secret)
-                        .add("redirect_uri", URLEncoder.encode(authRequest.getRedirectURL(), "utf-8"))
+                        .add(secret == null ? "code_verifier" : "client_secret", secret == null ? authRequest.getCodeVerifier() : secret)
+                        .add("redirect_uri", authRequest.getRedirectURL())
                         .build();
                 Guardian.authRequest(url, "post", formBody, (data)-> {
                     ALog.d(TAG, "authByCode cost:" + (System.currentTimeMillis() - now) + "ms");
@@ -168,8 +167,8 @@ public class OIDCClient {
                         .add("token", token)
                         .add("scope", authRequest.getScope())
                         .add("prompt", "consent")
-                        .add(secret == null ? "code_verifier=" : "client_secret", secret == null ? authRequest.getCodeVerifier() : secret)
-                        .add("redirect_uri", URLEncoder.encode(authRequest.getRedirectURL(), "utf-8"))
+                        .add(secret == null ? "code_verifier" : "client_secret", secret == null ? authRequest.getCodeVerifier() : secret)
+                        .add("redirect_uri", authRequest.getRedirectURL())
                         .build();
                 Guardian.authRequest(url, "post", formBody, (data)-> {
                     ALog.d(TAG, "authByToken cost:" + (System.currentTimeMillis() - now) + "ms");
@@ -247,7 +246,7 @@ public class OIDCClient {
                         .add("client_id",Authing.getAppId())
                         .add("grant_type", "refresh_token")
                         .add("refresh_token", refreshToken)
-                        .add(secret == null ? "code_verifier=" : "client_secret", secret == null ? authRequest.getCodeVerifier() : secret)
+                        .add(secret == null ? "code_verifier" : "client_secret", secret == null ? authRequest.getCodeVerifier() : secret)
                         .build();
                 Guardian.authRequest(url, "post", formBody, (data)-> {
                     if (data.getCode() == 200) {
