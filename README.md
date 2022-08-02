@@ -4,8 +4,10 @@
   <img width="250" src="https://files.authing.co/authing-console/authing-logo-new-20210924.svg" />
 </div>
 
-<a href="https://forum.authing.cn/" target="_blank"><img src="https://img.shields.io/badge/chat-forum-blue" /></a>
-<a href="https://opensource.org/licenses/MIT" target="_blank"><img src="https://img.shields.io/badge/License-MIT-success" alt="License"></a>
+<div align="center">
+    <a href="https://forum.authing.cn/" target="_blank"><img src="https://img.shields.io/badge/chat-forum-blue" /></a>
+    <a href="https://opensource.org/licenses/MIT" target="_blank"><img src="https://img.shields.io/badge/License-MIT-success" alt="License"></a>
+</div>
 
 **English** | [简体中文](./README.zh-CN.md)
 
@@ -15,7 +17,7 @@ You can quickly build user login authentication capabilities using the Authing G
 
 ## Sample
 
-<img src="https://cdn.authing.co/authing-docs-v2/1.3.88/assets/img/standard.fd9833cd.png" alt="drawing" style="zoom: 33%;" />
+<img src="https://cdn.authing.co/authing-docs-v2/1.3.88/assets/img/standard.fd9833cd.png" alt="drawing" width="280" />
 
 ## Documentation
 

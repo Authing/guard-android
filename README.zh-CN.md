@@ -3,8 +3,11 @@
 <div align=center>
   <img width="250" src="https://files.authing.co/authing-console/authing-logo-new-20210924.svg" />
 </div>
-<a href="https://forum.authing.cn/" target="_blank"><img src="https://img.shields.io/badge/chat-forum-blue" /></a>
-<a href="https://opensource.org/licenses/MIT" target="_blank"><img src="https://img.shields.io/badge/License-MIT-success" alt="License"></a>
+
+<div align="center">
+    <a href="https://forum.authing.cn/" target="_blank"><img src="https://img.shields.io/badge/chat-forum-blue" /></a>
+    <a href="https://opensource.org/licenses/MIT" target="_blank"><img src="https://img.shields.io/badge/License-MIT-success" alt="License"></a>
+</div>
 
 **简体中文** | [English](./README.md)
 
@@ -14,7 +17,7 @@
 
 ## 示例
 
-<img src="https://cdn.authing.co/authing-docs-v2/1.3.88/assets/img/standard.dcf76c7c.png" alt="drawing" style="zoom: 33%;" />
+<img src="https://cdn.authing.co/authing-docs-v2/1.3.88/assets/img/standard.dcf76c7c.png" alt="drawing" width="280" />
 
 ## 参考文档
 
