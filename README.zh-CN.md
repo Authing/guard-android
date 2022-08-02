@@ -14,7 +14,7 @@
 
 ## 示例
 
-<img src="https://cdn.authing.co/authing-docs-v2/1.3.88/assets/img/standard.dcf76c7c.png" alt="drawing" style="zoom:50%;" />
+<img src="https://cdn.authing.co/authing-docs-v2/1.3.88/assets/img/standard.dcf76c7c.png" alt="drawing" style="zoom: 33%;" />
 
 ## 参考文档
 

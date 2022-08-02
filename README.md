@@ -15,7 +15,7 @@ You can quickly build user login authentication capabilities using the Authing G
 
 ## Sample
 
-<img src="https://cdn.authing.co/authing-docs-v2/1.3.88/assets/img/standard.fd9833cd.png" alt="drawing" style="zoom:50%;" />
+<img src="https://cdn.authing.co/authing-docs-v2/1.3.88/assets/img/standard.fd9833cd.png" alt="drawing" style="zoom: 33%;" />
 
 ## Documentation
 
