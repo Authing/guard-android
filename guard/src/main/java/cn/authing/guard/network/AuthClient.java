@@ -363,6 +363,27 @@ public class AuthClient {
         });
     }
 
+    public static void loginByWecomAgency(String authCode, @NotNull AuthCallback<UserInfo> callback) {
+        loginByWecomAgency(null, authCode, callback);
+    }
+
+    public static void loginByWecomAgency(AuthRequest authData, String authCode, @NotNull AuthCallback<UserInfo> callback) {
+        Authing.getPublicConfig(config -> {
+            try {
+                JSONObject body = new JSONObject();
+                body.put("connId", config.getSocialConnectionId(Const.EC_TYPE_WECHAT_COM_AGENCY));
+                body.put("code", authCode);
+                String endpoint = "/api/v2/ecConn/wechat-work-agency/authByCode";
+                Guardian.post(endpoint, body, (data)-> {
+                    startOidcInteraction(authData, data, callback);
+                });
+            } catch (Exception e) {
+                e.printStackTrace();
+                callback.call(500, "Exception", null);
+            }
+        });
+    }
+
     public static void loginByAlipay(String authCode, @NotNull AuthCallback<UserInfo> callback) {
         loginByAlipay(null, authCode, callback);
     }

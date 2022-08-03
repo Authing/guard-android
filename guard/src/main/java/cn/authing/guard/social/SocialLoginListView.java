@@ -56,17 +56,7 @@ public class SocialLoginListView extends LinearLayout {
                 List<SocialConfig> socialConfigs = config.getSocialConfigs();
                 for (int i = 0, n = socialConfigs.size();i < n;++i) {
                     SocialConfig sc = socialConfigs.get(i);
-                    String type = sc.getType();
-                    if ("wechat:mobile".equals(type)) {
-                        sb.append("wechat");
-                    } else if ("alipay".equals(type)) {
-                        sb.append("alipay");
-                    } else if (Const.EC_TYPE_WECHAT_COM.equals(type)) {
-                        sb.append("wecom");
-                    } else if (Const.EC_TYPE_LARK_INTERNAL.equals(type)
-                            || Const.EC_TYPE_LARK_PUBLIC.equals(type)) {
-                        sb.append("lark");
-                    }
+                    sb.append(sc.getType());
                     if (i < n - 1) {
                         sb.append("|");
                     }
@@ -82,20 +72,23 @@ public class SocialLoginListView extends LinearLayout {
         removeAllViews();
         String[] sources = s.split("\\|");
         for (String source : sources) {
-            String src = source.trim();
+            String type = source.trim();
 
             SocialLoginButton button = null;
-            switch (src) {
-                case "wechat":
+            switch (type) {
+                case Const.EC_TYPE_WECHAT:
                     button = new WechatLoginButton(context);
                     break;
-                case "alipay":
+                case Const.EC_TYPE_ALIPAY:
                     button = new AlipayLoginButton(context);
                     break;
-                case "wecom":
+                case Const.EC_TYPE_WECHAT_COM:
+                case Const.EC_TYPE_WECHAT_COM_AGENCY:
                     button = new WeComLoginButton(context);
+                    button.setType(type);
                     break;
-                case "lark":
+                case Const.EC_TYPE_LARK_INTERNAL:
+                case Const.EC_TYPE_LARK_PUBLIC:
                     button = new LarkLoginButton(context);
                     break;
             }

@@ -17,7 +17,7 @@ public class WeComLoginButton extends SocialLoginButton {
 
     @Override
     protected SocialAuthenticator createAuthenticator() {
-        return new WeCom();
+        return new WeCom(type);
     }
 
     public WeComLoginButton(@NonNull Context context, @Nullable AttributeSet attrs) {

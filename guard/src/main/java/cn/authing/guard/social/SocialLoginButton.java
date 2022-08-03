@@ -23,6 +23,7 @@ public abstract class SocialLoginButton extends androidx.appcompat.widget.AppCom
     protected SocialAuthenticator authenticator;
     protected AuthCallback<UserInfo> callback;
     protected AnimatedVectorDrawable backgroundDrawable;
+    protected String type;
 
     public SocialLoginButton(Context context) {
         this(context, null);
@@ -62,7 +63,7 @@ public abstract class SocialLoginButton extends androidx.appcompat.widget.AppCom
 
     public SocialLoginButton(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        authenticator = createAuthenticator();
+
         if (attrs == null || attrs.getAttributeValue(NS_ANDROID, "background") == null) {
             setBackgroundResource(R.drawable.ic_authing_circle);
         }
@@ -73,9 +74,10 @@ public abstract class SocialLoginButton extends androidx.appcompat.widget.AppCom
             }
             setBackground(backgroundDrawable);
             backgroundDrawable.start();
-            if (authenticator != null) {
-                authenticator.login(context, this::loginDone);
+            if (authenticator == null){
+                authenticator = createAuthenticator();
             }
+            authenticator.login(context, this::loginDone);
         }));
     }
 
@@ -90,5 +92,9 @@ public abstract class SocialLoginButton extends androidx.appcompat.widget.AppCom
 
     public void setOnLoginListener(AuthCallback<UserInfo> callback) {
         this.callback = callback;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 }

@@ -111,6 +111,10 @@ public class OIDCClient {
         AuthClient.loginByWecom(authRequest, authCode, callback);
     }
 
+    public void loginByWecomAgency(String authCode, @NotNull AuthCallback<UserInfo> callback) {
+        AuthClient.loginByWecomAgency(authRequest, authCode, callback);
+    }
+
     public void loginByAlipay(String authCode, @NotNull AuthCallback<UserInfo> callback) {
         AuthClient.loginByAlipay(authRequest, authCode, callback);
     }
