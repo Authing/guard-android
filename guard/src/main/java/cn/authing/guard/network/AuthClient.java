@@ -11,6 +11,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.InputStream;
+import java.net.URLEncoder;
 import java.util.Iterator;
 import java.util.List;
 
@@ -953,6 +954,18 @@ public class AuthClient {
         }
     }
 
+    public static void cancelByScannedTicket(String ticket, @NotNull AuthCallback<JSONObject> callback) {
+        try {
+            String endpoint = "/api/v2/qrcode/cancel";
+            JSONObject body = new JSONObject();
+            body.put("random", ticket);
+            Guardian.post(endpoint, body, (data)-> callback.call(data.getCode(), data.getMessage(), data.getData()));
+        } catch (Exception e) {
+            e.printStackTrace();
+            callback.call(500, "Exception", null);
+        }
+    }
+
     public static void createUserInfoFromResponse(Response data, @NotNull AuthCallback<UserInfo> callback) {
         createUserInfoFromResponse(new UserInfo(), data, callback);
     }
@@ -988,6 +1001,27 @@ public class AuthClient {
         } catch (JSONException e) {
             e.printStackTrace();
             callback.call(500, "Cannot parse data into UserInfo", null);
+        }
+    }
+
+    public static void checkPassword(String password, @NotNull AuthCallback<JSONObject> callback) {
+        try {
+            String encryptPassword = URLEncoder.encode(Util.encryptPassword(password), "UTF-8");
+            String endpoint = "/api/v2/users/password/check?password=" + encryptPassword;
+            Guardian.get(endpoint, (data)-> callback.call(data.getCode(), data.getMessage(), data.getData()));
+        } catch (Exception e) {
+            e.printStackTrace();
+            callback.call(500, "Exception", null);
+        }
+    }
+
+    public static void checkAccount(String paramsName, String paramsValue, @NotNull AuthCallback<JSONObject> callback) {
+        try {
+            String endpoint = "/api/v2/users/is-user-exists?" + paramsName +"=" + paramsValue;
+            Guardian.get(endpoint, (data)-> callback.call(data.getCode(), data.getMessage(), data.getData()));
+        } catch (Exception e) {
+            e.printStackTrace();
+            callback.call(500, "Exception", null);
         }
     }
 
