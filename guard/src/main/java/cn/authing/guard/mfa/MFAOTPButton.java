@@ -3,7 +3,6 @@ package cn.authing.guard.mfa;
 import static cn.authing.guard.util.Const.NS_ANDROID;
 
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Color;
 import android.util.AttributeSet;
 import android.view.View;
@@ -11,18 +10,15 @@ import android.view.View;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import org.json.JSONException;
-
 import cn.authing.guard.R;
 import cn.authing.guard.VerifyCodeEditText;
 import cn.authing.guard.activity.AuthActivity;
 import cn.authing.guard.analyze.Analyzer;
 import cn.authing.guard.data.UserInfo;
-import cn.authing.guard.internal.LoadingButton;
 import cn.authing.guard.network.AuthClient;
 import cn.authing.guard.util.Util;
 
-public class MFAOTPButton extends LoadingButton implements AuthActivity.EventListener {
+public class MFAOTPButton extends MFABaseButton implements AuthActivity.EventListener {
 
     public MFAOTPButton(@NonNull Context context) {
         this(context, null);
@@ -71,15 +67,7 @@ public class MFAOTPButton extends LoadingButton implements AuthActivity.EventLis
     private void mfaDone(int code, String message, UserInfo userInfo) {
         stopLoadingVisualEffect();
         if (code == 200) {
-            try {
-                AuthActivity activity = (AuthActivity) getContext();
-                Intent intent = new Intent();
-                intent.putExtra("user", userInfo);
-                activity.setResult(AuthActivity.OK, intent);
-                activity.finish();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+            mfaOk(code, message, userInfo);
         } else {
             Util.setErrorText(this, message);
         }
