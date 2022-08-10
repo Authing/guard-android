@@ -348,6 +348,18 @@ public class Util {
         return !Util.isNull(lang) && lang.contains("zh");
     }
 
+    public static String getAppLanguage() {
+        String country = Locale.getDefault().getCountry();
+        if ("TW".equals(country)) {
+            return "zh-TW";
+        } else if("US".equals(country)) {
+            return "en-US";
+        } else if("JP".equals(country)) {
+            return "JP";
+        }
+        return "zh-CN";
+    }
+
     public static String getLangHeader() {
         String lang = Locale.getDefault().getLanguage();
         return (!Util.isNull(lang) && lang.contains("zh")) ? "zh-CN" : "en-US";

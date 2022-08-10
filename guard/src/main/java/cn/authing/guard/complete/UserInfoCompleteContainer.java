@@ -9,14 +9,19 @@ import android.widget.LinearLayout;
 
 import androidx.annotation.Nullable;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.List;
 
+import cn.authing.guard.Authing;
 import cn.authing.guard.MandatoryField;
 import cn.authing.guard.activity.AuthActivity;
 import cn.authing.guard.analyze.Analyzer;
 import cn.authing.guard.data.ExtendedField;
 import cn.authing.guard.flow.AuthFlow;
+import cn.authing.guard.util.Util;
 
 public class UserInfoCompleteContainer extends LinearLayout {
     public UserInfoCompleteContainer(Context context) {
@@ -89,9 +94,40 @@ public class UserInfoCompleteContainer extends LinearLayout {
             if (!field.isRequired()) {
                 label.setAsteriskPosition(0);
             }
-            label.setMandatoryText(field.getLabel());
+            setLabelName(label, field);
         }
         return view;
+    }
+
+    private void setLabelName(MandatoryField label, ExtendedField field){
+        label.setMandatoryText(field.getLabel());
+        String name = field.getName();
+        if (Util.isNull(name)){
+            return;
+        }
+
+        String language = Util.getAppLanguage();
+        Authing.getPublicConfig(config -> {
+            JSONObject extendedFieldsI18n = config.getExtendedFieldsI18n();
+            if (extendedFieldsI18n == null){
+                return;
+            }
+            if (extendedFieldsI18n.has(name)){
+                try {
+                    JSONObject nameObj = extendedFieldsI18n.getJSONObject(name);
+                    if (nameObj.has(language)){
+                        JSONObject languageObj = nameObj.getJSONObject(language);
+                        boolean enabled = languageObj.getBoolean("enabled");
+                        if (enabled){
+                            label.setMandatoryText(languageObj.getString("value"));
+                        }
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
     }
 
     public List<ExtendedField> getValues() {

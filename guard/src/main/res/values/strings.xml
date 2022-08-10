@@ -3,12 +3,12 @@
     <string name="authing_username">User Name</string>
     <string name="authing_email">Email</string>
     <string name="authing_phone">Phone</string>
-    <string name="authing_password_edit_text_hint">Please input password</string>
+    <string name="authing_password_edit_text_hint">Enter password</string>
     <string name="authing_password_confirm_edit_text_hint">Confirm password</string>
     <string name="authing_login">Login</string>
-    <string name="authing_verify_code_edit_text_hint">Please input verify code</string>
-    <string name="authing_captcha_code_edit_text_hint">Please input captcha code</string>
-    <string name="authing_get_verify_code">Get Verify Code</string>
+    <string name="authing_verify_code_edit_text_hint">Enter verify code</string>
+    <string name="authing_captcha_code_edit_text_hint">Enter captcha code</string>
+    <string name="authing_get_verify_code">Send Code</string>
     <string name="authing_login_by_account_and_password">Login by account and password</string>
     <string name="authing_login_by_phone_and_verify_code">Login by SMS code</string>
     <string name="authing_resend_after">Re-send after %1$d seconds</string>
@@ -23,7 +23,7 @@
     <string name="authing_go_login">Sign In Instead</string>
     <string name="authing_tip_no_account">No account?</string>
     <string name="authing_register_now">Sign up Now</string>
-    <string name="authing_3rd_login">Continue with</string>
+    <string name="authing_3rd_login">COr sign in with</string>
     <string name="authing_forgot_password">Forgot password?</string>
     <string name="authing_find_password_back">Reset password</string>
     <string name="authing_reset_password">@string/authing_find_password_back</string>
@@ -35,7 +35,7 @@
     <string name="authing_unbind">Unbind</string>
     <string name="authing_bind_email">Bind email</string>
     <string name="authing_bind_email_tip">Verify code will be sent to the email below</string>
-    <string name="authing_input_email_code">Please input email code</string>
+    <string name="authing_input_email_code">Enter email code</string>
     <string name="authing_bind_phone">Bind mobile phone number</string>
     <string name="authing_bind_phone_tip">You have not bound your phone number, please enter your phone number to bind</string>
     <string name="authing_code_sent_to">Code was sent to</string>
@@ -90,18 +90,18 @@
     <string name="authing_developer">Developer</string>
 
     <!--auth issue feedback-->
-    <string name="authing_feedback">Feedback</string>
-    <string name="authing_contact_info">Contact information</string>
-    <string name="authing_related_issue">Related issue</string>
-    <string name="authing_feedback_description">Description</string>
+    <string name="authing_feedback">Need help?</string>
+    <string name="authing_contact_info">Contact</string>
+    <string name="authing_related_issue">Problem</string>
+    <string name="authing_feedback_description">Problem description</string>
     <string name="authing_feedback_screenshot">Screen shot</string>
     <string name="authing_upload_image">Add</string>
     <string name="authing_contact_info_cannot_be_empty">Contact information cannot be empty</string>
-    <string name="authing_cannot_get_verify_code">Cannot get verify code</string>
-    <string name="authing_cannot_login">Cannot login</string>
-    <string name="authing_cannot_register">Cannot register</string>
-    <string name="authing_lost_account">Lost my account</string>
-    <string name="authing_cannot_reset_password">Cannot reset password</string>
+    <string name="authing_cannot_get_verify_code">Unable to receive the verification code</string>
+    <string name="authing_cannot_login">Unable to log in</string>
+    <string name="authing_cannot_register">Unable to register</string>
+    <string name="authing_lost_account">Lost Account</string>
+    <string name="authing_cannot_reset_password">Unable to reset password</string>
     <string name="authing_account_is_locked">Account is locked</string>
     <string name="authing_other">Other</string>
     <string name="authing_submit_success">Submit successfully</string>
