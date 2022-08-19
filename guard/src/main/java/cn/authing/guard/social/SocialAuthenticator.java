@@ -46,4 +46,8 @@ public abstract class SocialAuthenticator {
         AuthFlow flow = (AuthFlow) activity.getIntent().getSerializableExtra(AuthActivity.AUTH_FLOW);
         return flow.getAuthProtocol();
     }
+
+    protected void onDetachedFromWindow() {
+
+    }
 }

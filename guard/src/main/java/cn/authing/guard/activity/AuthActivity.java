@@ -27,6 +27,7 @@ import cn.authing.guard.R;
 import cn.authing.guard.data.UserInfo;
 import cn.authing.guard.flow.AuthFlow;
 import cn.authing.guard.internal.CircularAnimatedView;
+import cn.authing.guard.social.Google;
 import cn.authing.guard.util.Util;
 
 public class AuthActivity extends AppCompatActivity {
@@ -126,7 +127,12 @@ public class AuthActivity extends AppCompatActivity {
             setResult(OK, intent);
             finish();
         }
+        if (requestCode == Google.RC_SIGN_IN && data != null) {
+            data.setAction("cn.authing.guard.broadcast.GOOGLE_LOGIN");
+            sendBroadcast(data);
+        }
     }
+
 
     private void showLoading() {
         if (!Authing.isGettingConfig()) {

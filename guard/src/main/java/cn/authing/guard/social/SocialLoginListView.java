@@ -91,6 +91,9 @@ public class SocialLoginListView extends LinearLayout {
                 case Const.EC_TYPE_LARK_PUBLIC:
                     button = new LarkLoginButton(context);
                     break;
+                case Const.EC_TYPE_GOOGLE:
+                    button = new GoogleLoginButton(context);
+                    break;
             }
 
             if (button == null) {

@@ -429,6 +429,28 @@ public class AuthClient {
         });
     }
 
+    public static void loginByGoogle(String authCode, @NotNull AuthCallback<UserInfo> callback) {
+        loginByGoogle(null, authCode, callback);
+    }
+
+    public static void loginByGoogle(AuthRequest authData, String authCode, @NotNull AuthCallback<UserInfo> callback) {
+        Authing.getPublicConfig(config -> {
+            try {
+                JSONObject body = new JSONObject();
+                String connId = config.getSocialConnectionId(Const.EC_TYPE_GOOGLE);
+                body.put("connId", connId);
+                body.put("code", authCode);
+                String endpoint = "/api/v2/ecConn/google/authByCode";
+                Guardian.post(endpoint, body, (data)-> {
+                    startOidcInteraction(authData, data, callback);
+                });
+            } catch (Exception e) {
+                e.printStackTrace();
+                callback.call(500, "Exception", null);
+            }
+        });
+    }
+
     public static void loginByOneAuth(String token, String accessToken, @NotNull AuthCallback<UserInfo> callback) {
         loginByOneAuth(null, token, accessToken, callback);
     }

@@ -26,6 +26,7 @@ public class Const {
     public static final String EC_TYPE_LARK_INTERNAL = "lark-internal";
     public static final String EC_TYPE_LARK_PUBLIC = "lark-public";
     public static final String EC_TYPE_YI_DUN = "yidun";
+    public static final String EC_TYPE_GOOGLE = "google:mobile";
 
     public static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
     public static final MediaType FORM = MediaType.parse("application/x-www-form-urlencoded; charset=utf-8");

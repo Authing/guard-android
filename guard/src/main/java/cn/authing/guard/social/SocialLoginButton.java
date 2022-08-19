@@ -97,4 +97,12 @@ public abstract class SocialLoginButton extends androidx.appcompat.widget.AppCom
     public void setType(String type) {
         this.type = type;
     }
+
+    @Override
+    protected void onDetachedFromWindow() {
+        super.onDetachedFromWindow();
+        if (authenticator != null){
+            authenticator.onDetachedFromWindow();
+        }
+    }
 }

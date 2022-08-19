@@ -123,6 +123,10 @@ public class OIDCClient {
         AuthClient.loginByLark(authRequest, authCode, callback);
     }
 
+    public void loginByGoogle(String authCode, @NotNull AuthCallback<UserInfo> callback) {
+        AuthClient.loginByGoogle(authRequest, authCode, callback);
+    }
+
     public void authByCode(String code, @NotNull AuthCallback<UserInfo> callback) {
         long now = System.currentTimeMillis();
         Authing.getPublicConfig(config -> {

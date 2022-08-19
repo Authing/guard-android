@@ -37,4 +37,6 @@ dependencies {
     compileOnly files('libs/lib_wwapi-2.0.12.11.aar')
     compileOnly files('libs/alipaysdk.aar')
     compileOnly files ('libs/larksso-3.0.8.aar')
+    compileOnly 'com.google.android.gms:play-services-auth:20.2.0'
+
 }
