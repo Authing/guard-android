@@ -3,13 +3,6 @@ package cn.authing;
 import static cn.authing.guard.activity.AuthActivity.OK;
 import static cn.authing.guard.activity.AuthActivity.RC_LOGIN;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.biometric.BiometricManager;
-import androidx.biometric.BiometricPrompt;
-import androidx.core.content.ContextCompat;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
@@ -17,6 +10,13 @@ import android.view.MenuItem;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.biometric.BiometricManager;
+import androidx.biometric.BiometricPrompt;
+import androidx.core.content.ContextCompat;
 
 import java.util.concurrent.Executor;
 
@@ -59,6 +59,7 @@ public class SampleListActivity extends AppCompatActivity {
             "生物二次验证",
             "Authenticator",
             "Login by push notification",
+            "谷歌登录"
     };
 
     @Override
@@ -70,14 +71,18 @@ public class SampleListActivity extends AppCompatActivity {
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, R.layout.sample_list_item, from);
         listView.setAdapter(adapter);
         listView.setOnItemClickListener((arg0, arg1, arg2, pos) -> {
-            if (pos == 7) {
+            if (pos == 7) {//AppAuth
                 startActivity(AppAuthActivity.class);
                 return;
-            } else if (pos == 12) {
+            } else if (pos == 12) {//扫码登录
                 startActivity(ScanAuthActivity.class);
                 return;
-            } else if (pos == 14) {
+            } else if (pos == 14) {//Authenticator
                 startActivity(AuthenticatorActivity.class);
+                return;
+            }  else if (pos == 16) {//google登录
+                Intent intent = new Intent(SampleListActivity.this, SignInActivity.class);
+                startActivity(intent);
                 return;
             }
 
@@ -85,12 +90,12 @@ public class SampleListActivity extends AppCompatActivity {
                 gotoMain();
                 return;
             }
-            if (pos == AUTHING_LOGIN) {
+            if (pos == AUTHING_LOGIN) {//Authing 标准登录
                 AuthFlow.start(this);
-            } else if (pos == 1) {
+            } else if (pos == 1) {//手机号一键登录（Authing UI）
                 Intent intent = new Intent(SampleListActivity.this, OneClickActivity.class);
                 startActivityForResult(intent, RC_LOGIN);
-            } else if (pos == 2) {
+            } else if (pos == 2) {//手机号一键登录（纯逻辑）
                 OneClick oneClick = new OneClick(SampleListActivity.this);
                 // if you want to return refreshToken、idToken、refreshToken
                 oneClick.setAuthProtocol(AuthContainer.AuthProtocol.EOIDC);
@@ -101,33 +106,33 @@ public class SampleListActivity extends AppCompatActivity {
                         gotoMain(userInfo);
                     }
                 }));
-            } else if (pos == 3) {
+            } else if (pos == 3) {//微信
                 startActivity(WechatAuthActivity.class);
-            } else if (pos == 4) {
+            } else if (pos == 4) {//Theragun
                 startActivity(TheragunAuthActivity.class);
-            } else if (pos == 5) {
+            } else if (pos == 5) {//阿宝说
                 startActivity(AbaoActivity.class);
-            } else if (pos == 6) {
+            } else if (pos == 6) {//Auth Container
                 AuthFlow flow = AuthFlow.start(this);
                 flow.setAuthProtocol(AuthContainer.AuthProtocol.EOIDC);
 //                Intent intent = new Intent(SampleListActivity.this, NissanVirtualKeyAuthActivity.class);
 //                startActivity(intent);
-            } else if (pos == 8) {
+            } else if (pos == 8) {//Authing WebView 登录
                 AuthFlow flow = AuthFlow.startWeb(this);
 //                flow.setScope("openid");
                 flow.setSkipConsent(true);
-            } else if (pos == 9) {
+            } else if (pos == 9) {//Authing 自定义 WebView 登录
                 startActivity(AuthingWebViewActivity.class);
-            } else if (pos == 10) {
+            } else if (pos == 10) {//MFA
                 Authing.init(SampleListActivity.this, "61c173ada0e3aec651b1a1d1");
                 AuthFlow.start(this);
-            } else if (pos == 11) {
+            } else if (pos == 11) {//登录/注册后用户信息完善
                 Authing.init(SampleListActivity.this, "61ae0c9807451d6f30226bd4");
                 AuthFlow.start(this);
-            } else if (pos == 13) {
+            } else if (pos == 13) {//生物二次验证
                 biometric = true;
                 AuthFlow.start(this);
-            } else if (pos == 15) {
+            } else if (pos == 15) {//Login by push notification
                 Intent intent = new Intent(SampleListActivity.this, LoginByPushNotificationActivity.class);
                 startActivityForResult(intent, RC_LOGIN);
             }

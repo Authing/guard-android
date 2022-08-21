@@ -74,4 +74,8 @@ dependencies {
 
     // AppAuth
     implementation 'net.openid:appauth:0.10.0'
+
+    // google
+    implementation 'com.google.android.gms:play-services-auth:20.2.0'
+
 }

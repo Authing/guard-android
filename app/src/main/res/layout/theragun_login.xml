@@ -22,8 +22,7 @@
         android:background="@drawable/edit_text_bg"
         android:layout_width="match_parent"
         android:layout_height="56dp"
-        android:layout_marginTop="24dp"
-        app:hintMode="animated"/>
+        android:layout_marginTop="24dp" />
 
     <cn.authing.guard.ErrorTextView
         android:id="@+id/tv_error"
