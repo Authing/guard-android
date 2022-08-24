@@ -142,6 +142,9 @@
             android:name=".guard.wxapi.WXEntryActivity"
             android:exported="true" />
         <activity android:name=".SignInActivity" />
+        <activity android:name=".ut.UTActivity" />
+        <activity android:name=".ut.UTTestActivity" />
+        <activity android:name=".ut.UTTestAllActivity" />
     </application>
 
 </manifest>

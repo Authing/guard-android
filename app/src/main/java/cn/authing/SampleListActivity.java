@@ -33,6 +33,7 @@ import cn.authing.push.LoginByPushNotificationActivity;
 import cn.authing.push.Push;
 import cn.authing.scan.ScanAuthActivity;
 import cn.authing.theragun.TheragunAuthActivity;
+import cn.authing.ut.UTActivity;
 import cn.authing.webview.AuthingWebViewActivity;
 import cn.authing.wechat.WechatAuthActivity;
 
@@ -59,7 +60,8 @@ public class SampleListActivity extends AppCompatActivity {
             "生物二次验证",
             "Authenticator",
             "Login by push notification",
-            "谷歌登录"
+            "谷歌登录",
+            "场景测试"
     };
 
     @Override
@@ -80,8 +82,12 @@ public class SampleListActivity extends AppCompatActivity {
             } else if (pos == 14) {//Authenticator
                 startActivity(AuthenticatorActivity.class);
                 return;
-            }  else if (pos == 16) {//google登录
+            } else if (pos == 16) {//google登录
                 Intent intent = new Intent(SampleListActivity.this, SignInActivity.class);
+                startActivity(intent);
+                return;
+            } else if (pos == 17) {//google登录
+                Intent intent = new Intent(SampleListActivity.this, UTActivity.class);
                 startActivity(intent);
                 return;
             }
