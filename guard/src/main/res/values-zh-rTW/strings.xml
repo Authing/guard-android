@@ -109,7 +109,7 @@
     <!--error messages-->
     <string name="authing_no_network">無法連接互聯網</string>
     <string name="authing_uninitialized">Guard 未初始化。使用 Guard 前需要調用 Authing.init(your authing appId)</string>
-    <string name="authing_network_exception">網絡異常</string>
+    <string name="authing_network_exception">網路異常</string>
     <string name="authing_password_error_1">至少 6 位</string>
     <string name="authing_password_error_2">至少包含小寫字母</string>
     <string name="authing_password_error_3">至少包含大寫字母</string>

@@ -64,9 +64,13 @@ public class WeCom extends SocialAuthenticator {
                     } else if (rsp.errCode == WWAuthMessage.ERR_OK) {
                         ALog.i(TAG, "Auth onSuccess");
                         login(context, rsp.code, callback);
+                    } else {
+                        ALog.e(TAG, "Auth Failed, resp error");
+                        fireCallback(callback, null);
                     }
                 } else {
                     ALog.e(TAG, "Auth Failed, resp error");
+                    fireCallback(callback, null);
                 }
             });
         });
