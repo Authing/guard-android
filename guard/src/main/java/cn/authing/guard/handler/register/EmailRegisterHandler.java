@@ -4,11 +4,11 @@ import android.text.TextUtils;
 import android.view.View;
 
 import cn.authing.guard.AccountEditText;
+import cn.authing.guard.Authing;
 import cn.authing.guard.PasswordConfirmEditText;
 import cn.authing.guard.PasswordEditText;
 import cn.authing.guard.R;
 import cn.authing.guard.RegisterButton;
-import cn.authing.guard.container.AuthContainer;
 import cn.authing.guard.network.AuthClient;
 import cn.authing.guard.network.OIDCClient;
 import cn.authing.guard.util.ALog;
@@ -54,9 +54,10 @@ public class EmailRegisterHandler extends AbsRegisterHandler {
     }
 
     private void registerByEmail(String email, String password) {
-        if (getAuthProtocol() == AuthContainer.AuthProtocol.EInHouse) {
+        Authing.AuthProtocol authProtocol = getAuthProtocol();
+        if (authProtocol == Authing.AuthProtocol.EInHouse) {
             AuthClient.registerByEmail(email, password, this::fireCallback);
-        } else if (getAuthProtocol() == AuthContainer.AuthProtocol.EOIDC) {
+        } else if (authProtocol == Authing.AuthProtocol.EOIDC) {
             new OIDCClient().registerByEmail(email, password, this::fireCallback);
         }
         ALog.d(TAG, "register by email");

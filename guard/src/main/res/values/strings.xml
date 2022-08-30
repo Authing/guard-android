@@ -23,7 +23,7 @@
     <string name="authing_go_login">Sign In Instead</string>
     <string name="authing_tip_no_account">No account?</string>
     <string name="authing_register_now">Sign up Now</string>
-    <string name="authing_3rd_login">COr sign in with</string>
+    <string name="authing_3rd_login">Or sign in with</string>
     <string name="authing_forgot_password">Forgot password?</string>
     <string name="authing_find_password_back">Reset password</string>
     <string name="authing_reset_password">@string/authing_find_password_back</string>

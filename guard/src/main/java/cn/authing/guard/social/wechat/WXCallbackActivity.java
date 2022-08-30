@@ -12,7 +12,7 @@ import com.tencent.mm.opensdk.openapi.IWXAPIEventHandler;
 import com.tencent.mm.opensdk.openapi.WXAPIFactory;
 
 import cn.authing.guard.AuthCallback;
-import cn.authing.guard.container.AuthContainer;
+import cn.authing.guard.Authing;
 import cn.authing.guard.data.UserInfo;
 import cn.authing.guard.network.AuthClient;
 import cn.authing.guard.network.OIDCClient;
@@ -24,7 +24,6 @@ public class WXCallbackActivity extends AppCompatActivity implements IWXAPIEvent
     public static final String TAG = WXCallbackActivity.class.getSimpleName();
 
     private static AuthCallback<UserInfo> callback;
-    private static AuthContainer.AuthProtocol authProtocol = AuthContainer.AuthProtocol.EInHouse;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,9 +49,10 @@ public class WXCallbackActivity extends AppCompatActivity implements IWXAPIEvent
         switch (resp.errCode) {
             case BaseResp.ErrCode.ERR_OK:
                 ALog.d(TAG, "Got wechat code: " + ((SendAuth.Resp) resp).code);
-                if (authProtocol == AuthContainer.AuthProtocol.EInHouse) {
+                Authing.AuthProtocol authProtocol = Authing.getAuthProtocol();
+                if (authProtocol == Authing.AuthProtocol.EInHouse) {
                     AuthClient.loginByWechat(((SendAuth.Resp) resp).code, callback);
-                } else if (authProtocol == AuthContainer.AuthProtocol.EOIDC) {
+                } else if (authProtocol == Authing.AuthProtocol.EOIDC) {
                     new OIDCClient().loginByWechat(((SendAuth.Resp) resp).code, callback);
                 }
                 break;
@@ -86,7 +86,4 @@ public class WXCallbackActivity extends AppCompatActivity implements IWXAPIEvent
         WXCallbackActivity.callback = callback;
     }
 
-    public static void setAuthProtocol(AuthContainer.AuthProtocol authProtocol) {
-        WXCallbackActivity.authProtocol = authProtocol;
-    }
 }

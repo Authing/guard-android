@@ -9,4 +9,5 @@
     <color name="white">#FFFFFFFF</color>
 
     <color name="wechat_green">#FF57be69</color>
+    <color name="item_text">#FF000000</color>
 </resources>

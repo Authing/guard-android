@@ -34,6 +34,11 @@ public class Authing {
     private static Config publicConfig;
     private static final Queue<Config.ConfigCallback> listeners = new ConcurrentLinkedQueue<>();
     private static UserInfo sCurrentUser;
+    private static AuthProtocol authProtocol = AuthProtocol.EInHouse;
+
+    public static AuthProtocol getAuthProtocol() {
+        return Authing.authProtocol;
+    }
 
     public static void init(final Context context, String appId) {
         sAppContext = context.getApplicationContext();
@@ -67,6 +72,15 @@ public class Authing {
 
     public static void setPublicKey(String publicKey) {
         Authing.sPublicKey = publicKey;
+    }
+
+    public static void setAuthProtocol(AuthProtocol authProtocol) {
+        Authing.authProtocol = authProtocol;
+    }
+
+    public enum AuthProtocol {
+        EInHouse,
+        EOIDC
     }
 
     public static void setOnPremiseInfo(String host, String publicKey) {

@@ -1,6 +1,8 @@
 package cn.authing.guard.social;
 
 import android.content.Context;
+import android.text.TextUtils;
+
 import androidx.annotation.NonNull;
 
 import com.tencent.wework.api.IWWAPI;
@@ -31,7 +33,11 @@ public class WeCom extends SocialAuthenticator {
     }
 
     public WeCom(String type) {
-        this.type = type;
+        if (!TextUtils.isEmpty(type) && "wecom-agency".equals(type)) {
+            this.type = Const.EC_TYPE_WECHAT_COM_AGENCY;
+        } else {
+            this.type = Const.EC_TYPE_WECHAT_COM;
+        }
     }
 
     @Override

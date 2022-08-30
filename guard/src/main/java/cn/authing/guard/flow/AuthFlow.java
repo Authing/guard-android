@@ -14,7 +14,6 @@ import cn.authing.guard.R;
 import cn.authing.guard.activity.AuthActivity;
 import cn.authing.guard.activity.IndexAuthActivity;
 import cn.authing.guard.activity.UserProfileActivity;
-import cn.authing.guard.container.AuthContainer;
 import cn.authing.guard.data.UserInfo;
 
 public class AuthFlow implements Serializable {
@@ -59,7 +58,7 @@ public class AuthFlow implements Serializable {
 
     private int resetPasswordFirstLoginLayoutId;
 
-    private AuthContainer.AuthProtocol authProtocol = AuthContainer.AuthProtocol.EInHouse;
+    //private AuthContainer.AuthProtocol authProtocol = AuthContainer.AuthProtocol.EInHouse;
     private String scope = "openid profile email phone username address offline_access role extended_fields";
     private boolean skipConsent;
     // save confirmed data across Guard. e.g. Phone Number, Email
@@ -367,14 +366,6 @@ public class AuthFlow implements Serializable {
     public AuthFlow setAuthCallback(Callback<UserInfo> authCallback) {
         this.authCallback = authCallback;
         return this;
-    }
-
-    public AuthContainer.AuthProtocol getAuthProtocol() {
-        return authProtocol;
-    }
-
-    public void setAuthProtocol(AuthContainer.AuthProtocol authProtocol) {
-        this.authProtocol = authProtocol;
     }
 
     public String getScope() {

@@ -48,15 +48,15 @@ public class SocialLoginListView extends LinearLayout {
         array.recycle();
 
         if ("auto".equals(src)) {
-            StringBuilder sb = new StringBuilder();
             Authing.getPublicConfig((config -> {
                 if (config == null) {
                     return;
                 }
+                StringBuilder sb = new StringBuilder();
                 List<SocialConfig> socialConfigs = config.getSocialConfigs();
-                for (int i = 0, n = socialConfigs.size();i < n;++i) {
+                for (int i = 0, n = socialConfigs.size(); i < n; ++i) {
                     SocialConfig sc = socialConfigs.get(i);
-                    sb.append(sc.getType());
+                    parsSource(sb, sc);
                     if (i < n - 1) {
                         sb.append("|");
                     }
@@ -68,6 +68,24 @@ public class SocialLoginListView extends LinearLayout {
         }
     }
 
+    private void parsSource(StringBuilder sb, SocialConfig sc){
+        String type = sc.getType();
+        if (Const.EC_TYPE_WECHAT.equals(type)) {
+            sb.append("wechat");
+        } else if (Const.EC_TYPE_ALIPAY.equals(type)) {
+            sb.append("alipay");
+        } else if (Const.EC_TYPE_WECHAT_COM.equals(type)) {
+            sb.append("wecom");
+        } else if (Const.EC_TYPE_WECHAT_COM_AGENCY.equals(type)) {
+            sb.append("wecom-agency");
+        } else if (Const.EC_TYPE_LARK_INTERNAL.equals(type)
+                || Const.EC_TYPE_LARK_PUBLIC.equals(type)) {
+            sb.append("lark");
+        } else if (Const.EC_TYPE_GOOGLE.equals(type)) {
+            sb.append("google");
+        }
+    }
+
     private void setup(Context context, String s) {
         removeAllViews();
         String[] sources = s.split("\\|");
@@ -76,22 +94,21 @@ public class SocialLoginListView extends LinearLayout {
 
             SocialLoginButton button = null;
             switch (type) {
-                case Const.EC_TYPE_WECHAT:
+                case "wechat":
                     button = new WechatLoginButton(context);
                     break;
-                case Const.EC_TYPE_ALIPAY:
+                case "alipay":
                     button = new AlipayLoginButton(context);
                     break;
-                case Const.EC_TYPE_WECHAT_COM:
-                case Const.EC_TYPE_WECHAT_COM_AGENCY:
+                case "wecom":
+                case "wecom-agency":
                     button = new WeComLoginButton(context);
                     button.setType(type);
                     break;
-                case Const.EC_TYPE_LARK_INTERNAL:
-                case Const.EC_TYPE_LARK_PUBLIC:
+                case "lark":
                     button = new LarkLoginButton(context);
                     break;
-                case Const.EC_TYPE_GOOGLE:
+                case "google":
                     button = new GoogleLoginButton(context);
                     break;
             }
@@ -117,4 +134,5 @@ public class SocialLoginListView extends LinearLayout {
             }
         }
     }
+
 }

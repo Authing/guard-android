@@ -4,9 +4,9 @@ import android.text.TextUtils;
 import android.view.View;
 
 import cn.authing.guard.AccountEditText;
+import cn.authing.guard.Authing;
 import cn.authing.guard.RegisterButton;
 import cn.authing.guard.VerifyCodeEditText;
-import cn.authing.guard.container.AuthContainer;
 import cn.authing.guard.network.AuthClient;
 import cn.authing.guard.network.OIDCClient;
 import cn.authing.guard.util.ALog;
@@ -41,9 +41,10 @@ public class EmailCodeRegisterHandler extends AbsRegisterHandler {
     }
 
     private void registerByEmailCode(String email, String verifyCode) {
-        if (getAuthProtocol() == AuthContainer.AuthProtocol.EInHouse) {
+        Authing.AuthProtocol authProtocol = getAuthProtocol();
+        if (authProtocol == Authing.AuthProtocol.EInHouse) {
             AuthClient.registerByEmailCode(email, verifyCode, this::fireCallback);
-        } else if (getAuthProtocol() == AuthContainer.AuthProtocol.EOIDC) {
+        } else if (authProtocol == Authing.AuthProtocol.EOIDC) {
             new OIDCClient().registerByEmailCode(email, verifyCode, this::fireCallback);
         }
         ALog.d(TAG, "register by email code");

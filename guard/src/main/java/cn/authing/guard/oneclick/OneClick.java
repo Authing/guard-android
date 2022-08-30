@@ -31,7 +31,6 @@ import java.io.Serializable;
 import cn.authing.guard.AuthCallback;
 import cn.authing.guard.Authing;
 import cn.authing.guard.R;
-import cn.authing.guard.container.AuthContainer;
 import cn.authing.guard.data.ImageLoader;
 import cn.authing.guard.data.UserInfo;
 import cn.authing.guard.flow.AuthFlow;
@@ -150,9 +149,10 @@ public class OneClick extends SocialAuthenticator implements Serializable {
     }
 
     private void authingLogin(String t, String ac) {
-        if (getAuthProtocol() == AuthContainer.AuthProtocol.EInHouse) {
+        Authing.AuthProtocol authProtocol = getAuthProtocol();
+        if (authProtocol == Authing.AuthProtocol.EInHouse) {
             AuthClient.loginByOneAuth(t, ac, this::fireCallback);
-        } else if (getAuthProtocol() == AuthContainer.AuthProtocol.EOIDC) {
+        } else if (authProtocol == Authing.AuthProtocol.EOIDC) {
             new OIDCClient().loginByOneAuth(t, ac, this::fireCallback);
         }
     }

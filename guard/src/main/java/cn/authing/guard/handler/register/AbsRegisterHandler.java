@@ -3,12 +3,10 @@ package cn.authing.guard.handler.register;
 import android.content.Context;
 
 import cn.authing.guard.RegisterButton;
-import cn.authing.guard.activity.AuthActivity;
-import cn.authing.guard.container.AuthContainer;
 import cn.authing.guard.data.UserInfo;
-import cn.authing.guard.flow.AuthFlow;
+import cn.authing.guard.handler.BaseHandler;
 
-public abstract class AbsRegisterHandler {
+public abstract class AbsRegisterHandler extends BaseHandler {
 
     protected static final String TAG = AbsRegisterHandler.class.getSimpleName();
     protected AbsRegisterHandler mNextHandler;
@@ -26,8 +24,8 @@ public abstract class AbsRegisterHandler {
         mNextHandler = loginHandler;
     }
 
-    protected void requestRegister(){
-        if (!register() && null != mNextHandler){
+    protected void requestRegister() {
+        if (!register() && null != mNextHandler) {
             mNextHandler.requestRegister();
         }
     }
@@ -39,19 +37,9 @@ public abstract class AbsRegisterHandler {
     }
 
     protected void fireCallback(int code, String message, UserInfo userInfo) {
-        if (null != mCallBack){
+        if (null != mCallBack) {
             mCallBack.callback(code, message, userInfo);
         }
-    }
-
-    protected AuthContainer.AuthProtocol getAuthProtocol() {
-        if (!(mContext instanceof AuthActivity)) {
-            return AuthContainer.AuthProtocol.EInHouse;
-        }
-
-        AuthActivity activity = (AuthActivity) mContext;
-        AuthFlow flow = (AuthFlow) activity.getIntent().getSerializableExtra(AuthActivity.AUTH_FLOW);
-        return flow.getAuthProtocol();
     }
 
 }
