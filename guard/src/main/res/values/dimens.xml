@@ -8,4 +8,8 @@
     <dimen name="authing_image_picker_add_size">32dp</dimen>
     <dimen name="authing_des_text_size">12sp</dimen>
     <dimen name="authing_title_text_size">24sp</dimen>
+    <dimen name="authing_text_small_size">12sp</dimen>
+    <dimen name="authing_text_middle_size">14sp</dimen>
+    <dimen name="authing_text_large_size">16sp</dimen>
+    <dimen name="authing_edit_text_height">48dp</dimen>
 </resources>

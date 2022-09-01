@@ -7,4 +7,6 @@
     <color name="authing_button_disabled">#FF92AAF3</color>
     <color name="authing_background">#FFF0F0F0</color>
     <color name="authing_status_bar_bg">#FFFFFFFF</color>
+    <color name="authing_text_gray">#86909C</color>
+    <color name="authing_text_black">#1D2129</color>
 </resources>

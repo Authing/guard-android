@@ -3,6 +3,7 @@
     <string name="authing_username">帳號</string>
     <string name="authing_email">電子郵件</string>
     <string name="authing_phone">手機號碼</string>
+    <string name="authing_email_edit_text_hint">请输入邮箱</string>
     <string name="authing_password_edit_text_hint">請輸入密碼</string>
     <string name="authing_password_confirm_edit_text_hint">請再次輸入密碼</string>
     <string name="authing_login">登入</string>
@@ -69,6 +70,8 @@
     <string name="authing_select_country_code">選擇國家或地區代碼</string>
     <string name="authing_search">搜索</string>
     <string name="authing_cancel">取消</string>
+    <string name="authing_confirm">確認</string>
+    <string name="authing_picker_date">選擇生日</string>
 
     <!--user profile-->
     <string name="authing_user_profile">個人中心</string>

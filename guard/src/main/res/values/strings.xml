@@ -3,6 +3,7 @@
     <string name="authing_username">User Name</string>
     <string name="authing_email">Email</string>
     <string name="authing_phone">Phone</string>
+    <string name="authing_email_edit_text_hint">Enter email</string>
     <string name="authing_password_edit_text_hint">Enter password</string>
     <string name="authing_password_confirm_edit_text_hint">Confirm password</string>
     <string name="authing_login">Login</string>
@@ -69,6 +70,8 @@
     <string name="authing_select_country_code">Select country/region code</string>
     <string name="authing_search">Search</string>
     <string name="authing_cancel">Cancel</string>
+    <string name="authing_confirm">Confirm</string>
+    <string name="authing_picker_date">Select birthday</string>
 
     <!--user profile-->
     <string name="authing_user_profile">User profile</string>

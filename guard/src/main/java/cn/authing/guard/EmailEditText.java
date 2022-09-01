@@ -32,7 +32,7 @@ public class EmailEditText extends AccountEditText implements TextWatcher {
         validator = EMAIL_VALIDATOR;
 
         if (attrs == null || attrs.getAttributeValue(NS_ANDROID, "hint") == null) {
-            getEditText().setHint(context.getString(R.string.authing_account_edit_text_hint) + context.getString(R.string.authing_email));
+            getEditText().setHint(context.getString(R.string.authing_email_edit_text_hint));
         }
     }
 

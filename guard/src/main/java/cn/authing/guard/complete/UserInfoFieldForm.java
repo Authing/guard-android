@@ -19,6 +19,7 @@ import cn.authing.guard.VerifyCodeEditText;
 import cn.authing.guard.analyze.Analyzer;
 import cn.authing.guard.data.Country;
 import cn.authing.guard.data.ExtendedField;
+import cn.authing.guard.internal.DatePickerView;
 import cn.authing.guard.util.Util;
 
 public class UserInfoFieldForm extends LinearLayout {
@@ -65,6 +66,8 @@ public class UserInfoFieldForm extends LinearLayout {
             setFieldWithVerifyCode(f);
         } else if ("select".equals(type)) {
             setValueFromSelect(f);
+        } else if ("datetime".equals(type)) {
+            setValueFromDatePicker(f);
         }
         return f;
     }
@@ -154,5 +157,16 @@ public class UserInfoFieldForm extends LinearLayout {
                 }
             }
         }
+    }
+
+    private void setValueFromDatePicker(ExtendedField field) {
+        View view = Util.findChildViewByClass(this, DatePickerView.class, false);
+        if (view == null) {
+            return;
+        }
+
+        DatePickerView datePickerView = (DatePickerView) view;
+        String selected = datePickerView.getText();
+        field.setValue(selected);
     }
 }

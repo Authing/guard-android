@@ -3,31 +3,32 @@
     <string name="authing_username">ユーザー名</string>
     <string name="authing_email">メール</string>
     <string name="authing_phone">携帯電話番号</string>
-    <string name="authing_password_edit_text_hint">パスワードを入力してください</string>
+    <string name="authing_email_edit_text_hint">メールアドレスをご入力ください</string>
+    <string name="authing_password_edit_text_hint">パスワードをご入力ください</string>
     <string name="authing_password_confirm_edit_text_hint">パスワードをもう一度入力してください</string>
     <string name="authing_login">ログイン</string>
     <string name="authing_verify_code_edit_text_hint">認証コードを入力してください</string>
     <string name="authing_captcha_code_edit_text_hint">図形認証コードを入力してください</string>
-    <string name="authing_get_verify_code">認証コードを送信する</string>
+    <string name="authing_get_verify_code">認証コードを送信します</string>
     <string name="authing_login_by_account_and_password">アカウントのパスワードを登録する</string>
     <string name="authing_login_by_phone_and_verify_code">sms認証コードでログインする</string>
     <string name="authing_resend_after">%1$d 秒後に取得する</string>
     <string name="authing_register">登録</string>
     <string name="authing_welcome_to">ご参加を歓迎する</string>
-    <string name="authing_login_by_phone_code">sms認証コード</string>
-    <string name="authing_login_by_email_code">メールボックス認証コード</string>
+    <string name="authing_login_by_phone_code">認証コード登録</string>
+    <string name="authing_login_by_email_code">メール認証コード</string>
     <string name="authing_login_by_password">パスワード登録</string>
-    <string name="authing_register_by_phone_code">携帯電話番号を登録する</string>
-    <string name="authing_register_by_email">メールアドレス登録</string>
-    <string name="authing_register_by_email_code">メールアドレス認証登録</string>
+    <string name="authing_register_by_phone_code">携帯番号登録</string>
+    <string name="authing_register_by_email">メール登録</string>
+    <string name="authing_register_by_email_code">メール認証コード登録</string>
     <string name="authing_go_login">すぐにログインする</string>
     <string name="authing_tip_no_account">アカウントがない？</string>
     <string name="authing_register_now">すぐに登録する</string>
-    <string name="authing_3rd_login">第三者アカウントのログイン</string>
-    <string name="authing_forgot_password">パスワードを忘れる？</string>
+    <string name="authing_3rd_login">他サイトIDでログイン</string>
+    <string name="authing_forgot_password">パスワードをお忘れの場合？</string>
     <string name="authing_find_password_back">パスワードを取り戻す</string>
-    <string name="authing_reset_password">パスワードをリセットする</string>
-    <string name="authing_input_phone_or_email">携帯電話番号またはメールアドレスを入力してください</string>
+    <string name="authing_reset_password">パスワードをリセット</string>
+    <string name="authing_input_phone_or_email">メールアドレス /携帯電話をご入力ください</string>
     <string name="authing_login_by_other_account">別のアカウントに登録する</string>
     <string name="authing_reset_password_by_email_tip">パスワードリセットメールが届きました %1$s, 有効期限は 5分</string>
     <string name="authing_resend_password_reset_email">パスワードリセットメールの再送</string>
@@ -52,8 +53,8 @@
     <string name="authing_mfa_verify_phone">携帯電話による検証</string>
     <string name="authing_mfa_verify_email">メールボックス検証</string>
     <string name="authing_mfa_verify_otp">セキュリティコード検証</string>
-    <string name="authing_user_info_complete">アカウント情報の充実</string>
-    <string name="authing_complete_tip">より良い使用体験のために、まずあなたの資料情報を完備してください</string>
+    <string name="authing_user_info_complete">プロフィール充実</string>
+    <string name="authing_complete_tip">より良いユーザー体験を提供するため、まずはプロフィール情報をご入力ください。</string>
     <string name="authing_submit">提出</string>
     <string name="authing_male">男</string>
     <string name="authing_female">女</string>
@@ -69,13 +70,15 @@
     <string name="authing_select_country_code">国・地域コードを選択する</string>
     <string name="authing_search">検索</string>
     <string name="authing_cancel">キャンセル</string>
+    <string name="authing_confirm">確認</string>
+    <string name="authing_picker_date">誕生日を選択</string>
 
     <!--user profile-->
     <string name="authing_user_profile">個人センター</string>
     <string name="authing_unspecified">未定義</string>
     <string name="authing_input_old_password">古いパスワードを入力してください</string>
     <string name="authing_avatar">顔</string>
-    <string name="authing_nickname">かと</string>
+    <string name="authing_nickname">ニックネーム</string>
     <string name="authing_name">名前</string>
     <string name="authing_modify_password">パスワードを変更する</string>
     <string name="authing_update_profile">資料を更新する</string>
@@ -90,8 +93,8 @@
     <string name="authing_developer">開発者</string>
 
     <!--auth issue feedback-->
-    <string name="authing_feedback">質問のフィードバック</string>
-    <string name="authing_contact_info">連絡先</string>
+    <string name="authing_feedback">ヘルプ・お問い合わせ</string>
+    <string name="authing_contact_info">連絡方法</string>
     <string name="authing_related_issue">関連する問題</string>
     <string name="authing_feedback_description">問題の記述</string>
     <string name="authing_feedback_screenshot">問題のショット</string>
@@ -104,7 +107,7 @@
     <string name="authing_cannot_reset_password">パスワードをリセットできない</string>
     <string name="authing_account_is_locked">アカウントロック</string>
     <string name="authing_other">他の</string>
-    <string name="authing_submit_success">提出に成功する</string>
+    <string name="authing_submit_success">提出</string>
 
     <!--error messages-->
     <string name="authing_no_network">インターネットに接続できない</string>
@@ -122,12 +125,12 @@
     <string name="authing_get_verify_code_failed">メール送信の失敗:携帯電話番号の無効化</string>
     <string name="authing_invalid_phone_country_code">国コードを選択していない</string>
     <string name="authing_invalid_phone_number">携帯電話番号の記入ミス</string>
-    <string name="authing_incorrect_verify_code">captchaが正しくない</string>
+    <string name="authing_incorrect_verify_code">認証コードが違います</string>
     <string name="authing_incorrect_credential">ユーザー名やパスワードが間違っている</string>
     <string name="authing_invalid_email">メールの書式が正しくない</string>
     <string name="authing_invalid_phone">電話番号のフォーマットが間違っている</string>
     <string name="authing_invalid_input">入力フォーマットが正しくない</string>
-    <string name="authing_invalid_phone_or_email">正しい携帯番号またはメールアドレスを入力してください</string>
+    <string name="authing_invalid_phone_or_email">メールアドレス /携帯電話を正しくご入力くださ い</string>
     <string name="authing_get_email_code_failed">メールキャプチャ取得失敗</string>
     <string name="authing_phone_number_already_bound">携帯電話の番号が結び付けられています</string>
     <string name="authing_email_already_bound">メールボックスは既に結びつけられている</string>

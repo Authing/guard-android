@@ -3,6 +3,7 @@
     <string name="authing_username">用户名</string>
     <string name="authing_email">邮箱</string>
     <string name="authing_phone">手机号</string>
+    <string name="authing_email_edit_text_hint">请输入邮箱</string>
     <string name="authing_password_edit_text_hint">请输入密码</string>
     <string name="authing_password_confirm_edit_text_hint">请再次输入密码</string>
     <string name="authing_login">登录</string>
@@ -69,13 +70,15 @@
     <string name="authing_select_country_code">选择国家或地区代码</string>
     <string name="authing_search">搜索</string>
     <string name="authing_cancel">取消</string>
+    <string name="authing_confirm">确认</string>
+    <string name="authing_picker_date">选择生日</string>
 
     <!--user profile-->
     <string name="authing_user_profile">个人中心</string>
     <string name="authing_unspecified">未定义</string>
     <string name="authing_input_old_password">请输入旧密码</string>
     <string name="authing_avatar">头像</string>
-    <string name="authing_nickname">呢称</string>
+    <string name="authing_nickname">昵称</string>
     <string name="authing_name">姓名</string>
     <string name="authing_modify_password">修改密码</string>
     <string name="authing_update_profile">更新资料</string>
@@ -88,6 +91,7 @@
     <string name="authing_authorized_resources">授权资源</string>
     <string name="authing_organizations">组织机构</string>
     <string name="authing_developer">开发者</string>
+
 
     <!--auth issue feedback-->
     <string name="authing_feedback">问题反馈</string>

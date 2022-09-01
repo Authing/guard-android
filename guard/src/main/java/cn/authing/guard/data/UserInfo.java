@@ -733,6 +733,30 @@ public class UserInfo implements Serializable {
         if ("country".equals(key)) {
             return getCountry();
         }
+        if ("city".equals(key)) {
+            return getCity();
+        }
+        if ("province".equals(key)) {
+            return getProvince();
+        }
+        if ("region".equals(key)) {
+            return getRegion();
+        }
+        if ("company".equals(key)) {
+            return getCompany();
+        }
+        if ("streetAddress".equals(key)) {
+            return getStreetAddress();
+        }
+        if ("postalCode".equals(key)) {
+            return getPostalCode();
+        }
+        if ("birthdate".equals(key)) {
+            return getBirthday();
+        }
+        if ("locale".equals(key)) {
+            return getLocale();
+        }
 
         for (CustomData field : customData) {
             if (field.getKey().equals(key)) {

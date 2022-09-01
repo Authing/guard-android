@@ -60,8 +60,8 @@ public class UserInfoCompleteContainer extends LinearLayout {
                         view = inflateItem(flow.getUserInfoCompleteItemPhone(), field);
                     } else if ("select".equals(field.getInputType())) {
                         view = inflateItem(flow.getUserInfoCompleteItemSelect(), field);
-//                    } else if ("datetime".equals(field.getInputType())) {
-//                        view = inflateItem(flow.getUserInfoCompleteItemDatePicker(), field);
+                    } else if ("datetime".equals(field.getInputType())) {
+                        view = inflateItem(flow.getUserInfoCompleteItemDatePicker(), field);
                     }
 
                     if (view != null) {

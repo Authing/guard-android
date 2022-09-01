@@ -9,15 +9,11 @@
         android:layout_height="wrap_content"
         app:asteriskPosition="left"
         android:textColor="#000"/>
-    <LinearLayout
+
+    <cn.authing.guard.internal.DatePickerView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
-        android:background="@drawable/authing_edit_text_background_normal">
-        <Spinner
-            android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:paddingStart="8dp"
-            android:paddingEnd="8dp" />
-    </LinearLayout>
+        android:layout_height="@dimen/authing_edit_text_height"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/authing_edit_text_layout_background"/>
+
 </cn.authing.guard.complete.UserInfoFieldForm>
