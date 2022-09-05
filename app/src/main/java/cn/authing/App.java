@@ -31,7 +31,7 @@ public class App extends android.app.Application {
 
     public static String loadHost(Context context) {
         SharedPreferences sp = context.getSharedPreferences(SP_NAME, 0);
-        return sp.getString(SP_KEY_HOST, "authing.cn");
+        return sp.getString(SP_KEY_HOST, "console.authing.cn");
     }
 
     public static void saveAppId(Context context, String s) {

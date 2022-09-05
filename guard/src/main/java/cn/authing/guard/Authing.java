@@ -29,16 +29,13 @@ public class Authing {
     private static String scheme = "https";
     private static String sHost = "authing.cn"; // for private deployment
     private static String sPublicKey = DEF_PUBLIC_KEY;
+    private static boolean isOnPremises;
     private static String sAppId;
     private static boolean isGettingConfig;
     private static Config publicConfig;
     private static final Queue<Config.ConfigCallback> listeners = new ConcurrentLinkedQueue<>();
     private static UserInfo sCurrentUser;
     private static AuthProtocol authProtocol = AuthProtocol.EInHouse;
-
-    public static AuthProtocol getAuthProtocol() {
-        return Authing.authProtocol;
-    }
 
     public static void init(final Context context, String appId) {
         sAppContext = context.getApplicationContext();
@@ -64,6 +61,7 @@ public class Authing {
 
     public static void setHost(String host) {
         Authing.sHost = host;
+        isOnPremises = true;
     }
 
     public static String getPublicKey() {
@@ -78,12 +76,17 @@ public class Authing {
         Authing.authProtocol = authProtocol;
     }
 
+    public static AuthProtocol getAuthProtocol() {
+        return Authing.authProtocol;
+    }
+
     public enum AuthProtocol {
         EInHouse,
         EOIDC
     }
 
     public static void setOnPremiseInfo(String host, String publicKey) {
+        isOnPremises = true;
         Authing.sHost = host;
         Authing.sPublicKey = publicKey;
     }
@@ -164,7 +167,7 @@ public class Authing {
 
     private static void _requestPublicConfig() {
         String host = sHost;
-        if (!Util.isIp(sHost)) {
+        if (!Util.isIp(sHost) && !isOnPremises) {
             host = "console." + sHost;
         }
         String url = scheme + "://" + host + "/api/v2/applications/" + sAppId + "/public-config";
