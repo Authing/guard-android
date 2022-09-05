@@ -3,7 +3,7 @@
     <string name="authing_username">帳號</string>
     <string name="authing_email">電子郵件</string>
     <string name="authing_phone">手機號碼</string>
-    <string name="authing_email_edit_text_hint">请输入邮箱</string>
+    <string name="authing_email_edit_text_hint">請輸入電子郵件</string>
     <string name="authing_password_edit_text_hint">請輸入密碼</string>
     <string name="authing_password_confirm_edit_text_hint">請再次輸入密碼</string>
     <string name="authing_login">登入</string>

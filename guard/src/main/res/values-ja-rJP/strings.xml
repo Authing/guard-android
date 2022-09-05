@@ -28,7 +28,7 @@
     <string name="authing_forgot_password">パスワードをお忘れの場合？</string>
     <string name="authing_find_password_back">パスワードを取り戻す</string>
     <string name="authing_reset_password">パスワードをリセット</string>
-    <string name="authing_input_phone_or_email">メールアドレス /携帯電話をご入力ください</string>
+    <string name="authing_input_phone_or_email">携帯番号またはメールアドレスをご入力くださ い</string>
     <string name="authing_login_by_other_account">別のアカウントに登録する</string>
     <string name="authing_reset_password_by_email_tip">パスワードリセットメールが届きました %1$s, 有効期限は 5分</string>
     <string name="authing_resend_password_reset_email">パスワードリセットメールの再送</string>
@@ -95,19 +95,19 @@
     <!--auth issue feedback-->
     <string name="authing_feedback">ヘルプ・お問い合わせ</string>
     <string name="authing_contact_info">連絡方法</string>
-    <string name="authing_related_issue">関連する問題</string>
-    <string name="authing_feedback_description">問題の記述</string>
-    <string name="authing_feedback_screenshot">問題のショット</string>
+    <string name="authing_related_issue">ご用件</string>
+    <string name="authing_feedback_description">お問い合わせ内容</string>
+    <string name="authing_feedback_screenshot">スクリーンショット</string>
     <string name="authing_upload_image">画像をアップロードする</string>
     <string name="authing_contact_info_cannot_be_empty">連絡先は必須</string>
-    <string name="authing_cannot_get_verify_code">captchaを受信できない</string>
-    <string name="authing_cannot_login">ログインできない</string>
-    <string name="authing_cannot_register">登録できない</string>
-    <string name="authing_lost_account">アカウントが紛失する</string>
-    <string name="authing_cannot_reset_password">パスワードをリセットできない</string>
-    <string name="authing_account_is_locked">アカウントロック</string>
-    <string name="authing_other">他の</string>
-    <string name="authing_submit_success">提出</string>
+    <string name="authing_cannot_get_verify_code">認証コードが届きません</string>
+    <string name="authing_cannot_login">ログインできません</string>
+    <string name="authing_cannot_register">登録できません</string>
+    <string name="authing_lost_account">アカウントをお忘れ</string>
+    <string name="authing_cannot_reset_password">パスワードのリセットができません</string>
+    <string name="authing_account_is_locked">アカウントがロックされました</string>
+    <string name="authing_other">その他</string>
+    <string name="authing_submit_success">提出に成功する</string>
 
     <!--error messages-->
     <string name="authing_no_network">インターネットに接続できない</string>

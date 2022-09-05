@@ -355,7 +355,7 @@ public class Util {
         } else if("US".equals(country)) {
             return "en-US";
         } else if("JP".equals(country)) {
-            return "JP";
+            return "ja-JP";
         }
         return "zh-CN";
     }
