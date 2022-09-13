@@ -21,7 +21,7 @@ public class WechatLoginButton extends SocialLoginButton {
     }
 
     public WechatLoginButton(@NonNull Context context, @Nullable AttributeSet attrs) {
-        this(context, attrs, R.attr.buttonStyle);
+        this(context, attrs, 0);
     }
 
     public WechatLoginButton(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
@@ -29,6 +29,10 @@ public class WechatLoginButton extends SocialLoginButton {
 
         Analyzer.report("WechatLoginButton");
 
-        setImageResource(R.drawable.ic_authing_wechat);
+    }
+
+    @Override
+    protected int getImageRes() {
+        return R.drawable.ic_authing_wechat;
     }
 }

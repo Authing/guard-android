@@ -3,11 +3,12 @@
     <string name="authing_username">User Name</string>
     <string name="authing_email">Email</string>
     <string name="authing_phone">Phone</string>
-    <string name="authing_password_edit_text_hint">Please input password</string>
+    <string name="authing_email_edit_text_hint">Enter email</string>
+    <string name="authing_password_edit_text_hint">Enter password</string>
     <string name="authing_password_confirm_edit_text_hint">Confirm password</string>
     <string name="authing_login">Login</string>
-    <string name="authing_verify_code_edit_text_hint">Please input verify code</string>
-    <string name="authing_captcha_code_edit_text_hint">Please input captcha code</string>
+    <string name="authing_verify_code_edit_text_hint">Enter verify code</string>
+    <string name="authing_captcha_code_edit_text_hint">Enter captcha code</string>
     <string name="authing_get_verify_code">Get code</string>
     <string name="authing_get_verify_code_resend">ReSend</string>
     <string name="authing_login_by_account_and_password">Login by account and password</string>
@@ -24,14 +25,14 @@
     <string name="authing_go_login">Sign In Instead</string>
     <string name="authing_tip_no_account">No account?</string>
     <string name="authing_register_now">Sign Up</string>
-    <string name="authing_3rd_login">Continue with</string>
+    <string name="authing_3rd_login">Or sign in with</string>
     <string name="authing_forgot_password">Forgot Password</string>
     <string name="authing_find_password_back">Reset password</string>
     <string name="authing_reset_password">@string/authing_find_password_back</string>
-    <string name="authing_reset_success">Reset success</string>
+    <string name="authing_reset_success">Reset successfully</string>
     <string name="authing_reset_password_success">Reset password success</string>
     <string name="authing_login_by_new_password">You can continue logging in with the new password</string>
-    <string name="authing_go_back_login">Return to the login</string>
+    <string name="authing_go_back_login">Back</string>
     <string name="authing_go_back_login_tips">The login page is automatically displayed in %1$s seconds</string>
     <string name="authing_input_phone_or_email">Enter phone number or email</string>
     <string name="authing_input_phone_or_email_and_code">Please enter your registration telephone/email address and verification code</string>
@@ -42,7 +43,7 @@
     <string name="authing_unbind">Unbind</string>
     <string name="authing_bind_email">Bind email</string>
     <string name="authing_bind_email_tip">Verify code will be sent to the email below</string>
-    <string name="authing_input_email_code">Please input email code</string>
+    <string name="authing_input_email_code">Enter email code</string>
     <string name="authing_bind_phone">Bind mobile phone number</string>
     <string name="authing_bind_phone_tip">You have not bound your phone number, please enter your phone number to bind</string>
     <string name="authing_code_sent_to">Code was sent to</string>
@@ -74,16 +75,32 @@
     <string name="authing_delete_account_success">Account delete success</string>
     <string name="authing_biometric_title">Biometric authentication</string>
     <string name="authing_biometric_tip">Log in using your biometric credential</string>
-    <string name="authing_select_country_code">Select country/region code</string>
-    <string name="authing_search">Search</string>
+    <string name="authing_select_country_code">Select country/region </string>
+    <string name="authing_enter_country_search">Enter a country or region name to search</string>
     <string name="authing_cancel">Cancel</string>
     <string name="authing_skip">Skip</string>
     <string name="authing_agree">Agree</string>
     <string name="authing_confirm">Confirm</string>
+    <string name="authing_picker_date">Select birthday</string>
     <string name="authing_delete_account_tips">After logout, all data of this account will be deleted and irreversible, please operate with caution!</string>
     <string name="authing_code_sent_to_phone">A code will be sent to </string>
     <string name="authing_network_error_tips">The network is abnormal. Check the network Settings</string>
     <string name="authing_reading_guide">Reading guide</string>
+    <string name="authing_privacy_dialog_title">Please read and agree</string>
+    <string name="authing_privacy_dialog_confirm">Agree and continue</string>
+    <string name="authing_verify_account">Verify the account</string>
+    <string name="authing_verify_account_email_send">Verify that the email has been sent</string>
+    <string name="authing_verify_account_email_send_success">The verification email has been sent to your email address，\nPlease click Connect to verify your login</string>
+    <string name="authing_login_by_alipay">Login by Alipay</string>
+    <string name="authing_login_by_wechat">Login by Wechat</string>
+    <string name="authing_login_by_we_com">Login by Wechat work</string>
+    <string name="authing_login_by_lark">Login by Lark</string>
+    <string name="authing_login_by_google">Login by Google</string>
+    <string name="authing_social_alipay">Alipay</string>
+    <string name="authing_social_wechat">Wechat</string>
+    <string name="authing_social_we_com">WeChat work</string>
+    <string name="authing_social_lark">Lark</string>
+    <string name="authing_social_google">Google</string>
 
     <!--user profile-->
     <string name="authing_user_profile">User profile</string>
@@ -109,23 +126,23 @@
     <string name="authing_refresh_token_success">Refresh success</string>
 
     <!--auth issue feedback-->
-    <string name="authing_feedback">Feedback</string>
-    <string name="authing_contact_info">Contact information</string>
-    <string name="authing_related_issue">Related issue</string>
-    <string name="authing_feedback_description">Description</string>
+    <string name="authing_feedback">Need help?</string>
+    <string name="authing_contact_info">Contact</string>
+    <string name="authing_related_issue">Problem</string>
+    <string name="authing_feedback_description">Problem description</string>
     <string name="authing_feedback_screenshot">Screen shot</string>
     <string name="authing_upload_image">Add</string>
     <string name="authing_contact_info_cannot_be_empty">Contact information cannot be empty</string>
-    <string name="authing_cannot_get_verify_code">Cannot get verify code</string>
-    <string name="authing_cannot_login">Cannot login</string>
-    <string name="authing_cannot_register">Cannot register</string>
-    <string name="authing_lost_account">Lost my account</string>
-    <string name="authing_cannot_reset_password">Cannot reset password</string>
+    <string name="authing_cannot_get_verify_code">Unable to receive the verification code</string>
+    <string name="authing_cannot_login">Unable to log in</string>
+    <string name="authing_cannot_register">Unable to register</string>
+    <string name="authing_lost_account">Lost Account</string>
+    <string name="authing_cannot_reset_password">Unable to reset password</string>
     <string name="authing_account_is_locked">Account is locked</string>
     <string name="authing_other">Other</string>
     <string name="authing_submit_success">Submit successfully</string>
     <string name="authing_phone_or_email_hint">Enter phone number or email</string>
-    <string name="authing_reset_password_tips">If you cannot reset the password, you are advised to perform the following operations: \n1. Check whether your mobile phone is disconnected or has no network connection. \n2. Check that your password is correct.</string>
+    <string name="authing_reset_password_tips">If you cannot receive the mobile phone verification code, I suggest you do the following: \n1. Check if your mobile phone is turned off or offline. \n2. Check if your phone number has been entered correctly.</string>
     <string name="authing_input_tip_hint">Please enter the content</string>
 
     <!--error messages-->
@@ -145,7 +162,7 @@
     <string name="authing_account_empty">Account is missing</string>
     <string name="authing_password_empty">Password is missing</string>
     <string name="authing_phone_country_code_empty">Invalid phone country code</string>
-    <string name="authing_phone_number_empty">Phone is missing</string>
+    <string name="authing_phone_number_empty">Phone number is missing</string>
     <string name="authing_email_address_empty">Email is missing</string>
     <string name="authing_phone_or_email_empty">Phone / Email is missing</string>
     <string name="authing_verify_code_empty">Digit code is missing</string>
@@ -163,4 +180,6 @@
     <string name="authing_email_account_not_found">Can\'t find the email account</string>
     <string name="authing_phone_account_found">The phone number already exists</string>
     <string name="authing_email_account_found">The email number already exists</string>
+    <string name="authing_cancelled_by_user">Cancelled</string>
+    <string name="authing_account_locked">This account is locked: \n Please contact the administrator to restore the account</string>
 </resources>

@@ -21,11 +21,10 @@ import cn.authing.guard.activity.AuthActivity;
 import cn.authing.guard.analyze.Analyzer;
 import cn.authing.guard.data.UserInfo;
 import cn.authing.guard.flow.AuthFlow;
-import cn.authing.guard.internal.LoadingButton;
 import cn.authing.guard.network.AuthClient;
 import cn.authing.guard.util.Util;
 
-public class MFAEmailButton extends LoadingButton implements AuthActivity.EventListener {
+public class MFAEmailButton extends MFABaseButton implements AuthActivity.EventListener {
 
     public MFAEmailButton(@NonNull Context context) {
         this(context, null);
@@ -116,10 +115,7 @@ public class MFAEmailButton extends LoadingButton implements AuthActivity.EventL
                             sendEmail(flow, email);
                         } else {
                             stopLoadingVisualEffect();
-                            post(() -> {
-                                editText.showError(activity.getString(R.string.authing_email_already_bound));
-                                editText.showErrorBackGround();
-                            });
+                            post(()-> editText.showError(activity.getString(R.string.authing_email_already_bound)));
                         }
                     } else {
                         stopLoadingVisualEffect();
@@ -169,15 +165,7 @@ public class MFAEmailButton extends LoadingButton implements AuthActivity.EventL
     private void mfaDone(int code, String message, UserInfo userInfo) {
         stopLoadingVisualEffect();
         if (code == 200) {
-            try {
-                AuthActivity activity = (AuthActivity) getContext();
-                Intent intent = new Intent();
-                intent.putExtra("user", userInfo);
-                activity.setResult(AuthActivity.OK, intent);
-                activity.finish();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+            mfaOk(code, message, userInfo);
         } else {
             Util.setErrorText(this, message);
         }

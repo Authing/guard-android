@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <color name="authing_app_name">#FFFFFF</color>
+    <color name="authing_status_bar_bg">#00000000</color>
+
+</resources>

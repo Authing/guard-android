@@ -12,19 +12,22 @@ public class LarkLoginButton extends SocialLoginButton {
     }
 
     public LarkLoginButton(Context context, AttributeSet attrs) {
-        this(context, attrs, R.attr.buttonStyle);
+        this(context, attrs, 0);
     }
 
     public LarkLoginButton(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
 
         Analyzer.report("LarkLoginButton");
-
-        setImageResource(R.drawable.ic_authing_lark);
     }
 
     @Override
     public SocialAuthenticator createAuthenticator() {
         return new Lark();
+    }
+
+    @Override
+    protected int getImageRes() {
+        return R.drawable.ic_authing_lark;
     }
 }

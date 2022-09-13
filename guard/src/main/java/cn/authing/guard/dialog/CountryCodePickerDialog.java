@@ -13,7 +13,6 @@ import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -30,13 +29,8 @@ public class CountryCodePickerDialog extends Dialog implements View.OnClickListe
     private CountryCodePickerAdapter mAdapter;
     private List<Country> mDataList;
 
-    private boolean IS_SEARCH_ICON = true;
-
-    private ImageView imgSearch;
     private ImageView imgBack;
-    private TextView txtTittle;
     private EditText etSearch;
-    private TextView txtCancel;
     private ListView lvArea;
     private LetterSideBar sbIndex;
     private final TextWatcher mTextWatcher = new TextWatcher() {
@@ -95,17 +89,12 @@ public class CountryCodePickerDialog extends Dialog implements View.OnClickListe
         setCancelable(false);
         setCanceledOnTouchOutside(false);
 
-        imgSearch = findViewById(R.id.img_search);
         imgBack = findViewById(R.id.img_back);
-        txtTittle = findViewById(R.id.txt_tittle);
         etSearch = findViewById(R.id.et_search);
-        txtCancel = findViewById(R.id.txt_cancel);
         lvArea = findViewById(R.id.lv_area);
         sbIndex = findViewById(R.id.sb_index);
 
-        imgSearch.setOnClickListener(this);
         imgBack.setOnClickListener(this);
-        txtCancel.setOnClickListener(this);
 
         lvArea.setVerticalScrollBarEnabled(false);
         lvArea.setFastScrollEnabled(false);
@@ -121,8 +110,13 @@ public class CountryCodePickerDialog extends Dialog implements View.OnClickListe
     }
 
     @Override
-    public void onTouchingLetterChanged(String str) {
-        if (mDataList.size() > 0) {
+    public void onTouchingLetterChanged(int position, String str) {
+        if (position == 0){
+            lvArea.requestFocusFromTouch();
+            lvArea.setSelection(0);
+            return;
+        }
+        if (mDataList != null && mDataList.size() > 0) {
             for (int i = 0; i < mDataList.size(); i++) {
                 if (mDataList.get(i).getFirstSpell().compareToIgnoreCase(str) == 0) {
                     lvArea.setSelection(i);
@@ -176,44 +170,17 @@ public class CountryCodePickerDialog extends Dialog implements View.OnClickListe
         return bigStr.toUpperCase().contains(smallStr.toUpperCase());
     }
 
-    private void changeMode() {
-        if (IS_SEARCH_ICON) {
-            imgSearch.setVisibility(View.VISIBLE);
-            imgBack.setVisibility(View.VISIBLE);
-            etSearch.setText("");
-            etSearch.setVisibility(View.GONE);
-            txtTittle.setVisibility(View.VISIBLE);
-            txtCancel.setVisibility(View.GONE);
-        } else {
-            imgSearch.setVisibility(View.GONE);
-            imgBack.setVisibility(View.GONE);
-            etSearch.setText("");
-            etSearch.setVisibility(View.VISIBLE);
-            etSearch.setFocusable(true);
-            txtTittle.setVisibility(View.GONE);
-            txtCancel.setVisibility(View.VISIBLE);
-        }
-    }
 
     @Override
     public void onClick(View v) {
         if (v.getId() == R.id.img_back) {
             dismiss();
-        } else if (v.getId() == R.id.img_search
-                || v.getId() == R.id.txt_cancel) {
-            IS_SEARCH_ICON = !IS_SEARCH_ICON;
-            changeMode();
         }
     }
 
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        if (!IS_SEARCH_ICON){
-            IS_SEARCH_ICON = true;
-            changeMode();
-            return;
-        }
         dismiss();
     }
 

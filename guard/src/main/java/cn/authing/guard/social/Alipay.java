@@ -16,7 +16,6 @@ import java.util.Map;
 
 import cn.authing.guard.AuthCallback;
 import cn.authing.guard.Authing;
-import cn.authing.guard.container.AuthContainer;
 import cn.authing.guard.data.Config;
 import cn.authing.guard.data.UserInfo;
 import cn.authing.guard.network.AuthClient;
@@ -66,21 +65,25 @@ public class Alipay extends SocialAuthenticator {
                     final Context ref = ctxRef.get();
                     if (ref != null) {
                         handleResult(context, bundle, callback);
+                    } else {
+                        ALog.e(TAG, "Auth Failed, errorCode is: " + i + ",errorMessage is: " + s);
+                        callback.call(500, "Auth failed", null);
                     }
                 },true); // 是否需要在用户未安装支付宝 App 时，使用 H5 中间页中转。建议设置为 true。
     }
 
     private void handleResult(Context context, Bundle bundle, @NotNull AuthCallback<UserInfo> callback) {
         if (bundle == null) {
-            callback.call(500, "alipay error", null);
+            callback.call(500, "Auth data failed", null);
             return;
         }
 
         if (!"SUCCESS".equals(bundle.get("result_code"))) {
-            callback.call(500, "alipay auth error", null);
+            callback.call(500, "Auth failed", null);
             return;
         }
-        ALog.i(TAG, "Auth onSuccess");
+        ALog.i(TAG, "Auth success");
+        callback.call(SocialLoginButton.AUTH_SUCCESS, "Auth success", null);
         String code = bundle.get("auth_code").toString();
         login(context, code, callback);
     }

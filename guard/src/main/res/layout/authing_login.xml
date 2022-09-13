@@ -188,11 +188,11 @@
 
         <cn.authing.guard.PrivacyConfirmBox
             android:layout_width="match_parent"
-            android:layout_height="24dp"
+            android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/authing_form_start_end_margin"
             android:layout_marginEnd="@dimen/authing_form_start_end_margin"
             android:layout_marginBottom="12dp"
-            app:isRememberSate="false"
+            app:isRememberSate="true"
             app:button="@drawable/authing_checkbox_background"/>
 
         <cn.authing.guard.LoginButton
@@ -204,19 +204,22 @@
             android:gravity="center"
             style="?android:attr/borderlessButtonStyle"/>
 
-<!--        <cn.authing.guard.oneclick.OneClickAuthButton-->
-<!--            android:id="@+id/one_click_btn"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="@dimen/authing_button_height"-->
-<!--            android:layout_marginTop="@dimen/authing_form_top_margin"-->
-<!--            android:textAppearance="@android:style/Widget.TextView"-->
-<!--            android:gravity="center"-->
-<!--            style="?android:attr/borderlessButtonStyle"-->
-<!--            android:background="@drawable/authing_button_background_gray"-->
-<!--            android:textColor="@color/authing_text_black"-->
-<!--            android:textSize="16sp"-->
-<!--            app:showByConfig="true"-->
-<!--            app:showLoading="false"/>-->
+        <cn.authing.guard.oneclick.OneClickAuthButton
+            android:id="@+id/one_click_btn"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/authing_button_height"
+            android:layout_marginTop="@dimen/authing_form_top_margin"
+            android:layout_marginStart="@dimen/authing_form_start_end_margin"
+            android:layout_marginEnd="@dimen/authing_form_start_end_margin"
+            android:textAppearance="@android:style/Widget.TextView"
+            android:gravity="center"
+            style="?android:attr/borderlessButtonStyle"
+            android:background="@drawable/authing_button_background_gray"
+            android:textColor="@color/authing_text_black"
+            android:textSize="@dimen/authing_text_large_size"
+            app:showByConfig="true"
+            app:showLoading="true"
+            app:linkNetWork="true"/>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -251,20 +254,14 @@
                 android:gravity="end|center_vertical" />
         </LinearLayout>
 
-        <cn.authing.guard.internal.ContinueWithTextView
+        <cn.authing.guard.social.SocialLoginListView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="40dp"
             android:layout_marginStart="@dimen/authing_form_start_end_margin"
             android:layout_marginEnd="@dimen/authing_form_start_end_margin"
-            app:middleText="@string/authing_3rd_login" />
-
-        <cn.authing.guard.social.SocialLoginListView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/authing_form_top_margin"
-            android:layout_marginStart="@dimen/authing_form_start_end_margin"
-            android:layout_marginEnd="@dimen/authing_form_start_end_margin"/>
+            app:showSocialTitle="true"
+            app:socialTitle="@string/authing_3rd_login"/>
 
         <Space
             android:layout_width="match_parent"

@@ -7,17 +7,21 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:asteriskPosition="left"
-        android:layout_marginTop="16dp"
-        android:textColor="#000"/>
+        android:layout_marginTop="24dp"
+        android:textSize="@dimen/authing_text_large_size"
+        android:textStyle="bold"
+        android:textColor="@color/authing_text_black"/>
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
+        android:layout_height="@dimen/authing_edit_text_height"
+        android:layout_marginTop="8dp"
         android:background="@drawable/authing_edit_text_background_normal">
         <Spinner
             android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:paddingStart="8dp"
-            android:paddingEnd="8dp" />
+            android:layout_height="match_parent"
+            android:paddingStart="4dp"
+            android:paddingEnd="0dp"
+            android:spinnerMode="dropdown"
+            android:overlapAnchor="false"/>
     </LinearLayout>
 </cn.authing.guard.complete.UserInfoFieldForm>

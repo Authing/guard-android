@@ -2,6 +2,7 @@ package cn.authing.guard;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.util.AttributeSet;
@@ -14,8 +15,11 @@ import android.widget.RelativeLayout;
 import java.util.ArrayList;
 import java.util.List;
 
+import cn.authing.guard.activity.AuthActivity;
 import cn.authing.guard.analyze.Analyzer;
 import cn.authing.guard.data.Config;
+import cn.authing.guard.data.SocialConfig;
+import cn.authing.guard.flow.AuthFlow;
 import cn.authing.guard.internal.LoginMethodTabItem;
 import cn.authing.guard.util.Util;
 
@@ -85,7 +89,22 @@ public class LoginMethodTab extends RelativeLayout {
 
         List<String> loginTabList = config.getLoginTabList();
         if (loginTabList == null || loginTabList.size() == 0) {
-            initDefaultLogins(container);
+            if (getContext() instanceof AuthActivity) {
+                List<SocialConfig> socialConfigs = config.getSocialConfigs();
+                if (socialConfigs == null || socialConfigs.size() == 0){
+                    initDefaultLogins(container);
+                    return;
+                }
+                AuthActivity activity = (AuthActivity) getContext();
+                AuthFlow flow = (AuthFlow) activity.getIntent().getSerializableExtra(AuthActivity.AUTH_FLOW);
+                Intent intent = new Intent(getContext(), AuthActivity.class);
+                intent.putExtra(AuthActivity.AUTH_FLOW, flow);
+                intent.putExtra(AuthActivity.CONTENT_LAYOUT_ID, flow.getSocialLoginLayoutId());
+                activity.startActivity(intent);
+                activity.finish();
+            } else {
+                initDefaultLogins(container);
+            }
             return;
         }
 

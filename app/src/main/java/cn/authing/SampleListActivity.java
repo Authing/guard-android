@@ -3,13 +3,6 @@ package cn.authing;
 import static cn.authing.guard.activity.AuthActivity.OK;
 import static cn.authing.guard.activity.AuthActivity.RC_LOGIN;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.biometric.BiometricManager;
-import androidx.biometric.BiometricPrompt;
-import androidx.core.content.ContextCompat;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
@@ -18,13 +11,19 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.biometric.BiometricManager;
+import androidx.biometric.BiometricPrompt;
+import androidx.core.content.ContextCompat;
+
 import java.util.concurrent.Executor;
 
 import cn.authing.abao.AbaoActivity;
 import cn.authing.appauth.AppAuthActivity;
 import cn.authing.authenticator.AuthenticatorActivity;
 import cn.authing.guard.Authing;
-import cn.authing.guard.container.AuthContainer;
 import cn.authing.guard.data.UserInfo;
 import cn.authing.guard.flow.AuthFlow;
 import cn.authing.guard.oneclick.OneClick;
@@ -91,9 +90,9 @@ public class SampleListActivity extends AppCompatActivity {
                 Intent intent = new Intent(SampleListActivity.this, OneClickActivity.class);
                 startActivityForResult(intent, RC_LOGIN);
             } else if (pos == 2) {
-                OneClick oneClick = new OneClick(SampleListActivity.this);
                 // if you want to return refreshToken、idToken、refreshToken
-                oneClick.setAuthProtocol(AuthContainer.AuthProtocol.EOIDC);
+                Authing.setAuthProtocol(Authing.AuthProtocol.EOIDC);
+                OneClick oneClick = new OneClick(SampleListActivity.this);
                 oneClick.start(((code, message, userInfo) -> {
                     if (code != 200) {
                         Toast.makeText(Authing.getAppContext(), message, Toast.LENGTH_SHORT).show();
@@ -108,8 +107,9 @@ public class SampleListActivity extends AppCompatActivity {
             } else if (pos == 5) {
                 startActivity(AbaoActivity.class);
             } else if (pos == 6) {
-                AuthFlow flow = AuthFlow.start(this);
-                flow.setAuthProtocol(AuthContainer.AuthProtocol.EOIDC);
+                // if you want to return refreshToken、idToken、refreshToken
+                Authing.setAuthProtocol(Authing.AuthProtocol.EOIDC);
+                AuthFlow.start(this);
 //                Intent intent = new Intent(SampleListActivity.this, NissanVirtualKeyAuthActivity.class);
 //                startActivity(intent);
             } else if (pos == 8) {

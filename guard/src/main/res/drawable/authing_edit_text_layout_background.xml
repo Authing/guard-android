@@ -4,6 +4,7 @@
     <item android:drawable="@drawable/authing_edit_text_background_focused" android:state_pressed="true"/>
     <!-- focused -->
     <item android:drawable="@drawable/authing_edit_text_background_focused" android:state_selected="true"/>
+    <item android:drawable="@drawable/authing_edit_text_background_focused" android:state_focused="true"/>
     <!-- default -->
     <item android:drawable="@drawable/authing_edit_text_background_normal"/>
 </selector>

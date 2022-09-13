@@ -2,9 +2,11 @@ package cn.authing.guard.dialog;
 
 import static android.graphics.Paint.ANTI_ALIAS_FLAG;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
+import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -13,8 +15,12 @@ import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.PopupWindow;
+import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 
@@ -31,7 +37,9 @@ public class LetterSideBar extends View {
     private Paint mSideSelectBgPaint;
     private Rect rect;
     private OnTouchingLetterChangedListener onTouchingLetterChangedListener;
-    private LetterDialog mTextDialog;
+    //private LetterDialog mTextDialog;
+    private PopupWindow mPopupWindow;
+    private TextView mLetterDialogText;
 
     private CharSequence[] mStringArray;
     private int mSideTextColor;
@@ -70,12 +78,12 @@ public class LetterSideBar extends View {
     private void initView(@Nullable AttributeSet attrs) {
         final Resources res = getResources();
         final CharSequence[] defaultStringArray = res.getTextArray(R.array.dl_side_bar_def_list);
-        final int defaultSideTextColor = Color.parseColor("#1D2129");
-        final int defaultSideTextSelectColor = Color.parseColor("#ffffffff");
-        final float defaultSideTextSize = Util.sp2px(getContext(), 10);
-        final Drawable defaultSideBackground = new ColorDrawable(Color.parseColor("#ffb2b2b2"));
-        final int defaultDialogTextColor = Color.parseColor("#ffffffff");
-        final float defaultDialogTextSize = Util.sp2px(getContext(), 20);
+        final int defaultSideTextColor = Color.parseColor("#4E5969");
+        final int defaultSideTextSelectColor = Color.parseColor("#4E5969");
+        final float defaultSideTextSize = Util.sp2px(getContext(), 12);
+        final Drawable defaultSideBackground = new ColorDrawable(Color.parseColor("#F7F8FA"));
+        final int defaultDialogTextColor = Color.parseColor("#215AE5");
+        final float defaultDialogTextSize = Util.sp2px(getContext(), 16);
         final Drawable defaultDialogTextBackground = res.getDrawable(R.drawable.authing_country_picker_dialog_text_background);
         final int defaultDialogTextBackgroundWidth = (int) Util.dp2px(getContext(), 100);
         final int defaultDialogTextBackgroundHeight = (int) Util.dp2px(getContext(), 100);
@@ -92,7 +100,8 @@ public class LetterSideBar extends View {
         if (null == mSideBackground) {
             mSideBackground = defaultSideBackground;
         }
-        boolean mShowTexDialog = a.getBoolean(R.styleable.LetterSideBar_showTextDialog, false);
+        setBackground(mSideBackground);
+        boolean mShowTexDialog = a.getBoolean(R.styleable.LetterSideBar_showTextDialog, true);
         int mDialogTextColor = a.getColor(R.styleable.LetterSideBar_dialogTextColor, defaultDialogTextColor);
         float mDialogTextSize = a.getDimension(R.styleable.LetterSideBar_dialogTextSize, defaultDialogTextSize);
         Drawable mDialogTextBackground = a.getDrawable(R.styleable.LetterSideBar_dialogTextBackground);
@@ -104,9 +113,42 @@ public class LetterSideBar extends View {
 
         a.recycle();
         if (mShowTexDialog) {
-            mTextDialog = new LetterDialog(mContext, mDialogTextBackgroundWidth, mDialogTextBackgroundHeight,
-                    mDialogTextColor, mDialogTextSize, mDialogTextBackground);
+//            mTextDialog = new LetterDialog(mContext, mDialogTextBackgroundWidth, mDialogTextBackgroundHeight,
+//                    mDialogTextColor, mDialogTextSize, mDialogTextBackground);
+            initPopupWindow();
         }
+    }
+
+    private void initPopupWindow() {
+        mPopupWindow = new PopupWindow(mContext);
+        View view = LayoutInflater.from(mContext).inflate(R.layout.authing_country_code_picker_letter_dialog, null);
+        mPopupWindow.setContentView(view);
+        mPopupWindow.setBackgroundDrawable(null);
+        mLetterDialogText = view.findViewById(R.id.letter_text);
+    }
+
+    private void showPopupWindow(String text, int position) {
+        if (mPopupWindow == null) {
+            return;
+        }
+        if (mPopupWindow.isShowing()) {
+            mPopupWindow.dismiss();
+        }
+        mLetterDialogText.setText(text);
+        int singleHeight = getHeight() / mStringArray.length;
+        int x = getLeft() - (int) Util.dp2px(mContext, 40);
+        int y = (singleHeight * position) - (getHeight() / 2) + (int) Util.dp2px(mContext, 48);
+        if (mPopupWindow.isShowing()) {
+            mPopupWindow.dismiss();
+        }
+        mPopupWindow.showAtLocation(this, Gravity.START, x, y);
+    }
+
+    private void dismissPopupWindow() {
+        if (mPopupWindow == null) {
+            return;
+        }
+        mPopupWindow.dismiss();
     }
 
     @Override
@@ -114,14 +156,12 @@ public class LetterSideBar extends View {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
     }
 
+    @SuppressLint("DrawAllocation")
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-        // get the height
         int height = getHeight();
-        // get the width
         int width = getWidth();
-        // get one letter height
         int singleHeight = height / mStringArray.length;
 
         mSideTextPaint.setColor(mSideTextColor);
@@ -131,9 +171,9 @@ public class LetterSideBar extends View {
         mSideSelectTextPaint.setColor(mSideTextSelectColor);
         mSideSelectTextPaint.setTextSize(mSideTextSize);
         mSideSelectTextPaint.setTypeface(Typeface.DEFAULT);
-        mSideSelectTextPaint.setFakeBoldText(true);
+        //mSideSelectTextPaint.setFakeBoldText(true);
 
-        mSideSelectBgPaint.setColor(Color.parseColor("#396aff"));
+        //mSideSelectBgPaint.setColor(Color.parseColor("#FFFFFF"));
 
         float startY = (float) singleHeight / 2;
         for (int i = 0; i < mStringArray.length; i++) {
@@ -141,9 +181,18 @@ public class LetterSideBar extends View {
             float x = (float) width / 2;
             float y = singleHeight * i + startY;
 
+            if (i == 0) {
+                Bitmap bitmap = getBitmap(mContext, R.drawable.ic_authing_sidebar_top, 0, 0);
+                canvas.drawBitmap(bitmap, x - (float) bitmap.getWidth() / 2, y, mSideSelectTextPaint);
+                continue;
+            }
+
             if (i == mChoose) {
                 mSideSelectTextPaint.getTextBounds(text, 0, text.length(), rect);
-                canvas.drawCircle(x, y, 22, mSideSelectBgPaint);
+                //canvas.drawCircle(x, y, 22, mSideSelectBgPaint);
+                Bitmap bitmap = getBitmap(mContext, R.drawable.ic_authing_sidebar_bg, width, singleHeight);
+                canvas.drawBitmap(bitmap, 0, singleHeight * i, mSideSelectBgPaint);
+
                 x = x - (float) rect.width() / 2;
                 y = y + (float) rect.height() / 2;
                 canvas.drawText(text, x, y, mSideSelectTextPaint);
@@ -156,29 +205,46 @@ public class LetterSideBar extends View {
         }
     }
 
+    @SuppressLint("UseCompatLoadingForDrawables")
+    private static Bitmap getBitmap(Context context, int vectorDrawableId, int width, int height) {
+        Drawable vectorDrawable = context.getDrawable(vectorDrawableId);
+        Bitmap bitmap = Bitmap.createBitmap(width == 0 ? vectorDrawable.getIntrinsicWidth() : width,
+                height == 0 ? vectorDrawable.getIntrinsicHeight() : height,
+                Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(bitmap);
+        vectorDrawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
+        vectorDrawable.draw(canvas);
+        return bitmap;
+    }
+
+
     @Override
     public boolean dispatchTouchEvent(MotionEvent event) {
         final int action = event.getAction();
-        // get the Y
+
         final float y = event.getY();
         final int oldChoose = mChoose;
         final OnTouchingLetterChangedListener changedListener = onTouchingLetterChangedListener;
         final int letterPos = (int) (y / getHeight() * mStringArray.length);
 
         if (action == MotionEvent.ACTION_UP) {
-            setBackgroundDrawable(new ColorDrawable(0x00000000));
-            //mChoose = -1;
+            //setBackgroundDrawable(new ColorDrawable(0x00000000));
             invalidate();
-            if (mTextDialog != null) mTextDialog.dismissD();
+            //if (mTextDialog != null) mTextDialog.dismissD();
+            dismissPopupWindow();
         } else {
-            if (mSideBackground != null){
-                setBackground(mSideBackground);
-            }
+//            if (mSideBackground != null){
+//                setBackground(mSideBackground);
+//            }
             if (oldChoose != letterPos) {
                 if (letterPos >= 0 && letterPos < mStringArray.length) {
                     if (changedListener != null)
-                        changedListener.onTouchingLetterChanged(mStringArray[letterPos].toString());
-                    if (mTextDialog != null) mTextDialog.showD(mStringArray[letterPos].toString());
+                        changedListener.onTouchingLetterChanged(letterPos, mStringArray[letterPos].toString());
+                    //if (mTextDialog != null) mTextDialog.showD(mStringArray[letterPos].toString());
+                    if (letterPos != 0) {
+                        showPopupWindow(mStringArray[letterPos].toString(), letterPos);
+                    }
+
                     mChoose = letterPos;
                     invalidate();
                 }
@@ -192,6 +258,6 @@ public class LetterSideBar extends View {
     }
 
     public interface OnTouchingLetterChangedListener {
-        void onTouchingLetterChanged(String str);
+        void onTouchingLetterChanged(int position, String str);
     }
 }

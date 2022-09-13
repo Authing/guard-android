@@ -95,8 +95,21 @@
         <attr name="hyphen" format="boolean" />
     </declare-styleable>
 
+    <attr name="loginSource" format="string" />
+    <attr name="showSocialTitle" format="boolean" />
+    <attr name="socialTitle" format="string" />
+
     <declare-styleable name="SocialLoginListView">
-        <attr name="loginSource" format="string" />
+        <attr name="loginSource"/>
+        <attr name="showSingleLine" format="boolean" />
+        <attr name="showSocialTitle" />
+        <attr name="socialTitle"/>
+    </declare-styleable>
+
+    <declare-styleable name="VerticalSocialLoginListView">
+        <attr name="loginSource" />
+        <attr name="showSocialTitle" />
+        <attr name="socialTitle" />
     </declare-styleable>
 
     <declare-styleable name="CountryCodePicker">
@@ -145,6 +158,7 @@
     <declare-styleable name="OneClickAuthButton">
         <attr name="showByConfig" format="boolean" />
         <attr name="showLoading" format="boolean" />
+        <attr name="linkNetWork" format="boolean" />
     </declare-styleable>
 
     <declare-styleable name="GetVerifyCodeButton">

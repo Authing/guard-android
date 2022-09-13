@@ -8,21 +8,15 @@
     <TextView
         android:id="@+id/txt_tag"
         android:layout_width="match_parent"
-        android:layout_height="45dp"
-        android:gravity="bottom"
-        android:paddingBottom="5dp"
+        android:layout_height="20dp"
+        android:gravity="center_vertical"
         android:text="A"
-        android:textColor="@color/authing_text_black" />
-
-    <ImageView
-        android:id="@+id/img_line"
-        android:layout_width="match_parent"
-        android:layout_height="1px"
-        android:src="#bcbcbc" />
+        android:textSize="@dimen/authing_text_small_size"
+        android:textColor="#A9AEB8" />
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="45dp">
+        android:layout_height="42dp">
 
         <TextView
             android:id="@+id/txt_name"
@@ -31,7 +25,7 @@
             android:gravity="center_vertical"
             android:text="中国"
             android:textSize="@dimen/authing_text_middle_size"
-            android:textColor="@color/authing_text_black" />
+            android:textColor="#282D3C" />
 
         <TextView
             android:id="@+id/txt_num"
@@ -39,13 +33,10 @@
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
-            android:layout_marginEnd="35dp"
-            android:background="@drawable/authing_country_picker_num_bg"
             android:gravity="center_vertical"
-            android:padding="4dp"
             android:text="86"
-            android:textColor="@color/authing_text_gray"
-            android:textSize="10sp"
+            android:textColor="#282D3C"
+            android:textSize="@dimen/authing_text_middle_size"
             tools:ignore="SmallSp" />
     </RelativeLayout>
 </LinearLayout>

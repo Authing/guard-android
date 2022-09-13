@@ -1,11 +1,11 @@
 package cn.authing;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.Objects;
 
@@ -22,12 +22,13 @@ public class SplashActivity extends AppCompatActivity {
         Objects.requireNonNull(getSupportActionBar()).hide();
         setContentView(R.layout.activity_splash);
 
-        new Handler().postDelayed(()-> next(1), 1000);
+        new Handler().postDelayed(() -> next(1), 1000);
 
         if (Authing.isGettingConfig()) {
             Authing.getPublicConfig(config -> {
                 if (config == null) {
                     Toast.makeText(this, R.string.authing_no_network, Toast.LENGTH_LONG).show();
+                    next(2);
                 } else {
                     Authing.autoLogin((code, message, userInfo) -> next(2));
                 }

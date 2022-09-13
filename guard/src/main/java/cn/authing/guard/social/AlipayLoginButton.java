@@ -12,7 +12,7 @@ public class AlipayLoginButton extends SocialLoginButton {
     }
 
     public AlipayLoginButton(Context context, AttributeSet attrs) {
-        this(context, attrs, R.attr.buttonStyle);
+        this(context, attrs, 0);
     }
 
     public AlipayLoginButton(Context context, AttributeSet attrs, int defStyleAttr) {
@@ -20,11 +20,15 @@ public class AlipayLoginButton extends SocialLoginButton {
 
         Analyzer.report("AlipayLoginButton");
 
-        setImageResource(R.drawable.ic_authing_alipay);
     }
 
     @Override
     public SocialAuthenticator createAuthenticator() {
         return new Alipay();
+    }
+
+    @Override
+    protected int getImageRes() {
+        return R.drawable.ic_authing_alipay;
     }
 }

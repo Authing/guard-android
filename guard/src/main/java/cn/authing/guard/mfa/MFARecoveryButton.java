@@ -19,11 +19,10 @@ import cn.authing.guard.activity.AuthActivity;
 import cn.authing.guard.analyze.Analyzer;
 import cn.authing.guard.data.UserInfo;
 import cn.authing.guard.flow.AuthFlow;
-import cn.authing.guard.internal.LoadingButton;
 import cn.authing.guard.network.AuthClient;
 import cn.authing.guard.util.Util;
 
-public class MFARecoveryButton extends LoadingButton {
+public class MFARecoveryButton extends MFABaseButton {
 
     private String recoveryCode;
 
@@ -126,9 +125,8 @@ public class MFARecoveryButton extends LoadingButton {
     private void done() {
         AuthActivity activity = (AuthActivity) getContext();
         AuthFlow flow = activity.getFlow();
-        Intent intent = new Intent();
-        intent.putExtra("user", (UserInfo) flow.getData().get(KEY_USER_INFO));
-        activity.setResult(AuthActivity.OK, intent);
-        activity.finish();
+        UserInfo userInfo = (UserInfo) flow.getData().get(KEY_USER_INFO);
+
+        mfaOk(200, "", userInfo);
     }
 }

@@ -32,7 +32,6 @@ public class Wechat extends SocialAuthenticator {
             }
 
             WXCallbackActivity.setCallback(callback);
-            WXCallbackActivity.setAuthProtocol(getAuthProtocol(context));
 
             final SendAuth.Req req = new SendAuth.Req();
             req.scope = "snsapi_userinfo";

@@ -169,9 +169,9 @@
 
         <cn.authing.guard.PrivacyConfirmBox
             android:layout_width="match_parent"
-            android:layout_height="24dp"
+            android:layout_height="wrap_content"
             android:layout_marginBottom="12dp"
-            app:isRememberSate="false"
+            app:isRememberSate="true"
             app:button="@drawable/authing_checkbox_background"/>
 
         <cn.authing.guard.RegisterButton
@@ -204,16 +204,13 @@
                 android:text="@string/authing_go_login"/>
         </LinearLayout>
 
-        <cn.authing.guard.internal.ContinueWithTextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="40dp"
-            app:middleText="@string/authing_3rd_login" />
-
         <cn.authing.guard.social.SocialLoginListView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp" />
+            android:layout_marginTop="40dp"
+            app:showSocialTitle="true"
+            app:socialTitle="@string/authing_3rd_login"/>
+
         <Space
             android:layout_width="match_parent"
             android:layout_height="0dp"

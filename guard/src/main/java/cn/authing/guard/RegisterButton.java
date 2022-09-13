@@ -27,6 +27,7 @@ import cn.authing.guard.flow.FlowHelper;
 import cn.authing.guard.handler.register.IRegisterRequestCallBack;
 import cn.authing.guard.handler.register.RegisterRequestManager;
 import cn.authing.guard.internal.LoadingButton;
+import cn.authing.guard.util.ToastUtil;
 import cn.authing.guard.util.Util;
 
 public class RegisterButton extends LoadingButton implements IRegisterRequestCallBack {
@@ -112,14 +113,20 @@ public class RegisterButton extends LoadingButton implements IRegisterRequestCal
             return false;
         }
 
-        return ((PrivacyConfirmBox)box).require(new PrivacyConfirmDialog.OnItemClickListener() {
+        return ((PrivacyConfirmBox)box).require(new PrivacyConfirmDialog.OnPrivacyListener() {
+
             @Override
-            public void onCancelClick() {
+            public void onShow() {
 
             }
 
             @Override
-            public void onAgreeClick() {
+            public void onCancel() {
+
+            }
+
+            @Override
+            public void onAgree() {
                 performClick();
             }
         });
@@ -139,7 +146,7 @@ public class RegisterButton extends LoadingButton implements IRegisterRequestCal
         }
 
         if (userInfo == null){
-            Util.setErrorText(this, message);
+            post(() -> ToastUtil.showCenter(getContext(), message));
             return;
         }
 
@@ -168,7 +175,7 @@ public class RegisterButton extends LoadingButton implements IRegisterRequestCal
                 }
             });
         } else {
-            Util.setErrorText(this, message);
+            post(() -> ToastUtil.showCenter(getContext(), message));
         }
     }
 

@@ -55,7 +55,7 @@ public class MandatoryField extends TextView {
             span.setSpan(new ForegroundColorSpan(getContext().getColor(R.color.authing_error)),
                     length - 1, length, Spannable.SPAN_INCLUSIVE_INCLUSIVE);
         } else {
-            span = new SpannableString(text);
+            span = new SpannableString(text != null ? text : "");
         }
         setText(span);
     }

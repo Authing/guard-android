@@ -7,91 +7,96 @@
     android:fitsSystemWindows="false"
     android:orientation="vertical">
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="@dimen/authing_title_layout_height"
         android:gravity="center"
-        android:orientation="horizontal"
-        android:paddingStart="10dp"
-        android:paddingEnd="16dp">
+        android:layout_marginStart="@dimen/authing_form_start_end_margin"
+        android:layout_marginEnd="@dimen/authing_form_start_end_margin">
 
         <ImageView
             android:id="@+id/img_back"
             android:layout_width="25dp"
             android:layout_height="match_parent"
             android:paddingStart="0dp"
-            android:paddingEnd="0dp"
+            android:paddingEnd="16dp"
             android:scaleType="centerInside"
+            android:layout_alignParentStart="true"
             android:src="@drawable/ic_authing_back" />
 
         <TextView
             android:id="@+id/txt_tittle"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="1"
             android:gravity="center"
             android:text="@string/authing_select_country_code"
             android:textStyle="bold"
             android:textColor="@color/authing_text_black"
             android:textSize="@dimen/authing_text_large_size" />
 
-        <EditText
-            android:id="@+id/et_search"
-            android:layout_width="0dp"
-            android:layout_height="32dp"
-            android:layout_marginStart="6dp"
-            android:layout_marginEnd="10dp"
-            android:layout_weight="1"
-            android:background="@drawable/authing_edit_text_background_normal"
-            android:ems="10"
-            android:hint="@string/authing_search"
-            android:paddingStart="6dp"
-            android:paddingEnd="6dp"
-            android:textSize="@dimen/authing_text_large_size"
-            android:textColor="@color/authing_text_black"
-            android:visibility="gone" />
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="32dp"
+        android:layout_marginStart="@dimen/authing_form_start_end_margin"
+        android:layout_marginEnd="@dimen/authing_form_start_end_margin"
+        android:layout_marginTop="12dp"
+        android:layout_marginBottom="12dp"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:background="@drawable/authing_edit_text_background_normal">
 
         <ImageView
             android:id="@+id/img_search"
-            android:layout_width="20dp"
-            android:layout_height="match_parent"
-            android:scaleType="centerInside"
-            android:src="@mipmap/authing_search" />
-
-        <TextView
-            android:id="@+id/txt_cancel"
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:gravity="center"
-            android:text="@string/authing_cancel"
-            android:textSize="@dimen/authing_text_large_size"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="9dp"
+            android:layout_marginEnd="5dp"
+            android:scaleType="centerInside"
+            android:src="@drawable/ic_authing_search" />
+
+        <EditText
+            android:id="@+id/et_search"
+            android:layout_width="match_parent"
+            android:layout_height="32dp"
+            android:ems="10"
+            android:hint="@string/authing_enter_country_search"
+            android:paddingStart="6dp"
+            android:paddingEnd="6dp"
+            android:background="@null"
+            android:textSize="@dimen/authing_text_middle_size"
             android:textColor="@color/authing_text_black"
-            android:visibility="gone" />
+            android:textColorHint="@color/authing_text_gray"
+            android:visibility="visible" />
 
     </LinearLayout>
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:layout_marginStart="@dimen/authing_form_start_end_margin">
 
         <ListView
             android:id="@+id/lv_area"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
+            android:layout_marginEnd="32dp"
             android:divider="@null"
             android:listSelector="@android:color/transparent" />
 
         <cn.authing.guard.dialog.LetterSideBar
             android:id="@+id/sb_index"
-            android:layout_width="30dp"
+            android:layout_width="16dp"
             android:layout_height="match_parent"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
             android:layout_alignParentEnd="true"
-            android:layout_marginTop="70dp"
-            android:layout_marginBottom="70dp"
-            app:letterBackground="#FFFFFFFF"
-            app:showTextDialog="false"/>
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="40dp"
+            app:letterBackground="@drawable/authing_country_picker_num_bg"
+            app:showTextDialog="true"/>
     </RelativeLayout>
 
 </LinearLayout>

@@ -14,6 +14,9 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
 
 import cn.authing.guard.Authing;
 import cn.authing.guard.Callback;
@@ -25,6 +28,7 @@ public class ImageLoader {
 
     private String url;
     private ImageView imageView;
+    private int redirectedCount;
 
     private ImageLoader(Context context) {
         this.context = context.getApplicationContext();
@@ -74,19 +78,52 @@ public class ImageLoader {
 
         String fileName = "" + Authing.getAppId();
         File file = new File(context.getExternalCacheDir(), fileName);
+        Drawable cacheDrawable = null;
         if (file.exists()) {
-            Drawable drawable = new BitmapDrawable(context.getResources(), BitmapFactory.decodeStream(new FileInputStream(file)));
-            updateImage(drawable);
+            cacheDrawable = new BitmapDrawable(context.getResources(), BitmapFactory.decodeStream(new FileInputStream(file)));
+            updateImage(cacheDrawable);
         }
 
-        InputStream in = new java.net.URL(url).openStream();
-        BitmapDrawable drawable = new BitmapDrawable(context.getResources(), BitmapFactory.decodeStream(in));
+        BitmapDrawable drawable = getBitmap(url);
+        if (drawable == null){
+            return cacheDrawable;
+        }
         updateImage(drawable);
 
         Bitmap bitmap = drawable.getBitmap();
         FileOutputStream outputStream = new FileOutputStream(file);
         bitmap.compress(Bitmap.CompressFormat.PNG, 100, outputStream);
         outputStream.close();
+
+        return drawable;
+    }
+
+    public BitmapDrawable getBitmap(final String url){
+        BitmapDrawable drawable = null;
+        URL imageUrl = null;
+        try {
+            imageUrl = new URL(url);
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+        try {
+            HttpURLConnection conn = (HttpURLConnection)imageUrl.openConnection();
+            conn.setDoInput(true);
+            conn.connect();
+            int responseCode = conn.getResponseCode();
+            if ((responseCode == 301 || responseCode == 302) && redirectedCount < 5){
+                String location = conn.getHeaderField("Location");
+                conn.disconnect();
+                redirectedCount ++;
+                drawable = getBitmap(location);
+            } else {
+                InputStream inputStream = conn.getInputStream();
+                drawable = new BitmapDrawable(context.getResources(), BitmapFactory.decodeStream(inputStream));
+                inputStream.close();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
         return drawable;
     }

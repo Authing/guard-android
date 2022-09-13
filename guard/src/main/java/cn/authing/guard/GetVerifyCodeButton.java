@@ -184,6 +184,9 @@ public class GetVerifyCodeButton extends LoadingButton {
                     GetVerifyCodeButton.this, PhoneNumberEditText.class);
             if (phoneNumberEditText != null && phoneNumberEditText.isErrorEnabled()) {
                 phoneNumberEditText.showError(message);
+                if (!"".equals(message)){
+                    phoneNumberEditText.showErrorBackGround();
+                }
                 return;
             }
             showAccountMessage(message);
@@ -192,10 +195,13 @@ public class GetVerifyCodeButton extends LoadingButton {
 
     private void showEmailAccountMessage(String message) {
         post(() -> {
-            EmailEditText phoneNumberEditText = (EmailEditText) Util.findViewByClass(
+            EmailEditText emailEditText = (EmailEditText) Util.findViewByClass(
                     GetVerifyCodeButton.this, EmailEditText.class);
-            if (phoneNumberEditText != null && phoneNumberEditText.isErrorEnabled()) {
-                phoneNumberEditText.showError(message);
+            if (emailEditText != null && emailEditText.isErrorEnabled()) {
+                emailEditText.showError(message);
+                if (!"".equals(message)){
+                    emailEditText.showErrorBackGround();
+                }
                 return;
             }
             showAccountMessage(message);
@@ -207,6 +213,9 @@ public class GetVerifyCodeButton extends LoadingButton {
                 GetVerifyCodeButton.this, AccountEditText.class);
         if (accountEditText != null && accountEditText.isErrorEnabled()) {
             accountEditText.showError(message);
+            if (!"".equals(message)){
+                accountEditText.showErrorBackGround();
+            }
             return;
         }
         Util.setErrorText(GetVerifyCodeButton.this, message);

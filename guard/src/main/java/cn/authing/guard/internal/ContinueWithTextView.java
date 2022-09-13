@@ -2,6 +2,7 @@ package cn.authing.guard.internal;
 
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.view.Gravity;
@@ -17,6 +18,9 @@ import cn.authing.guard.R;
 import cn.authing.guard.util.Util;
 
 public class ContinueWithTextView extends LinearLayout {
+
+    private TextView textView;
+
     public ContinueWithTextView(Context context) {
         this(context, null);
     }
@@ -44,8 +48,8 @@ public class ContinueWithTextView extends LinearLayout {
                 int textColor = array.getColor(R.styleable.ContinueWithTextView_middleTextColor, context.getColor(R.color.authing_text_gray));
                 array.recycle();
 
-                TextView textView = new TextView(getContext());
-                textView.setText(text);
+                textView = new TextView(getContext());
+                textView.setText(TextUtils.isEmpty(text) ? getContext().getString(R.string.authing_3rd_login) : text);
                 textView.setTextSize(TypedValue.COMPLEX_UNIT_PX, textSize);
                 textView.setTextColor(textColor);
                 textView.setPadding((int) Util.dp2px(context, 8), 0, (int) Util.dp2px(context, 8), 0);
@@ -56,5 +60,11 @@ public class ContinueWithTextView extends LinearLayout {
                 addView(rightView);
             }
         });
+    }
+
+    public void setSocialTitle(String title){
+        if (textView != null){
+            textView.setText(title);
+        }
     }
 }

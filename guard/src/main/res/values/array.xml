@@ -4,6 +4,7 @@
     <string-array name="dl_side_bar_def_list">
 <!--        <item>\u2191</item>-->
 <!--        <item>\u2606</item>-->
+        <item>\u2303</item>
         <item>\u0041</item>
         <item>\u0042</item>
         <item>\u0043</item>

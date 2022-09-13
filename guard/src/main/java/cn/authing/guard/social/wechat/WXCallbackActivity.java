@@ -12,10 +12,12 @@ import com.tencent.mm.opensdk.openapi.IWXAPIEventHandler;
 import com.tencent.mm.opensdk.openapi.WXAPIFactory;
 
 import cn.authing.guard.AuthCallback;
-import cn.authing.guard.container.AuthContainer;
+import cn.authing.guard.Authing;
+import cn.authing.guard.R;
 import cn.authing.guard.data.UserInfo;
 import cn.authing.guard.network.AuthClient;
 import cn.authing.guard.network.OIDCClient;
+import cn.authing.guard.social.SocialLoginButton;
 import cn.authing.guard.social.Wechat;
 import cn.authing.guard.util.ALog;
 
@@ -24,7 +26,6 @@ public class WXCallbackActivity extends AppCompatActivity implements IWXAPIEvent
     public static final String TAG = WXCallbackActivity.class.getSimpleName();
 
     private static AuthCallback<UserInfo> callback;
-    private static AuthContainer.AuthProtocol authProtocol = AuthContainer.AuthProtocol.EInHouse;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,17 +50,19 @@ public class WXCallbackActivity extends AppCompatActivity implements IWXAPIEvent
     public void onResp(BaseResp resp) {
         switch (resp.errCode) {
             case BaseResp.ErrCode.ERR_OK:
-                ALog.d(TAG, "Got wechat code: " + ((SendAuth.Resp) resp).code);
-                if (authProtocol == AuthContainer.AuthProtocol.EInHouse) {
+                ALog.i(TAG, "Auth success");
+                callback.call(SocialLoginButton.AUTH_SUCCESS, "Auth success", null);
+                Authing.AuthProtocol authProtocol = Authing.getAuthProtocol();
+                if (authProtocol == Authing.AuthProtocol.EInHouse) {
                     AuthClient.loginByWechat(((SendAuth.Resp) resp).code, callback);
-                } else if (authProtocol == AuthContainer.AuthProtocol.EOIDC) {
+                } else if (authProtocol == Authing.AuthProtocol.EOIDC) {
                     new OIDCClient().loginByWechat(((SendAuth.Resp) resp).code, callback);
                 }
                 break;
             case BaseResp.ErrCode.ERR_USER_CANCEL:
-                ALog.i(TAG, "wechat user canceled");
+                ALog.d(TAG, "wechat user canceled");
                 if (callback != null) {
-                    callback.call(BaseResp.ErrCode.ERR_USER_CANCEL, "", null);
+                    callback.call(BaseResp.ErrCode.ERR_USER_CANCEL, getString(R.string.authing_cancelled_by_user), null);
                 }
                 break;
             case BaseResp.ErrCode.ERR_AUTH_DENIED:
@@ -86,7 +89,4 @@ public class WXCallbackActivity extends AppCompatActivity implements IWXAPIEvent
         WXCallbackActivity.callback = callback;
     }
 
-    public static void setAuthProtocol(AuthContainer.AuthProtocol authProtocol) {
-        WXCallbackActivity.authProtocol = authProtocol;
-    }
 }

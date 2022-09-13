@@ -77,6 +77,7 @@ public class UserInfo implements Serializable {
     private String photo;
     private String preferred_username;
     private String profile;
+    private String created_at;
     private String updated_at;
     private String website;
     private String zoneinfo;
@@ -106,6 +107,7 @@ public class UserInfo implements Serializable {
     private String firstTimeLoginToken;
     private String recoveryCode;
     private String password;
+    private List<Identities> identities;
 
     public String getId() {
         return id == null ? getSub() : id;
@@ -289,6 +291,14 @@ public class UserInfo implements Serializable {
 
     public void setProfile(String profile) {
         this.profile = profile;
+    }
+
+    public String getCreated_at() {
+        return created_at;
+    }
+
+    public void setCreated_at(String created_at) {
+        this.created_at = created_at;
     }
 
     public String getUpdated_at() {
@@ -524,6 +534,14 @@ public class UserInfo implements Serializable {
         this.password = password;
     }
 
+    public List<Identities> getIdentities() {
+        return identities;
+    }
+
+    public void setIdentities(List<Identities> identities) {
+        this.identities = identities;
+    }
+
     public static UserInfo createUserInfo(JSONObject data) throws JSONException {
         UserInfo userInfo = new UserInfo();
         return createUserInfo(userInfo, data);
@@ -621,6 +639,10 @@ public class UserInfo implements Serializable {
             String s = data.getString("picture");
             userInfo.setPicture(s);
         }
+        if (data.has("createdAt")) {
+            String s = data.getString("createdAt");
+            userInfo.setCreated_at(s);
+        }
         if (data.has("updatedAt")) {
             String s = data.getString("updatedAt");
             userInfo.setUpdated_at(s);
@@ -715,6 +737,10 @@ public class UserInfo implements Serializable {
             }
             userInfo.setRoles(roles);
         }
+        if (data.has("identities")) {
+            JSONArray array = data.getJSONArray("identities");
+            userInfo.setIdentities(toIdentitiesList(array));
+        }
         userInfo.parseTokens(data);
         return userInfo;
     }
@@ -744,6 +770,30 @@ public class UserInfo implements Serializable {
         }
         if ("country".equals(key)) {
             return getCountry();
+        }
+        if ("city".equals(key)) {
+            return getCity();
+        }
+        if ("province".equals(key)) {
+            return getProvince();
+        }
+        if ("region".equals(key)) {
+            return getRegion();
+        }
+        if ("company".equals(key)) {
+            return getCompany();
+        }
+        if ("streetAddress".equals(key)) {
+            return getStreetAddress();
+        }
+        if ("postalCode".equals(key)) {
+            return getPostalCode();
+        }
+        if ("birthdate".equals(key)) {
+            return getBirthday();
+        }
+        if ("locale".equals(key)) {
+            return getLocale();
         }
 
         for (CustomData field : customData) {
@@ -845,5 +895,70 @@ public class UserInfo implements Serializable {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    private static List<Identities> toIdentitiesList(JSONArray array) throws JSONException {
+        List<Identities> list = new ArrayList<>();
+        int size = array.length();
+        for (int i = 0; i < size; i++) {
+            JSONObject obj = array.getJSONObject(i);
+            Identities identities = new Identities();
+            if (obj.has("id")) {
+                String id = obj.getString("id");
+                identities.setId(id);
+            }
+            if (obj.has("isSocial")) {
+                boolean isSocial = obj.getBoolean("isSocial");
+                identities.setSocial(isSocial);
+            }
+            if (obj.has("userId")) {
+                String provider = obj.getString("userId");
+                identities.setProvider(provider);
+            }
+            if (obj.has("provider")) {
+                String provider = obj.getString("provider");
+                identities.setProvider(provider);
+            }
+            if (obj.has("userInfoInIdp")) {
+                JSONObject fields = obj.getJSONObject("userInfoInIdp");
+                Identities.UserInfoInIdp userInfoInIdp = new Identities.UserInfoInIdp();
+                if (fields.has("nickname")) {
+                    userInfoInIdp.setNickname(fields.getString("nickname"));
+                }
+                if (fields.has("username")) {
+                    userInfoInIdp.setUsername(fields.getString("username"));
+                }
+                if (fields.has("photo")) {
+                    userInfoInIdp.setPhoto(fields.getString("photo"));
+                }
+                if (fields.has("phone")) {
+                    userInfoInIdp.setPhone(fields.getString("phone"));
+                }
+                if (fields.has("email")) {
+                    userInfoInIdp.setEmail(fields.getString("email"));
+                }
+                if (fields.has("gender")) {
+                    userInfoInIdp.setGender(fields.getString("gender"));
+                }
+                if (fields.has("status")) {
+                    userInfoInIdp.setStatus(fields.getString("status"));
+                }
+                if (fields.has("province")) {
+                    userInfoInIdp.setProvince(fields.getString("province"));
+                }
+                if (fields.has("city")) {
+                    userInfoInIdp.setCity(fields.getString("city"));
+                }
+                if (fields.has("country")) {
+                    userInfoInIdp.setCountry(fields.getString("country"));
+                }
+                if (fields.has("locale")) {
+                    userInfoInIdp.setLocale(fields.getString("locale"));
+                }
+                identities.setUserInfoInIdp(userInfoInIdp);
+            }
+            list.add(identities);
+        }
+        return list;
     }
 }

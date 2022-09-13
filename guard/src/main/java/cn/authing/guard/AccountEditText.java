@@ -81,14 +81,14 @@ public class AccountEditText extends EditTextLayout {
             if (enabledLoginMethods.contains(LOGIN_METHOD_PHONE)){
                 s.append(phone);
                 validator |= PHONE_VALIDATOR;
-                s.append(" / ");
             }
             if (enabledLoginMethods.contains(LOGIN_METHOD_EMAIL)){
+                s.append(" / ");
                 s.append(email);
                 validator |= EMAIL_VALIDATOR;
-                s.append(" / ");
             }
             if (enabledLoginMethods.contains(LOGIN_METHOD_UN)){
+                s.append(" / ");
                 s.append(username);
             }
             return s.toString();

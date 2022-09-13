@@ -16,6 +16,7 @@ import cn.authing.guard.network.AuthClient;
 import cn.authing.guard.network.Guardian;
 import cn.authing.guard.network.OIDCClient;
 import cn.authing.guard.util.ALog;
+import cn.authing.guard.util.Const;
 import cn.authing.guard.util.SystemUtil;
 import cn.authing.guard.util.Util;
 
@@ -28,12 +29,14 @@ public class Authing {
     private static Context sAppContext;
     private static String scheme = "https";
     private static String sHost = "authing.cn"; // for private deployment
+    private static boolean isOnPremises;
     private static String sPublicKey = DEF_PUBLIC_KEY;
     private static String sAppId;
     private static boolean isGettingConfig;
     private static Config publicConfig;
     private static final Queue<Config.ConfigCallback> listeners = new ConcurrentLinkedQueue<>();
     private static UserInfo sCurrentUser;
+    private static AuthProtocol authProtocol = AuthProtocol.EInHouse;
 
     public static void init(final Context context, String appId) {
         sAppContext = context.getApplicationContext();
@@ -58,6 +61,7 @@ public class Authing {
     }
 
     public static void setHost(String host) {
+        isOnPremises = true;
         Authing.sHost = host;
     }
 
@@ -70,8 +74,22 @@ public class Authing {
     }
 
     public static void setOnPremiseInfo(String host, String publicKey) {
+        isOnPremises = true;
         Authing.sHost = host;
         Authing.sPublicKey = publicKey;
+    }
+
+    public static AuthProtocol getAuthProtocol() {
+        return Authing.authProtocol;
+    }
+
+    public static void setAuthProtocol(AuthProtocol authProtocol) {
+        Authing.authProtocol = authProtocol;
+    }
+
+    public enum AuthProtocol {
+        EInHouse,
+        EOIDC
     }
 
     public static void autoLogin(AuthCallback<UserInfo> callback) {
@@ -82,31 +100,39 @@ public class Authing {
             if (Util.isNull(refreshToken)) {
                 AuthClient.getCurrentUser((code, message, userInfo) -> {
                     if (code != 200) {
-                        if (code == 2020) {
-                            ALog.d(TAG, "auto login token expired");
-                            Safe.logoutUser(sCurrentUser);
-                        }
-                        sCurrentUser = null;
+                        fireCallBack(code, message);
                         callback.call(code, message, userInfo);
                     } else {
                         AuthClient.updateIdToken(callback);
                     }
                 });
-            } else {
-                new OIDCClient().getNewAccessTokenByRefreshToken(refreshToken, (code, message, userInfo) -> {
-                    if (code != 200) {
-                        if (code == 2020) {
-                            ALog.d(TAG, "auto login token expired");
-                            Safe.logoutUser(sCurrentUser);
-                        }
-                        sCurrentUser = null;
-                        callback.call(code, message, userInfo);
-                    } else {
-                        AuthClient.getCurrentUser(getCurrentUser(), callback);
-                    }
-                });
+                return;
             }
+            new OIDCClient().getNewAccessTokenByRefreshToken(refreshToken, (code, message, userInfo) -> {
+                if (code != 200) {
+                    fireCallBack(code, message);
+                    callback.call(code, message, userInfo);
+                } else {
+                    AuthClient.getCurrentUserInfo(getCurrentUser(), (AuthCallback<UserInfo>) (code1, message1, userInfo1) -> {
+                        if (code1 != 200) {
+                            fireCallBack(code1, message1);
+                        }
+                        callback.call(code1, message1, userInfo1);
+                    });
+                }
+            });
         }
+    }
+
+    private static void fireCallBack(int code, String message) {
+        if (code == Const.EC_ACCOUNT_NOT_LOGIN) {
+            ALog.d(TAG, "auto login token expired");
+            Safe.logoutUser(sCurrentUser);
+        }
+        if (code == Const.EC_400 && message.contains("用户不存在")) {
+            Safe.logoutUser(sCurrentUser);
+        }
+        sCurrentUser = null;
     }
 
     public static String getAppId() {
@@ -150,11 +176,11 @@ public class Authing {
 
     private static void _requestPublicConfig() {
         String host = sHost;
-        if (!Util.isIp(sHost)) {
+        if (!Util.isIp(sHost) && !isOnPremises) {
             host = "console." + sHost;
         }
         String url = scheme + "://" + host + "/api/v2/applications/" + sAppId + "/public-config";
-        Guardian.request(null, url, "get", null, (response)->{
+        Guardian.request(null, url, "get", null, (response) -> {
             try {
                 if (response.getCode() == 200) {
                     JSONObject data = response.getData();
@@ -174,7 +200,7 @@ public class Authing {
 
     private static void fireCallback(Config config) {
         Handler handler = new Handler(Looper.getMainLooper());
-        handler.post(()->{
+        handler.post(() -> {
             publicConfig = config;
             for (Config.ConfigCallback callback : listeners) {
                 callback.call(config);
@@ -186,5 +212,9 @@ public class Authing {
 
     public static boolean isGettingConfig() {
         return isGettingConfig;
+    }
+
+    public static boolean isConfigEmpty() {
+        return !isGettingConfig && publicConfig == null;
     }
 }

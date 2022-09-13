@@ -3,12 +3,12 @@ package cn.authing.guard.handler.login;
 import android.text.TextUtils;
 import android.view.View;
 
+import cn.authing.guard.Authing;
 import cn.authing.guard.CountryCodePicker;
 import cn.authing.guard.LoginButton;
 import cn.authing.guard.PhoneNumberEditText;
 import cn.authing.guard.R;
 import cn.authing.guard.VerifyCodeEditText;
-import cn.authing.guard.container.AuthContainer;
 import cn.authing.guard.network.AuthClient;
 import cn.authing.guard.network.OIDCClient;
 import cn.authing.guard.util.ALog;
@@ -88,9 +88,10 @@ public class PhoneCodeLoginHandler extends AbsLoginHandler{
 
     private void loginByPhoneCode(String phoneCountryCode, String phone, String verifyCode) {
         clearError();
-        if (getAuthProtocol() == AuthContainer.AuthProtocol.EInHouse) {
+        Authing.AuthProtocol authProtocol = getAuthProtocol();
+        if (authProtocol == Authing.AuthProtocol.EInHouse) {
             AuthClient.loginByPhoneCode(phoneCountryCode, phone, verifyCode, this::fireCallback);
-        } else if (getAuthProtocol() == AuthContainer.AuthProtocol.EOIDC) {
+        } else if (authProtocol == Authing.AuthProtocol.EOIDC) {
             new OIDCClient().loginByPhoneCode(phoneCountryCode, phone, verifyCode, this::fireCallback);
         }
         ALog.d(TAG, "login by phone code");

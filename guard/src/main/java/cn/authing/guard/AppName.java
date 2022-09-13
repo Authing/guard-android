@@ -4,6 +4,7 @@ import static cn.authing.guard.util.Const.NS_ANDROID;
 
 import android.content.Context;
 import android.graphics.Typeface;
+import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.util.TypedValue;
 
@@ -41,9 +42,12 @@ public class AppName extends AppCompatTextView {
 
         Authing.getPublicConfig((config -> {
             if (config != null) {
-                CharSequence s = getText();
-                if (s == null || s.length() == 0) {
+                String s = getText().toString();
+                if (TextUtils.isEmpty(s)) {
                     setText(config.getName());
+                } else {
+                    String formatText = String.format(s, config.getName());
+                    setText(formatText);
                 }
             }
         }));

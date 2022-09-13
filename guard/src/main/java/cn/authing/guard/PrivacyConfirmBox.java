@@ -33,6 +33,7 @@ import cn.authing.guard.activity.WebActivity;
 import cn.authing.guard.analyze.Analyzer;
 import cn.authing.guard.data.Agreement;
 import cn.authing.guard.data.Safe;
+import cn.authing.guard.dialog.PrivacyConfirmBottomDialog;
 import cn.authing.guard.dialog.PrivacyConfirmDialog;
 import cn.authing.guard.internal.CustomURLSpan;
 import cn.authing.guard.util.Util;
@@ -44,7 +45,8 @@ public class PrivacyConfirmBox extends LinearLayout {
     private final TextView textView;
     private Spannable spannable;
     private PrivacyConfirmDialog dialog;
-    private String dialogMessage;
+    private PrivacyConfirmBottomDialog bottomDialog;
+    private final String dialogMessage;
     private boolean isRememberSate;
 
     public PrivacyConfirmBox(Context context) {
@@ -68,12 +70,15 @@ public class PrivacyConfirmBox extends LinearLayout {
         setGravity(Gravity.CENTER_VERTICAL);
 
         checkBox = new CheckBox(context);
+        LayoutParams params = new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+        params.gravity = Gravity.TOP;
+        checkBox.setLayoutParams(params);
         addView(checkBox);
 
         textView = new TextView(context);
         textView.setIncludeFontPadding(false);
-        textView.setGravity(Gravity.START|Gravity.CENTER_VERTICAL);
-        textView.setPadding((int) Util.dp2px(getContext(), 9),0,0,6);
+        textView.setGravity(Gravity.START | Gravity.CENTER_VERTICAL);
+        textView.setPadding((int) Util.dp2px(getContext(), 9), 0, 0, 6);
         addView(textView);
 
         TypedArray array = context.obtainStyledAttributes(attrs, R.styleable.PrivacyConfirmBox);
@@ -96,20 +101,17 @@ public class PrivacyConfirmBox extends LinearLayout {
         } else if (round) {
             checkBox.setButtonDrawable(R.drawable.authing_round_checkbox);
         } else {
-            ColorStateList colorStateList = new ColorStateList(new int[][] {
-                    new int[] { -android.R.attr.state_checked },
-                    new int[] { android.R.attr.state_checked } },
-                    new int[] { uncheckColor, checkColor });
+            ColorStateList colorStateList = new ColorStateList(new int[][]{
+                    new int[]{-android.R.attr.state_checked},
+                    new int[]{android.R.attr.state_checked}},
+                    new int[]{uncheckColor, checkColor});
             checkBox.setButtonTintList(colorStateList);
         }
-        if (isRememberSate){
-            checkBox.setChecked(Safe.loadPrivacyConfirmState());
-            checkBox.setOnCheckedChangeListener((buttonView, isChecked) -> Safe.savePrivacyConfirmState(isChecked));
-        }
+        refreshCheckBoxState();
 
 
         setVisibility(View.GONE);
-        post(()-> Authing.getPublicConfig((config -> {
+        post(() -> Authing.getPublicConfig((config -> {
             if (config == null) {
                 return;
             }
@@ -140,12 +142,12 @@ public class PrivacyConfirmBox extends LinearLayout {
                     spannable = new SpannableString(removeTrailingLineBreak(htmlAsSpanned));
 
                     URLSpan[] spans = spannable.getSpans(0, spannable.length(), URLSpan.class);
-                    for (URLSpan span: spans) {
+                    for (URLSpan span : spans) {
                         int start = spannable.getSpanStart(span);
                         int end = spannable.getSpanEnd(span);
                         CustomURLSpan customURLSpan = new CustomURLSpan(span.getURL(), linkColor);
                         ClickableSpan clickable = null;
-                        if (isShowInternal){
+                        if (isShowInternal) {
                             clickable = new ClickableSpan() {
                                 public void onClick(View view) {
                                     Intent intent = new Intent(getContext().getApplicationContext(), WebActivity.class);
@@ -156,7 +158,7 @@ public class PrivacyConfirmBox extends LinearLayout {
                             };
                         }
                         spannable.removeSpan(span);
-                        if (clickable != null){
+                        if (clickable != null) {
                             spannable.setSpan(clickable, start, end, 0);
                         }
                         spannable.setSpan(customURLSpan, start, end, 0);
@@ -179,6 +181,22 @@ public class PrivacyConfirmBox extends LinearLayout {
         })));
     }
 
+    public void setRememberSate(boolean rememberSate) {
+        isRememberSate = rememberSate;
+        refreshCheckBoxState();
+    }
+
+    private void refreshCheckBoxState() {
+        if (isRememberSate) {
+            checkBox.setChecked(Safe.loadPrivacyConfirmState());
+            checkBox.setOnCheckedChangeListener((buttonView, isChecked) -> Safe.savePrivacyConfirmState(isChecked));
+        }
+    }
+
+    public void setButtonDrawable(int resId) {
+        checkBox.setButtonDrawable(resId);
+    }
+
     private CharSequence removeTrailingLineBreak(CharSequence text) {
         while (text.charAt(text.length() - 1) == '\n') {
             text = text.subSequence(0, text.length() - 1);
@@ -186,38 +204,96 @@ public class PrivacyConfirmBox extends LinearLayout {
         return text;
     }
 
-    public boolean require(PrivacyConfirmDialog.OnItemClickListener listener) {
+    public boolean require(PrivacyConfirmDialog.OnPrivacyListener listener) {
         if (isRequired && !checkBox.isChecked()) {
-            showDialog(listener);
+            showBottomDialog(listener);
             return true;
         }
         return false;
     }
 
-    public void showDialog(PrivacyConfirmDialog.OnItemClickListener listener) {
-        if (dialog == null){
+    public void showDialog(PrivacyConfirmDialog.OnPrivacyListener listener) {
+        if (dialog == null) {
             dialog = new PrivacyConfirmDialog(getContext());
-            dialog.setOnItemClickListener(new PrivacyConfirmDialog.OnItemClickListener() {
-                @Override
-                public void onCancelClick() {
-                    if (listener != null){
-                        listener.onCancelClick();
-                    }
-                }
-
-                @Override
-                public void onAgreeClick() {
-                    checkBox.setChecked(true);
-                    if (isRememberSate){
-                        Safe.savePrivacyConfirmState(true);
-                    }
-                    if (listener != null){
-                        listener.onAgreeClick();
-                    }
-                }
-            });
         }
+        dialog.setOnPrivacyListener(new PrivacyConfirmDialog.OnPrivacyListener() {
+
+            @Override
+            public void onShow() {
+
+            }
+
+            @Override
+            public void onCancel() {
+                if (listener != null) {
+                    listener.onCancel();
+                }
+            }
+
+            @Override
+            public void onAgree() {
+                checkBox.setChecked(true);
+                if (isRememberSate) {
+                    Safe.savePrivacyConfirmState(true);
+                }
+                if (listener != null) {
+                    listener.onAgree();
+                }
+            }
+        });
         dialog.show();
         dialog.setContent(TextUtils.isEmpty(dialogMessage) ? spannable : new SpannableString(dialogMessage));
+    }
+
+    public void showBottomDialog(PrivacyConfirmDialog.OnPrivacyListener listener) {
+        if (bottomDialog == null) {
+            bottomDialog = new PrivacyConfirmBottomDialog(getContext());
+        }
+        bottomDialog.setOnPrivacyListener(new PrivacyConfirmDialog.OnPrivacyListener() {
+
+            @Override
+            public void onShow() {
+
+            }
+
+            @Override
+            public void onCancel() {
+                if (listener != null) {
+                    listener.onCancel();
+                }
+            }
+
+            @Override
+            public void onAgree() {
+                checkBox.setChecked(true);
+                if (isRememberSate) {
+                    Safe.savePrivacyConfirmState(true);
+                }
+                if (listener != null) {
+                    listener.onAgree();
+                }
+            }
+        });
+        bottomDialog.show();
+        bottomDialog.setContent(TextUtils.isEmpty(dialogMessage) ? spannable : new SpannableString(dialogMessage));
+        bottomDialog.setOnDismissListener(dialog -> {
+            if (listener != null) {
+                listener.onCancel();
+            }
+        });
+        if (listener != null) {
+            listener.onShow();
+        }
+    }
+
+    @Override
+    protected void onDetachedFromWindow() {
+        super.onDetachedFromWindow();
+        if (dialog != null) {
+            if (dialog.isShowing()) {
+                dialog.dismiss();
+            }
+            dialog = null;
+        }
     }
 }

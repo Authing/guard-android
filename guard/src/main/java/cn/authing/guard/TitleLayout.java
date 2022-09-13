@@ -3,6 +3,7 @@ package cn.authing.guard;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.graphics.Typeface;
@@ -24,6 +25,7 @@ import androidx.annotation.Nullable;
 
 import cn.authing.guard.activity.AuthActivity;
 import cn.authing.guard.analyze.Analyzer;
+import cn.authing.guard.util.NetworkUtils;
 import cn.authing.guard.util.Util;
 
 public class TitleLayout extends RelativeLayout {
@@ -46,7 +48,12 @@ public class TitleLayout extends RelativeLayout {
 
     private ImageView skipImageView;
     private OnClickListener mBackIconClickListener;
+    private OnClickListener mSkipClickListener;
     private boolean isNetworkAvailable;
+    private boolean skipComplateFileds;
+
+    private TitleLayoutNetworkCallback titleLayoutNetworkCallback;
+    private boolean hasRegister;
 
     public TitleLayout(Context context) {
         this(context, null);
@@ -61,7 +68,7 @@ public class TitleLayout extends RelativeLayout {
         this.mContext = context;
         Analyzer.report("TitleLayout");
         init(context, attrs);
-        initView(context);
+        initView();
     }
 
     private void init(Context context, AttributeSet attrs) {
@@ -81,12 +88,18 @@ public class TitleLayout extends RelativeLayout {
         checkNetWork = array.getBoolean(R.styleable.TitleLayout_checkNetWork, false);
         onlyCheckNetWork = array.getBoolean(R.styleable.TitleLayout_onlyCheckNetWork, false);
         array.recycle();
+
+        Authing.getPublicConfig(config -> {
+            if (config != null){
+                skipComplateFileds = config.isSkipComplateFileds();
+            }
+        });
     }
 
-    private void initView(Context context) {
+    public void initView() {
         setGravity(Gravity.CENTER_VERTICAL);
 
-        boolean added = checkNetworkLayoutAdded(context);
+        boolean added = checkNetworkLayoutAdded(mContext);
         if (added) {
             setVisibility(View.VISIBLE);
             startListeningNetWork();
@@ -103,10 +116,10 @@ public class TitleLayout extends RelativeLayout {
         removeAllViews();
         setOnClickListener(null);
 
-        addBackIcon(context);
-        addTitle(context);
-        addSkipIcon(context);
-        addSkipText(context);
+        addBackIcon(mContext);
+        addTitle(mContext);
+        addSkipIcon(mContext);
+        addSkipText(mContext);
 
         startListeningNetWork();
     }
@@ -156,7 +169,7 @@ public class TitleLayout extends RelativeLayout {
     }
 
     private void addSkipIcon(Context context) {
-        if (!showSkipIcon) {
+        if (!showSkipIcon || !skipComplateFileds) {
             return;
         }
 
@@ -170,16 +183,12 @@ public class TitleLayout extends RelativeLayout {
         skipImageView.setPadding((int) Util.dp2px(context, 8), 0, 0, 0);
         skipImageView.setImageDrawable(context.getDrawable(R.drawable.ic_authing_skip));
         skipImageView.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
-        skipImageView.setOnClickListener(v -> {
-//            if (mContext instanceof AuthActivity) {
-//                //((AuthActivity)mContext).onBackPressed();
-//            }
-        });
+        skipImageView.setOnClickListener(this::skipClicked);
         addView(skipImageView);
     }
 
     private void addSkipText(Context context) {
-        if (!showSkipText) {
+        if (!showSkipText || !skipComplateFileds) {
             return;
         }
 
@@ -199,12 +208,21 @@ public class TitleLayout extends RelativeLayout {
         }
         params.addRule(RelativeLayout.CENTER_VERTICAL);
         textView.setLayoutParams(params);
-        textView.setOnClickListener(v -> {
-//            if (mContext instanceof AuthActivity) {
-//                //((AuthActivity)mContext).onBackPressed();
-//            }
-        });
+        textView.setOnClickListener(this::skipClicked);
         addView(textView);
+    }
+
+    private void skipClicked(View v){
+        if (mContext instanceof AuthActivity) {
+            AuthActivity activity = (AuthActivity) getContext();
+            Intent intent = new Intent();
+            intent.putExtra("user", Authing.getCurrentUser());
+            activity.setResult(AuthActivity.OK, intent);
+            activity.finish();
+        }
+        if (mSkipClickListener != null) {
+            mSkipClickListener.onClick(v);
+        }
     }
 
     private boolean checkNetworkLayoutAdded(Context context) {
@@ -212,7 +230,7 @@ public class TitleLayout extends RelativeLayout {
             return false;
         }
 
-        isNetworkAvailable = Util.isNetworkConnected(context);
+        isNetworkAvailable = NetworkUtils.isNetworkConnected(context);
         if (!isNetworkAvailable) {
             addNetworkLayout(context);
             setOnClickListener(v -> Util.openSettingUI((Activity) getContext()));
@@ -232,7 +250,7 @@ public class TitleLayout extends RelativeLayout {
         imageView.setLayoutParams(leftIconParams);
         imageView.setId(R.id.authing_tip_image_view);
         imageView.setPadding(0, 0, (int) Util.dp2px(context, 5), 0);
-        imageView.setImageDrawable(context.getDrawable(R.drawable.ic_prompt));
+        imageView.setImageDrawable(context.getDrawable(R.drawable.ic_authing_prompt));
         imageView.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
         addView(imageView);
 
@@ -265,35 +283,106 @@ public class TitleLayout extends RelativeLayout {
         this.mBackIconClickListener = listener;
     }
 
+    public void setSkipClickListener(OnClickListener listener) {
+        this.mSkipClickListener = listener;
+    }
 
     private void startListeningNetWork() {
+        if (hasRegister){
+            return;
+        }
         NetworkRequest.Builder builder = new NetworkRequest.Builder();
         NetworkRequest request = builder.build();
         ConnectivityManager connMgr = (ConnectivityManager) mContext.getSystemService(Context.CONNECTIVITY_SERVICE);
         if (connMgr == null) {
             return;
         }
-        connMgr.registerNetworkCallback(request, new ConnectivityManager.NetworkCallback() {
-
-            @Override
-            public void onAvailable(@NonNull Network network) {
-                super.onAvailable(network);
-                if (!isNetworkAvailable) {
-                    isNetworkAvailable = true;
-                    post(() -> initView(mContext));
-                }
-            }
-
-            @Override
-            public void onLost(@NonNull Network network) {
-                super.onLost(network);
-                if (isNetworkAvailable) {
-                    isNetworkAvailable = false;
-                    post(() -> initView(mContext));
-                }
-            }
-
-        });
+        if (titleLayoutNetworkCallback == null){
+            titleLayoutNetworkCallback = new TitleLayoutNetworkCallback();
+        } else {
+            hasRegister = false;
+            connMgr.unregisterNetworkCallback(titleLayoutNetworkCallback);
+        }
+        hasRegister = true;
+        connMgr.registerNetworkCallback(request, titleLayoutNetworkCallback);
     }
 
+    private class TitleLayoutNetworkCallback extends ConnectivityManager.NetworkCallback{
+
+        @Override
+        public void onAvailable(@NonNull Network network) {
+            super.onAvailable(network);
+            if (!isNetworkAvailable) {
+                isNetworkAvailable = true;
+                post(TitleLayout.this::initView);
+            }
+        }
+
+        @Override
+        public void onLost(@NonNull Network network) {
+            super.onLost(network);
+            if (isNetworkAvailable) {
+                isNetworkAvailable = false;
+                post(TitleLayout.this::initView);
+            }
+        }
+    }
+
+
+
+    public void setShowBackIcon(boolean showBackIcon) {
+        this.showBackIcon = showBackIcon;
+    }
+
+    public void setShowTitleText(boolean showTitleText) {
+        this.showTitleText = showTitleText;
+    }
+
+    public void setShowSkipText(boolean showSkipText) {
+        this.showSkipText = showSkipText;
+    }
+
+    public void setShowSkipIcon(boolean showSkipIcon) {
+        this.showSkipIcon = showSkipIcon;
+    }
+
+    public void setTitleText(String titleText) {
+        this.titleText = titleText;
+    }
+
+    public void setTitleTextSie(float titleTextSie) {
+        this.titleTextSie = titleTextSie;
+    }
+
+    public void setTitleTextColor(int titleTextColor) {
+        this.titleTextColor = titleTextColor;
+    }
+
+    public void setTitleTextBold(boolean titleTextBold) {
+        this.titleTextBold = titleTextBold;
+    }
+
+    public void setSkipText(String skipText) {
+        this.skipText = skipText;
+    }
+
+    public void setSkipTextSie(float skipTextSie) {
+        this.skipTextSie = skipTextSie;
+    }
+
+    public void setSkipTextColor(int skipTextColor) {
+        this.skipTextColor = skipTextColor;
+    }
+
+    public void setSkipTextBold(boolean skipTextBold) {
+        this.skipTextBold = skipTextBold;
+    }
+
+    public void setCheckNetWork(boolean checkNetWork) {
+        this.checkNetWork = checkNetWork;
+    }
+
+    public void setOnlyCheckNetWork(boolean onlyCheckNetWork) {
+        this.onlyCheckNetWork = onlyCheckNetWork;
+    }
 }

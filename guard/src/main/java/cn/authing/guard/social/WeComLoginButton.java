@@ -17,11 +17,11 @@ public class WeComLoginButton extends SocialLoginButton {
 
     @Override
     protected SocialAuthenticator createAuthenticator() {
-        return new WeCom();
+        return new WeCom(type);
     }
 
     public WeComLoginButton(@NonNull Context context, @Nullable AttributeSet attrs) {
-        this(context, attrs, R.attr.buttonStyle);
+        this(context, attrs, 0);
     }
 
     public WeComLoginButton(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
@@ -29,6 +29,10 @@ public class WeComLoginButton extends SocialLoginButton {
 
         Analyzer.report("WeComLoginButton");
 
-        setImageResource(R.drawable.ic_authing_wecom);
+    }
+
+    @Override
+    protected int getImageRes() {
+        return R.drawable.ic_authing_wecom;
     }
 }

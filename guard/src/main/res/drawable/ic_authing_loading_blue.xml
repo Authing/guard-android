@@ -1,14 +1,14 @@
 <vector xmlns:android="http://schemas.android.com/apk/res/android"
-    android:width="24dp"
-    android:height="24dp"
-    android:viewportWidth="24"
-    android:viewportHeight="24">
-  <group
-      android:name="circle"
-      android:pivotX="12"
-      android:pivotY="12">
-    <path
-        android:fillColor="#FF396aff"
-        android:pathData="M12,4V2A10,10 0,0 0,2 12H4A8,8 0,0 1,12 4Z"/>
-  </group>
+    android:width="48dp"
+    android:height="48dp"
+    android:viewportWidth="48"
+    android:viewportHeight="48">
+    <group
+        android:name="circle"
+        android:pivotX="24"
+        android:pivotY="24">
+        <path
+            android:pathData="M24,15.25C24,14.5596 24.5618,13.992 25.2468,14.078C26.6023,14.2484 27.9131,14.6953 29.0962,15.396C30.639,16.3098 31.9078,17.6217 32.7695,19.1942C33.6313,20.7667 34.0543,22.5421 33.9944,24.3342C33.9485,25.7085 33.6198,27.0538 33.034,28.288C32.738,28.9117 31.9572,29.0798 31.3753,28.7083V28.7083C30.7934,28.3368 30.6338,27.5665 30.9036,26.931C31.2628,26.0849 31.4648,25.1765 31.4958,24.2507C31.5408,22.9065 31.2235,21.5751 30.5771,20.3957C29.9308,19.2163 28.9793,18.2324 27.8221,17.547C27.0251,17.0749 26.1507,16.7564 25.2442,16.6039C24.5634,16.4894 24,15.9404 24,15.25V15.25Z"
+            android:fillColor="#215AE5"/>
+    </group>
 </vector>

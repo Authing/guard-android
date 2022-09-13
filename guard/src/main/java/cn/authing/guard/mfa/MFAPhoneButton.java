@@ -21,11 +21,10 @@ import cn.authing.guard.activity.AuthActivity;
 import cn.authing.guard.analyze.Analyzer;
 import cn.authing.guard.data.UserInfo;
 import cn.authing.guard.flow.AuthFlow;
-import cn.authing.guard.internal.LoadingButton;
 import cn.authing.guard.network.AuthClient;
 import cn.authing.guard.util.Util;
 
-public class MFAPhoneButton extends LoadingButton {
+public class MFAPhoneButton extends MFABaseButton {
 
     public MFAPhoneButton(@NonNull Context context) {
         this(context, null);
@@ -125,10 +124,7 @@ public class MFAPhoneButton extends LoadingButton {
                             sendSms(flow, phoneCountryCode, phone);
                         } else {
                             stopLoadingVisualEffect();
-                            post(() -> {
-                                editText.showError(activity.getString(R.string.authing_phone_number_already_bound));
-                                editText.showErrorBackGround();
-                            });
+                            post(()->editText.showError(activity.getString(R.string.authing_phone_number_already_bound)));
                         }
                     } else {
                         stopLoadingVisualEffect();
@@ -168,15 +164,7 @@ public class MFAPhoneButton extends LoadingButton {
     private void mfaDone(int code, String message, UserInfo userInfo) {
         stopLoadingVisualEffect();
         if (code == 200) {
-            try {
-                AuthActivity activity = (AuthActivity) getContext();
-                Intent intent = new Intent();
-                intent.putExtra("user", userInfo);
-                activity.setResult(AuthActivity.OK, intent);
-                activity.finish();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+            mfaOk(code, message, userInfo);
         } else if (code == 500 && message.startsWith("duplicate key value violates unique constraint")) {
             Util.setErrorText(this, "Phone number already bound by another user");
         } else {

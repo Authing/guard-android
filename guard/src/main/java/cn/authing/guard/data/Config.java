@@ -32,8 +32,10 @@ public class Config {
     private List<SocialConfig> socialConfigs;
     private List<Agreement> agreements;
     private int passwordStrength;
+    private boolean skipComplateFileds;
     private List<String> completeFieldsPlace;
     private List<ExtendedField> extendedFields;
+    private JSONObject extendedFieldsI18n;
     private List<String> redirectUris = new ArrayList<>();
     private boolean internationalSmsEnable;
     private String userAgent;
@@ -103,12 +105,20 @@ public class Config {
             config.agreements = toAgreementList(agreements);
         }
 
+        if (data.has("skipComplateFileds")) {
+            config.setSkipComplateFileds(data.getBoolean("skipComplateFileds"));
+        }
+
         if (data.has("complateFiledsPlace")) {
             config.setCompleteFieldsPlace(toStringList(data.getJSONArray("complateFiledsPlace")));
         }
 
         if (data.has("extendsFields")) {
             config.setExtendedFields(toExtendedFields(data.getJSONArray("extendsFields")));
+        }
+
+        if (data.has("extendsFieldsI18n")) {
+            config.setExtendedFieldsI18n(data.getJSONObject("extendsFieldsI18n"));
         }
 
         if (data.has("redirectUris")) {
@@ -236,6 +246,14 @@ public class Config {
         this.passwordStrength = passwordStrength;
     }
 
+    public boolean isSkipComplateFileds() {
+        return skipComplateFileds;
+    }
+
+    public void setSkipComplateFileds(boolean skipComplateFileds) {
+        this.skipComplateFileds = skipComplateFileds;
+    }
+
     public List<String> getCompleteFieldsPlace() {
         return completeFieldsPlace;
     }
@@ -250,6 +268,14 @@ public class Config {
 
     public void setExtendedFields(List<ExtendedField> extendedFields) {
         this.extendedFields = extendedFields;
+    }
+
+    public JSONObject getExtendedFieldsI18n() {
+        return extendedFieldsI18n;
+    }
+
+    public void setExtendedFieldsI18n(JSONObject extendedFieldsI18n) {
+        this.extendedFieldsI18n = extendedFieldsI18n;
     }
 
     public List<String> getRedirectUris() {
@@ -296,6 +322,10 @@ public class Config {
         return getSocialValue(type, "businessId");
     }
 
+    public String getSocialClientId(String type) {
+        return getSocialValue(type, "clientId");
+    }
+
     public String getSocialValue(String type, String fieldName) {
         String value = "";
         List<SocialConfig> configs = getSocialConfigs();
@@ -317,6 +347,9 @@ public class Config {
                         break;
                     case "businessId":
                         value = c.getBusinessId();
+                        break;
+                    case "clientId":
+                        value = c.getClientId();
                         break;
                 }
                 break;
@@ -359,6 +392,9 @@ public class Config {
                 }
                 if (fields.has("businessId")) {
                     config.setBusinessId(fields.getString("businessId"));
+                }
+                if (fields.has("clientID")) {
+                    config.setClientId(fields.getString("clientID"));
                 }
             }
             list.add(config);

@@ -353,6 +353,18 @@ public class Util {
         return !Util.isNull(lang) && lang.contains("zh");
     }
 
+    public static String getAppLanguage() {
+        String country = Locale.getDefault().getCountry();
+        if ("TW".equals(country)) {
+            return "zh-TW";
+        } else if("US".equals(country)) {
+            return "en-US";
+        } else if("JP".equals(country)) {
+            return "ja-JP";
+        }
+        return "zh-CN";
+    }
+
     public static String getLangHeader() {
         String lang = Locale.getDefault().getLanguage();
         return (!Util.isNull(lang) && lang.contains("zh")) ? "zh-CN" : "en-US";
@@ -410,12 +422,6 @@ public class Util {
         window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
         window.setStatusBarColor(activity.getColor(colorResId));
-    }
-
-    public static boolean isNetworkConnected(Context context) {
-        ConnectivityManager conn = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo net = conn.getActiveNetworkInfo();
-        return net != null && net.isConnected();
     }
 
     public static void openSettingUI(Activity activity) {

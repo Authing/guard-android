@@ -4,7 +4,6 @@ import org.jetbrains.annotations.NotNull;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.Objects;
 
@@ -112,12 +111,20 @@ public class OIDCClient {
         AuthClient.loginByWecom(authRequest, authCode, callback);
     }
 
+    public void loginByWecomAgency(String authCode, @NotNull AuthCallback<UserInfo> callback) {
+        AuthClient.loginByWecomAgency(authRequest, authCode, callback);
+    }
+
     public void loginByAlipay(String authCode, @NotNull AuthCallback<UserInfo> callback) {
         AuthClient.loginByAlipay(authRequest, authCode, callback);
     }
 
     public void loginByLark(String authCode, @NotNull AuthCallback<UserInfo> callback) {
         AuthClient.loginByLark(authRequest, authCode, callback);
+    }
+
+    public void loginByGoogle(String authCode, @NotNull AuthCallback<UserInfo> callback) {
+        AuthClient.loginByGoogle(authRequest, authCode, callback);
     }
 
     public void authByCode(String code, @NotNull AuthCallback<UserInfo> callback) {
@@ -132,8 +139,8 @@ public class OIDCClient {
                         .add("code", code)
                         .add("scope", authRequest.getScope())
                         .add("prompt", "consent")
-                        .add(secret == null ? "code_verifier=" : "client_secret", secret == null ? authRequest.getCodeVerifier() : secret)
-                        .add("redirect_uri", URLEncoder.encode(authRequest.getRedirectURL(), "utf-8"))
+                        .add(secret == null ? "code_verifier" : "client_secret", secret == null ? authRequest.getCodeVerifier() : secret)
+                        .add("redirect_uri", authRequest.getRedirectURL())
                         .build();
                 Guardian.authRequest(url, "post", formBody, (data)-> {
                     ALog.d(TAG, "authByCode cost:" + (System.currentTimeMillis() - now) + "ms");
@@ -168,8 +175,8 @@ public class OIDCClient {
                         .add("token", token)
                         .add("scope", authRequest.getScope())
                         .add("prompt", "consent")
-                        .add(secret == null ? "code_verifier=" : "client_secret", secret == null ? authRequest.getCodeVerifier() : secret)
-                        .add("redirect_uri", URLEncoder.encode(authRequest.getRedirectURL(), "utf-8"))
+                        .add(secret == null ? "code_verifier" : "client_secret", secret == null ? authRequest.getCodeVerifier() : secret)
+                        .add("redirect_uri", authRequest.getRedirectURL())
                         .build();
                 Guardian.authRequest(url, "post", formBody, (data)-> {
                     ALog.d(TAG, "authByToken cost:" + (System.currentTimeMillis() - now) + "ms");
@@ -247,7 +254,7 @@ public class OIDCClient {
                         .add("client_id",Authing.getAppId())
                         .add("grant_type", "refresh_token")
                         .add("refresh_token", refreshToken)
-                        .add(secret == null ? "code_verifier=" : "client_secret", secret == null ? authRequest.getCodeVerifier() : secret)
+                        .add(secret == null ? "code_verifier" : "client_secret", secret == null ? authRequest.getCodeVerifier() : secret)
                         .build();
                 Guardian.authRequest(url, "post", formBody, (data)-> {
                     if (data.getCode() == 200) {

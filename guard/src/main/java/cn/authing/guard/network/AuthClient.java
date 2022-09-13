@@ -52,7 +52,7 @@ public class AuthClient {
             body.put("email", email);
             body.put("password", encryptPassword);
             body.put("forceLogin", true);
-            Guardian.post("/api/v2/register/email", body, (data)-> {
+            Guardian.post("/api/v2/register/email", body, (data) -> {
                 if (data.getCode() == 200 || data.getCode() == EC_MFA_REQUIRED) {
                     Safe.saveAccount(email);
                 }
@@ -74,7 +74,7 @@ public class AuthClient {
             body.put("email", email);
             body.put("code", code);
             body.put("forceLogin", true);
-            Guardian.post("/api/v2/register/email-code", body, (data)-> {
+            Guardian.post("/api/v2/register/email-code", body, (data) -> {
                 if (data.getCode() == 200 || data.getCode() == EC_MFA_REQUIRED) {
                     Safe.saveAccount(email);
                 }
@@ -93,7 +93,7 @@ public class AuthClient {
             body.put("username", username);
             body.put("password", encryptPassword);
             body.put("forceLogin", true);
-            Guardian.post("/api/v2/register/username", body, (data)-> createUserInfoFromResponse(data, callback));
+            Guardian.post("/api/v2/register/username", body, (data) -> createUserInfoFromResponse(data, callback));
         } catch (Exception e) {
             e.printStackTrace();
             callback.call(500, "Exception", null);
@@ -111,7 +111,7 @@ public class AuthClient {
     public static void registerByPhoneCode(AuthRequest authData, String phoneCountryCode, String phone, String code, String password, @NotNull AuthCallback<UserInfo> callback) {
         try {
             JSONObject body = new JSONObject();
-            if (!Util.isNull(phoneCountryCode)){
+            if (!Util.isNull(phoneCountryCode)) {
                 body.put("phoneCountryCode", phoneCountryCode);
             }
             body.put("phone", phone);
@@ -121,7 +121,7 @@ public class AuthClient {
             }
             body.put("code", code);
             body.put("forceLogin", true);
-            Guardian.post("/api/v2/register/phone-code", body, (data)-> {
+            Guardian.post("/api/v2/register/phone-code", body, (data) -> {
                 if (data.getCode() == 200 || data.getCode() == EC_MFA_REQUIRED) {
                     Safe.saveAccount(phone);
                     Safe.savePhoneCountryCode(phoneCountryCode);
@@ -139,7 +139,7 @@ public class AuthClient {
     }
 
     public static void sendSms(String phoneCountryCode, String phone, @NotNull AuthCallback<?> callback) {
-        if (GlobalCountDown.isCountingDown(phone+phoneCountryCode)) {
+        if (GlobalCountDown.isCountingDown(phone + phoneCountryCode)) {
             callback.call(500, Authing.getAppContext().getString(R.string.authing_sms_already_sent), null);
             return;
         }
@@ -150,9 +150,9 @@ public class AuthClient {
             if (!Util.isNull(phoneCountryCode)) {
                 body.put("phoneCountryCode", phoneCountryCode);
             }
-            Guardian.post("/api/v2/sms/send", body, (data)-> {
+            Guardian.post("/api/v2/sms/send", body, (data) -> {
                 if (data.getCode() == 200) {
-                    GlobalCountDown.start(phone+phoneCountryCode);
+                    GlobalCountDown.start(phone + phoneCountryCode);
                 }
                 callback.call(data.getCode(), data.getMessage(), null);
             });
@@ -173,12 +173,12 @@ public class AuthClient {
     public static void loginByPhoneCode(AuthRequest authData, String phoneCountryCode, String phone, String code, @NotNull AuthCallback<UserInfo> callback) {
         try {
             JSONObject body = new JSONObject();
-            if (!Util.isNull(phoneCountryCode)){
+            if (!Util.isNull(phoneCountryCode)) {
                 body.put("phoneCountryCode", phoneCountryCode);
             }
             body.put("phone", phone);
             body.put("code", code);
-            Guardian.post("/api/v2/login/phone-code", body, (data)-> {
+            Guardian.post("/api/v2/login/phone-code", body, (data) -> {
                 if (data.getCode() == 200 || data.getCode() == EC_MFA_REQUIRED) {
                     Safe.saveAccount(phone);
                     Safe.savePhoneCountryCode(phoneCountryCode);
@@ -200,7 +200,7 @@ public class AuthClient {
             JSONObject body = new JSONObject();
             body.put("email", email);
             body.put("code", code);
-            Guardian.post("/api/v2/login/email-code", body, (data)-> {
+            Guardian.post("/api/v2/login/email-code", body, (data) -> {
                 if (data.getCode() == 200 || data.getCode() == EC_MFA_REQUIRED) {
                     Safe.saveAccount(email);
                 }
@@ -223,7 +223,7 @@ public class AuthClient {
             JSONObject body = new JSONObject();
             body.put("account", account);
             body.put("password", encryptPassword);
-            Guardian.post("/api/v2/login/account", body, (data)-> {
+            Guardian.post("/api/v2/login/account", body, (data) -> {
                 ALog.d(TAG, "loginByAccount cost:" + (System.currentTimeMillis() - now) + "ms");
                 if (data.getCode() == 200 || data.getCode() == EC_MFA_REQUIRED) {
                     Safe.saveAccount(account);
@@ -251,7 +251,7 @@ public class AuthClient {
             JSONObject body = new JSONObject();
             body.put("email", emailAddress);
             body.put("scene", scene);
-            Guardian.post("/api/v2/email/send", body, (data)-> {
+            Guardian.post("/api/v2/email/send", body, (data) -> {
                 if (data.getCode() == 200) {
                     GlobalCountDown.start(emailAddress);
                 }
@@ -264,7 +264,7 @@ public class AuthClient {
     }
 
     public static void uploadAvatar(InputStream in, @NotNull AuthCallback<UserInfo> callback) {
-        Uploader.uploadImage(in, (ok, uploadedUrl)->{
+        Uploader.uploadImage(in, (ok, uploadedUrl) -> {
             if (ok && !Util.isNull(uploadedUrl)) {
                 try {
                     JSONObject body = new JSONObject();
@@ -287,14 +287,14 @@ public class AuthClient {
     public static void resetPasswordByPhoneCode(String phoneCountryCode, String phone, String code, String newPassword, @NotNull AuthCallback<JSONObject> callback) {
         try {
             JSONObject body = new JSONObject();
-            if (!Util.isNull(phoneCountryCode)){
+            if (!Util.isNull(phoneCountryCode)) {
                 body.put("phoneCountryCode", phoneCountryCode);
             }
             body.put("phone", phone);
             body.put("code", code);
             body.put("newPassword", Util.encryptPassword(newPassword));
             String endpoint = "/api/v2/password/reset/sms";
-            Guardian.post(endpoint, body, (data)-> callback.call(data.getCode(), data.getMessage(), data.getData()));
+            Guardian.post(endpoint, body, (data) -> callback.call(data.getCode(), data.getMessage(), data.getData()));
         } catch (Exception e) {
             e.printStackTrace();
             callback.call(500, "Exception", null);
@@ -308,7 +308,7 @@ public class AuthClient {
             body.put("code", code);
             body.put("newPassword", Util.encryptPassword(newPassword));
             String endpoint = "/api/v2/password/reset/email";
-            Guardian.post(endpoint, body, (data)-> callback.call(data.getCode(), data.getMessage(), data.getData()));
+            Guardian.post(endpoint, body, (data) -> callback.call(data.getCode(), data.getMessage(), data.getData()));
         } catch (Exception e) {
             e.printStackTrace();
             callback.call(500, "Exception", null);
@@ -321,7 +321,7 @@ public class AuthClient {
             body.put("token", token);
             body.put("password", Util.encryptPassword(newPassword));
             String endpoint = "/api/v2/users/password/reset-by-first-login-token";
-            Guardian.post(endpoint, body, (data)-> callback.call(data.getCode(), data.getMessage(), data.getData()));
+            Guardian.post(endpoint, body, (data) -> callback.call(data.getCode(), data.getMessage(), data.getData()));
         } catch (Exception e) {
             e.printStackTrace();
             callback.call(500, "Exception", null);
@@ -338,7 +338,7 @@ public class AuthClient {
                 JSONObject body = new JSONObject();
                 body.put("connId", config.getSocialConnectionId("wechat:mobile"));
                 body.put("code", authCode);
-                Guardian.post("/api/v2/ecConn/wechatMobile/authByCode", body, (data)-> {
+                Guardian.post("/api/v2/ecConn/wechatMobile/authByCode", body, (data) -> {
                     startOidcInteraction(authData, data, callback);
                 });
             } catch (Exception e) {
@@ -359,7 +359,28 @@ public class AuthClient {
                 body.put("connId", config.getSocialConnectionId(Const.EC_TYPE_WECHAT_COM));
                 body.put("code", authCode);
                 String endpoint = "/api/v2/ecConn/wechat-work/authByCode";
-                Guardian.post(endpoint, body, (data)-> {
+                Guardian.post(endpoint, body, (data) -> {
+                    startOidcInteraction(authData, data, callback);
+                });
+            } catch (Exception e) {
+                e.printStackTrace();
+                callback.call(500, "Exception", null);
+            }
+        });
+    }
+
+    public static void loginByWecomAgency(String authCode, @NotNull AuthCallback<UserInfo> callback) {
+        loginByWecomAgency(null, authCode, callback);
+    }
+
+    public static void loginByWecomAgency(AuthRequest authData, String authCode, @NotNull AuthCallback<UserInfo> callback) {
+        Authing.getPublicConfig(config -> {
+            try {
+                JSONObject body = new JSONObject();
+                body.put("connId", config.getSocialConnectionId(Const.EC_TYPE_WECHAT_COM_AGENCY));
+                body.put("code", authCode);
+                String endpoint = "/api/v2/ecConn/wechat-work-agency/authByCode";
+                Guardian.post(endpoint, body, (data) -> {
                     startOidcInteraction(authData, data, callback);
                 });
             } catch (Exception e) {
@@ -380,7 +401,7 @@ public class AuthClient {
                 body.put("connId", config.getSocialConnectionId("alipay"));
                 body.put("code", authCode);
                 String endpoint = "/api/v2/ecConn/alipay/authByCode";
-                Guardian.post(endpoint, body, (data)-> {
+                Guardian.post(endpoint, body, (data) -> {
                     startOidcInteraction(authData, data, callback);
                 });
             } catch (Exception e) {
@@ -403,7 +424,29 @@ public class AuthClient {
                 body.put("connId", connId);
                 body.put("code", authCode);
                 String endpoint = "/api/v2/ecConn/lark/authByCode";
-                Guardian.post(endpoint, body, (data)-> {
+                Guardian.post(endpoint, body, (data) -> {
+                    startOidcInteraction(authData, data, callback);
+                });
+            } catch (Exception e) {
+                e.printStackTrace();
+                callback.call(500, "Exception", null);
+            }
+        });
+    }
+
+    public static void loginByGoogle(String authCode, @NotNull AuthCallback<UserInfo> callback) {
+        loginByGoogle(null, authCode, callback);
+    }
+
+    public static void loginByGoogle(AuthRequest authData, String authCode, @NotNull AuthCallback<UserInfo> callback) {
+        Authing.getPublicConfig(config -> {
+            try {
+                JSONObject body = new JSONObject();
+                String connId = config.getSocialConnectionId(Const.EC_TYPE_GOOGLE);
+                body.put("connId", connId);
+                body.put("code", authCode);
+                String endpoint = "/api/v2/ecConn/google/authByCode";
+                Guardian.post(endpoint, body, (data) -> {
                     startOidcInteraction(authData, data, callback);
                 });
             } catch (Exception e) {
@@ -422,7 +465,7 @@ public class AuthClient {
             JSONObject body = new JSONObject();
             body.put("token", token);
             body.put("accessToken", accessToken);
-            Guardian.post("/api/v2/ecConn/oneAuth/login", body, (data)-> {
+            Guardian.post("/api/v2/ecConn/oneAuth/login", body, (data) -> {
                 startOidcInteraction(authData, data, callback);
             });
         } catch (Exception e) {
@@ -437,7 +480,7 @@ public class AuthClient {
             body.put("email", email);
             body.put("emailCode", code);
             String endpoint = "/api/v2/users/email/bind";
-            Guardian.post(endpoint, body, (data)-> createUserInfoFromResponse(data, callback));
+            Guardian.post(endpoint, body, (data) -> createUserInfoFromResponse(data, callback));
         } catch (Exception e) {
             e.printStackTrace();
             callback.call(500, "Exception", null);
@@ -448,7 +491,7 @@ public class AuthClient {
         try {
             JSONObject body = new JSONObject();
             String endpoint = "/api/v2/users/email/unbind";
-            Guardian.post(endpoint, body, (data)-> createUserInfoFromResponse(data, callback));
+            Guardian.post(endpoint, body, (data) -> createUserInfoFromResponse(data, callback));
         } catch (Exception e) {
             e.printStackTrace();
             callback.call(500, "Exception", null);
@@ -462,13 +505,13 @@ public class AuthClient {
     public static void bindPhone(String phoneCountryCode, String phone, String code, @NotNull AuthCallback<UserInfo> callback) {
         try {
             JSONObject body = new JSONObject();
-            if (!Util.isNull(phoneCountryCode)){
+            if (!Util.isNull(phoneCountryCode)) {
                 body.put("phoneCountryCode", phoneCountryCode);
             }
             body.put("phone", phone);
             body.put("phoneCode", code);
             String endpoint = "/api/v2/users/phone/bind";
-            Guardian.post(endpoint, body, (data)-> createUserInfoFromResponse(data, callback));
+            Guardian.post(endpoint, body, (data) -> createUserInfoFromResponse(data, callback));
         } catch (Exception e) {
             e.printStackTrace();
             callback.call(500, "Exception", null);
@@ -479,7 +522,7 @@ public class AuthClient {
         try {
             JSONObject body = new JSONObject();
             String endpoint = "/api/v2/users/phone/unbind";
-            Guardian.post(endpoint, body, (data)-> createUserInfoFromResponse(data, callback));
+            Guardian.post(endpoint, body, (data) -> createUserInfoFromResponse(data, callback));
         } catch (Exception e) {
             e.printStackTrace();
             callback.call(500, "Exception", null);
@@ -491,22 +534,22 @@ public class AuthClient {
                                    @NotNull AuthCallback<UserInfo> callback) {
         try {
             JSONObject body = new JSONObject();
-            if (!Util.isNull(phoneCountryCode)){
+            if (!Util.isNull(phoneCountryCode)) {
                 body.put("phoneCountryCode", phoneCountryCode);
             }
             body.put("phone", phone);
             body.put("phoneCode", code);
-            if (!Util.isNull(oldPhoneCountryCode)){
+            if (!Util.isNull(oldPhoneCountryCode)) {
                 body.put("oldPhoneCountryCode", oldPhoneCountryCode);
             }
-            if (!Util.isNull(oldPhone)){
+            if (!Util.isNull(oldPhone)) {
                 body.put("oldPhone", oldPhone);
             }
-            if (!Util.isNull(oldCode)){
+            if (!Util.isNull(oldCode)) {
                 body.put("oldPhoneCode", oldCode);
             }
             String url = "/api/v2/users/phone/update";
-            Guardian.post(url, body, (data)-> createUserInfoFromResponse(data, callback));
+            Guardian.post(url, body, (data) -> createUserInfoFromResponse(data, callback));
         } catch (Exception e) {
             e.printStackTrace();
             callback.call(500, "Exception", null);
@@ -535,7 +578,7 @@ public class AuthClient {
     public static void getSecurityLevel(@NotNull AuthCallback<JSONObject> callback) {
         try {
             String endpoint = "/api/v2/users/me/security-level";
-            Guardian.get(endpoint, (data)-> callback.call(data.getCode(), data.getMessage(), data.getData()));
+            Guardian.get(endpoint, (data) -> callback.call(data.getCode(), data.getMessage(), data.getData()));
         } catch (Exception e) {
             e.printStackTrace();
             callback.call(500, "Exception", null);
@@ -550,7 +593,7 @@ public class AuthClient {
         try {
             String endpoint = "/api/v2/users/me/roles"
                     + (TextUtils.isEmpty(namespace) ? "" : "?namespace=" + namespace);
-            Guardian.get(endpoint, (data)-> {
+            Guardian.get(endpoint, (data) -> {
                 if (data.getCode() == 200) {
                     try {
                         JSONArray array = data.getData().getJSONArray("data");
@@ -581,7 +624,7 @@ public class AuthClient {
         try {
             String endpoint = "/api/v2/users/me/applications/allowed?page="
                     + page + "&limit=" + limit;
-            Guardian.get(endpoint, (data)-> {
+            Guardian.get(endpoint, (data) -> {
                 if (data.getCode() == 200) {
                     try {
                         JSONArray array = data.getData().getJSONArray("list");
@@ -616,7 +659,7 @@ public class AuthClient {
             if (resourceType != null) {
                 body.put("resourceType", resourceType);
             }
-            Guardian.post(endpoint, body, (data)-> {
+            Guardian.post(endpoint, body, (data) -> {
                 if (data.getCode() == 200) {
                     try {
                         JSONArray array = data.getData().getJSONArray("list");
@@ -646,7 +689,7 @@ public class AuthClient {
                 callback.call(2020, "", null);
             } else {
                 String endpoint = "/api/v2/users/" + userInfo.getId() + "/orgs";
-                Guardian.get(endpoint, (data)-> {
+                Guardian.get(endpoint, (data) -> {
                     if (data.getCode() == 200) {
                         try {
                             JSONArray array = data.getData().getJSONArray("data");
@@ -671,7 +714,7 @@ public class AuthClient {
         try {
             String endpoint = "/api/v2/users/refresh-token";
             JSONObject body = new JSONObject();
-            Guardian.post(endpoint, body, (data)-> {
+            Guardian.post(endpoint, body, (data) -> {
                 if (data.getCode() == 200) {
                     createUserInfoFromResponse(Authing.getCurrentUser(), data, callback);
                 } else {
@@ -692,7 +735,7 @@ public class AuthClient {
             if (email != null)
                 body.put("email", email);
             String endpoint = "/api/v2/applications/mfa/check";
-            Guardian.post(endpoint, body, (data)-> {
+            Guardian.post(endpoint, body, (data) -> {
                 try {
                     if (data.getCode() == 200) {
                         boolean ok = data.getData().getBoolean("result");
@@ -718,13 +761,13 @@ public class AuthClient {
     public static void mfaVerifyByPhone(String phoneCountryCode, String phone, String code, @NotNull AuthCallback<UserInfo> callback) {
         try {
             JSONObject body = new JSONObject();
-            if (!Util.isNull(phoneCountryCode)){
+            if (!Util.isNull(phoneCountryCode)) {
                 body.put("phoneCountryCode", phoneCountryCode);
             }
             body.put("phone", phone);
             body.put("code", code);
             String endpoint = "/api/v2/applications/mfa/sms/verify";
-            Guardian.post(endpoint, body, (data)-> createUserInfoFromResponse(data, callback));
+            Guardian.post(endpoint, body, (data) -> createUserInfoFromResponse(data, callback));
         } catch (Exception e) {
             e.printStackTrace();
             callback.call(500, "Exception", null);
@@ -737,7 +780,7 @@ public class AuthClient {
             body.put("email", email);
             body.put("code", code);
             String endpoint = "/api/v2/applications/mfa/email/verify";
-            Guardian.post(endpoint, body, (data)-> createUserInfoFromResponse(data, callback));
+            Guardian.post(endpoint, body, (data) -> createUserInfoFromResponse(data, callback));
         } catch (Exception e) {
             e.printStackTrace();
             callback.call(500, "Exception", null);
@@ -750,7 +793,7 @@ public class AuthClient {
             body.put("authenticatorType", "totp");
             body.put("totp", code);
             String endpoint = "/api/v2/mfa/totp/verify";
-            Guardian.post(endpoint, body, (data)-> createUserInfoFromResponse(data, callback));
+            Guardian.post(endpoint, body, (data) -> createUserInfoFromResponse(data, callback));
         } catch (Exception e) {
             e.printStackTrace();
             callback.call(500, "Exception", null);
@@ -763,7 +806,7 @@ public class AuthClient {
             body.put("authenticatorType", "totp");
             body.put("recoveryCode", code);
             String endpoint = "/api/v2/mfa/totp/recovery";
-            Guardian.post(endpoint, body, (data)-> createUserInfoFromResponse(data, callback));
+            Guardian.post(endpoint, body, (data) -> createUserInfoFromResponse(data, callback));
         } catch (Exception e) {
             e.printStackTrace();
             callback.call(500, "Exception", null);
@@ -778,7 +821,7 @@ public class AuthClient {
                 body.put("oldPassword", Util.encryptPassword(oldPassword));
             }
             String endpoint = "/api/v2/password/update";
-            Guardian.post(endpoint, body, (data)-> callback.call(data.getCode(), data.getMessage(), data.getData()));
+            Guardian.post(endpoint, body, (data) -> callback.call(data.getCode(), data.getMessage(), data.getData()));
         } catch (Exception e) {
             e.printStackTrace();
             callback.call(500, "Exception", null);
@@ -792,7 +835,31 @@ public class AuthClient {
     public static void getCurrentUser(UserInfo userInfo, @NotNull AuthCallback<UserInfo> callback) {
         try {
             String endpoint = "/api/v2/users/me";
-            Guardian.get(endpoint, (data)-> createUserInfoFromResponse(userInfo, data, callback));
+            Guardian.get(endpoint, (data) -> createUserInfoFromResponse(userInfo, data, callback));
+        } catch (Exception e) {
+            e.printStackTrace();
+            callback.call(500, "Exception", null);
+        }
+    }
+
+    public static void getCurrentUserInfo(@NotNull AuthCallback<UserInfo> callback) {
+        getCurrentUserInfo(new UserInfo(), callback);
+    }
+
+    public static void getCurrentUserInfo(UserInfo userInfo, @NotNull AuthCallback<UserInfo> callback) {
+        try {
+            String endpoint = "/api/v2/users/me/info";
+            Guardian.get(endpoint, (data) -> createUserInfoFromResponse(userInfo, data, callback));
+        } catch (Exception e) {
+            e.printStackTrace();
+            callback.call(500, "Exception", null);
+        }
+    }
+
+    public static void getCurrentUserV3(UserInfo userInfo, @NotNull AuthCallback<UserInfo> callback) {
+        try {
+            String endpoint = "/api/v3/get-user?withIdentities=" + true;
+            Guardian.get(endpoint, (data) -> createUserInfoFromResponse(userInfo, data, callback));
         } catch (Exception e) {
             e.printStackTrace();
             callback.call(500, "Exception", null);
@@ -808,7 +875,7 @@ public class AuthClient {
         try {
             String endpoint = "/api/v2/users/profile/update";
             JSONObject parsedObject = Util.pareUnderLine(object);
-            Guardian.post(endpoint, parsedObject, (data)-> createUserInfoFromResponse(data, callback));
+            Guardian.post(endpoint, parsedObject, (data) -> createUserInfoFromResponse(data, callback));
         } catch (Exception e) {
             e.printStackTrace();
             callback.call(500, "Exception", null);
@@ -839,7 +906,7 @@ public class AuthClient {
             JSONObject body = new JSONObject();
             body.put("udfs", array);
             String endpoint = "/api/v2/udfs/values";
-            Guardian.post(endpoint, body, (data)-> callback.call(data.getCode(), data.getMessage(), data.getData()));
+            Guardian.post(endpoint, body, (data) -> callback.call(data.getCode(), data.getMessage(), data.getData()));
         } catch (Exception e) {
             e.printStackTrace();
             callback.call(500, "Exception", null);
@@ -851,7 +918,7 @@ public class AuthClient {
             JSONObject body = new JSONObject();
             body.put("targetType", "USER");
             body.put("targetId", userInfo.getId());
-            Guardian.post("/api/v2/udvs/get", body, (data)-> {
+            Guardian.post("/api/v2/udvs/get", body, (data) -> {
                 if (data.getCode() == 200) {
                     JSONObject obj = data.getData();
                     try {
@@ -871,7 +938,7 @@ public class AuthClient {
     public static void logout(@NotNull AuthCallback<?> callback) {
         try {
             String endpoint = "/api/v2/logout?app_id=" + Authing.getAppId();
-            Guardian.get(endpoint, (data)-> {
+            Guardian.get(endpoint, (data) -> {
                 Safe.logoutUser(Authing.getCurrentUser());
                 Authing.setCurrentUser(null);
                 CookieManager.removeAllCookies();
@@ -886,7 +953,7 @@ public class AuthClient {
     public static void deleteAccount(AuthCallback<JSONObject> callback) {
         try {
             String endpoint = "/api/v2/users/delete";
-            Guardian.delete(endpoint, (data)-> {
+            Guardian.delete(endpoint, (data) -> {
                 if (data.getCode() == 200) {
                     Safe.logoutUser(Authing.getCurrentUser());
                     Authing.setCurrentUser(null);
@@ -905,7 +972,7 @@ public class AuthClient {
             String endpoint = "/api/v2/qrcode/scanned";
             JSONObject body = new JSONObject();
             body.put("random", ticket);
-            Guardian.post(endpoint, body, (data)-> callback.call(data.getCode(), data.getMessage(), data.getData()));
+            Guardian.post(endpoint, body, (data) -> callback.call(data.getCode(), data.getMessage(), data.getData()));
         } catch (Exception e) {
             e.printStackTrace();
             callback.call(500, "Exception", null);
@@ -931,7 +998,7 @@ public class AuthClient {
             String endpoint = "/api/v2/qrcode/confirm";
             JSONObject body = new JSONObject();
             body.put("random", ticket);
-            Guardian.post(endpoint, body, (data)-> callback.call(data.getCode(), data.getMessage(), data.getData()));
+            Guardian.post(endpoint, body, (data) -> callback.call(data.getCode(), data.getMessage(), data.getData()));
         } catch (Exception e) {
             e.printStackTrace();
             callback.call(500, "Exception", null);
@@ -943,7 +1010,7 @@ public class AuthClient {
             String endpoint = "/api/v2/qrcode/cancel";
             JSONObject body = new JSONObject();
             body.put("random", ticket);
-            Guardian.post(endpoint, body, (data)-> callback.call(data.getCode(), data.getMessage(), data.getData()));
+            Guardian.post(endpoint, body, (data) -> callback.call(data.getCode(), data.getMessage(), data.getData()));
         } catch (Exception e) {
             e.printStackTrace();
             callback.call(500, "Exception", null);
@@ -992,7 +1059,7 @@ public class AuthClient {
         try {
             String encryptPassword = URLEncoder.encode(Util.encryptPassword(password), "UTF-8");
             String endpoint = "/api/v2/users/password/check?password=" + encryptPassword;
-            Guardian.get(endpoint, (data)-> callback.call(data.getCode(), data.getMessage(), data.getData()));
+            Guardian.get(endpoint, (data) -> callback.call(data.getCode(), data.getMessage(), data.getData()));
         } catch (Exception e) {
             e.printStackTrace();
             callback.call(500, "Exception", null);
@@ -1001,15 +1068,45 @@ public class AuthClient {
 
     public static void checkAccount(String paramsName, String paramsValue, @NotNull AuthCallback<JSONObject> callback) {
         try {
-            String endpoint = "/api/v2/users/is-user-exists?" + paramsName +"=" + paramsValue;
-            Guardian.get(endpoint, (data)-> callback.call(data.getCode(), data.getMessage(), data.getData()));
+            String endpoint = "/api/v2/users/is-user-exists?" + paramsName + "=" + paramsValue;
+            Guardian.get(endpoint, (data) -> callback.call(data.getCode(), data.getMessage(), data.getData()));
         } catch (Exception e) {
             e.printStackTrace();
             callback.call(500, "Exception", null);
         }
     }
 
-    private static void startOidcInteraction(AuthRequest authData, Response data, @NotNull AuthCallback<UserInfo> callback){
+    public static void getUserPolls(int page, int limit, @NotNull AuthCallback<JSONObject> callback) {
+        try {
+            String endpoint = "/api/v2/userpools?page=" + page + "&limit=" + limit;
+            Guardian.get(endpoint, (data) -> callback.call(data.getCode(), data.getMessage(), data.getData()));
+        } catch (Exception e) {
+            e.printStackTrace();
+            callback.call(500, "Exception", null);
+        }
+    }
+
+    public static void getUserPollDetail(@NotNull AuthCallback<JSONObject> callback) {
+        try {
+            String endpoint = "/api/v2/userpools/detail";
+            Guardian.get(endpoint, (data) -> callback.call(data.getCode(), data.getMessage(), data.getData()));
+        } catch (Exception e) {
+            e.printStackTrace();
+            callback.call(500, "Exception", null);
+        }
+    }
+
+    public static void getCollaborationUserPolls(@NotNull AuthCallback<JSONObject> callback) {
+        try {
+            String endpoint = "/api/v2/userpools/cooperated";
+            Guardian.get(endpoint, (data) -> callback.call(data.getCode(), data.getMessage(), data.getData()));
+        } catch (Exception e) {
+            e.printStackTrace();
+            callback.call(500, "Exception", null);
+        }
+    }
+
+    private static void startOidcInteraction(AuthRequest authData, Response data, @NotNull AuthCallback<UserInfo> callback) {
         if (authData == null) {
             createUserInfoFromResponse(data, callback);
         } else {

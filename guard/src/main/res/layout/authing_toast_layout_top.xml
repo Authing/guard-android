@@ -12,10 +12,11 @@
     android:paddingBottom="10dp">
 
         <ImageView
+            android:id="@+id/toast_image"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:scaleType="centerInside"
-            android:src="@drawable/ic_ok"/>
+            android:src="@drawable/ic_authing_ok"/>
 
         <TextView
             android:id="@+id/toast_text"

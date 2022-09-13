@@ -17,4 +17,10 @@
         <item name="android:windowIsFloating">true</item>
         <item name="android:backgroundDimEnabled">false</item>
     </style>
+
+    <style name="BottomDialogAnimation">
+        <item name="android:windowEnterAnimation">@anim/authing_dialog_enter_from_bottom</item>
+        <item name="android:windowExitAnimation">@anim/authing_dialog_exit_to_bottom</item>
+    </style>
+
 </resources>

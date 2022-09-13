@@ -30,6 +30,7 @@ public class AuthFlow implements Serializable {
     private Map<String, Object> data = new HashMap<>();
 
     private int indexLayoutId;
+    private int socialLoginLayoutId;
     private int registerLayoutId;
     private int forgotPasswordLayoutId;
     private int resetPasswordByEmailLayoutId;
@@ -57,8 +58,8 @@ public class AuthFlow implements Serializable {
     private int userInfoCompleteItemDatePicker;
 
     private int resetPasswordFirstLoginLayoutId;
+    private int verifyEmailSendSuccessLayoutId;
 
-    private AuthContainer.AuthProtocol authProtocol = AuthContainer.AuthProtocol.EInHouse;
     private String scope = "openid profile email phone username address offline_access role extended_fields";
     private boolean skipConsent;
     // save confirmed data across Guard. e.g. Phone Number, Email
@@ -135,6 +136,19 @@ public class AuthFlow implements Serializable {
         } else {
             return indexLayoutId;
         }
+    }
+
+    public int getSocialLoginLayoutId() {
+        if (socialLoginLayoutId == 0) {
+            return R.layout.authing_social_login;
+        } else {
+            return socialLoginLayoutId;
+        }
+    }
+
+    public AuthFlow setSocialLoginLayoutId(int socialLoginLayoutId) {
+        this.socialLoginLayoutId = socialLoginLayoutId;
+        return this;
     }
 
     public int getRegisterLayoutId() {
@@ -398,6 +412,17 @@ public class AuthFlow implements Serializable {
         this.resetPasswordFirstLoginLayoutId = resetPasswordFirstLoginLayoutId;
     }
 
+    public int getVerifyEmailSendSuccessLayoutId() {
+        if (verifyEmailSendSuccessLayoutId == 0) {
+            verifyEmailSendSuccessLayoutId = R.layout.authing_verify_emial_send_success;
+        }
+        return verifyEmailSendSuccessLayoutId;
+    }
+
+    public void setVerifyEmailSendSuccessLayoutId(int verifyEmailSendSuccessLayoutId) {
+        this.verifyEmailSendSuccessLayoutId = verifyEmailSendSuccessLayoutId;
+    }
+
     public Callback<UserInfo> getAuthCallback() {
         return authCallback;
     }
@@ -405,14 +430,6 @@ public class AuthFlow implements Serializable {
     public AuthFlow setAuthCallback(Callback<UserInfo> authCallback) {
         this.authCallback = authCallback;
         return this;
-    }
-
-    public AuthContainer.AuthProtocol getAuthProtocol() {
-        return authProtocol;
-    }
-
-    public void setAuthProtocol(AuthContainer.AuthProtocol authProtocol) {
-        this.authProtocol = authProtocol;
     }
 
     public String getScope() {

@@ -39,6 +39,7 @@ public class WebAuthView extends WebView {
     private WebViewListener listener;
     private boolean loadingEventFired;
     private WebAuthViewCallback callback;
+    private OIDCClient oidcClient;
 
     public interface WebAuthViewCallback {
         void call(UserInfo userInfo);
@@ -83,7 +84,7 @@ public class WebAuthView extends WebView {
                     try {
                         String authCode = Util.getAuthCode(url);
                         if (authCode != null) {
-                            new OIDCClient(authRequest).authByCode(authCode, (code, message, userInfo) -> fireCallback(code, message, userInfo));
+                            oidcClient.authByCode(authCode, (code, message, userInfo) -> fireCallback(code, message, userInfo));
                         } else {
                             ALog.e(TAG, url);
                             fireCallback(500, "login failed", null);
@@ -136,7 +137,7 @@ public class WebAuthView extends WebView {
                     try {
                         String authCode = Util.getAuthCode(url);
                         if (authCode != null) {
-                            new OIDCClient(authRequest).authByCode(authCode, (code, message, userInfo) -> fireCallback(code, message, userInfo));
+                            oidcClient.authByCode(authCode, (code, message, userInfo) -> fireCallback(code, message, userInfo));
                         } else {
                             ALog.e(TAG, url);
                             fireCallback(500, "login failed", null);
@@ -178,13 +179,14 @@ public class WebAuthView extends WebView {
             }
         });
 
+        oidcClient = new OIDCClient(authRequest);
         Authing.getPublicConfig(config -> {
             if (getContext() instanceof AuthActivity) {
                 AuthActivity activity = (AuthActivity) getContext();
                 AuthFlow flow = (AuthFlow) activity.getIntent().getSerializableExtra(AuthActivity.AUTH_FLOW);
                 authRequest.setScope(flow.getScope());
             }
-            post(()-> new OIDCClient(authRequest).buildAuthorizeUrl((ok, data) -> loadUrl(data)));
+            post(()-> oidcClient.buildAuthorizeUrl((ok, data) -> loadUrl(data)));
         });
     }
 

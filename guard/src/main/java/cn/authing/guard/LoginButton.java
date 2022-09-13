@@ -25,6 +25,7 @@ import cn.authing.guard.handler.login.ILoginRequestCallBack;
 import cn.authing.guard.handler.login.LoginRequestManager;
 import cn.authing.guard.internal.PrimaryButton;
 import cn.authing.guard.util.Const;
+import cn.authing.guard.util.ToastUtil;
 import cn.authing.guard.util.Util;
 
 public class LoginButton extends PrimaryButton implements ILoginRequestCallBack {
@@ -96,14 +97,20 @@ public class LoginButton extends PrimaryButton implements ILoginRequestCallBack 
             return false;
         }
 
-        return ((PrivacyConfirmBox)box).require(new PrivacyConfirmDialog.OnItemClickListener() {
+        return ((PrivacyConfirmBox)box).require(new PrivacyConfirmDialog.OnPrivacyListener() {
+
             @Override
-            public void onCancelClick() {
+            public void onShow() {
 
             }
 
             @Override
-            public void onAgreeClick() {
+            public void onCancel() {
+
+            }
+
+            @Override
+            public void onAgree() {
                 performClick();
             }
         });
@@ -118,14 +125,26 @@ public class LoginButton extends PrimaryButton implements ILoginRequestCallBack 
         stopLoadingVisualEffect();
         if (callback != null) {
             if (code != 200 && code != Const.EC_MFA_REQUIRED && code != Const.EC_FIRST_TIME_LOGIN) {
-                Util.setErrorText(this, message);
+                post(() -> ToastUtil.showCenter(getContext(), message));
             }
             post(()-> callback.call(code, message, userInfo));
             return;
         }
 
         if (userInfo == null){
-            Util.setErrorText(this, message);
+            if (code == Const.EC_VERIFY_EMAIL) {
+                if (getContext() instanceof AuthActivity) {
+                    AuthActivity activity = (AuthActivity) getContext();
+                    AuthFlow flow = (AuthFlow) activity.getIntent().getSerializableExtra(AuthActivity.AUTH_FLOW);
+                    Intent intent = new Intent(getContext(), AuthActivity.class);
+                    intent.putExtra(AuthActivity.AUTH_FLOW, flow);
+                    intent.putExtra(AuthActivity.CONTENT_LAYOUT_ID, flow.getVerifyEmailSendSuccessLayoutId());
+                }
+            } if (code == Const.EC_ACCOUNT_LOCKED) {
+                post(() -> ToastUtil.showCenterWarning(getContext(), getContext().getString(R.string.authing_account_locked)));
+            } else {
+                post(() -> ToastUtil.showCenter(getContext(), message));
+            }
             refreshFeedBackView(true);
             return;
         }
@@ -166,7 +185,7 @@ public class LoginButton extends PrimaryButton implements ILoginRequestCallBack 
         } else if (code == Const.EC_CAPTCHA) {
             FlowHelper.handleCaptcha(this);
         } else {
-            Util.setErrorText(this, message);
+            post(() -> ToastUtil.showCenter(getContext(), message));
             refreshFeedBackView(true);
         }
     }

@@ -3,6 +3,7 @@
     <string name="authing_username">用户名</string>
     <string name="authing_email">邮箱</string>
     <string name="authing_phone">手机号</string>
+    <string name="authing_email_edit_text_hint">请输入邮箱</string>
     <string name="authing_password_edit_text_hint">请输入密码</string>
     <string name="authing_password_confirm_edit_text_hint">请再次输入密码</string>
     <string name="authing_login">登录</string>
@@ -14,7 +15,7 @@
     <string name="authing_login_by_phone_and_verify_code">用短信验证码登录</string>
     <string name="authing_resend_after">%1$d</string>
     <string name="authing_register">注册</string>
-    <string name="authing_welcome_to">欢迎加入</string>
+    <string name="authing_welcome_to">欢迎加入 %1$s，为了更好的使用体验，请完善你的个人信息。</string>
     <string name="authing_login_by_phone_code">短信验证码</string>
     <string name="authing_login_by_email_code">邮箱验证码</string>
     <string name="authing_login_by_password">账号密码</string>
@@ -59,8 +60,8 @@
     <string name="authing_mfa_verify_phone">手机验证</string>
     <string name="authing_mfa_verify_email">邮箱验证</string>
     <string name="authing_mfa_verify_otp">安全码验证</string>
-    <string name="authing_user_info_complete">完善帐号信息</string>
-    <string name="authing_complete_tip">为了更好的使用体验，请先完善您的资料信息</string>
+    <string name="authing_user_info_complete">完善用户信息</string>
+    <string name="authing_complete_tip">为了更好的使用体验，请完善你的个人信息</string>
     <string name="authing_submit">提交</string>
     <string name="authing_male">男</string>
     <string name="authing_female">女</string>
@@ -68,29 +69,45 @@
     <string name="authing_first_time_login_count_down">此页面的有效期为 10 分钟</string>
     <string name="authing_one_click">手机号一键登录</string>
     <string name="authing_current_phone_login">本机号码一键登录</string>
-    <string name="authing_other_login">其他方式登录</string>
+    <string name="authing_other_login">其他登录方式</string>
     <string name="authing_logout">退出登录</string>
     <string name="authing_delete_account">账号注销</string>
     <string name="authing_delete_account_success">账号注销成功</string>
     <string name="authing_biometric_title">生物认证</string>
     <string name="authing_biometric_tip">用生物信息登录</string>
-    <string name="authing_select_country_code">选择国家或地区代码</string>
-    <string name="authing_search">搜索</string>
+    <string name="authing_select_country_code">选择国家或地区</string>
+    <string name="authing_enter_country_search">输入国家或地区名搜索</string>
     <string name="authing_cancel">取消</string>
     <string name="authing_skip">跳过</string>
     <string name="authing_agree">同意</string>
     <string name="authing_confirm">确认</string>
+    <string name="authing_picker_date">选择生日</string>
     <string name="authing_delete_account_tips">注销后，此账号的所有数据都将被删除且不可逆，请谨慎操作</string>
     <string name="authing_code_sent_to_phone">将发送验证码至绑定手机 </string>
     <string name="authing_network_error_tips">网络异常，请检查网络设置</string>
     <string name="authing_reading_guide">阅读指引</string>
+    <string name="authing_privacy_dialog_title">请先阅读并同意</string>
+    <string name="authing_privacy_dialog_confirm">同意并继续</string>
+    <string name="authing_verify_account">验证账户</string>
+    <string name="authing_verify_account_email_send">验证邮箱已发送</string>
+    <string name="authing_verify_account_email_send_success">验证邮箱已经发送到你的邮箱，\n请点击连接验证后登录</string>
+    <string name="authing_login_by_alipay">使用 支付宝 登录</string>
+    <string name="authing_login_by_wechat">使用 微信 登录</string>
+    <string name="authing_login_by_we_com">使用 企业微信 登录</string>
+    <string name="authing_login_by_lark">使用 飞书 登录</string>
+    <string name="authing_login_by_google">使用 google 登录</string>
+    <string name="authing_social_alipay">支付宝</string>
+    <string name="authing_social_wechat">微信</string>
+    <string name="authing_social_we_com">企业微信</string>
+    <string name="authing_social_lark">飞书</string>
+    <string name="authing_social_google">google</string>
 
     <!--user profile-->
     <string name="authing_user_profile">个人中心</string>
     <string name="authing_unspecified">未定义</string>
     <string name="authing_input_old_password">请输入旧密码</string>
     <string name="authing_avatar">头像</string>
-    <string name="authing_nickname">呢称</string>
+    <string name="authing_nickname">昵称</string>
     <string name="authing_name">姓名</string>
     <string name="authing_modify_password">修改密码</string>
     <string name="authing_update_profile">更新资料</string>
@@ -153,7 +170,7 @@
     <string name="authing_invalid_email">请输入有效的邮箱</string>
     <string name="authing_invalid_phone">请输入所在区号合法的手机号</string>
     <string name="authing_invalid_input">输入格式不正确</string>
-    <string name="authing_invalid_phone_or_email">请输入正确的手机号或邮箱</string>
+    <string name="authing_invalid_phone_or_email">请输入手机号或邮箱</string>
     <string name="authing_get_email_code_failed">邮箱验证码获取失败</string>
     <string name="authing_phone_number_already_bound">手机号码已经被绑定</string>
     <string name="authing_email_already_bound">邮箱已经被绑定</string>
@@ -163,4 +180,6 @@
     <string name="authing_email_account_not_found">找不到该邮箱账号</string>
     <string name="authing_phone_account_found">该手机号已存在</string>
     <string name="authing_email_account_found">该邮箱已存在</string>
+    <string name="authing_cancelled_by_user">已取消</string>
+    <string name="authing_account_locked">此账号被锁定：\n请联系管理员恢复账号</string>
 </resources>

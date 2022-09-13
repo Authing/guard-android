@@ -4,7 +4,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.List;
@@ -55,7 +54,6 @@ public class CountryCodePickerAdapter extends BaseAdapter {
             mHolder.txtName = convertView.findViewById(R.id.txt_name);
             mHolder.txtTag = convertView.findViewById(R.id.txt_tag);
             mHolder.txtNum = convertView.findViewById(R.id.txt_num);
-            mHolder.imgLine = convertView.findViewById(R.id.img_line);
             convertView.setTag(mHolder);
         } else {
             mHolder = (ViewHolder) convertView.getTag();
@@ -63,23 +61,20 @@ public class CountryCodePickerAdapter extends BaseAdapter {
         convertView.setId(position);
         Country country = mBeans.get(position);
         String countryName = Util.isCn() ? country.getName() : country.getEnName();
-        String name = country.getEmoji() + " " + countryName;
-        mHolder.txtName.setText(name);
-        mHolder.txtNum.setText(country.getCode());
+        //String name = country.getEmoji() + " " + countryName;
+        mHolder.txtName.setText(countryName);
+        mHolder.txtNum.setText("+"+country.getCode());
         String firstSpell = country.getFirstSpell().toUpperCase();
         if (position == 0) {
             mHolder.txtTag.setVisibility(View.VISIBLE);
             mHolder.txtTag.setText(firstSpell);
-            mHolder.imgLine.setVisibility(View.VISIBLE);
         } else {
             String lastFirstSpell = mBeans.get(position - 1).getFirstSpell().toUpperCase();
             if (firstSpell.equals(lastFirstSpell)) {
                 mHolder.txtTag.setVisibility(View.GONE);
-                mHolder.imgLine.setVisibility(View.GONE);
             } else {
                 mHolder.txtTag.setVisibility(View.VISIBLE);
                 mHolder.txtTag.setText(firstSpell);
-                mHolder.imgLine.setVisibility(View.VISIBLE);
             }
         }
         return convertView;
@@ -87,6 +82,5 @@ public class CountryCodePickerAdapter extends BaseAdapter {
 
     public static class ViewHolder {
         private TextView txtName, txtTag, txtNum;
-        private ImageView imgLine;
     }
 }

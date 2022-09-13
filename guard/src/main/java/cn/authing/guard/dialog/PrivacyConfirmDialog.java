@@ -14,7 +14,7 @@ import cn.authing.guard.R;
 
 public class PrivacyConfirmDialog extends Dialog {
 
-    private OnItemClickListener onItemClickListener;
+    private OnPrivacyListener onPrivacyListener;
     private TextView contentView;
 
     public PrivacyConfirmDialog(@NonNull Context context) {
@@ -34,22 +34,22 @@ public class PrivacyConfirmDialog extends Dialog {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.authing_privacy_confirm_dialog);
         setCancelable(false);
-        getWindow().setBackgroundDrawableResource(R.drawable.authing_privacy_confirm_dialog_background);
+        getWindow().setBackgroundDrawableResource(R.drawable.authing_dialog_background);
 
         contentView = findViewById(R.id.content_text);
         contentView.setMovementMethod(LinkMovementMethod.getInstance());
 
         findViewById(R.id.cancel_button).setOnClickListener(v -> {
-            if (onItemClickListener != null) {
+            if (onPrivacyListener != null) {
                 dismiss();
-                onItemClickListener.onCancelClick();
+                onPrivacyListener.onCancel();
             }
         });
 
         findViewById(R.id.agree_button).setOnClickListener(v -> {
-            if (onItemClickListener != null) {
+            if (onPrivacyListener != null) {
                 dismiss();
-                onItemClickListener.onAgreeClick();
+                onPrivacyListener.onAgree();
             }
         });
     }
@@ -60,15 +60,17 @@ public class PrivacyConfirmDialog extends Dialog {
         }
     }
 
-    public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
-        this.onItemClickListener = onItemClickListener;
+    public void setOnPrivacyListener(OnPrivacyListener onPrivacyListener) {
+        this.onPrivacyListener = onPrivacyListener;
     }
 
-    public interface OnItemClickListener {
+    public interface OnPrivacyListener {
 
-        void onCancelClick();
+        void onShow();
 
-        void onAgreeClick();
+        void onCancel();
+
+        void onAgree();
     }
 
 }
