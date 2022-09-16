@@ -100,7 +100,7 @@ public class OneClick extends SocialAuthenticator implements Serializable {
         this.uiConfig = uiConfig;
         this.callback = callback;
 
-        //getAndroidScreenProperty();
+        getAndroidScreenProperty();
         if (Authing.isConfigEmpty()) {
             if (_bid == null) {
                 callback.call(500, "businessId error", null);
@@ -116,7 +116,7 @@ public class OneClick extends SocialAuthenticator implements Serializable {
     }
 
     public void getPhoneNumber(@NotNull AuthCallback<String> callback) {
-        //getAndroidScreenProperty();
+        getAndroidScreenProperty();
         if (Authing.isConfigEmpty()) {
             callback.call(500, "businessId error", null);
             return;
@@ -127,7 +127,7 @@ public class OneClick extends SocialAuthenticator implements Serializable {
         });
     }
 
-    private void prefetchMobileNumber(String _bid, Config config, AuthCallback<String> callback) {
+    private void prefetchMobileNumber(String _bid, Config config, AuthCallback<String> callBack) {
         String businessId = (_bid != null) ? _bid : config.getSocialBusinessId(Const.EC_TYPE_YI_DUN);
         QuickLogin.getInstance().init(context, businessId);
         QuickLogin.getInstance().setPrefetchNumberTimeout(3);
@@ -136,17 +136,17 @@ public class OneClick extends SocialAuthenticator implements Serializable {
             public void onGetMobileNumberSuccess(String YDToken, String mobileNumber) {
                 //预取号成功
                 ALog.d(TAG, "Got phone:" + mobileNumber);
-                if (callback == null) {
+                if (callBack == null) {
                     handler.sendEmptyMessage(MSG_LOGIN);
                 } else {
-                    callback.call(200, "", mobileNumber);
+                    callBack.call(200, "", mobileNumber);
                 }
             }
 
             @Override
             public void onGetMobileNumberError(String YDToken, String msg) {
                 ALog.e(TAG, "Got phone error:" + msg);
-                callback.call(500, msg, null);
+                callback.call(500, context.getString(R.string.authing_get_phone_failed), null);
             }
         });
     }
@@ -169,7 +169,7 @@ public class OneClick extends SocialAuthenticator implements Serializable {
                 return;
             }
 
-            String url = config.getUserpoolLogo();
+            String url = config.getLogo();
             ImageLoader.with(context).execute(url, (ok, result) -> {
                 config(result);
                 startOnePass();
@@ -191,7 +191,7 @@ public class OneClick extends SocialAuthenticator implements Serializable {
             public void onGetTokenError(String YDToken, String msg) {
                 quit();
                 ALog.e(TAG, "onGetTokenError:" + msg);
-                callback.call(500, msg, null);
+                callback.call(500, context.getString(R.string.authing_get_auth_code_failed), null);
             }
 
             @Override
@@ -220,30 +220,25 @@ public class OneClick extends SocialAuthenticator implements Serializable {
         });
     }
 
-    private boolean shouldCompleteAfterLogin(Config config) {
-        List<String> complete = config.getCompleteFieldsPlace();
-        return complete != null && complete.contains("login");
-    }
-
     private void getAndroidScreenProperty() {
         WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
         DisplayMetrics dm = new DisplayMetrics();
         wm.getDefaultDisplay().getMetrics(dm);
         //px
         int width = dm.widthPixels;         // 屏幕宽度（像素）
-        int height = dm.heightPixels;       // 屏幕高度（像素）
+//        int height = dm.heightPixels;       // 屏幕高度（像素）
         float density = dm.density;         // 屏幕密度（0.75 / 1.0 / 1.5）
-        int densityDpi = dm.densityDpi;     // 屏幕密度dpi（120 / 160 / 240）
+//        int densityDpi = dm.densityDpi;     // 屏幕密度dpi（120 / 160 / 240）
         // 屏幕宽度算法:屏幕宽度（像素）/屏幕密度
         screenWidth = (int) (width / density);  // 屏幕宽度(dp)
-        int screenHeight = (int) (height / density);// 屏幕高度(dp)
-
-        ALog.d(TAG, "屏幕宽度（像素）：" + width);
-        ALog.d(TAG, "屏幕高度（像素）：" + height);
-        ALog.d(TAG, "屏幕密度（0.75 / 1.0 / 1.5）：" + density);
-        ALog.d(TAG, "屏幕密度dpi（120 / 160 / 240）：" + densityDpi);
-        ALog.d(TAG, "屏幕宽度（dp）：" + screenWidth);
-        ALog.d(TAG, "屏幕高度（dp）：" + screenHeight);
+//        int screenHeight = (int) (height / density);// 屏幕高度(dp)
+//
+//        ALog.d(TAG, "屏幕宽度（像素）：" + width);
+//        ALog.d(TAG, "屏幕高度（像素）：" + height);
+//        ALog.d(TAG, "屏幕密度（0.75 / 1.0 / 1.5）：" + density);
+//        ALog.d(TAG, "屏幕密度dpi（120 / 160 / 240）：" + densityDpi);
+//        ALog.d(TAG, "屏幕宽度（dp）：" + screenWidth);
+//        ALog.d(TAG, "屏幕高度（dp）：" + screenHeight);
     }
 
     private void config(Drawable logo) {
@@ -261,12 +256,6 @@ public class OneClick extends SocialAuthenticator implements Serializable {
                 .setSloganColor(0)
                 .setMaskNumberTopYOffset(233)//160+52+21=233
                 .setSloganTopYOffset(265)//160+52+21+24+8=265
-                .setLoginBtnText(context.getString(R.string.authing_current_phone_login))
-                .setLoginBtnTopYOffset(359)//160+52+21+24+102=359
-                .setLoginBtnWidth(screenWidth - 24 * 2)
-                .setLoginBtnHeight(44)
-                .setLoginBtnBackgroundRes("authing_button_background")
-                .setLoginBtnTextSize(16)
                 .setPrivacyTopYOffset(263)
                 .setPrivacyMarginLeft(24)
                 .setPrivacyMarginRight(24)
@@ -283,6 +272,13 @@ public class OneClick extends SocialAuthenticator implements Serializable {
                 .setPrivacyTextColor(context.getColor(R.color.authing_text_gray)) // 设置隐私栏文本颜色，不包括协议
                 .setPrivacyProtocolColor(context.getColor(R.color.authing_text_black)) // 设置隐私栏协议颜色
                 .setPrivacySize(12) // 设置隐私栏区域字体大小
+                .setHidePrivacySmh(true)
+                .setLoginBtnText(context.getString(R.string.authing_current_phone_login))
+                .setLoginBtnTopYOffset(365)//160+52+21+24+102=359
+                .setLoginBtnWidth(screenWidth - 24 * 2)
+                .setLoginBtnHeight(44)
+                .setLoginBtnBackgroundRes("authing_button_background")
+                .setLoginBtnTextSize(16)
                 .addCustomView(titleLayout, "titleLayout", UnifyUiConfig.POSITION_IN_BODY, null)
                 .addCustomView(otherLoginRel, "otherBtn", UnifyUiConfig.POSITION_IN_BODY, null)
                 //.addCustomView(socialRel, "socialList", UnifyUiConfig.POSITION_IN_BODY, null)
@@ -448,7 +444,7 @@ public class OneClick extends SocialAuthenticator implements Serializable {
         return text;
     }
 
-    public void showPrivacyBottomDialog(TextView privacyTv, Button btnLogin) {
+    private void showPrivacyBottomDialog(TextView privacyTv, Button btnLogin) {
         if (privacyDialog == null) {
             privacyDialog = new PrivacyConfirmBottomDialog(privacyTv.getContext());
         }
@@ -476,6 +472,11 @@ public class OneClick extends SocialAuthenticator implements Serializable {
     }
 
     private void quit() {
+        clear();
+        QuickLogin.getInstance().quitActivity();
+    }
+
+    private void clear(){
         if (privacyDialog != null) {
             if (privacyDialog.isShowing()) {
                 privacyDialog.dismiss();
@@ -488,7 +489,6 @@ public class OneClick extends SocialAuthenticator implements Serializable {
             }
             loadingDrawable = null;
         }
-        QuickLogin.getInstance().quitActivity();
     }
 
     @Override

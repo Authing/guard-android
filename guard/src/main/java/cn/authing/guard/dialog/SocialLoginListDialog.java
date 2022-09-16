@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Gravity;
-import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.LinearLayout;
@@ -13,9 +12,13 @@ import android.widget.LinearLayout;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import java.util.List;
+
 import cn.authing.guard.AuthCallback;
+import cn.authing.guard.Authing;
 import cn.authing.guard.R;
 import cn.authing.guard.activity.AuthActivity;
+import cn.authing.guard.data.ExtendedField;
 import cn.authing.guard.data.UserInfo;
 import cn.authing.guard.flow.AuthFlow;
 import cn.authing.guard.flow.FlowHelper;
@@ -71,11 +74,27 @@ public class SocialLoginListDialog extends Dialog {
         socialLoginListView.setOnLoginListener((AuthCallback<UserInfo>) (code, message, userInfo) -> {
             if (mContext instanceof AuthActivity) {
                 if (code == 200) {
-                    AuthActivity activity = (AuthActivity) mContext;
-                    Intent intent = new Intent();
-                    intent.putExtra("user", userInfo);
-                    activity.setResult(AuthActivity.OK, intent);
-                    activity.finish();
+                    Authing.getPublicConfig((config) -> {
+                        AuthActivity activity = (AuthActivity) mContext;
+                        AuthFlow flow = (AuthFlow) activity.getIntent().getSerializableExtra(AuthActivity.AUTH_FLOW);
+                        List<ExtendedField> missingFields = FlowHelper.missingFields(config, userInfo);
+                        if (Util.shouldCompleteAfterLogin(config) && missingFields.size() > 0) {
+                            flow.getData().put(AuthFlow.KEY_USER_INFO, userInfo);
+                            FlowHelper.handleUserInfoComplete(activity, missingFields);
+                        } else {
+                            AuthFlow.Callback<UserInfo> cb = flow.getAuthCallback();
+                            if (cb != null) {
+                                cb.call(getContext(), code, message, userInfo);
+                            }
+
+                            socialLoginListView.post(() -> {
+                                Intent intent = new Intent();
+                                intent.putExtra("user", userInfo);
+                                activity.setResult(AuthActivity.OK, intent);
+                                activity.finish();
+                            });
+                        }
+                    });
                 } else if (code == Const.EC_MFA_REQUIRED) {
                     if (getContext() instanceof AuthActivity) {
                         AuthActivity activity = (AuthActivity) mContext;

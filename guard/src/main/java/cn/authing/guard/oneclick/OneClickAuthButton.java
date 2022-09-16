@@ -2,7 +2,6 @@ package cn.authing.guard.oneclick;
 
 import static cn.authing.guard.util.Const.NS_ANDROID;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.TypedArray;
@@ -17,17 +16,23 @@ import android.view.View;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.netease.nis.quicklogin.QuickLogin;
+
 import java.util.List;
 
 import cn.authing.guard.Authing;
 import cn.authing.guard.R;
 import cn.authing.guard.activity.AuthActivity;
 import cn.authing.guard.analyze.Analyzer;
+import cn.authing.guard.data.ExtendedField;
 import cn.authing.guard.data.SocialConfig;
 import cn.authing.guard.data.UserInfo;
+import cn.authing.guard.flow.AuthFlow;
+import cn.authing.guard.flow.FlowHelper;
 import cn.authing.guard.internal.LoadingButton;
 import cn.authing.guard.util.Const;
 import cn.authing.guard.util.NetworkUtils;
+import cn.authing.guard.util.ToastUtil;
 import cn.authing.guard.util.Util;
 
 public class OneClickAuthButton extends LoadingButton {
@@ -111,10 +116,11 @@ public class OneClickAuthButton extends LoadingButton {
 
     private void refreshVisible() {
         if (linkNetWork) {
-            if (NetworkUtils.isMobileEnabled(getContext())) {
-                refreshVisibleOnlyByConfig();
-            } else {
+            int net = QuickLogin.getInstance().checkNetWork(getContext());
+            if (!NetworkUtils.isMobileEnabled(getContext()) || net == 4 || net == 5) {
                 setVisibility(GONE);
+            } else {
+                refreshVisibleOnlyByConfig();
             }
         } else {
             refreshVisibleOnlyByConfig();
@@ -138,13 +144,32 @@ public class OneClickAuthButton extends LoadingButton {
             stopLoadingVisualEffect();
         }
         if (code == 200 && userInfo != null) {
-            Intent intent = new Intent();
-            intent.putExtra("user", userInfo);
-            ((Activity) getContext()).setResult(AuthActivity.OK, intent);
-            ((Activity) getContext()).finish();
+            Authing.getPublicConfig((config) -> {
+                if (getContext() instanceof AuthActivity) {
+                    AuthActivity activity = (AuthActivity) getContext();
+                    AuthFlow flow = (AuthFlow) activity.getIntent().getSerializableExtra(AuthActivity.AUTH_FLOW);
+                    List<ExtendedField> missingFields = FlowHelper.missingFields(config, userInfo);
+                    if (Util.shouldCompleteAfterLogin(config) && missingFields.size() > 0) {
+                        flow.getData().put(AuthFlow.KEY_USER_INFO, userInfo);
+                        FlowHelper.handleUserInfoComplete(this, missingFields);
+                    } else {
+                        AuthFlow.Callback<UserInfo> cb = flow.getAuthCallback();
+                        if (cb != null) {
+                            cb.call(getContext(), code, message, userInfo);
+                        }
+
+                        post(() -> {
+                            Intent intent = new Intent();
+                            intent.putExtra("user", userInfo);
+                            activity.setResult(AuthActivity.OK, intent);
+                            activity.finish();
+                        });
+                    }
+                }
+            });
         } else {
             if (!TextUtils.isEmpty(message) && !"cancel".equals(message)) {
-                post(() -> Util.setErrorText(v, message));
+                post(() -> ToastUtil.showCenter(getContext(), message));
             }
         }
     }
@@ -152,7 +177,7 @@ public class OneClickAuthButton extends LoadingButton {
     private void startListeningNetWork() {
         NetworkRequest.Builder builder = new NetworkRequest.Builder();
         NetworkRequest request = builder.build();
-        ConnectivityManager connMgr = (ConnectivityManager) getContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+        ConnectivityManager connMgr = (ConnectivityManager) getContext().getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
         if (connMgr == null) {
             return;
         }

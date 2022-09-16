@@ -155,7 +155,7 @@ public class LoginButton extends PrimaryButton implements ILoginRequestCallBack 
                     AuthActivity activity = (AuthActivity) getContext();
                     AuthFlow flow = (AuthFlow) activity.getIntent().getSerializableExtra(AuthActivity.AUTH_FLOW);
                     List<ExtendedField> missingFields = FlowHelper.missingFields(config, userInfo);
-                    if (shouldCompleteAfterLogin(config) && missingFields.size() > 0) {
+                    if (Util.shouldCompleteAfterLogin(config) && missingFields.size() > 0) {
                         flow.getData().put(AuthFlow.KEY_USER_INFO, userInfo);
                         FlowHelper.handleUserInfoComplete(this, missingFields);
                     } else {
@@ -202,8 +202,4 @@ public class LoginButton extends PrimaryButton implements ILoginRequestCallBack 
         });
     }
 
-    private boolean shouldCompleteAfterLogin(Config config) {
-        List<String> complete = config.getCompleteFieldsPlace();
-        return complete != null && complete.contains("login");
-    }
 }

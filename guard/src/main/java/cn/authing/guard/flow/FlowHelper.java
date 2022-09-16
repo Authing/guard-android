@@ -5,6 +5,7 @@ import static cn.authing.guard.util.Const.MFA_POLICY_OTP;
 import static cn.authing.guard.util.Const.MFA_POLICY_SMS;
 import static cn.authing.guard.util.Util.isNull;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
@@ -167,6 +168,20 @@ public class FlowHelper {
         int[] ids = flow.getUserInfoCompleteLayoutIds();
         if (ids == null || ids.length == 0) {
             Util.setErrorText(currentView, "UserInfoCompleteLayoutIds has no layout. please call AuthFlow.setUserInfoCompleteLayoutIds");
+            return;
+        }
+
+        flow.getData().put(AuthFlow.KEY_EXTENDED_FIELDS, extendedFields);
+        Intent intent = new Intent(activity, AuthActivity.class);
+        intent.putExtra(AuthActivity.CONTENT_LAYOUT_ID, flow.getUserInfoCompleteLayoutIds()[0]);
+        intent.putExtra(AuthActivity.AUTH_FLOW, flow);
+        activity.startActivityForResult(intent, AuthActivity.RC_LOGIN);
+    }
+
+    public static void handleUserInfoComplete(Activity activity, List<ExtendedField> extendedFields) {
+        AuthFlow flow = new AuthFlow();
+        int[] ids = flow.getUserInfoCompleteLayoutIds();
+        if (ids == null || ids.length == 0) {
             return;
         }
 

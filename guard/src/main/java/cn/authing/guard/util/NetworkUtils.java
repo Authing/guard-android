@@ -1,8 +1,11 @@
 package cn.authing.guard.util;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.Build;
+import android.telephony.TelephonyManager;
 
 import java.lang.reflect.Method;
 
@@ -56,12 +59,31 @@ public class NetworkUtils {
         try {
             Method getMobileDataEnabledMethod = ConnectivityManager.class.getDeclaredMethod("getMobileDataEnabled");
             getMobileDataEnabledMethod.setAccessible(true);
-            ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+            ConnectivityManager connectivityManager = (ConnectivityManager) context
+                    .getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
             return (Boolean) getMobileDataEnabledMethod.invoke(connectivityManager);
-        }catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
-        return true;
+        return false;
+    }
+
+    public static boolean getMobileDataEnabled(Context context) {
+        try {
+            TelephonyManager tm = (TelephonyManager) context.getApplicationContext().getSystemService(Context.TELEPHONY_SERVICE);
+            if (tm == null) return false;
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                return tm.isDataEnabled();
+            }
+            @SuppressLint("PrivateApi")
+            Method getMobileDataEnabledMethod = tm.getClass().getDeclaredMethod("getDataEnabled");
+            if (null != getMobileDataEnabledMethod) {
+                return (boolean) getMobileDataEnabledMethod.invoke(tm);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 
 

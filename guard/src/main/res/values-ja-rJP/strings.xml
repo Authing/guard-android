@@ -100,7 +100,7 @@
     <string name="authing_social_wechat">微信</string>
     <string name="authing_social_we_com">エンタープライズ微信</string>
     <string name="authing_social_lark">フライングブック</string>
-    <string name="authing_social_google">google</string>
+    <string name="authing_social_google">Google</string>
 
     <!--user profile-->
     <string name="authing_user_profile">個人センター</string>
@@ -181,5 +181,8 @@
     <string name="authing_phone_account_found">電話番号はすでに存在します</string>
     <string name="authing_email_account_found">メールボックスはすでに存在します</string>
     <string name="authing_cancelled_by_user">キャンセル</string>
+    <string name="authing_auth_failed">認証に失敗しました</string>
+    <string name="authing_get_phone_failed">電話番号を取得できませんでした</string>
+    <string name="authing_get_auth_code_failed">認証コードの取得に失敗しました</string>
     <string name="authing_account_locked">このアカウントはロックされています:\n管理者に連絡してアカウントを復元してください</string>
 </resources>

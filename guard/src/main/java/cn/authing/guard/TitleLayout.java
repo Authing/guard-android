@@ -288,12 +288,12 @@ public class TitleLayout extends RelativeLayout {
     }
 
     private void startListeningNetWork() {
-        if (hasRegister){
+        if (hasRegister || mContext == null){
             return;
         }
         NetworkRequest.Builder builder = new NetworkRequest.Builder();
         NetworkRequest request = builder.build();
-        ConnectivityManager connMgr = (ConnectivityManager) mContext.getSystemService(Context.CONNECTIVITY_SERVICE);
+        ConnectivityManager connMgr = (ConnectivityManager) mContext.getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
         if (connMgr == null) {
             return;
         }

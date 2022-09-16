@@ -95,12 +95,12 @@
     <string name="authing_login_by_wechat">使用 微信 登录</string>
     <string name="authing_login_by_we_com">使用 企业微信 登录</string>
     <string name="authing_login_by_lark">使用 飞书 登录</string>
-    <string name="authing_login_by_google">使用 google 登录</string>
+    <string name="authing_login_by_google">使用 Google 登录</string>
     <string name="authing_social_alipay">支付宝</string>
     <string name="authing_social_wechat">微信</string>
     <string name="authing_social_we_com">企业微信</string>
     <string name="authing_social_lark">飞书</string>
-    <string name="authing_social_google">google</string>
+    <string name="authing_social_google">Google</string>
 
     <!--user profile-->
     <string name="authing_user_profile">个人中心</string>
@@ -181,5 +181,8 @@
     <string name="authing_phone_account_found">该手机号已存在</string>
     <string name="authing_email_account_found">该邮箱已存在</string>
     <string name="authing_cancelled_by_user">已取消</string>
+    <string name="authing_auth_failed">授权失败</string>
+    <string name="authing_get_phone_failed">获取电话号码失败</string>
+    <string name="authing_get_auth_code_failed">获取授权码失败</string>
     <string name="authing_account_locked">此账号被锁定：\n请联系管理员恢复账号</string>
 </resources>

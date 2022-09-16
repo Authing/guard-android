@@ -9,10 +9,14 @@ import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.View;
 
+import java.util.List;
+
 import cn.authing.guard.AuthCallback;
+import cn.authing.guard.Authing;
 import cn.authing.guard.PrivacyConfirmBox;
 import cn.authing.guard.R;
 import cn.authing.guard.activity.AuthActivity;
+import cn.authing.guard.data.ExtendedField;
 import cn.authing.guard.data.UserInfo;
 import cn.authing.guard.dialog.PrivacyConfirmDialog;
 import cn.authing.guard.flow.AuthFlow;
@@ -48,11 +52,29 @@ public abstract class SocialLoginButton extends androidx.appcompat.widget.AppCom
             callback.call(code, message, userInfo);
         } else if (getContext() instanceof AuthActivity) {
             if (code == 200) {
-                AuthActivity activity = (AuthActivity) getContext();
-                Intent intent = new Intent();
-                intent.putExtra("user", userInfo);
-                activity.setResult(AuthActivity.OK, intent);
-                activity.finish();
+                Authing.getPublicConfig((config)->{
+                    if (getContext() instanceof AuthActivity) {
+                        AuthActivity activity = (AuthActivity) getContext();
+                        AuthFlow flow = (AuthFlow) activity.getIntent().getSerializableExtra(AuthActivity.AUTH_FLOW);
+                        List<ExtendedField> missingFields = FlowHelper.missingFields(config, userInfo);
+                        if (Util.shouldCompleteAfterLogin(config) && missingFields.size() > 0) {
+                            flow.getData().put(AuthFlow.KEY_USER_INFO, userInfo);
+                            FlowHelper.handleUserInfoComplete(this, missingFields);
+                        } else {
+                            AuthFlow.Callback<UserInfo> cb = flow.getAuthCallback();
+                            if (cb != null) {
+                                cb.call(getContext(), code, message, userInfo);
+                            }
+
+                            post(() -> {
+                                Intent intent = new Intent();
+                                intent.putExtra("user", userInfo);
+                                activity.setResult(AuthActivity.OK, intent);
+                                activity.finish();
+                            });
+                        }
+                    }
+                });
             } else if (code == Const.EC_MFA_REQUIRED) {
                 if (getContext() instanceof AuthActivity) {
                     AuthActivity activity = (AuthActivity) getContext();

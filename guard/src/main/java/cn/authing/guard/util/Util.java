@@ -479,4 +479,9 @@ public class Util {
         return underlineToHump(sb.toString());
     }
 
+    public static boolean shouldCompleteAfterLogin(Config config) {
+        List<String> complete = config.getCompleteFieldsPlace();
+        return complete != null && complete.contains("login");
+    }
+
 }

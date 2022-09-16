@@ -59,21 +59,21 @@ public class WeCom extends SocialAuthenticator {
                     WWAuthMessage.Resp rsp = (WWAuthMessage.Resp) resp;
                     if (rsp.errCode == WWAuthMessage.ERR_CANCEL) {
                         ALog.i(TAG, context.getString(R.string.authing_cancelled_by_user));
-                        fireCallback(callback, null);
+                        fireCallback(callback, context.getString(R.string.authing_cancelled_by_user));
                     } else if (rsp.errCode == WWAuthMessage.ERR_FAIL) {
                         ALog.i(TAG, "登录失败");
-                        fireCallback(callback, null);
+                        fireCallback(callback, context.getString(R.string.authing_auth_failed));
                     } else if (rsp.errCode == WWAuthMessage.ERR_OK) {
                         ALog.i(TAG, "Auth success");
                         callback.call(SocialLoginButton.AUTH_SUCCESS, "Auth success", null);
                         login(context, rsp.code, callback);
                     } else {
                         ALog.e(TAG, "Auth failed");
-                        fireCallback(callback, null);
+                        fireCallback(callback, context.getString(R.string.authing_auth_failed));
                     }
                 } else {
                     ALog.e(TAG, "Auth failed, resp is null");
-                    fireCallback(callback, null);
+                    fireCallback(callback, context.getString(R.string.authing_auth_failed));
                 }
             });
         });
@@ -97,9 +97,9 @@ public class WeCom extends SocialAuthenticator {
         }
     }
 
-    private void fireCallback(AuthCallback<UserInfo> callback, UserInfo info) {
+    private void fireCallback(AuthCallback<UserInfo> callback, String message) {
         if (callback != null) {
-            callback.call(500, "", info);
+            callback.call(500, message, null);
         }
     }
 }

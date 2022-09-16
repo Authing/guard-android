@@ -215,6 +215,6 @@ public class Authing {
     }
 
     public static boolean isConfigEmpty() {
-        return !isGettingConfig && publicConfig == null;
+        return publicConfig == null;
     }
 }

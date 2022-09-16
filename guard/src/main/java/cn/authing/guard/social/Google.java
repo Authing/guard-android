@@ -30,6 +30,7 @@ public class Google extends SocialAuthenticator{
     private Context context;
     private AuthCallback<UserInfo> callback;
     private GoogleLoginReceiver googleLoginReceiver;
+    private boolean registered;
 
     @Override
     public void login(Context context, @NonNull AuthCallback<UserInfo> callback) {
@@ -64,13 +65,15 @@ public class Google extends SocialAuthenticator{
         intentFilter.addAction("cn.authing.guard.broadcast.GOOGLE_LOGIN");
         googleLoginReceiver =new GoogleLoginReceiver();
         context.registerReceiver(googleLoginReceiver, intentFilter);
+        registered = true;
     }
 
     public void unregisterReceiver(){
-        if (context == null || googleLoginReceiver == null){
+        if (!registered || context == null || googleLoginReceiver == null){
             return;
         }
         context.unregisterReceiver(googleLoginReceiver);
+        registered = false;
     }
 
     private void handleSignInResult(Context context, @Nullable Intent data) {

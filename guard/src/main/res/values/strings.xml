@@ -93,12 +93,12 @@
     <string name="authing_verify_account_email_send_success">The verification email has been sent to your email address，\nPlease click Connect to verify your login</string>
     <string name="authing_login_by_alipay">Login by Alipay</string>
     <string name="authing_login_by_wechat">Login by Wechat</string>
-    <string name="authing_login_by_we_com">Login by Wechat work</string>
+    <string name="authing_login_by_we_com">Login by Wechat Work</string>
     <string name="authing_login_by_lark">Login by Lark</string>
     <string name="authing_login_by_google">Login by Google</string>
     <string name="authing_social_alipay">Alipay</string>
     <string name="authing_social_wechat">Wechat</string>
-    <string name="authing_social_we_com">WeChat work</string>
+    <string name="authing_social_we_com">WeChat Work</string>
     <string name="authing_social_lark">Lark</string>
     <string name="authing_social_google">Google</string>
 
@@ -181,5 +181,8 @@
     <string name="authing_phone_account_found">The phone number already exists</string>
     <string name="authing_email_account_found">The email number already exists</string>
     <string name="authing_cancelled_by_user">Cancelled</string>
+    <string name="authing_auth_failed">Authorization failed</string>
+    <string name="authing_get_phone_failed">Failed to get phone number</string>
+    <string name="authing_get_auth_code_failed">Failed to get authorization code</string>
     <string name="authing_account_locked">This account is locked: \n Please contact the administrator to restore the account</string>
 </resources>
