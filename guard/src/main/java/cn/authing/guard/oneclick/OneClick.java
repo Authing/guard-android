@@ -342,7 +342,7 @@ public class OneClick extends SocialAuthenticator implements Serializable {
         other.setMinimumHeight((int) Util.dp2px(context, 42));
         other.setOnClickListener((v) -> {
             AuthFlow.start((Activity) context);
-            quit();
+            clear();
             callback.call(500, "cancel", null);
         });
         return otherLoginRel;

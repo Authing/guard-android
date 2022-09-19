@@ -23,6 +23,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.netease.nis.quicklogin.QuickLogin;
+
 import cn.authing.guard.activity.AuthActivity;
 import cn.authing.guard.analyze.Analyzer;
 import cn.authing.guard.util.NetworkUtils;
@@ -219,6 +221,7 @@ public class TitleLayout extends RelativeLayout {
             intent.putExtra("user", Authing.getCurrentUser());
             activity.setResult(AuthActivity.OK, intent);
             activity.finish();
+            QuickLogin.getInstance().quitActivity();
         }
         if (mSkipClickListener != null) {
             mSkipClickListener.onClick(v);

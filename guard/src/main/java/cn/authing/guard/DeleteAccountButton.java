@@ -115,7 +115,7 @@ public class DeleteAccountButton extends LoadingButton {
                     ((Activity) getContext()).finish();
                 });
             } else {
-                ((Activity) getContext()).runOnUiThread(() -> Util.setErrorText(DeleteAccountButton.this, message));
+                ((Activity) getContext()).runOnUiThread(() -> ToastUtil.showCenter(getContext(), message));
             }
         });
     }

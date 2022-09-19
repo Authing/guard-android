@@ -14,6 +14,8 @@ import android.view.View;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.netease.nis.quicklogin.QuickLogin;
+
 import java.util.List;
 
 import cn.authing.guard.activity.AuthActivity;
@@ -170,6 +172,7 @@ public class RegisterButton extends LoadingButton implements IRegisterRequestCal
                             intent.putExtra("user", userInfo);
                             activity.setResult(AuthActivity.OK, intent);
                             activity.finish();
+                            QuickLogin.getInstance().quitActivity();
                         });
                     }
                 }
