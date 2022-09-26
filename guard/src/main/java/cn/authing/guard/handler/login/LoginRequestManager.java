@@ -8,10 +8,10 @@ public class LoginRequestManager {
     private final PhoneCodeLoginHandler mPhoneCodeLoginHandler;
     private final AbsLoginHandler mFirstLoginHandler;
 
-    public LoginRequestManager(LoginButton loginButton, ILoginRequestCallBack callBack){
-        AccountLoginHandler mAccountLoginHandler = new AccountLoginHandler(loginButton, callBack);
-        mPhoneCodeLoginHandler = new PhoneCodeLoginHandler(loginButton, callBack);
-        EmailCodeLoginHandler mEmailCodeLoginHandler = new EmailCodeLoginHandler(loginButton, callBack);
+    public LoginRequestManager(LoginButton loginButton, ILoginRequestCallBack callBack, boolean autoRegister){
+        AccountLoginHandler mAccountLoginHandler = new AccountLoginHandler(loginButton, callBack, autoRegister);
+        mPhoneCodeLoginHandler = new PhoneCodeLoginHandler(loginButton, callBack, autoRegister);
+        EmailCodeLoginHandler mEmailCodeLoginHandler = new EmailCodeLoginHandler(loginButton, callBack, autoRegister);
         mAccountLoginHandler.setNextHandler(mPhoneCodeLoginHandler);
         mPhoneCodeLoginHandler.setNextHandler(mEmailCodeLoginHandler);
         mFirstLoginHandler = mAccountLoginHandler;

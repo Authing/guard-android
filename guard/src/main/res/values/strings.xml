@@ -7,6 +7,7 @@
     <string name="authing_password_edit_text_hint">Enter password</string>
     <string name="authing_password_confirm_edit_text_hint">Confirm password</string>
     <string name="authing_login">Login</string>
+    <string name="authing_login_register">Login / Register</string>
     <string name="authing_verify_code_edit_text_hint">Enter verify code</string>
     <string name="authing_captcha_code_edit_text_hint">Enter captcha code</string>
     <string name="authing_get_verify_code">Get code</string>

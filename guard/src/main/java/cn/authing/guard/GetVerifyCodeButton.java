@@ -28,6 +28,7 @@ public class GetVerifyCodeButton extends LoadingButton {
     private final int verifyAuthType;
     private String phoneNumber = "";
     private String email = "";
+    private boolean autoRegister;
 
     private static final int VERIFY_CODE_NONE = 0;
     private static final int VERIFY_CODE_PHONE = 1;
@@ -75,6 +76,15 @@ public class GetVerifyCodeButton extends LoadingButton {
 
         post(this::checkCountDown);
 
+        Authing.getPublicConfig(config -> {
+            if (config == null){
+                return;
+            }
+            if (config.isAutoRegisterThenLoginHintInfo()){
+                this.autoRegister = true;
+            }
+        });
+
         setOnClickListener((v -> getVerifyCode()));
     }
 
@@ -120,7 +130,7 @@ public class GetVerifyCodeButton extends LoadingButton {
     }
 
     private void checkAccountByPhone() {
-        if (verifyAuthType == 0) {
+        if (verifyAuthType == 0 || autoRegister) {
             getSMSCode(phoneNumber);
             return;
         }
@@ -157,7 +167,7 @@ public class GetVerifyCodeButton extends LoadingButton {
     }
 
     private void checkAccountByEmail() {
-        if (verifyAuthType == 0) {
+        if (verifyAuthType == 0 || autoRegister) {
             getEmailCode(email);
             return;
         }

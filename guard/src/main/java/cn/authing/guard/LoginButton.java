@@ -35,6 +35,7 @@ public class LoginButton extends PrimaryButton implements ILoginRequestCallBack 
     protected AuthCallback<UserInfo> callback;
     private LoginRequestManager mLoginRequestManager;
     private int loginFailCount;
+    private boolean autoRegister;
 
     public LoginButton(@NonNull Context context) {
         this(context, null);
@@ -53,6 +54,16 @@ public class LoginButton extends PrimaryButton implements ILoginRequestCallBack 
             setText(R.string.authing_login);
         }
 
+        Authing.getPublicConfig(config -> {
+            if (config == null){
+                return;
+            }
+            if (config.isAutoRegisterThenLoginHintInfo()){
+                setText(R.string.authing_login_register);
+                this.autoRegister = true;
+            }
+        });
+
         setOnClickListener((v -> login()));
         refreshFeedBackView(false);
     }
@@ -61,9 +72,13 @@ public class LoginButton extends PrimaryButton implements ILoginRequestCallBack 
         this.callback = callback;
     }
 
+    public void setAutoRegister(boolean autoRegister) {
+        this.autoRegister = autoRegister;
+    }
+
     private LoginRequestManager getLoginRequestManager(){
         if (null == mLoginRequestManager){
-            mLoginRequestManager = new LoginRequestManager(this, this);
+            mLoginRequestManager = new LoginRequestManager(this, this, autoRegister);
         }
         return mLoginRequestManager;
     }

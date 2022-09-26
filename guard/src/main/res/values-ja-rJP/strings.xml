@@ -7,6 +7,7 @@
     <string name="authing_password_edit_text_hint">パスワードをご入力ください</string>
     <string name="authing_password_confirm_edit_text_hint">パスワードをもう一度入力してください</string>
     <string name="authing_login">ログイン</string>
+    <string name="authing_login_register">ログイン / 登録</string>
     <string name="authing_verify_code_edit_text_hint">認証コードを入力してください</string>
     <string name="authing_captcha_code_edit_text_hint">図形認証コードを入力してください</string>
     <string name="authing_get_verify_code">認証コードを送信します</string>

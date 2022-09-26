@@ -39,6 +39,7 @@ public class Config {
     private List<String> redirectUris = new ArrayList<>();
     private boolean internationalSmsEnable;
     private String userAgent;
+    private boolean autoRegisterThenLoginHintInfo;
 
     public static Config parse(JSONObject data) throws JSONException {
         Config config = new Config();
@@ -129,6 +130,13 @@ public class Config {
             JSONObject internationalSmsConfig = data.getJSONObject("internationalSmsConfig");
             if (internationalSmsConfig.has("enabled")){
                 config.setInternationalSmsEnable(internationalSmsConfig.getBoolean("enabled"));
+            }
+        }
+
+        if (data.has("ssoPageComponentDisplay") && !data.isNull("ssoPageComponentDisplay")) {
+            JSONObject internationalSmsConfig = data.getJSONObject("ssoPageComponentDisplay");
+            if (internationalSmsConfig.has("autoRegisterThenLoginHintInfo")){
+                config.setAutoRegisterThenLoginHintInfo(internationalSmsConfig.getBoolean("autoRegisterThenLoginHintInfo"));
             }
         }
         return config;
@@ -300,6 +308,14 @@ public class Config {
 
     public void setUserAgent(String userAgent) {
         this.userAgent = userAgent;
+    }
+
+    public boolean isAutoRegisterThenLoginHintInfo() {
+        return autoRegisterThenLoginHintInfo;
+    }
+
+    public void setAutoRegisterThenLoginHintInfo(boolean autoRegisterThenLoginHintInfo) {
+        this.autoRegisterThenLoginHintInfo = autoRegisterThenLoginHintInfo;
     }
 
     public String getSocialConnectionId(String type) {

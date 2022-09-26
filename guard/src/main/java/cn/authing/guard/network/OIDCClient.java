@@ -80,16 +80,32 @@ public class OIDCClient {
     }
 
     public void loginByPhoneCode(String phoneCountryCode, String phone, String vCode, @NotNull AuthCallback<UserInfo> callback) {
-        AuthClient.loginByPhoneCode(authRequest, phoneCountryCode, phone, vCode, callback);
+        AuthClient.loginByPhoneCode(authRequest, phoneCountryCode, phone, vCode, false, callback);
+    }
+
+    public void loginByPhoneCode(String phoneCountryCode, String phone, String vCode, boolean autoRegister, @NotNull AuthCallback<UserInfo> callback) {
+        AuthClient.loginByPhoneCode(authRequest, phoneCountryCode, phone, vCode, autoRegister, callback);
     }
 
     public void loginByEmailCode(String email, String vCode, @NotNull AuthCallback<UserInfo> callback) {
-        AuthClient.loginByEmailCode(authRequest, email, vCode, callback);
+        AuthClient.loginByEmailCode(authRequest, email, vCode, false, callback);
+    }
+
+    public void loginByEmailCode(String email, String vCode, boolean autoRegister, @NotNull AuthCallback<UserInfo> callback) {
+        AuthClient.loginByEmailCode(authRequest, email, vCode, autoRegister, callback);
     }
 
     public void loginByAccount(String account, String password, @NotNull AuthCallback<UserInfo> callback) {
         long now = System.currentTimeMillis();
-        AuthClient.loginByAccount(authRequest, account, password, ((c, m, data) -> {
+        AuthClient.loginByAccount(authRequest, account, password, false, ((c, m, data) -> {
+            ALog.d(TAG, "OIDCClient.loginByAccount cost:" + (System.currentTimeMillis() - now) + "ms");
+            callback.call(c, m, data);
+        }));
+    }
+
+    public void loginByAccount(String account, String password, boolean autoRegister, @NotNull AuthCallback<UserInfo> callback) {
+        long now = System.currentTimeMillis();
+        AuthClient.loginByAccount(authRequest, account, password, autoRegister, ((c, m, data) -> {
             ALog.d(TAG, "OIDCClient.loginByAccount cost:" + (System.currentTimeMillis() - now) + "ms");
             callback.call(c, m, data);
         }));

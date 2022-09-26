@@ -20,8 +20,8 @@ public class PhoneCodeLoginHandler extends AbsLoginHandler{
     private String phoneNumber;
     private String phoneCode;
 
-    public PhoneCodeLoginHandler(LoginButton loginButton, ILoginRequestCallBack callback) {
-        super(loginButton, callback);
+    public PhoneCodeLoginHandler(LoginButton loginButton, ILoginRequestCallBack callback, boolean autoRegister) {
+        super(loginButton, callback, autoRegister);
     }
 
     @Override
@@ -90,9 +90,9 @@ public class PhoneCodeLoginHandler extends AbsLoginHandler{
         clearError();
         Authing.AuthProtocol authProtocol = getAuthProtocol();
         if (authProtocol == Authing.AuthProtocol.EInHouse) {
-            AuthClient.loginByPhoneCode(phoneCountryCode, phone, verifyCode, this::fireCallback);
+            AuthClient.loginByPhoneCode(phoneCountryCode, phone, verifyCode, isAutoRegister(), this::fireCallback);
         } else if (authProtocol == Authing.AuthProtocol.EOIDC) {
-            new OIDCClient().loginByPhoneCode(phoneCountryCode, phone, verifyCode, this::fireCallback);
+            new OIDCClient().loginByPhoneCode(phoneCountryCode, phone, verifyCode, isAutoRegister(), this::fireCallback);
         }
         ALog.d(TAG, "login by phone code");
     }

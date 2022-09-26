@@ -17,11 +17,13 @@ public abstract class AbsLoginHandler extends BaseHandler {
     protected LoginButton loginButton;
     protected final Context mContext;
     protected ILoginRequestCallBack mCallBack;
+    private final boolean autoRegister;
 
-    public AbsLoginHandler(LoginButton loginButton, ILoginRequestCallBack callback) {
+    public AbsLoginHandler(LoginButton loginButton, ILoginRequestCallBack callback, boolean autoRegister) {
         this.loginButton = loginButton;
         this.mCallBack = callback;
         this.mContext = loginButton.getContext();
+        this.autoRegister = autoRegister;
     }
 
     protected void setNextHandler(AbsLoginHandler loginHandler) {
@@ -66,4 +68,7 @@ public abstract class AbsLoginHandler extends BaseHandler {
         }
     }
 
+    public boolean isAutoRegister() {
+        return autoRegister;
+    }
 }
