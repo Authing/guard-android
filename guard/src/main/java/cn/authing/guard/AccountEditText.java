@@ -86,11 +86,15 @@ public class AccountEditText extends EditTextLayout {
                         break;
                     case LOGIN_METHOD_EMAIL:
                         s.append(email);
-                        validator |= EMAIL_VALIDATOR;
+                        if (enabledLoginMethods.size() == 1){
+                            validator |= EMAIL_VALIDATOR;
+                        }
                         break;
                     case LOGIN_METHOD_PHONE:
                         s.append(phone);
-                        validator |= PHONE_VALIDATOR;
+                        if (enabledLoginMethods.size() == 1){
+                            validator |= PHONE_VALIDATOR;
+                        }
                         break;
                 }
                 if (i < n - 1) {
