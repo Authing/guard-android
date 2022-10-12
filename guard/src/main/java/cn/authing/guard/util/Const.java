@@ -14,6 +14,16 @@ public class Const {
     public final static int EC_INCORRECT_VERIFY_CODE = 2001;
     public final static int EC_INCORRECT_CREDENTIAL = 2333;
 
+    public final static int ERROR_CODE_10001 = 10001; // Network error
+    public final static int ERROR_CODE_10002 = 10002; // Config not found
+    public final static int ERROR_CODE_10003 = 10003; // Login failed
+    public final static int ERROR_CODE_10004 = 10004; // JSON parse failed
+    public final static int ERROR_CODE_10005 = 10005; // OnClick auth failed
+    public final static int ERROR_CODE_10006 = 10006; // OnClick login cancelled
+    public final static int ERROR_CODE_10007 = 10007; // Alipay auth failed
+    public final static int ERROR_CODE_10008 = 10008; // 在 60 秒内已发送短信验证码
+    public final static int ERROR_CODE_10009 = 10008; // Upload avatar failed
+
     public static final String MFA_POLICY_SMS = "SMS";
     public static final String MFA_POLICY_EMAIL = "EMAIL";
     public static final String MFA_POLICY_OTP = "OTP";

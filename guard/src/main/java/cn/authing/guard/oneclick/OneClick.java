@@ -97,7 +97,7 @@ public class OneClick extends SocialAuthenticator implements Serializable {
                 @Override
                 public void onGetMobileNumberError(String YDToken, String msg) {
                     ALog.e(TAG, "Got phone error:" + msg);
-                    callback.call(500, msg, null);
+                    callback.call(Const.ERROR_CODE_10005, msg, null);
                 }
             });
         });
@@ -138,12 +138,12 @@ public class OneClick extends SocialAuthenticator implements Serializable {
             public void onGetTokenError(String YDToken, String msg) {
                 quickLogin.quitActivity();
                 ALog.e(TAG, "onGetTokenError:" + msg);
-                callback.call(500, msg, null);
+                callback.call(Const.ERROR_CODE_10005, msg, null);
             }
 
             @Override
             public void onCancelGetToken() {
-                callback.call(201, null, null);
+                callback.call(Const.ERROR_CODE_10006, "OnClick login cancelled", null);
             }
         });
     }
@@ -214,7 +214,7 @@ public class OneClick extends SocialAuthenticator implements Serializable {
         other.setOnClickListener((v)-> {
             quickLogin.quitActivity();
             AuthFlow.start((Activity) context);
-            callback.call(500, "cancel", null);
+            callback.call(Const.ERROR_CODE_10007, "OnClick login cancelled", null);
         });
 
         RelativeLayout socialRel = new RelativeLayout(context);

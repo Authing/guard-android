@@ -26,6 +26,7 @@ import cn.authing.guard.flow.FlowHelper;
 import cn.authing.guard.handler.register.IRegisterRequestCallBack;
 import cn.authing.guard.handler.register.RegisterRequestManager;
 import cn.authing.guard.internal.LoadingButton;
+import cn.authing.guard.util.Const;
 import cn.authing.guard.util.Util;
 
 public class RegisterButton extends LoadingButton implements IRegisterRequestCallBack {
@@ -98,7 +99,7 @@ public class RegisterButton extends LoadingButton implements IRegisterRequestCal
 
     public void _register(Config config) {
         if (config == null) {
-            fireCallback(500, "Public Config is null", null);
+            fireCallback(Const.ERROR_CODE_10002, "Config not found", null);
             return;
         }
 

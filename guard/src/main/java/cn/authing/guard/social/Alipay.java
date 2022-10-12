@@ -71,12 +71,12 @@ public class Alipay extends SocialAuthenticator {
 
     private void handleResult(Context context, Bundle bundle, @NotNull AuthCallback<UserInfo> callback) {
         if (bundle == null) {
-            callback.call(500, "alipay error", null);
+            callback.call(Const.ERROR_CODE_10007, "Alipay auth failed", null);
             return;
         }
 
         if (!"SUCCESS".equals(bundle.get("result_code"))) {
-            callback.call(500, "alipay auth error", null);
+            callback.call(Const.ERROR_CODE_10007, "Alipay auth failed", null);
             return;
         }
         ALog.i(TAG, "Auth onSuccess");

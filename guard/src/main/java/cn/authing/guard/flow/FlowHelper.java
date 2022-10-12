@@ -27,6 +27,7 @@ import cn.authing.guard.data.ExtendedField;
 import cn.authing.guard.data.MFAData;
 import cn.authing.guard.data.UserInfo;
 import cn.authing.guard.util.ALog;
+import cn.authing.guard.util.Const;
 import cn.authing.guard.util.Util;
 import okhttp3.Call;
 import okhttp3.OkHttpClient;
@@ -216,7 +217,7 @@ public class FlowHelper {
     private static void getCaptcha(@NotNull AuthCallback<Drawable> callback) {
         Authing.getPublicConfig(config -> {
             if (config == null) {
-                callback.call(500, "config is null", null);
+                callback.call(Const.ERROR_CODE_10002, "Config not found", null);
                 return;
             }
             try {
@@ -230,14 +231,14 @@ public class FlowHelper {
                 response = call.execute();
                 String s = new String(Objects.requireNonNull(response.body()).bytes(), StandardCharsets.UTF_8);
                 if (response.code() == 200) {
-                    callback.call(500, s,null);
+                    callback.call(response.code(), s,null);
                 } else {
                     ALog.w("Guard", "getCaptcha failed. " + response.code() + " message:" + s);
                     callback.call(response.code(), s,null);
                 }
             } catch (Exception e) {
                 e.printStackTrace();
-                callback.call(500, "Exception", null);
+                callback.call(Const.ERROR_CODE_10001, "Network error", null);
             }
         });
     }
