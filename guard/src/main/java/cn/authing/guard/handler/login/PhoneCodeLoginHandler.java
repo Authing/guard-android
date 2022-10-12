@@ -20,8 +20,8 @@ public class PhoneCodeLoginHandler extends AbsLoginHandler{
     private String phoneNumber;
     private String phoneCode;
 
-    public PhoneCodeLoginHandler(LoginButton loginButton, ILoginRequestCallBack callback) {
-        super(loginButton, callback);
+    public PhoneCodeLoginHandler(LoginButton loginButton, ILoginRequestCallBack callback, boolean autoRegister) {
+        super(loginButton, callback, autoRegister);
     }
 
     @Override

@@ -163,22 +163,27 @@ public class AuthClient {
     }
 
     public static void loginByPhoneCode(String phone, String code, @NotNull AuthCallback<UserInfo> callback) {
-        loginByPhoneCode(null, phone, code, callback);
+        loginByPhoneCode(null, phone, code, false, callback);
     }
 
     public static void loginByPhoneCode(String phoneCountryCode, String phone, String code, @NotNull AuthCallback<UserInfo> callback) {
-        loginByPhoneCode(null, phoneCountryCode, phone, code, callback);
+        loginByPhoneCode(null, phoneCountryCode, phone, code, false, callback);
     }
 
-    public static void loginByPhoneCode(AuthRequest authData, String phoneCountryCode, String phone, String code, @NotNull AuthCallback<UserInfo> callback) {
+    public static void loginByPhoneCode(String phoneCountryCode, String phone, String code, boolean autoRegister, @NotNull AuthCallback<UserInfo> callback) {
+        loginByPhoneCode(null, phoneCountryCode, phone, code, autoRegister, callback);
+    }
+
+    public static void loginByPhoneCode(AuthRequest authData, String phoneCountryCode, String phone, String code, boolean autoRegister, @NotNull AuthCallback<UserInfo> callback) {
         try {
             JSONObject body = new JSONObject();
-            if (!Util.isNull(phoneCountryCode)){
+            if (!Util.isNull(phoneCountryCode)) {
                 body.put("phoneCountryCode", phoneCountryCode);
             }
             body.put("phone", phone);
             body.put("code", code);
-            Guardian.post("/api/v2/login/phone-code", body, (data)-> {
+            body.put("autoRegister", autoRegister);
+            Guardian.post("/api/v2/login/phone-code", body, (data) -> {
                 if (data.getCode() == 200 || data.getCode() == EC_MFA_REQUIRED) {
                     Safe.saveAccount(phone);
                     Safe.savePhoneCountryCode(phoneCountryCode);
@@ -192,15 +197,20 @@ public class AuthClient {
     }
 
     public static void loginByEmailCode(String email, String code, @NotNull AuthCallback<UserInfo> callback) {
-        loginByEmailCode(null, email, code, callback);
+        loginByEmailCode(null, email, code,false, callback);
     }
 
-    public static void loginByEmailCode(AuthRequest authData, String email, String code, @NotNull AuthCallback<UserInfo> callback) {
+    public static void loginByEmailCode(String email, String code, boolean autoRegister, @NotNull AuthCallback<UserInfo> callback) {
+        loginByEmailCode(null, email, code, autoRegister, callback);
+    }
+
+    public static void loginByEmailCode(AuthRequest authData, String email, String code, boolean autoRegister, @NotNull AuthCallback<UserInfo> callback) {
         try {
             JSONObject body = new JSONObject();
             body.put("email", email);
             body.put("code", code);
-            Guardian.post("/api/v2/login/email-code", body, (data)-> {
+            body.put("autoRegister", autoRegister);
+            Guardian.post("/api/v2/login/email-code", body, (data) -> {
                 if (data.getCode() == 200 || data.getCode() == EC_MFA_REQUIRED) {
                     Safe.saveAccount(email);
                 }
@@ -213,17 +223,22 @@ public class AuthClient {
     }
 
     public static void loginByAccount(String account, String password, @NotNull AuthCallback<UserInfo> callback) {
-        loginByAccount(null, account, password, callback);
+        loginByAccount(null, account, password, false, callback);
     }
 
-    public static void loginByAccount(AuthRequest authData, String account, String password, @NotNull AuthCallback<UserInfo> callback) {
+    public static void loginByAccount(String account, String password, boolean autoRegister, @NotNull AuthCallback<UserInfo> callback) {
+        loginByAccount(null, account, password, autoRegister, callback);
+    }
+
+    public static void loginByAccount(AuthRequest authData, String account, String password, boolean autoRegister, @NotNull AuthCallback<UserInfo> callback) {
         try {
             long now = System.currentTimeMillis();
             String encryptPassword = Util.encryptPassword(password);
             JSONObject body = new JSONObject();
             body.put("account", account);
             body.put("password", encryptPassword);
-            Guardian.post("/api/v2/login/account", body, (data)-> {
+            body.put("autoRegister", autoRegister);
+            Guardian.post("/api/v2/login/account", body, (data) -> {
                 ALog.d(TAG, "loginByAccount cost:" + (System.currentTimeMillis() - now) + "ms");
                 if (data.getCode() == 200 || data.getCode() == EC_MFA_REQUIRED) {
                     Safe.saveAccount(account);

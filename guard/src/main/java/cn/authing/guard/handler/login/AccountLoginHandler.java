@@ -15,8 +15,8 @@ import cn.authing.guard.util.Util;
 
 public class AccountLoginHandler extends AbsLoginHandler {
 
-    public AccountLoginHandler(LoginButton loginButton, ILoginRequestCallBack callback) {
-        super(loginButton, callback);
+    public AccountLoginHandler(LoginButton loginButton, ILoginRequestCallBack callback, boolean autoRegister) {
+        super(loginButton, callback, autoRegister);
     }
 
     @Override
@@ -41,10 +41,10 @@ public class AccountLoginHandler extends AbsLoginHandler {
 
     private void loginByAccount(String account, String password) {
         Authing.AuthProtocol authProtocol = getAuthProtocol();
-        if (authProtocol== Authing.AuthProtocol.EInHouse) {
-            AuthClient.loginByAccount(account, password, this::fireCallback);
+        if (authProtocol == Authing.AuthProtocol.EInHouse) {
+            AuthClient.loginByAccount(account, password, isAutoRegister(), this::fireCallback);
         } else if (authProtocol == Authing.AuthProtocol.EOIDC) {
-            new OIDCClient().loginByAccount(account, password, this::fireCallback);
+            new OIDCClient().loginByAccount(account, password, isAutoRegister(), this::fireCallback);
         }
         ALog.d(TAG, "login by account");
     }

@@ -7,6 +7,7 @@
     <string name="authing_password_edit_text_hint">請輸入密碼</string>
     <string name="authing_password_confirm_edit_text_hint">請再次輸入密碼</string>
     <string name="authing_login">登入</string>
+    <string name="authing_login_register">登入 / 註冊</string>
     <string name="authing_verify_code_edit_text_hint">請輸入驗證碼</string>
     <string name="authing_captcha_code_edit_text_hint">請輸入圖形驗證碼</string>
     <string name="authing_get_verify_code">發送驗證碼</string>
