@@ -44,6 +44,7 @@ public class VerifyCodeEditText extends EditTextLayout implements TextWatcher {
     private int maxLength = 6;
     private int codeMode;
     private final List<EditText> editTextList = new ArrayList<>();
+    private boolean autoLogin;
 
     public VerifyCodeEditText(@NonNull Context context) {
         this(context, null);
@@ -71,6 +72,8 @@ public class VerifyCodeEditText extends EditTextLayout implements TextWatcher {
         codeMode = array.getInt(R.styleable.VerifyCodeEditText_codeMode, 0);
         maxLength = array.getInt(R.styleable.VerifyCodeEditText_digit, maxLength);
         boolean hyphen = array.getBoolean(R.styleable.VerifyCodeEditText_hyphen, false);
+        autoLogin = array.getBoolean(R.styleable.VerifyCodeEditText_autoLogin, true);
+
 
         if (codeMode == ENormal) {
             CharSequence s = getEditText().getHint();
@@ -266,7 +269,7 @@ public class VerifyCodeEditText extends EditTextLayout implements TextWatcher {
     @Override
     public void afterTextChanged(Editable s) {
         // code mode is ENormal
-        if (s.length() == maxLength) {
+        if (s.length() == maxLength && autoLogin) {
             codeEntered();
         }
     }
