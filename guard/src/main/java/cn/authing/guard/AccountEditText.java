@@ -80,12 +80,16 @@ public class AccountEditText extends EditTextLayout {
             }
             if (enabledLoginMethods.contains(LOGIN_METHOD_PHONE)){
                 s.append(phone);
-                validator |= PHONE_VALIDATOR;
+                if (enabledLoginMethods.size() == 1){
+                    validator |= PHONE_VALIDATOR;
+                }
             }
             if (enabledLoginMethods.contains(LOGIN_METHOD_EMAIL)){
                 s.append(" / ");
                 s.append(email);
-                validator |= EMAIL_VALIDATOR;
+                if (enabledLoginMethods.size() == 1){
+                    validator |= EMAIL_VALIDATOR;
+                }
             }
             if (enabledLoginMethods.contains(LOGIN_METHOD_UN)){
                 s.append(" / ");
