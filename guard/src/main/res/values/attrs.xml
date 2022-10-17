@@ -93,6 +93,7 @@
         <attr name="boxSpacing" format="dimension" />
         <attr name="digit" format="integer" />
         <attr name="hyphen" format="boolean" />
+        <attr name="autoLogin" format="boolean" />
     </declare-styleable>
 
     <attr name="loginSource" format="string" />
