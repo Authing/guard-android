@@ -59,7 +59,9 @@ public class LoginButton extends PrimaryButton implements ILoginRequestCallBack 
                 return;
             }
             if (config.isAutoRegisterThenLoginHintInfo()){
-                setText(R.string.authing_login_register);
+                if (attrs == null || attrs.getAttributeValue(NS_ANDROID, "text") == null) {
+                    setText(R.string.authing_login_register);
+                }
                 this.autoRegister = true;
             }
         });
