@@ -113,7 +113,6 @@
     <!--error messages-->
     <string name="authing_no_network">インターネットに接続できない</string>
     <string name="authing_uninitialized">ガード未初期化。ガードを使う前に呼び出す必要がある Authing.init(your authing appId)</string>
-    <string name="authing_network_exception">ネットワーク異常</string>
     <string name="authing_password_error_1">少なくとも 6 桁</string>
     <string name="authing_password_error_2">少なくとも小文字を含む</string>
     <string name="authing_password_error_3">少なくとも大文字を含む</string>

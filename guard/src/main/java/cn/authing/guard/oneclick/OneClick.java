@@ -214,7 +214,7 @@ public class OneClick extends SocialAuthenticator implements Serializable {
         other.setOnClickListener((v)-> {
             quickLogin.quitActivity();
             AuthFlow.start((Activity) context);
-            callback.call(Const.ERROR_CODE_10007, "OnClick login cancelled", null);
+            callback.call(Const.ERROR_CODE_10006, "OnClick login cancelled", null);
         });
 
         RelativeLayout socialRel = new RelativeLayout(context);

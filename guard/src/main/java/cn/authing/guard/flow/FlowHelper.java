@@ -58,6 +58,9 @@ public class FlowHelper {
             } else if (MFA_POLICY_EMAIL.equals(option) && !isNull(data.getEmail())) {
                 handleEmailMFA((AuthActivity) context, currentView, data.getEmail());
                 return;
+            } else if (MFA_POLICY_OTP.equals(option)) {
+                handleOTPMFA((AuthActivity) context);
+                return;
             }
         }
 
