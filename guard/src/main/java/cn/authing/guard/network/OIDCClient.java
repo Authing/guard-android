@@ -112,9 +112,13 @@ public class OIDCClient {
         }));
     }
 
-    public void loginByOneAuth(String account, String password, @NotNull AuthCallback<UserInfo> callback) {
+    public void loginByOneAuth(String token, String accessToken, @NotNull AuthCallback<UserInfo> callback) {
+        loginByOneAuth(token, accessToken, 0, callback);
+    }
+
+    public void loginByOneAuth(String token, String accessToken, int netWork, @NotNull AuthCallback<UserInfo> callback) {
         long now = System.currentTimeMillis();
-        AuthClient.loginByOneAuth(authRequest, account, password, (AuthCallback<UserInfo>) (c, m, data) -> {
+        AuthClient.loginByOneAuth(authRequest, token, accessToken, netWork, (AuthCallback<UserInfo>) (c, m, data) -> {
             ALog.d(TAG, "OIDCClient.loginByOneAuth cost:" + (System.currentTimeMillis() - now) + "ms");
             callback.call(c, m, data);
         });

@@ -448,14 +448,21 @@ public class AuthClient {
     }
 
     public static void loginByOneAuth(String token, String accessToken, @NotNull AuthCallback<UserInfo> callback) {
-        loginByOneAuth(null, token, accessToken, callback);
+        loginByOneAuth(null, token, accessToken, 0, callback);
     }
 
-    public static void loginByOneAuth(AuthRequest authData, String token, String accessToken, @NotNull AuthCallback<UserInfo> callback) {
+    public static void loginByOneAuth(String token, String accessToken, int netWork, @NotNull AuthCallback<UserInfo> callback) {
+        loginByOneAuth(null, token, accessToken, netWork, callback);
+    }
+
+    public static void loginByOneAuth(AuthRequest authData, String token, String accessToken, int netWork, @NotNull AuthCallback<UserInfo> callback) {
         try {
             JSONObject body = new JSONObject();
             body.put("token", token);
             body.put("accessToken", accessToken);
+            if (netWork == 1 || netWork == 2 || netWork == 3 || netWork == 5){
+                body.put("netWork", netWork);
+            }
             Guardian.post("/api/v2/ecConn/oneAuth/login", body, (data)-> {
                 startOidcInteraction(authData, data, callback);
             });
