@@ -5,6 +5,7 @@ import okhttp3.MediaType;
 public class Const {
     public final static String NS_ANDROID = "http://schemas.android.com/apk/res/android";
 
+    public static final String SDK_TAG = "Guard-Android@";
     public static final String SDK_VERSION = "1.4.2";
 
     public final static int EC_MFA_REQUIRED = 1636;

@@ -82,7 +82,7 @@ public class Guardian {
             }
         }
         builder.addHeader("x-authing-app-id", Authing.getAppId());
-        builder.addHeader("x-authing-request-from", "guard-android" + SDK_VERSION);
+        builder.addHeader("x-authing-request-from", Const.SDK_TAG + SDK_VERSION);
         builder.addHeader("x-authing-lang", Util.getLangHeader());
         UserInfo currentUser = Authing.getCurrentUser();
         if (currentUser != null) {
@@ -204,7 +204,7 @@ public class Guardian {
     public static void _authRequest(String url, String method, RequestBody body, @NotNull GuardianCallback callback) {
         Request.Builder builder = new Request.Builder();
         builder.url(url);
-        builder.addHeader("x-authing-request-from", "Guard@Android@" + SDK_VERSION);
+        builder.addHeader("x-authing-request-from", Const.SDK_TAG + SDK_VERSION);
         builder.addHeader("x-authing-lang", Util.getLangHeader());
         if (method.equalsIgnoreCase("post")) {
             builder.post(body);
