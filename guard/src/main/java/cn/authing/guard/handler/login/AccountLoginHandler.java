@@ -42,9 +42,9 @@ public class AccountLoginHandler extends AbsLoginHandler {
     private void loginByAccount(String account, String password) {
         Authing.AuthProtocol authProtocol = getAuthProtocol();
         if (authProtocol == Authing.AuthProtocol.EInHouse) {
-            AuthClient.loginByAccount(account, password, isAutoRegister(), this::fireCallback);
+            AuthClient.loginByAccount(account, password, isAutoRegister(), null, this::fireCallback);
         } else if (authProtocol == Authing.AuthProtocol.EOIDC) {
-            new OIDCClient().loginByAccount(account, password, isAutoRegister(), this::fireCallback);
+            new OIDCClient().loginByAccount(account, password, isAutoRegister(), null, this::fireCallback);
         }
         ALog.d(TAG, "login by account");
     }

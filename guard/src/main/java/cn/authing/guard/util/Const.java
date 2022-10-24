@@ -23,7 +23,7 @@ public class Const {
     public final static int ERROR_CODE_10006 = 10006; // OnClick login cancelled
     public final static int ERROR_CODE_10007 = 10007; // Alipay auth failed
     public final static int ERROR_CODE_10008 = 10008; // 在 60 秒内已发送短信验证码
-    public final static int ERROR_CODE_10009 = 10008; // Upload avatar failed
+    public final static int ERROR_CODE_10009 = 10009; // Upload avatar failed
 
     public static final String MFA_POLICY_SMS = "SMS";
     public static final String MFA_POLICY_EMAIL = "EMAIL";
