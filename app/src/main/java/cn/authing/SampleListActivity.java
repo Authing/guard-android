@@ -60,7 +60,7 @@ public class SampleListActivity extends AppCompatActivity {
             "Authenticator",
             "Login by push notification",
             "谷歌登录",
-            "场景测试"
+            "场景测试-api-v2"
     };
 
     @Override
@@ -85,13 +85,13 @@ public class SampleListActivity extends AppCompatActivity {
                 Intent intent = new Intent(SampleListActivity.this, SignInActivity.class);
                 startActivity(intent);
                 return;
-            } else if (pos == 17) {//google登录
+            } else if (pos == 17) {//ut-v2
                 Intent intent = new Intent(SampleListActivity.this, UTActivity.class);
                 startActivity(intent);
                 return;
             }
 
-            if (null != Authing.getCurrentUser()){
+            if (null != Authing.getCurrentUser()) {
                 gotoMain();
                 return;
             }
@@ -144,7 +144,7 @@ public class SampleListActivity extends AppCompatActivity {
         });
     }
 
-    private void startActivity(Class<?> cls){
+    private void startActivity(Class<?> cls) {
         Intent intent = new Intent(SampleListActivity.this, cls);
         startActivity(intent);
     }
