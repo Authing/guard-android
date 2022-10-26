@@ -18,13 +18,13 @@
     <string name="authing_welcome_to">ご参加を歓迎する</string>
     <string name="authing_login_by_phone_code">認証コード登録</string>
     <string name="authing_login_by_email_code">メール認証コード</string>
-    <string name="authing_login_by_password">パスワード登録</string>
+    <string name="authing_login_by_password">アカウントログイン</string>
     <string name="authing_register_by_phone_code">携帯番号登録</string>
     <string name="authing_register_by_email">メール登録</string>
     <string name="authing_register_by_email_code">メール認証コード登録</string>
     <string name="authing_go_login">すぐにログインする</string>
     <string name="authing_tip_no_account">アカウントがない？</string>
-    <string name="authing_register_now">すぐに登録する</string>
+    <string name="authing_register_now">すぐに登録します</string>
     <string name="authing_3rd_login">他サイトIDでログイン</string>
     <string name="authing_forgot_password">パスワードをお忘れの場合？</string>
     <string name="authing_find_password_back">パスワードを取り戻す</string>
@@ -119,7 +119,7 @@
     <string name="authing_password_error_4">少なくとも数字を含む</string>
     <string name="authing_password_error_5">少なくとも特殊文字を含む</string>
     <string name="authing_password_strength1">暗号長は少なくとも 6 ビット</string>
-    <string name="authing_password_strength2">暗号の長さは少なくとも6桁で、英文、数字、記号のうち2種類を含むこと</string>
+    <string name="authing_password_strength2">パスワードの長も 6桁で、英語、数字、記号のうち2種類を含むこと</string>
     <string name="authing_password_strength3">暗号の長さは少なくとも6桁で、英数字および記号が含まれていること</string>
     <string name="authing_password_not_match">2回入力するパスワードは必ず一致する</string>
     <string name="authing_get_verify_code_failed">メール送信の失敗:携帯電話番号の無効化</string>
