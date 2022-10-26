@@ -363,7 +363,7 @@ public class AuthClient {
         Authing.getPublicConfig(config -> {
             try {
                 JSONObject body = new JSONObject();
-                body.put("connId", config.getSocialConnectionId("wechat:mobile"));
+                body.put("connId", config != null ? config.getSocialConnectionId("wechat:mobile") : "");
                 body.put("code", authCode);
                 Guardian.post("/api/v2/ecConn/wechatMobile/authByCode", body, (data)-> {
                     startOidcInteraction(authData, data, callback);
@@ -382,7 +382,7 @@ public class AuthClient {
         Authing.getPublicConfig(config -> {
             try {
                 JSONObject body = new JSONObject();
-                body.put("connId", config.getSocialConnectionId(Const.EC_TYPE_WECHAT_COM));
+                body.put("connId", config != null ? config.getSocialConnectionId(Const.EC_TYPE_WECHAT_COM) : "");
                 body.put("code", authCode);
                 String endpoint = "/api/v2/ecConn/wechat-work/authByCode";
                 Guardian.post(endpoint, body, (data)-> {
@@ -402,7 +402,7 @@ public class AuthClient {
         Authing.getPublicConfig(config -> {
             try {
                 JSONObject body = new JSONObject();
-                body.put("connId", config.getSocialConnectionId(Const.EC_TYPE_WECHAT_COM_AGENCY));
+                body.put("connId", config != null ? config.getSocialConnectionId(Const.EC_TYPE_WECHAT_COM_AGENCY) : "");
                 body.put("code", authCode);
                 String endpoint = "/api/v2/ecConn/wechat-work-agency/authByCode";
                 Guardian.post(endpoint, body, (data)-> {
@@ -422,7 +422,7 @@ public class AuthClient {
         Authing.getPublicConfig(config -> {
             try {
                 JSONObject body = new JSONObject();
-                body.put("connId", config.getSocialConnectionId("alipay"));
+                body.put("connId", config != null ? config.getSocialConnectionId("alipay") : "");
                 body.put("code", authCode);
                 String endpoint = "/api/v2/ecConn/alipay/authByCode";
                 Guardian.post(endpoint, body, (data)-> {
@@ -442,8 +442,11 @@ public class AuthClient {
         Authing.getPublicConfig(config -> {
             try {
                 JSONObject body = new JSONObject();
-                String connId = config.getSocialConnectionId(Const.EC_TYPE_LARK_INTERNAL);
-                connId = TextUtils.isEmpty(connId) ? config.getSocialConnectionId(Const.EC_TYPE_LARK_PUBLIC) : connId;
+                String connId = "";
+                if (config != null){
+                    connId = config.getSocialConnectionId(Const.EC_TYPE_LARK_INTERNAL);
+                    connId = TextUtils.isEmpty(connId) ? config.getSocialConnectionId(Const.EC_TYPE_LARK_PUBLIC) : connId;
+                }
                 body.put("connId", connId);
                 body.put("code", authCode);
                 String endpoint = "/api/v2/ecConn/lark/authByCode";
@@ -464,7 +467,7 @@ public class AuthClient {
         Authing.getPublicConfig(config -> {
             try {
                 JSONObject body = new JSONObject();
-                String connId = config.getSocialConnectionId(Const.EC_TYPE_GOOGLE);
+                String connId = config != null ? config.getSocialConnectionId(Const.EC_TYPE_GOOGLE) : "";
                 body.put("connId", connId);
                 body.put("code", authCode);
                 String endpoint = "/api/v2/ecConn/google/authByCode";

@@ -37,6 +37,7 @@ public class Google extends SocialAuthenticator{
         this.callback = callback;
         Authing.getPublicConfig(config -> {
             if (config == null) {
+                ALog.d("Google", "Config not found");
                 return;
             }
 

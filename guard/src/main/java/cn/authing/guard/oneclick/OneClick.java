@@ -84,7 +84,10 @@ public class OneClick extends SocialAuthenticator implements Serializable {
         getAndroidScreenProperty();
 
         Authing.getPublicConfig(config -> {
-            String businessId = (_bid != null ) ? _bid : config.getSocialBusinessId(Const.EC_TYPE_YI_DUN);
+            String businessId = _bid;
+            if (businessId == null && config != null){
+                businessId = config.getSocialBusinessId(Const.EC_TYPE_YI_DUN);
+            }
             quickLogin = QuickLogin.getInstance(context, businessId);
             quickLogin.prefetchMobileNumber(new QuickLoginPreMobileListener() {
                 @Override

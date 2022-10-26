@@ -113,6 +113,9 @@ public class BasePasswordEditText extends EditTextLayout implements TextWatcher 
         }
 
         Authing.getPublicConfig((config -> {
+            if (config == null){
+                return;
+            }
             int strength = config.getPasswordStrength();
             if (strength != 0) {
                 String str = getText().toString();

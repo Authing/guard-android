@@ -161,7 +161,7 @@ public class RegisterButton extends LoadingButton implements IRegisterRequestCal
     }
 
     private boolean shouldCompleteAfterRegister(Config config) {
-        List<String> complete = config.getCompleteFieldsPlace();
+        List<String> complete = (config != null ? config.getCompleteFieldsPlace() : null);
         return complete != null && complete.contains("register");
     }
 }

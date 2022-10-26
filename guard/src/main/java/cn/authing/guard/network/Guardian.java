@@ -47,11 +47,14 @@ public class Guardian {
     }
 
     private static void request(String url, String method, String body, @NotNull GuardianCallback callback) {
-        Authing.getPublicConfig(config -> new Thread() {
-            public void run() {
-                 request(config, url, method, body, callback);
+        Authing.getPublicConfig(config -> {
+            if (config == null){
+                callback.call(new Response(Const.ERROR_CODE_10002, "Config not found", null));
+                return;
             }
-        }.start());
+
+            request(config, url, method, body, callback);
+        });
     }
 
     public static void request(Config config, String url, String method, String body, @NotNull GuardianCallback callback) {

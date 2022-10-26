@@ -31,8 +31,13 @@ public class Lark extends SocialAuthenticator {
         Authing.getPublicConfig(config -> {
             ArrayList<String> scopeList = new ArrayList<>();
             scopeList.add("contact:user.id:readonly");
-            String aid = (appId != null ) ? appId : config.getSocialAppId(Const.EC_TYPE_LARK_INTERNAL);
-            aid = (aid != null) ? aid : config.getSocialAppId(Const.EC_TYPE_LARK_PUBLIC);
+            String aid = appId;
+            if (aid == null && config != null){
+                aid = config.getSocialAppId(Const.EC_TYPE_LARK_INTERNAL);
+                if (aid == null){
+                    aid = config.getSocialAppId(Const.EC_TYPE_LARK_PUBLIC);
+                }
+            }
             LarkSSO.Builder builder = new LarkSSO.Builder().setAppId(aid)
                     .setServer("Feishu")
                     .setScopeList(scopeList)
