@@ -203,10 +203,11 @@ public class OneClick extends SocialAuthenticator implements Serializable {
 
     private void authingLogin(String t, String ac) {
         Authing.AuthProtocol authProtocol = getAuthProtocol();
+        int net = QuickLogin.getInstance().checkNetWork(context);
         if (authProtocol == Authing.AuthProtocol.EInHouse) {
-            AuthClient.loginByOneAuth(t, ac, this::fireCallback);
+            AuthClient.loginByOneAuth(t, ac, net, this::fireCallback);
         } else if (authProtocol == Authing.AuthProtocol.EOIDC) {
-            new OIDCClient().loginByOneAuth(t, ac, this::fireCallback);
+            new OIDCClient().loginByOneAuth(t, ac, net, this::fireCallback);
         }
     }
 
