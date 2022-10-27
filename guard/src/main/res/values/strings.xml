@@ -143,7 +143,12 @@
     <string name="authing_other">Other</string>
     <string name="authing_submit_success">Submit successfully</string>
     <string name="authing_phone_or_email_hint">Enter phone number or email</string>
-    <string name="authing_reset_password_tips">If you cannot receive the mobile phone verification code, I suggest you do the following: \n1. Check if your mobile phone is turned off or offline. \n2. Check if your phone number has been entered correctly.</string>
+    <string name="authing_cannot_get_verify_code_tips">If you cannot receive the mobile phone verification code, I suggest you do the following:\n1. Check if your mobile phone is turned off or offline.\n2. Check if your phone number has been entered correctly.\n3. Check if your SMS with the verification code is blocked.</string>
+    <string name="authing_cannot_login_tips">If you cannot log in, we suggest you do the following:\n1. Check if your username and password have been entered correctly.\n2. Check if your mobile phone is turned off or offline.</string>
+    <string name="authing_cannot_register_tips">If you cannot register, please do the following steps to solve this issue:\n1. Check if your account has been registered.\n2. Check if your phone number has been entered correctly.\n3. Check if your SMS with the verification code is blocked.</string>
+    <string name="authing_lost_account_tips">If your account is lost, please do the following steps to solve this issue:\n1. Check if your username and password have been entered correctly.\n2. Check if your mobile phone is turned off or offline.</string>
+    <string name="authing_cannot_reset_password_tips">If your password cannot be reset, please do the following steps to solve this issue:\n1. Check if your mobile phone is turned off or offline.\n2. Check if your password has been entered correctly.</string>
+    <string name="authing_account_is_locked_tips">If your account is locked, please contact the administrator to unlock it and try to log in again.</string>
     <string name="authing_input_tip_hint">Please enter the content</string>
 
     <!--error messages-->

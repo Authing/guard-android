@@ -19,13 +19,13 @@
     <string name="authing_welcome_to">ご参加を歓迎する</string>
     <string name="authing_login_by_phone_code">sms認証コード</string>
     <string name="authing_login_by_email_code">メールボックス認証コード</string>
-    <string name="authing_login_by_password">アカウントパスワード</string>
+    <string name="authing_login_by_password">アカウントログイン</string>
     <string name="authing_register_by_phone_code">SMS確認コード</string>
     <string name="authing_register_by_email">メールのパスワード</string>
     <string name="authing_register_by_email_code">Eメール確認コード</string>
     <string name="authing_go_login">すぐにログインする</string>
     <string name="authing_tip_no_account">アカウントがない？</string>
-    <string name="authing_register_now">すぐに登録する</string>
+    <string name="authing_register_now">すぐに登録します</string>
     <string name="authing_3rd_login">他サイトIDでログイン</string>
     <string name="authing_forgot_password">パスワードをお忘れの場合</string>
     <string name="authing_find_password_back">パスワードを取り戻す</string>
@@ -35,7 +35,7 @@
     <string name="authing_login_by_new_password">新しいパスワードにて再ログインしてください。</string>
     <string name="authing_go_back_login">ログイン画面に戻ります</string>
     <string name="authing_go_back_login_tips">%1$ss 後に、ログイン画面に戻ります</string>
-    <string name="authing_input_phone_or_email">携帯番号またはメールアドレスをご入力くださ い</string>
+    <string name="authing_input_phone_or_email">携帯電話をご入力ください/メールアドレス</string>
     <string name="authing_input_phone_or_email_and_code">登録電話/メールアドレスと確認コードを入力してください</string>
     <string name="authing_login_by_other_account">別のアカウントに登録する</string>
     <string name="authing_reset_password_by_email_tip">パスワードリセットメールが届きました %1$s, 有効期限は 5分</string>
@@ -62,7 +62,7 @@
     <string name="authing_mfa_verify_email">メールボックス検証</string>
     <string name="authing_mfa_verify_otp">セキュリティコード検証</string>
     <string name="authing_user_info_complete">プロフィール充実</string>
-    <string name="authing_complete_tip">より良いユーザー体験を提供するため、まずはプロフィール情報をご入力ください。</string>
+    <string name="authing_complete_tip">より良い使用体験をご提供できるよう個人情報のご記入をお願い致します。</string>
     <string name="authing_submit">提出</string>
     <string name="authing_male">男</string>
     <string name="authing_female">女性</string>
@@ -142,8 +142,13 @@
     <string name="authing_account_is_locked">アカウントがロックされました</string>
     <string name="authing_other">その他</string>
     <string name="authing_submit_success">提出に成功する</string>
-    <string name="authing_phone_or_email_hint">携帯番号またはメールアドレスをご入力くださ い</string>
-    <string name="authing_reset_password_tips">パスワードをリセットできない場合は、次の手順を実行することをお勧めします。\n1。電話がダウンしているかネットワークがないかどうかを確認します。\n2。設定したパスワードが正しいかどうかを確認します。</string>
+    <string name="authing_phone_or_email_hint">携帯電話をご入力ください/メールアドレス</string>
+    <string name="authing_cannot_get_verify_code_tips">認証コードのSMSが届かない原因としては以下の事象等が考えられます。\n1.通信状況が不安定 /モバイル通信ができない状態\n2.電話番号の入力間違い\n3.SMSの受信の制限</string>
+    <string name="authing_cannot_login_tips">ログインできない場合は、以下の操作をお勧めします。\n1. アカウントとパスワードの入力が正しいかどうかチェックします。\n2. 携帯電話が利用停止かどうか若しくはネットワーク接続状態チェックします。</string>
+    <string name="authing_cannot_register_tips">ログインできない場合は、以下の操作をお勧めします。\n1. すでにアカウント登録済みとなっているかどうかチェックします。\n2. 携帯電話番号が正しく入力しているかどうかチェックします。\n3. 認証コードのSMSがブロックされているかどうかチェックします。</string>
+    <string name="authing_lost_account_tips">アカウントが紛失した場合は、以下の操作をお勧めします。\n1. アカウントとパスワードの入力が正しいかどうかチェックします。\n2. 携帯電話が利用停止かどうか若しくはネットワーク接続状態チェックします。</string>
+    <string name="authing_cannot_reset_password_tips">パスワードをリセットできない場合は、以下の操作をお勧めします。\n1. 携帯電話が利用停止かどうか若しくは。\n2. 設定したパスワードが正しいかどうかチェックします。</string>
+    <string name="authing_account_is_locked_tips">アカウントがロックされた場合は、管理者にご連絡頂き、ロック解除された後もう一度ログインするようお願い致します。</string>
     <string name="authing_input_tip_hint">コンテンツを入力してください</string>
 
     <!--error messages-->
@@ -164,7 +169,7 @@
     <string name="authing_phone_country_code_empty">国コードが選択されていません</string>
     <string name="authing_phone_number_empty">携帯電話番号が入力されていません</string>
     <string name="authing_email_address_empty">メールアドレスが未入力です</string>
-    <string name="authing_phone_or_email_empty">携帯電話番号/メールアドレスが未入力です</string>
+    <string name="authing_phone_or_email_empty">携帯電話が未入力です/メールアドレス</string>
     <string name="authing_verify_code_empty">認証コードが未入力です</string>
     <string name="authing_incorrect_credential">間違ったユーザー名またはパスワード</string>
     <string name="authing_invalid_email">有効なメールアドレスをご入力ください</string>
@@ -172,7 +177,7 @@
     <string name="authing_invalid_input">入力フォーマットが正しくない</string>
     <string name="authing_invalid_phone_or_email">携帯番号またはメールアドレスをご入力くださ い</string>
     <string name="authing_get_email_code_failed">メールキャプチャ取得失敗</string>
-    <string name="authing_phone_number_already_bound">携帯電話の番号が結び付けられています</string>
+    <string name="authing_phone_number_already_bound">携帯電話をご入力ください/メールアドレス</string>
     <string name="authing_email_already_bound">メールボックスは既に結びつけられている</string>
     <string name="authing_sms_already_sent">60秒以内にsms認証コードが送信されました</string>
     <string name="authing_field_cannot_be_empty">%1$s空にしてはならない</string>

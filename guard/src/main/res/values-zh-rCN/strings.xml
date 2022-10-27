@@ -19,7 +19,7 @@
     <string name="authing_welcome_to">欢迎加入 %1$s，为了更好的使用体验，请完善你的个人信息。</string>
     <string name="authing_login_by_phone_code">短信验证码</string>
     <string name="authing_login_by_email_code">邮箱验证码</string>
-    <string name="authing_login_by_password">账号密码</string>
+    <string name="authing_login_by_password">密码登录</string>
     <string name="authing_register_by_phone_code">短信验证码</string>
     <string name="authing_register_by_email">邮箱密码</string>
     <string name="authing_register_by_email_code">邮箱验证码</string>
@@ -139,16 +139,21 @@
     <string name="authing_cannot_register">无法注册</string>
     <string name="authing_lost_account">帐号丢失</string>
     <string name="authing_cannot_reset_password">无法重置密码</string>
-    <string name="authing_account_is_locked">帐号锁定</string>
+    <string name="authing_account_is_locked">帐号被锁定</string>
     <string name="authing_other">其他</string>
     <string name="authing_submit_success">提交成功</string>
     <string name="authing_phone_or_email_hint">请输入手机号或邮箱</string>
-    <string name="authing_reset_password_tips">如果无法重置密码，建议你进行以下操作：\n1. 检查你的手机是否停机/无网络；\n2. 检查你设置的密码是否正确</string>
+    <string name="authing_cannot_get_verify_code_tips">如果无法收到手机验证码，建议你进行以下操作：\n1. 检查你的手机是否停机/无网络\n2. 检查你的手机号是否输入正确\n3. 检查你的验证码短信是否被屏蔽</string>
+    <string name="authing_cannot_login_tips">如果无法登录，建议你进行以下操作：\n1. 检查你的用户名与密码输入是否正确\n2. 检查你的手机是否停机/无网络</string>
+    <string name="authing_cannot_register_tips">如果无法注册，建议你进行以下操作：\n1. 检查你的帐号是否已注册\n2. 检查你的注册手机号是否输入正确\n3. 检查你的验证码短信是否被屏蔽</string>
+    <string name="authing_lost_account_tips">如果帐号丢失，建议你进行以下操作：\n1. 检查你的用户名与密码输入是否正确\n2. 检查你的手机是否停机/无网络</string>
+    <string name="authing_cannot_reset_password_tips">如果无法重置密码，建议你进行以下操作：\n1. 检查你的手机是否停机/无网络\n2. 检查你设置的密码是否正确</string>
+    <string name="authing_account_is_locked_tips">如果你的账号被锁定，请联系管理员解锁后再尝试登录</string>
     <string name="authing_input_tip_hint">请输入内容</string>
 
     <!--error messages-->
     <string name="authing_no_network">无法连接互联网</string>
-    <string name="authing_uninitialized">Guard 未初始化。使用 Guard 前需要调用 Authing.init(your authing appId)</string>
+    <string name="authing_uninitialized">Guard 未初始化。使用 Guard 前需要调用 Authing.init(AUTHING_APP_ID)</string>
     <string name="authing_password_error_1">至少 6 位</string>
     <string name="authing_password_error_2">至少包含小写字母</string>
     <string name="authing_password_error_3">至少包含大写字母</string>

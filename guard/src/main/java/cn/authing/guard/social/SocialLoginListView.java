@@ -89,15 +89,7 @@ public class SocialLoginListView extends LinearLayout {
                 if (config == null) {
                     return;
                 }
-//                StringBuilder sb = new StringBuilder();
                 List<SocialConfig> socialConfigs = config.getSocialConfigs();
-//                for (int i = 0, n = socialConfigs.size(); i < n; i++) {
-//                    SocialConfig sc = socialConfigs.get(i);
-//                    parsSource(sb, sc);
-//                    if (i < n - 1) {
-//                        sb.append("|");
-//                    }
-//                }
                 if (socialConfigs == null || socialConfigs.isEmpty()){
                     return;
                 }
@@ -272,6 +264,8 @@ public class SocialLoginListView extends LinearLayout {
         textView.setTextColor(getContext().getColor(R.color.authing_text_gray));
         textView.setTextSize(TypedValue.COMPLEX_UNIT_PX,
                 getContext().getResources().getDimension(R.dimen.authing_text_small_size));
+        textView.setSingleLine();
+        textView.setEllipsize(TextUtils.TruncateAt.END);
         String title = "";
         switch (src) {
             case Const.TYPE_WECHAT:

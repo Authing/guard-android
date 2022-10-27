@@ -4,6 +4,7 @@ import static cn.authing.guard.util.Const.NS_ANDROID;
 
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.view.View;
@@ -56,6 +57,8 @@ public class GetVerifyCodeButton extends LoadingButton {
             setTextColor(context.getColor(R.color.authing_main));
         }
 
+        setSingleLine();
+        setEllipsize(TextUtils.TruncateAt.END);
         if (attrs == null || attrs.getAttributeValue(NS_ANDROID, "text") == null) {
             String text = getContext().getString(R.string.authing_get_verify_code);
             setText(text);

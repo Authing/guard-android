@@ -173,6 +173,8 @@ public class VerticalSocialLoginListView extends LinearLayout {
         textView.setText(getSocialText(s));
         textView.setTextColor(getContext().getColor(R.color.authing_text_black));
         textView.setTextSize(TypedValue.COMPLEX_UNIT_PX, getContext().getResources().getDimensionPixelSize(R.dimen.authing_text_small_size));
+        textView.setSingleLine();
+        textView.setEllipsize(TextUtils.TruncateAt.END);
         LayoutParams lp = new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
         lp.setMargins((int) Util.dp2px(getContext(), 4), 0, 0, 0);
         textView.setLayoutParams(lp);

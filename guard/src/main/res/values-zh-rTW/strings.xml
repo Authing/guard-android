@@ -131,7 +131,7 @@
     <string name="authing_contact_info">聯絡方式</string>
     <string name="authing_related_issue">相關問題</string>
     <string name="authing_feedback_description">問題描述</string>
-    <string name="authing_feedback_screenshot">截圖</string>
+    <string name="authing_feedback_screenshot">問題截圖</string>
     <string name="authing_upload_image">上傳圖片</string>
     <string name="authing_contact_info_cannot_be_empty">聯絡方式為必填項</string>
     <string name="authing_cannot_get_verify_code">無法收到驗證碼</string>
@@ -139,11 +139,16 @@
     <string name="authing_cannot_register">無法註冊</string>
     <string name="authing_lost_account">帳號遺失</string>
     <string name="authing_cannot_reset_password">無法重設密碼</string>
-    <string name="authing_account_is_locked">帳號鎖住</string>
+    <string name="authing_account_is_locked">帳號被鎖住</string>
     <string name="authing_other">其他</string>
     <string name="authing_submit_success">提交成功</string>
     <string name="authing_phone_or_email_hint">請輸入手機號或電子郵件</string>
-    <string name="authing_reset_password_tips">如果無法收到驗證碼，建議您進行以下操作：\n1. 檢查您的手機服務是否停用  / 沒有網路；\n2. 檢查您的手機號碼是否輸入正確</string>
+    <string name="authing_cannot_get_verify_code_tips">如果無法收到手機驗證碼，建議您進行以下操作：\n1. 檢查您的手機服務是否停用/没有網路\n2. 檢查您的手機號碼是否輸入正確\n3. 檢查您的驗證碼簡訊是否被阻擋</string>
+    <string name="authing_cannot_login_tips">如果無法登入，建議您進行以下操作：\n1. 檢查您的帳號與密碼是否正確輸入\n2. 檢查您的手機服務是否停用 / 沒有網路</string>
+    <string name="authing_cannot_register_tips">如果無法註冊，建議您進行以下操作：\n1. 檢查您的帳號是否已註冊\n2. 檢查您的註冊手機號碼 是否正確輸入\n3. 檢查您的驗證碼簡訊是否被阻擋</string>
+    <string name="authing_lost_account_tips">如果帳號丟失，建議您進行以下操作：\n1. 檢查您的帳號與密碼是否正確輸入\n2. 檢查您的手機服務是否停用 / 沒有網路</string>
+    <string name="authing_cannot_reset_password_tips">如果無法重設密碼，建議您進行以下操作：\n1. 檢查您的手機服務是否停用 / 沒有網路\n2. 檢查您設定的密碼是否正確</string>
+    <string name="authing_account_is_locked_tips">如果您的帳號被鎖定，請聯繫管理員解鎖後再嘗試登入</string>
     <string name="authing_input_tip_hint">請輸入內容</string>
 
     <!--error messages-->

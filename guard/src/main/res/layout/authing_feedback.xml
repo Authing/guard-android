@@ -51,16 +51,8 @@
 
         <cn.authing.guard.feedback.IssueLayout
             android:layout_width="match_parent"
-            android:layout_height="@dimen/authing_edit_text_height"
-            android:layout_marginTop="@dimen/authing_small_top_margin"/>
-
-        <TextView
-            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/authing_form_start_end_margin"
-            android:text="@string/authing_reset_password_tips"
-            android:textSize="@dimen/authing_text_middle_size"
-            android:textColor="@color/authing_text_gray"/>
+            android:layout_marginTop="@dimen/authing_small_top_margin"/>
 
         <TextView
             android:layout_width="match_parent"
