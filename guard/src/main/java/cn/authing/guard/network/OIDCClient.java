@@ -41,6 +41,10 @@ public class OIDCClient {
 
     public void buildAuthorizeUrl(Callback<String> callback) {
         Authing.getPublicConfig(config -> {
+            if (config == null){
+                callback.call(false, "Config not found");
+                return;
+            }
             callback.call(true, buildAuthorizeUrl(config, authRequest));
         });
     }
@@ -164,6 +168,10 @@ public class OIDCClient {
     public void authByCode(String code, @NotNull AuthCallback<UserInfo> callback) {
         long now = System.currentTimeMillis();
         Authing.getPublicConfig(config -> {
+            if (config == null){
+                callback.call(Const.ERROR_CODE_10002, "Config not found", null);
+                return;
+            }
             try {
                 String url = Authing.getScheme() + "://" + Util.getHost(config) + "/oidc/token";
                 String secret = authRequest.getClientSecret();
@@ -198,6 +206,10 @@ public class OIDCClient {
     public void authByToken(UserInfo userInfo, String token, @NotNull AuthCallback<UserInfo> callback) {
         long now = System.currentTimeMillis();
         Authing.getPublicConfig(config -> {
+            if (config == null){
+                callback.call(Const.ERROR_CODE_10002, "Config not found", null);
+                return;
+            }
             try {
                 String url = Authing.getScheme() + "://" + Util.getHost(config) + "/oidc/token";
                 String secret = authRequest.getClientSecret();
@@ -240,6 +252,10 @@ public class OIDCClient {
     public void _getUserInfoByAccessToken(UserInfo userInfo, @NotNull AuthCallback<UserInfo> callback) {
         long now = System.currentTimeMillis();
         Authing.getPublicConfig(config -> {
+            if (config == null){
+                callback.call(Const.ERROR_CODE_10002, "Config not found", null);
+                return;
+            }
             try {
                 String url = Authing.getScheme() + "://" + Util.getHost(config) + "/oidc/me";
                 Request.Builder builder = new Request.Builder();
@@ -275,6 +291,10 @@ public class OIDCClient {
 
     public void getNewAccessTokenByRefreshToken(String refreshToken, @NotNull AuthCallback<UserInfo> callback) {
         Authing.getPublicConfig(config -> {
+            if (config == null){
+                callback.call(Const.ERROR_CODE_10002, "Config not found", null);
+                return;
+            }
             try {
                 String url = Authing.getScheme() + "://" + Util.getHost(config) + "/oidc/token";
                 String secret = authRequest.getClientSecret();

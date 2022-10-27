@@ -42,7 +42,10 @@ public class Alipay extends SocialAuthenticator {
 
         // 传递给支付宝应用的业务参数
         final Map<String, String> bizParams = new HashMap<>();
-        String aid = appId != null? appId : config.getSocialAppId(Const.EC_TYPE_ALIPAY);
+        String aid = appId;
+        if (aid == null && config != null){
+            aid = config.getSocialAppId(Const.EC_TYPE_ALIPAY);
+        }
         bizParams.put("url", "https://authweb.alipay.com/auth?auth_type=PURE_OAUTH_SDK&app_id=" + aid + "&scope=auth_user&state=init");
 
         // 支付宝回跳到您的应用时使用的 Intent Scheme。

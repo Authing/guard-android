@@ -1,8 +1,13 @@
 package cn.authing.guard;
 
 import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.Network;
+import android.net.NetworkRequest;
 import android.os.Handler;
 import android.os.Looper;
+
+import androidx.annotation.NonNull;
 
 import org.json.JSONObject;
 
@@ -33,6 +38,7 @@ public class Authing {
     private static String sPublicKey = DEF_PUBLIC_KEY;
     private static String sAppId;
     private static boolean isGettingConfig;
+    private static boolean autoCheckNetWork;
     private static Config publicConfig;
     private static final Queue<Config.ConfigCallback> listeners = new ConcurrentLinkedQueue<>();
     private static UserInfo sCurrentUser;
@@ -92,9 +98,17 @@ public class Authing {
         EOIDC
     }
 
+    public static boolean isAutoCheckNetWork() {
+        return autoCheckNetWork;
+    }
+
+    public static void setAutoCheckNetWork(boolean autoCheckNetWork) {
+        Authing.autoCheckNetWork = autoCheckNetWork;
+    }
+
     public static void autoLogin(AuthCallback<UserInfo> callback) {
         if (getCurrentUser() == null) {
-            callback.call(500, "no user logged in", null);
+            callback.call(Const.ERROR_CODE_10003, "Login failed", null);
         } else {
             String refreshToken = getCurrentUser().getRefreshToken();
             if (Util.isNull(refreshToken)) {
@@ -144,10 +158,11 @@ public class Authing {
         // and this listener is missed
         if (isGettingConfig) {
             listeners.add(callback);
-        }
-
-        if (publicConfig != null) {
-            listeners.clear();
+            if (publicConfig != null) {
+                listeners.clear();
+                callback.call(publicConfig);
+            }
+        } else {
             callback.call(publicConfig);
         }
     }
@@ -190,6 +205,7 @@ public class Authing {
                 } else {
                     ALog.e(TAG, "Get public config failed for appId: " + sAppId + " Msg:" + response.getMessage());
                     fireCallback(null);
+                    startListeningNetWork();
                 }
             } catch (Exception e) {
                 e.printStackTrace();
@@ -202,11 +218,11 @@ public class Authing {
         Handler handler = new Handler(Looper.getMainLooper());
         handler.post(() -> {
             publicConfig = config;
+            isGettingConfig = false;
             for (Config.ConfigCallback callback : listeners) {
                 callback.call(config);
             }
             listeners.clear();
-            isGettingConfig = false;
         });
     }
 
@@ -216,5 +232,35 @@ public class Authing {
 
     public static boolean isConfigEmpty() {
         return publicConfig == null;
+    }
+
+    private static void startListeningNetWork() {
+        if (!autoCheckNetWork || publicConfig != null){
+            return;
+        }
+        NetworkRequest.Builder builder = new NetworkRequest.Builder();
+        NetworkRequest request = builder.build();
+        ConnectivityManager connMgr = (ConnectivityManager) getAppContext()
+                .getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+        if (connMgr == null) {
+            return;
+        }
+        connMgr.registerNetworkCallback(request, new ConnectivityManager.NetworkCallback() {
+
+            @Override
+            public void onAvailable(@NonNull Network network) {
+                super.onAvailable(network);
+                if (isGettingConfig || publicConfig != null){
+                    return;
+                }
+                new Handler().post(Authing::requestPublicConfig);
+            }
+
+            @Override
+            public void onLost(@NonNull Network network) {
+                super.onLost(network);
+            }
+
+        });
     }
 }

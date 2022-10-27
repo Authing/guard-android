@@ -480,7 +480,7 @@ public class Util {
     }
 
     public static boolean shouldCompleteAfterLogin(Config config) {
-        List<String> complete = config.getCompleteFieldsPlace();
+        List<String> complete = (config != null ? config.getCompleteFieldsPlace() : null);
         return complete != null && complete.contains("login");
     }
 

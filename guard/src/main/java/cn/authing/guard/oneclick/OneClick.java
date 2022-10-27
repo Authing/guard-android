@@ -103,7 +103,7 @@ public class OneClick extends SocialAuthenticator implements Serializable {
         getAndroidScreenProperty();
         if (Authing.isConfigEmpty()) {
             if (_bid == null) {
-                callback.call(500, "businessId error", null);
+                callback.call(Const.ERROR_CODE_10002, "Config not found", null);
             } else {
                 prefetchMobileNumber(_bid, null, null);
             }
@@ -128,7 +128,10 @@ public class OneClick extends SocialAuthenticator implements Serializable {
     }
 
     private void prefetchMobileNumber(String _bid, Config config, AuthCallback<String> callBack) {
-        String businessId = (_bid != null) ? _bid : config.getSocialBusinessId(Const.EC_TYPE_YI_DUN);
+        String businessId = _bid;
+        if (businessId == null && config != null){
+            businessId = config.getSocialBusinessId(Const.EC_TYPE_YI_DUN);
+        }
         QuickLogin.getInstance().init(context, businessId);
         QuickLogin.getInstance().setPrefetchNumberTimeout(3);
         QuickLogin.getInstance().prefetchMobileNumber(new QuickLoginPreMobileListener() {

@@ -24,12 +24,12 @@ public class Wechat extends SocialAuthenticator {
     @Override
     public void login(Context context, @NotNull AuthCallback<UserInfo> callback) {
         Authing.getPublicConfig(config -> {
-            api = WXAPIFactory.createWXAPI(context, appId, true);
-            if (appId != null) {
-                api.registerApp(appId);
-            } else {
-                api.registerApp(config.getSocialAppId(Const.EC_TYPE_WECHAT));
+            String id = appId;
+            if (id == null && config != null){
+                id = config.getSocialAppId(Const.EC_TYPE_WECHAT);
             }
+            api = WXAPIFactory.createWXAPI(context, id, true);
+            api.registerApp(id);
 
             WXCallbackActivity.setCallback(callback);
 

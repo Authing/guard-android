@@ -148,13 +148,15 @@ public class FlowHelper {
 
     public static List<ExtendedField> missingFields(Config config, UserInfo userInfo) {
         List<ExtendedField> missingFields = new ArrayList<>();
-        List<ExtendedField> fields = config.getExtendedFields();
-        for (ExtendedField field : fields) {
-            String value = userInfo.getMappedData(field.getName());
-            if (isNull(value)) {
-                missingFields.add(field);
-            } else if ("gender".equals(field.getName()) && value.equals("U")) {
-                missingFields.add(field);
+        if (config != null){
+            List<ExtendedField> fields = config.getExtendedFields();
+            for (ExtendedField field : fields) {
+                String value = userInfo.getMappedData(field.getName());
+                if (isNull(value)) {
+                    missingFields.add(field);
+                } else if ("gender".equals(field.getName()) && value.equals("U")) {
+                    missingFields.add(field);
+                }
             }
         }
 
