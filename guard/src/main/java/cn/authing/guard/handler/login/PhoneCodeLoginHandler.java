@@ -90,9 +90,9 @@ public class PhoneCodeLoginHandler extends AbsLoginHandler{
         clearError();
         Authing.AuthProtocol authProtocol = getAuthProtocol();
         if (authProtocol == Authing.AuthProtocol.EInHouse) {
-            AuthClient.loginByPhoneCode(phoneCountryCode, phone, verifyCode, isAutoRegister(), this::fireCallback);
+            AuthClient.loginByPhoneCode(phoneCountryCode, phone, verifyCode, isAutoRegister(), null, this::fireCallback);
         } else if (authProtocol == Authing.AuthProtocol.EOIDC) {
-            new OIDCClient().loginByPhoneCode(phoneCountryCode, phone, verifyCode, isAutoRegister(), this::fireCallback);
+            new OIDCClient().loginByPhoneCode(phoneCountryCode, phone, verifyCode, isAutoRegister(), null, this::fireCallback);
         }
         ALog.d(TAG, "login by phone code");
     }

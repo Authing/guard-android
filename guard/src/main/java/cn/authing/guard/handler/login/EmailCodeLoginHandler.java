@@ -72,9 +72,9 @@ public class EmailCodeLoginHandler extends AbsLoginHandler{
         clearError();
         Authing.AuthProtocol authProtocol = getAuthProtocol();
         if (authProtocol == Authing.AuthProtocol.EInHouse) {
-            AuthClient.loginByEmailCode(email, verifyCode, isAutoRegister(), this::fireCallback);
+            AuthClient.loginByEmailCode(email, verifyCode, isAutoRegister(), null, this::fireCallback);
         } else if (authProtocol == Authing.AuthProtocol.EOIDC) {
-            new OIDCClient().loginByEmailCode(email, verifyCode, isAutoRegister(), this::fireCallback);
+            new OIDCClient().loginByEmailCode(email, verifyCode, isAutoRegister(), null, this::fireCallback);
         }
         ALog.d(TAG, "login by email code");
     }

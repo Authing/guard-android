@@ -61,11 +61,19 @@ public class OIDCClient {
     }
 
     public void registerByEmail(String email, String password, @NotNull AuthCallback<UserInfo> callback) {
-        AuthClient.registerByEmail(authRequest, email, password, callback);
+        AuthClient.registerByEmail(authRequest, email, password, null, callback);
+    }
+
+    public void registerByEmail(String email, String password, String context, @NotNull AuthCallback<UserInfo> callback) {
+        AuthClient.registerByEmail(authRequest, email, password, context, callback);
     }
 
     public void registerByEmailCode(String email, String vCode, @NotNull AuthCallback<UserInfo> callback) {
-        AuthClient.registerByEmailCode(authRequest, email, vCode, callback);
+        AuthClient.registerByEmailCode(authRequest, email, vCode, null, callback);
+    }
+
+    public void registerByEmailCode(String email, String vCode, String context, @NotNull AuthCallback<UserInfo> callback) {
+        AuthClient.registerByEmailCode(authRequest, email, vCode, context, callback);
     }
 
     public void registerByPhoneCode(String phone, String vCode, String password, @NotNull AuthCallback<UserInfo> callback) {
@@ -73,7 +81,11 @@ public class OIDCClient {
     }
 
     public void registerByPhoneCode(String phoneCountryCode, String phone, String vCode, String password, @NotNull AuthCallback<UserInfo> callback) {
-        AuthClient.registerByPhoneCode(authRequest, phoneCountryCode, phone, vCode, password, callback);
+        AuthClient.registerByPhoneCode(authRequest, phoneCountryCode, phone, vCode, password, null, callback);
+    }
+
+    public void registerByPhoneCode(String phoneCountryCode, String phone, String vCode, String password, String context, @NotNull AuthCallback<UserInfo> callback) {
+        AuthClient.registerByPhoneCode(authRequest, phoneCountryCode, phone, vCode, password, context, callback);
     }
 
     public void loginByPhoneCode(String phone, String vCode, @NotNull AuthCallback<UserInfo> callback) {
@@ -81,32 +93,28 @@ public class OIDCClient {
     }
 
     public void loginByPhoneCode(String phoneCountryCode, String phone, String vCode, @NotNull AuthCallback<UserInfo> callback) {
-        AuthClient.loginByPhoneCode(authRequest, phoneCountryCode, phone, vCode, false, callback);
+        AuthClient.loginByPhoneCode(authRequest, phoneCountryCode, phone, vCode, false, null, callback);
     }
 
-    public void loginByPhoneCode(String phoneCountryCode, String phone, String vCode, boolean autoRegister, @NotNull AuthCallback<UserInfo> callback) {
-        AuthClient.loginByPhoneCode(authRequest, phoneCountryCode, phone, vCode, autoRegister, callback);
+    public void loginByPhoneCode(String phoneCountryCode, String phone, String vCode, boolean autoRegister, String context, @NotNull AuthCallback<UserInfo> callback) {
+        AuthClient.loginByPhoneCode(authRequest, phoneCountryCode, phone, vCode, autoRegister, context, callback);
     }
 
     public void loginByEmailCode(String email, String vCode, @NotNull AuthCallback<UserInfo> callback) {
-        AuthClient.loginByEmailCode(authRequest, email, vCode, false, callback);
+        AuthClient.loginByEmailCode(authRequest, email, vCode, false, null, callback);
     }
 
-    public void loginByEmailCode(String email, String vCode, boolean autoRegister, @NotNull AuthCallback<UserInfo> callback) {
-        AuthClient.loginByEmailCode(authRequest, email, vCode, autoRegister, callback);
+    public void loginByEmailCode(String email, String vCode, boolean autoRegister, String context, @NotNull AuthCallback<UserInfo> callback) {
+        AuthClient.loginByEmailCode(authRequest, email, vCode, autoRegister, context, callback);
     }
 
     public void loginByAccount(String account, String password, @NotNull AuthCallback<UserInfo> callback) {
-        long now = System.currentTimeMillis();
-        AuthClient.loginByAccount(authRequest, account, password, false, ((c, m, data) -> {
-            ALog.d(TAG, "OIDCClient.loginByAccount cost:" + (System.currentTimeMillis() - now) + "ms");
-            callback.call(c, m, data);
-        }));
+        loginByAccount(account, password, false, null, callback);
     }
 
-    public void loginByAccount(String account, String password, boolean autoRegister, @NotNull AuthCallback<UserInfo> callback) {
+    public void loginByAccount(String account, String password, boolean autoRegister, String context, @NotNull AuthCallback<UserInfo> callback) {
         long now = System.currentTimeMillis();
-        AuthClient.loginByAccount(authRequest, account, password, autoRegister, ((c, m, data) -> {
+        AuthClient.loginByAccount(authRequest, account, password, autoRegister, context, ((c, m, data) -> {
             ALog.d(TAG, "OIDCClient.loginByAccount cost:" + (System.currentTimeMillis() - now) + "ms");
             callback.call(c, m, data);
         }));
