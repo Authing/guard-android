@@ -59,8 +59,7 @@ public class AuthClient {
                 startOidcInteraction(authData, data, callback);
             });
         } catch (Exception e) {
-            e.printStackTrace();
-            callback.call(500, "Exception", null);
+            error(e, callback);
         }
     }
 
@@ -81,8 +80,7 @@ public class AuthClient {
                 startOidcInteraction(authData, data, callback);
             });
         } catch (Exception e) {
-            e.printStackTrace();
-            callback.call(500, "Exception", null);
+            error(e, callback);
         }
     }
 
@@ -95,8 +93,7 @@ public class AuthClient {
             body.put("forceLogin", true);
             Guardian.post("/api/v2/register/username", body, (data) -> createUserInfoFromResponse(data, callback));
         } catch (Exception e) {
-            e.printStackTrace();
-            callback.call(500, "Exception", null);
+            error(e, callback);
         }
     }
 
@@ -129,8 +126,7 @@ public class AuthClient {
                 startOidcInteraction(authData, data, callback);
             });
         } catch (Exception e) {
-            e.printStackTrace();
-            callback.call(500, "Exception", null);
+            error(e, callback);
         }
     }
 
@@ -140,7 +136,7 @@ public class AuthClient {
 
     public static void sendSms(String phoneCountryCode, String phone, @NotNull AuthCallback<?> callback) {
         if (GlobalCountDown.isCountingDown(phone + phoneCountryCode)) {
-            callback.call(500, Authing.getAppContext().getString(R.string.authing_sms_already_sent), null);
+            callback.call(Const.ERROR_CODE_10008, Authing.getAppContext().getString(R.string.authing_sms_already_sent), null);
             return;
         }
 
@@ -157,8 +153,7 @@ public class AuthClient {
                 callback.call(data.getCode(), data.getMessage(), null);
             });
         } catch (Exception e) {
-            e.printStackTrace();
-            callback.call(500, "Exception", null);
+            error(e, callback);
         }
     }
 
@@ -191,8 +186,7 @@ public class AuthClient {
                 startOidcInteraction(authData, data, callback);
             });
         } catch (Exception e) {
-            e.printStackTrace();
-            callback.call(500, "Exception", null);
+            error(e, callback);
         }
     }
 
@@ -217,8 +211,7 @@ public class AuthClient {
                 startOidcInteraction(authData, data, callback);
             });
         } catch (Exception e) {
-            e.printStackTrace();
-            callback.call(500, "Exception", null);
+            error(e, callback);
         }
     }
 
@@ -248,8 +241,7 @@ public class AuthClient {
                 startOidcInteraction(authData, data, callback);
             });
         } catch (Exception e) {
-            e.printStackTrace();
-            callback.call(500, "Exception", null);
+            error(e, callback);
         }
     }
 
@@ -273,8 +265,7 @@ public class AuthClient {
                 callback.call(data.getCode(), data.getMessage(), data.getData());
             });
         } catch (Exception e) {
-            e.printStackTrace();
-            callback.call(500, "Exception", null);
+            error(e, callback);
         }
     }
 
@@ -286,11 +277,10 @@ public class AuthClient {
                     body.put("photo", uploadedUrl);
                     updateProfile(body, callback);
                 } catch (Exception e) {
-                    e.printStackTrace();
-                    callback.call(500, "Exception", null);
+                    error(e, callback);
                 }
             } else {
-                callback.call(500, "upload avatar failed", null);
+                callback.call(Const.ERROR_CODE_10009, "Upload avatar failed", null);
             }
         });
     }
@@ -311,8 +301,7 @@ public class AuthClient {
             String endpoint = "/api/v2/password/reset/sms";
             Guardian.post(endpoint, body, (data) -> callback.call(data.getCode(), data.getMessage(), data.getData()));
         } catch (Exception e) {
-            e.printStackTrace();
-            callback.call(500, "Exception", null);
+            error(e, callback);
         }
     }
 
@@ -325,8 +314,7 @@ public class AuthClient {
             String endpoint = "/api/v2/password/reset/email";
             Guardian.post(endpoint, body, (data) -> callback.call(data.getCode(), data.getMessage(), data.getData()));
         } catch (Exception e) {
-            e.printStackTrace();
-            callback.call(500, "Exception", null);
+            error(e, callback);
         }
     }
 
@@ -338,8 +326,7 @@ public class AuthClient {
             String endpoint = "/api/v2/users/password/reset-by-first-login-token";
             Guardian.post(endpoint, body, (data) -> callback.call(data.getCode(), data.getMessage(), data.getData()));
         } catch (Exception e) {
-            e.printStackTrace();
-            callback.call(500, "Exception", null);
+            error(e, callback);
         }
     }
 
@@ -357,8 +344,7 @@ public class AuthClient {
                     startOidcInteraction(authData, data, callback);
                 });
             } catch (Exception e) {
-                e.printStackTrace();
-                callback.call(500, "Exception", null);
+                error(e, callback);
             }
         });
     }
@@ -378,8 +364,7 @@ public class AuthClient {
                     startOidcInteraction(authData, data, callback);
                 });
             } catch (Exception e) {
-                e.printStackTrace();
-                callback.call(500, "Exception", null);
+                error(e, callback);
             }
         });
     }
@@ -399,8 +384,7 @@ public class AuthClient {
                     startOidcInteraction(authData, data, callback);
                 });
             } catch (Exception e) {
-                e.printStackTrace();
-                callback.call(500, "Exception", null);
+                error(e, callback);
             }
         });
     }
@@ -420,8 +404,7 @@ public class AuthClient {
                     startOidcInteraction(authData, data, callback);
                 });
             } catch (Exception e) {
-                e.printStackTrace();
-                callback.call(500, "Exception", null);
+                error(e, callback);
             }
         });
     }
@@ -443,8 +426,7 @@ public class AuthClient {
                     startOidcInteraction(authData, data, callback);
                 });
             } catch (Exception e) {
-                e.printStackTrace();
-                callback.call(500, "Exception", null);
+                error(e, callback);
             }
         });
     }
@@ -465,8 +447,7 @@ public class AuthClient {
                     startOidcInteraction(authData, data, callback);
                 });
             } catch (Exception e) {
-                e.printStackTrace();
-                callback.call(500, "Exception", null);
+                error(e, callback);
             }
         });
     }
@@ -484,8 +465,7 @@ public class AuthClient {
                 startOidcInteraction(authData, data, callback);
             });
         } catch (Exception e) {
-            e.printStackTrace();
-            callback.call(500, "Exception", null);
+            error(e, callback);
         }
     }
 
@@ -497,8 +477,7 @@ public class AuthClient {
             String endpoint = "/api/v2/users/email/bind";
             Guardian.post(endpoint, body, (data) -> createUserInfoFromResponse(data, callback));
         } catch (Exception e) {
-            e.printStackTrace();
-            callback.call(500, "Exception", null);
+            error(e, callback);
         }
     }
 
@@ -508,8 +487,7 @@ public class AuthClient {
             String endpoint = "/api/v2/users/email/unbind";
             Guardian.post(endpoint, body, (data) -> createUserInfoFromResponse(data, callback));
         } catch (Exception e) {
-            e.printStackTrace();
-            callback.call(500, "Exception", null);
+            error(e, callback);
         }
     }
 
@@ -528,8 +506,7 @@ public class AuthClient {
             String endpoint = "/api/v2/users/phone/bind";
             Guardian.post(endpoint, body, (data) -> createUserInfoFromResponse(data, callback));
         } catch (Exception e) {
-            e.printStackTrace();
-            callback.call(500, "Exception", null);
+            error(e, callback);
         }
     }
 
@@ -539,8 +516,7 @@ public class AuthClient {
             String endpoint = "/api/v2/users/phone/unbind";
             Guardian.post(endpoint, body, (data) -> createUserInfoFromResponse(data, callback));
         } catch (Exception e) {
-            e.printStackTrace();
-            callback.call(500, "Exception", null);
+            error(e, callback);
         }
     }
 
@@ -566,8 +542,7 @@ public class AuthClient {
             String url = "/api/v2/users/phone/update";
             Guardian.post(url, body, (data) -> createUserInfoFromResponse(data, callback));
         } catch (Exception e) {
-            e.printStackTrace();
-            callback.call(500, "Exception", null);
+            error(e, callback);
         }
     }
 
@@ -595,8 +570,7 @@ public class AuthClient {
             String endpoint = "/api/v2/users/me/security-level";
             Guardian.get(endpoint, (data) -> callback.call(data.getCode(), data.getMessage(), data.getData()));
         } catch (Exception e) {
-            e.printStackTrace();
-            callback.call(500, "Exception", null);
+            error(e, callback);
         }
     }
 
@@ -619,15 +593,14 @@ public class AuthClient {
                         }
                         callback.call(data.getCode(), data.getMessage(), roles);
                     } catch (JSONException e) {
-                        callback.call(500, "Exception", null);
+                        error(e, callback);
                     }
                 } else {
                     callback.call(data.getCode(), data.getMessage(), null);
                 }
             });
         } catch (Exception e) {
-            e.printStackTrace();
-            callback.call(500, "Exception", null);
+            error(e, callback);
         }
     }
 
@@ -650,15 +623,14 @@ public class AuthClient {
                         }
                         callback.call(data.getCode(), data.getMessage(), apps);
                     } catch (JSONException e) {
-                        callback.call(500, "Exception", null);
+                        error(e, callback);
                     }
                 } else {
                     callback.call(data.getCode(), data.getMessage(), null);
                 }
             });
         } catch (Exception e) {
-            e.printStackTrace();
-            callback.call(500, "Exception", null);
+            error(e, callback);
         }
     }
 
@@ -685,15 +657,14 @@ public class AuthClient {
                         }
                         callback.call(data.getCode(), data.getMessage(), resources);
                     } catch (JSONException e) {
-                        callback.call(500, "Exception", null);
+                        error(e, callback);
                     }
                 } else {
                     callback.call(data.getCode(), data.getMessage(), null);
                 }
             });
         } catch (Exception e) {
-            e.printStackTrace();
-            callback.call(500, "Exception", null);
+            error(e, callback);
         }
     }
 
@@ -712,7 +683,7 @@ public class AuthClient {
                             userInfo.setOrganizations(organizations);
                             callback.call(data.getCode(), data.getMessage(), organizations);
                         } catch (JSONException e) {
-                            callback.call(500, "Exception", null);
+                            error(e, callback);
                         }
                     } else {
                         callback.call(data.getCode(), data.getMessage(), null);
@@ -720,8 +691,7 @@ public class AuthClient {
                 });
             }
         } catch (Exception e) {
-            e.printStackTrace();
-            callback.call(500, "Exception", null);
+            error(e, callback);
         }
     }
 
@@ -737,8 +707,7 @@ public class AuthClient {
                 }
             });
         } catch (Exception e) {
-            e.printStackTrace();
-            callback.call(500, "Exception", null);
+            error(e, callback);
         }
     }
 
@@ -760,12 +729,11 @@ public class AuthClient {
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
-                    callback.call(500, "Exception", null);
+                    error(e, callback);
                 }
             });
         } catch (Exception e) {
-            e.printStackTrace();
-            callback.call(500, "Exception", null);
+            error(e, callback);
         }
     }
 
@@ -784,8 +752,7 @@ public class AuthClient {
             String endpoint = "/api/v2/applications/mfa/sms/verify";
             Guardian.post(endpoint, body, (data) -> createUserInfoFromResponse(data, callback));
         } catch (Exception e) {
-            e.printStackTrace();
-            callback.call(500, "Exception", null);
+            error(e, callback);
         }
     }
 
@@ -797,8 +764,7 @@ public class AuthClient {
             String endpoint = "/api/v2/applications/mfa/email/verify";
             Guardian.post(endpoint, body, (data) -> createUserInfoFromResponse(data, callback));
         } catch (Exception e) {
-            e.printStackTrace();
-            callback.call(500, "Exception", null);
+            error(e, callback);
         }
     }
 
@@ -810,8 +776,7 @@ public class AuthClient {
             String endpoint = "/api/v2/mfa/totp/verify";
             Guardian.post(endpoint, body, (data) -> createUserInfoFromResponse(data, callback));
         } catch (Exception e) {
-            e.printStackTrace();
-            callback.call(500, "Exception", null);
+            error(e, callback);
         }
     }
 
@@ -823,8 +788,7 @@ public class AuthClient {
             String endpoint = "/api/v2/mfa/totp/recovery";
             Guardian.post(endpoint, body, (data) -> createUserInfoFromResponse(data, callback));
         } catch (Exception e) {
-            e.printStackTrace();
-            callback.call(500, "Exception", null);
+            error(e, callback);
         }
     }
 
@@ -838,8 +802,7 @@ public class AuthClient {
             String endpoint = "/api/v2/password/update";
             Guardian.post(endpoint, body, (data) -> callback.call(data.getCode(), data.getMessage(), data.getData()));
         } catch (Exception e) {
-            e.printStackTrace();
-            callback.call(500, "Exception", null);
+            error(e, callback);
         }
     }
 
@@ -852,8 +815,7 @@ public class AuthClient {
             String endpoint = "/api/v2/users/me";
             Guardian.get(endpoint, (data) -> createUserInfoFromResponse(userInfo, data, callback));
         } catch (Exception e) {
-            e.printStackTrace();
-            callback.call(500, "Exception", null);
+            error(e, callback);
         }
     }
 
@@ -866,8 +828,7 @@ public class AuthClient {
             String endpoint = "/api/v2/users/me/info";
             Guardian.get(endpoint, (data) -> createUserInfoFromResponse(userInfo, data, callback));
         } catch (Exception e) {
-            e.printStackTrace();
-            callback.call(500, "Exception", null);
+            error(e, callback);
         }
     }
 
@@ -876,8 +837,7 @@ public class AuthClient {
             String endpoint = "/api/v3/get-user?withIdentities=" + true;
             Guardian.get(endpoint, (data) -> createUserInfoFromResponse(userInfo, data, callback));
         } catch (Exception e) {
-            e.printStackTrace();
-            callback.call(500, "Exception", null);
+            error(e, callback);
         }
     }
 
@@ -892,8 +852,7 @@ public class AuthClient {
             JSONObject parsedObject = Util.pareUnderLine(object);
             Guardian.post(endpoint, parsedObject, (data) -> createUserInfoFromResponse(data, callback));
         } catch (Exception e) {
-            e.printStackTrace();
-            callback.call(500, "Exception", null);
+            error(e, callback);
         }
     }
 
@@ -905,7 +864,7 @@ public class AuthClient {
     public static void setCustomUserData(JSONObject customData, @NotNull AuthCallback<JSONObject> callback) {
         UserInfo userInfo = Authing.getCurrentUser();
         if (userInfo == null) {
-            callback.call(500, "no user logged in", null);
+            callback.call(Const.ERROR_CODE_10003, "Login failed", null);
             return;
         }
 
@@ -923,8 +882,7 @@ public class AuthClient {
             String endpoint = "/api/v2/udfs/values";
             Guardian.post(endpoint, body, (data) -> callback.call(data.getCode(), data.getMessage(), data.getData()));
         } catch (Exception e) {
-            e.printStackTrace();
-            callback.call(500, "Exception", null);
+            error(e, callback);
         }
     }
 
@@ -945,8 +903,7 @@ public class AuthClient {
                 callback.call(data.getCode(), data.getMessage(), userInfo);
             });
         } catch (Exception e) {
-            e.printStackTrace();
-            callback.call(500, "Exception", null);
+            error(e, callback);
         }
     }
 
@@ -960,8 +917,7 @@ public class AuthClient {
                 callback.call(data.getCode(), data.getMessage(), null);
             });
         } catch (Exception e) {
-            e.printStackTrace();
-            callback.call(500, "Exception", null);
+            error(e, callback);
         }
     }
 
@@ -977,8 +933,7 @@ public class AuthClient {
                 callback.call(data.getCode(), data.getMessage(), data.getData());
             });
         } catch (Exception e) {
-            e.printStackTrace();
-            callback.call(500, "Exception", null);
+            error(e, callback);
         }
     }
 
@@ -989,8 +944,7 @@ public class AuthClient {
             body.put("random", ticket);
             Guardian.post(endpoint, body, (data) -> callback.call(data.getCode(), data.getMessage(), data.getData()));
         } catch (Exception e) {
-            e.printStackTrace();
-            callback.call(500, "Exception", null);
+            error(e, callback);
         }
     }
 
@@ -1015,8 +969,7 @@ public class AuthClient {
             body.put("random", ticket);
             Guardian.post(endpoint, body, (data) -> callback.call(data.getCode(), data.getMessage(), data.getData()));
         } catch (Exception e) {
-            e.printStackTrace();
-            callback.call(500, "Exception", null);
+            error(e, callback);
         }
     }
 
@@ -1027,8 +980,7 @@ public class AuthClient {
             body.put("random", ticket);
             Guardian.post(endpoint, body, (data) -> callback.call(data.getCode(), data.getMessage(), data.getData()));
         } catch (Exception e) {
-            e.printStackTrace();
-            callback.call(500, "Exception", null);
+            error(e, callback);
         }
     }
 
@@ -1065,8 +1017,7 @@ public class AuthClient {
                 callback.call(code, data.getMessage(), null);
             }
         } catch (JSONException e) {
-            e.printStackTrace();
-            callback.call(500, "Cannot parse data into UserInfo", null);
+            error(e, callback);
         }
     }
 
@@ -1076,8 +1027,7 @@ public class AuthClient {
             String endpoint = "/api/v2/users/password/check?password=" + encryptPassword;
             Guardian.get(endpoint, (data) -> callback.call(data.getCode(), data.getMessage(), data.getData()));
         } catch (Exception e) {
-            e.printStackTrace();
-            callback.call(500, "Exception", null);
+            error(e, callback);
         }
     }
 
@@ -1086,8 +1036,7 @@ public class AuthClient {
             String endpoint = "/api/v2/users/is-user-exists?" + paramsName + "=" + paramsValue;
             Guardian.get(endpoint, (data) -> callback.call(data.getCode(), data.getMessage(), data.getData()));
         } catch (Exception e) {
-            e.printStackTrace();
-            callback.call(500, "Exception", null);
+            error(e, callback);
         }
     }
 
@@ -1096,8 +1045,7 @@ public class AuthClient {
             String endpoint = "/api/v2/userpools?page=" + page + "&limit=" + limit;
             Guardian.get(endpoint, (data) -> callback.call(data.getCode(), data.getMessage(), data.getData()));
         } catch (Exception e) {
-            e.printStackTrace();
-            callback.call(500, "Exception", null);
+            error(e, callback);
         }
     }
 
@@ -1106,8 +1054,7 @@ public class AuthClient {
             String endpoint = "/api/v2/userpools/detail";
             Guardian.get(endpoint, (data) -> callback.call(data.getCode(), data.getMessage(), data.getData()));
         } catch (Exception e) {
-            e.printStackTrace();
-            callback.call(500, "Exception", null);
+            error(e, callback);
         }
     }
 
@@ -1116,8 +1063,7 @@ public class AuthClient {
             String endpoint = "/api/v2/userpools/cooperated";
             Guardian.get(endpoint, (data) -> callback.call(data.getCode(), data.getMessage(), data.getData()));
         } catch (Exception e) {
-            e.printStackTrace();
-            callback.call(500, "Exception", null);
+            error(e, callback);
         }
     }
 
@@ -1138,5 +1084,10 @@ public class AuthClient {
                 createUserInfoFromResponse(data, callback);
             }
         }
+    }
+
+    private static void error(Exception e, @NotNull AuthCallback<?> callback){
+        e.printStackTrace();
+        callback.call(Const.ERROR_CODE_10004, "JSON parse failed", null);
     }
 }

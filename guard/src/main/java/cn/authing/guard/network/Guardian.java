@@ -189,7 +189,7 @@ public class Guardian {
             }
         } catch (Exception e) {
             e.printStackTrace();
-            callback.call(new Response(500, Authing.getAppContext().getString(R.string.authing_network_exception), null));
+            callback.call(new Response(Const.ERROR_CODE_10001, "Network error", null));
         }
     }
 
@@ -238,7 +238,7 @@ public class Guardian {
             }
         } catch (Exception e) {
             e.printStackTrace();
-            callback.call(new Response(500, "Network Exception", null));
+            callback.call(new Response(Const.ERROR_CODE_10001, "Network error", null));
         }
     }
 }

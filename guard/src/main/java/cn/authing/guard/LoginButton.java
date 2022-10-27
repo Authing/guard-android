@@ -104,7 +104,7 @@ public class LoginButton extends PrimaryButton implements ILoginRequestCallBack 
 
     public void _login(Config config) {
         if (config == null) {
-            fireCallback(500, "Public Config is null", null);
+            fireCallback(Const.ERROR_CODE_10002, "Config not found", null);
             return;
         }
         getLoginRequestManager().requestLogin();

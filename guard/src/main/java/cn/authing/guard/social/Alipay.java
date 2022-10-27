@@ -67,19 +67,19 @@ public class Alipay extends SocialAuthenticator {
                         handleResult(context, bundle, callback);
                     } else {
                         ALog.e(TAG, "Auth Failed, errorCode is: " + i + ",errorMessage is: " + s);
-                        callback.call(500, "Auth failed", null);
+                        callback.call(Const.ERROR_CODE_10007, "Alipay auth failed", null);
                     }
                 },true); // 是否需要在用户未安装支付宝 App 时，使用 H5 中间页中转。建议设置为 true。
     }
 
     private void handleResult(Context context, Bundle bundle, @NotNull AuthCallback<UserInfo> callback) {
         if (bundle == null) {
-            callback.call(500, "Auth data failed", null);
+            callback.call(Const.ERROR_CODE_10007, "Alipay auth failed", null);
             return;
         }
 
         if (!"SUCCESS".equals(bundle.get("result_code"))) {
-            callback.call(500, "Auth failed", null);
+            callback.call(Const.ERROR_CODE_10007, "Alipay auth failed", null);
             return;
         }
         ALog.i(TAG, "Auth success");

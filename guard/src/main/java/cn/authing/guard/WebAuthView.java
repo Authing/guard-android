@@ -25,6 +25,7 @@ import cn.authing.guard.flow.AuthFlow;
 import cn.authing.guard.network.AuthRequest;
 import cn.authing.guard.network.OIDCClient;
 import cn.authing.guard.util.ALog;
+import cn.authing.guard.util.Const;
 import cn.authing.guard.util.Util;
 
 public class WebAuthView extends WebView {
@@ -87,7 +88,7 @@ public class WebAuthView extends WebView {
                             oidcClient.authByCode(authCode, (code, message, userInfo) -> fireCallback(code, message, userInfo));
                         } else {
                             ALog.e(TAG, url);
-                            fireCallback(500, "login failed", null);
+                            fireCallback(Const.ERROR_CODE_10003, "Login failed", null);
                         }
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -140,7 +141,7 @@ public class WebAuthView extends WebView {
                             oidcClient.authByCode(authCode, (code, message, userInfo) -> fireCallback(code, message, userInfo));
                         } else {
                             ALog.e(TAG, url);
-                            fireCallback(500, "login failed", null);
+                            fireCallback(Const.ERROR_CODE_10003, "Login failed", null);
                         }
                     } catch (Exception e) {
                         e.printStackTrace();

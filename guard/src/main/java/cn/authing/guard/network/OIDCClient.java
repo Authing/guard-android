@@ -13,6 +13,7 @@ import cn.authing.guard.Callback;
 import cn.authing.guard.data.Config;
 import cn.authing.guard.data.UserInfo;
 import cn.authing.guard.util.ALog;
+import cn.authing.guard.util.Const;
 import cn.authing.guard.util.PKCE;
 import cn.authing.guard.util.Util;
 import okhttp3.Call;
@@ -143,6 +144,11 @@ public class OIDCClient {
         AuthClient.loginByGoogle(authRequest, authCode, callback);
     }
 
+    private static void error(Exception e, @NotNull AuthCallback<?> callback){
+        e.printStackTrace();
+        callback.call(Const.ERROR_CODE_10004, "JSON parse failed", null);
+    }
+
     public void authByCode(String code, @NotNull AuthCallback<UserInfo> callback) {
         long now = System.currentTimeMillis();
         Authing.getPublicConfig(config -> {
@@ -165,16 +171,14 @@ public class OIDCClient {
                             UserInfo userInfo = UserInfo.createUserInfo(new UserInfo(), data.getData());
                             getUserInfoByAccessToken(userInfo, callback);
                         } catch (JSONException e) {
-                            e.printStackTrace();
-                            callback.call(500, "Cannot parse data into UserInfo", null);
+                            error(e, callback);
                         }
                     } else {
                         callback.call(data.getCode(), data.getMessage(), null);
                     }
                 });
             } catch (Exception e) {
-                e.printStackTrace();
-                callback.call(500, "Exception", null);
+                error(e, callback);
             }
         });
     }
@@ -201,16 +205,14 @@ public class OIDCClient {
                             UserInfo newUserInfo = UserInfo.createUserInfo(userInfo == null ? new UserInfo() : userInfo, data.getData());
                             getUserInfoByAccessToken(newUserInfo, callback);
                         } catch (JSONException e) {
-                            e.printStackTrace();
-                            callback.call(500, "Cannot parse data into UserInfo", null);
+                            error(e, callback);
                         }
                     } else {
                         callback.call(data.getCode(), data.getMessage(), null);
                     }
                 });
             } catch (Exception e) {
-                e.printStackTrace();
-                callback.call(500, "Exception", null);
+                error(e, callback);
             }
         });
     }
@@ -247,16 +249,14 @@ public class OIDCClient {
                         resp.setData(json);
                         AuthClient.createUserInfoFromResponse(userInfo, resp, callback);
                     } catch (JSONException e) {
-                        e.printStackTrace();
-                        callback.call(500, s,null);
+                        error(e, callback);
                     }
                 } else {
                     ALog.w(TAG, "_getUserInfoByAccessToken failed. " + response.code() + " message:" + s);
                     callback.call(response.code(), s,null);
                 }
             } catch (Exception e) {
-                e.printStackTrace();
-                callback.call(500, "Exception", null);
+                error(e, callback);
             }
         });
     }
@@ -285,8 +285,7 @@ public class OIDCClient {
                     }
                 });
             } catch (Exception e) {
-                e.printStackTrace();
-                callback.call(500, "Exception", null);
+                error(e, callback);
             }
         });
     }
