@@ -46,13 +46,22 @@ public class WeCom extends SocialAuthenticator {
         Authing.getPublicConfig(config -> {
             IWWAPI iwwapi = WWAPIFactory.createWWAPI(context);
 
-            String sch = (schema != null) ? schema : config.getSocialSchema(type);
+            String sch = schema;
+            if (sch == null && config != null){
+                sch = config.getSocialSchema(type);
+            }
             iwwapi.registerApp(sch);
 
             final WWAuthMessage.Req req = new WWAuthMessage.Req();
             req.sch = sch;
-            req.agentId = (agentId != null) ? agentId : config.getSocialAgentId(type);
-            req.appId = (corpId != null) ? corpId : config.getSocialAppId(type);
+            req.agentId = agentId;
+            if (agentId == null && config != null){
+                req.agentId = config.getSocialAgentId(type);
+            }
+            req.appId = corpId;
+            if (corpId == null && config != null){
+                req.appId = config.getSocialAppId(type);
+            }
             req.state = type;
             iwwapi.sendMessage(req, resp -> {
                 if (resp instanceof WWAuthMessage.Resp) {

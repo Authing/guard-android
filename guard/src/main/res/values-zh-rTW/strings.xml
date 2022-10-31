@@ -131,7 +131,7 @@
     <string name="authing_contact_info">聯絡方式</string>
     <string name="authing_related_issue">相關問題</string>
     <string name="authing_feedback_description">問題描述</string>
-    <string name="authing_feedback_screenshot">問題截圖</string>
+    <string name="authing_feedback_screenshot">截圖</string>
     <string name="authing_upload_image">上傳圖片</string>
     <string name="authing_contact_info_cannot_be_empty">聯絡方式為必填項</string>
     <string name="authing_cannot_get_verify_code">無法收到驗證碼</string>

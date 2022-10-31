@@ -118,7 +118,7 @@ public class OneClick extends SocialAuthenticator implements Serializable {
     public void getPhoneNumber(@NotNull AuthCallback<String> callback) {
         getAndroidScreenProperty();
         if (Authing.isConfigEmpty()) {
-            callback.call(500, "businessId error", null);
+            callback.call(Const.ERROR_CODE_10002, "Config not found", null);
             return;
         }
 
@@ -313,7 +313,7 @@ public class OneClick extends SocialAuthenticator implements Serializable {
         titleLayout.setPadding((int) Util.dp2px(context, 24), 0, (int) Util.dp2px(context, 12), 0);
         titleLayout.setBackIconClickListener(v -> {
             quit();
-            callback.call(500, "cancel", null);
+            callback.call(Const.ERROR_CODE_10006, "OnClick login cancelled", null);
         });
         titleLayout.initView();
         return titleLayout;
@@ -347,7 +347,7 @@ public class OneClick extends SocialAuthenticator implements Serializable {
         other.setOnClickListener((v) -> {
             AuthFlow.start((Activity) context);
             clear();
-            callback.call(500, "cancel", null);
+            callback.call(Const.ERROR_CODE_10006, "OnClick login cancelled", null);
         });
         return otherLoginRel;
     }

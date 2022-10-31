@@ -146,7 +146,7 @@ public class UserInfoCompleteContainer extends LinearLayout {
 
         String language = Util.getAppLanguage();
         Authing.getPublicConfig(config -> {
-            JSONObject extendedFieldsI18n = config.getExtendedFieldsI18n();
+            JSONObject extendedFieldsI18n = ( config != null ? config.getExtendedFieldsI18n() : null);
             if (extendedFieldsI18n == null){
                 return;
             }
