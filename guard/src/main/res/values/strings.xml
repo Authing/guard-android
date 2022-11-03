@@ -19,9 +19,10 @@
     <string name="authing_login_by_phone_code">Phone Code</string>
     <string name="authing_login_by_email_code">Email Code</string>
     <string name="authing_login_by_password">Password</string>
-    <string name="authing_register_by_phone_code">Phone</string>
+    <string name="authing_register_by_phone_code">Phone Code</string>
     <string name="authing_register_by_email">Email</string>
     <string name="authing_register_by_email_code">Email Code</string>
+    <string name="authing_register_by_phone_password">Phone</string>
     <string name="authing_go_login">Sign In Instead</string>
     <string name="authing_tip_no_account">No account?</string>
     <string name="authing_register_now">Sign up Now</string>

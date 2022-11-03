@@ -95,7 +95,9 @@ public class LoginMethodTab extends LinearLayout {
                 continue;
             }
 
-            if (null != config.getDefaultLoginMethod() && config.getDefaultLoginMethod().equals(s)) {
+            if (null != config.getDefaultLoginMethod()
+                    && (config.getDefaultLoginMethod().equals(s)
+                    || ("phone-code".equals(config.getDefaultLoginMethod()) && !loginTabList.contains("phone-code") && "email-code".equals(s)))) {
                 b.gainFocus(null);
                 container.addView(b, 0);
                 addDefaultTab = true;

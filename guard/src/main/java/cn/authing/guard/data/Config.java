@@ -28,6 +28,9 @@ public class Config {
     private String defaultLoginMethod;
     private List<String> registerTabList;
     private String defaultRegisterMethod;
+    private boolean registerDisabled;
+    private boolean autoRegisterThenLoginHintInfo;
+    private List<TabMethodsField> tabMethodsFields;
     private int verifyCodeLength = 6;
     private List<SocialConfig> socialConfigs;
     private List<Agreement> agreements;
@@ -38,7 +41,6 @@ public class Config {
     private List<String> redirectUris = new ArrayList<>();
     private boolean internationalSmsEnable;
     private String userAgent;
-    private boolean autoRegisterThenLoginHintInfo;
 
     public static Config parse(JSONObject data) throws JSONException {
         Config config = new Config();
@@ -67,16 +69,21 @@ public class Config {
             if (loginTab.contains("phone-code")){
                 if (data.has("verifyCodeTabConfig")) {
                     JSONObject verifyCodeTabConfig = data.getJSONObject("verifyCodeTabConfig");
-                    JSONArray enabledLoginMethods = verifyCodeTabConfig.getJSONArray("enabledLoginMethods");
-                    List<String> enabledLoginMethodsList = toStringList(enabledLoginMethods);
-                    if (!enabledLoginMethodsList.isEmpty()){
+                    JSONArray validLoginMethods = verifyCodeTabConfig.getJSONArray("validLoginMethods");
+                    List<String> validLoginMethodLis = toStringList(validLoginMethods);
+                    if (!validLoginMethodLis.isEmpty()){
+                        int index = loginTab.indexOf("phone-code");
                         loginTab.remove("phone-code");
-                        loginTab.addAll(enabledLoginMethodsList);
+                        loginTab.addAll(index, validLoginMethodLis);
                     }
                 }
             }
             config.setLoginTabList(loginTab);
             config.setDefaultLoginMethod(loginTabs.getString("default"));
+        }
+
+        if (data.has("registerDisabled")){
+            config.setRegisterDisabled(data.getBoolean("registerDisabled"));
         }
 
         if (data.has("registerTabs")) {
@@ -88,8 +95,12 @@ public class Config {
 
         if (data.has("passwordTabConfig")) {
             JSONObject passwordTabConfig = data.getJSONObject("passwordTabConfig");
-            JSONArray enabledLoginMethods = passwordTabConfig.getJSONArray("enabledLoginMethods");
-            config.setEnabledLoginMethods(toStringList(enabledLoginMethods));
+            JSONArray validLoginMethods = passwordTabConfig.getJSONArray("validLoginMethods");
+            config.setEnabledLoginMethods(toStringList(validLoginMethods));
+        }
+
+        if (data.has("tabMethodsFields")) {
+            config.setTabMethodsFields(toTabMethodFieldsList(data.getJSONArray("tabMethodsFields")));
         }
 
         if (data.has("ecConnections")) {
@@ -214,6 +225,31 @@ public class Config {
         this.registerTabList = registerTabList;
     }
 
+    private static List<TabMethodsField> toTabMethodFieldsList(JSONArray array) throws JSONException {
+        List<TabMethodsField> list = new ArrayList<>();
+        int size = array.length();
+        for (int i = 0; i < size; i++) {
+            TabMethodsField tabMethodsField = new TabMethodsField();
+            JSONObject obj = array.getJSONObject(i);
+
+            String key = obj.getString("key");
+            tabMethodsField.setKey(key);
+            String label = obj.getString("label");
+            tabMethodsField.setLabel(label);
+            String labelEn = obj.getString("labelEn");
+            tabMethodsField.setLabelEn(labelEn);
+            JSONObject i18n = obj.getJSONObject("i18n");
+            tabMethodsField.setI18n(i18n);
+
+            list.add(tabMethodsField);
+        }
+        return list;
+    }
+
+    public boolean isRegisterDisabled() {
+        return registerDisabled;
+    }
+
     public String getDefaultRegisterMethod() {
         return defaultRegisterMethod;
     }
@@ -300,6 +336,14 @@ public class Config {
 
     public void setAutoRegisterThenLoginHintInfo(boolean autoRegisterThenLoginHintInfo) {
         this.autoRegisterThenLoginHintInfo = autoRegisterThenLoginHintInfo;
+    }
+
+    public void setRegisterDisabled(boolean registerDisabled) {
+        this.registerDisabled = registerDisabled;
+    }
+
+    public List<TabMethodsField> getTabMethodsFields() {
+        return tabMethodsFields;
     }
 
     public String getSocialConnectionId(String type) {
@@ -477,5 +521,9 @@ public class Config {
             list.add(rule);
         }
         return list;
+    }
+
+    public void setTabMethodsFields(List<TabMethodsField> tabMethodsFields) {
+        this.tabMethodsFields = tabMethodsFields;
     }
 }

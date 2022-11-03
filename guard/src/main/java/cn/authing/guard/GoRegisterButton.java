@@ -28,8 +28,19 @@ public class GoRegisterButton extends GoSomewhereButton {
         Analyzer.report("GoRegisterButton");
 
         Authing.getPublicConfig((config)->{
-            if (config != null && (config.getRegisterTabList() == null || config.getRegisterTabList().size() == 0
-                    || config.isAutoRegisterThenLoginHintInfo())) {
+            if (config == null){
+                return;
+            }
+
+            //三种情况判断是否会隐藏 "立即注册" 按钮
+            //1. 开启「禁止注册」
+            boolean registerDisabled = config.isRegisterDisabled();
+            //2. 开启了「登录注册合并」
+            boolean autoRegisterThenLoginHintInfo = config.isAutoRegisterThenLoginHintInfo();
+            //3. 未配置注册方式
+            boolean noRegisterMethod = (config.getRegisterTabList() == null || config.getRegisterTabList().size() == 0);
+
+            if (registerDisabled || autoRegisterThenLoginHintInfo || noRegisterMethod) {
                 setVisibility(View.GONE);
             }
         });

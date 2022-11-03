@@ -19,9 +19,10 @@
     <string name="authing_login_by_phone_code">短信驗證碼</string>
     <string name="authing_login_by_email_code">電子郵件驗證碼</string>
     <string name="authing_login_by_password">帳號</string>
-    <string name="authing_register_by_phone_code">手機號碼註冊</string>
+    <string name="authing_register_by_phone_code">短信驗證碼註冊</string>
     <string name="authing_register_by_email">電子郵件註冊</string>
     <string name="authing_register_by_email_code">電子郵件驗證碼註冊</string>
+    <string name="authing_register_by_phone_password">手機號碼註冊</string>
     <string name="authing_go_login">立即登入</string>
     <string name="authing_tip_no_account">沒有帳號？</string>
     <string name="authing_register_now">立即註冊</string>

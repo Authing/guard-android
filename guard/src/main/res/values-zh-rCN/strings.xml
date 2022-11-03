@@ -19,9 +19,10 @@
     <string name="authing_login_by_phone_code">短信验证码</string>
     <string name="authing_login_by_email_code">邮箱验证码</string>
     <string name="authing_login_by_password">密码登录</string>
-    <string name="authing_register_by_phone_code">手机号注册</string>
+    <string name="authing_register_by_phone_code">短信验证码</string>
+    <string name="authing_register_by_email_code">邮箱验证码</string>
     <string name="authing_register_by_email">邮箱注册</string>
-    <string name="authing_register_by_email_code">邮箱验证码注册</string>
+    <string name="authing_register_by_phone_password">手机号注册</string>
     <string name="authing_go_login">立即登录</string>
     <string name="authing_tip_no_account">没有帐号？</string>
     <string name="authing_register_now">立即注册</string>

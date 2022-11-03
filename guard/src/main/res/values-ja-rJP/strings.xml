@@ -19,9 +19,10 @@
     <string name="authing_login_by_phone_code">認証コード登録</string>
     <string name="authing_login_by_email_code">メール認証コード</string>
     <string name="authing_login_by_password">アカウントログイン</string>
-    <string name="authing_register_by_phone_code">携帯番号登録</string>
+    <string name="authing_register_by_phone_code">認証コード</string>
     <string name="authing_register_by_email">メール登録</string>
     <string name="authing_register_by_email_code">メール認証コード登録</string>
+    <string name="authing_register_by_phone_password">携帯番号登録</string>
     <string name="authing_go_login">すぐにログインする</string>
     <string name="authing_tip_no_account">アカウントがない？</string>
     <string name="authing_register_now">すぐに登録します</string>

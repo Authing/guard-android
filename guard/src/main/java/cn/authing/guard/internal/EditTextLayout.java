@@ -168,6 +168,7 @@ public class EditTextLayout extends LinearLayout implements TextWatcher, View.On
         editText.setTextColor(array.getColor(R.styleable.EditTextLayout_android_textColor, 0xff000000));
         editText.setMaxLines(maxLines);
         editText.setSingleLine(singleLine);
+        editText.setEllipsize(TextUtils.TruncateAt.END);
         editText.setEnabled(enabled);
 //        editText.setInputType(inputType);
         editText.setOnFocusChangeListener(this);

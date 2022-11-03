@@ -25,12 +25,6 @@ public class RegisterContainer extends LinearLayout {
         this(context, attrs, defStyleAttr, 0);
     }
 
-    public enum RegisterType {
-        EByPhoneCodePassword,
-        EByEmailPassword,
-        EByEmailCode,
-    }
-
     public RegisterContainer(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
 
@@ -45,8 +39,20 @@ public class RegisterContainer extends LinearLayout {
             type = RegisterType.EByEmailPassword;
         } else if (t == 4) {
             type = RegisterType.EByEmailCode;
+        } else if (t == 5) {
+            type = RegisterType.EByPhonePassword;
+        } else if (t == 6) {
+            type = RegisterType.EByExtendFiled;
         }
         array.recycle();
+    }
+
+    public enum RegisterType {
+        EByPhoneCodePassword,
+        EByEmailPassword,
+        EByEmailCode,
+        EByPhonePassword,
+        EByExtendFiled,
     }
 
 

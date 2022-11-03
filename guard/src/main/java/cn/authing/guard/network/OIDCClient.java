@@ -1,5 +1,7 @@
 package cn.authing.guard.network;
 
+import static cn.authing.guard.util.Const.EC_MFA_REQUIRED;
+
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -11,6 +13,7 @@ import cn.authing.guard.AuthCallback;
 import cn.authing.guard.Authing;
 import cn.authing.guard.Callback;
 import cn.authing.guard.data.Config;
+import cn.authing.guard.data.Safe;
 import cn.authing.guard.data.UserInfo;
 import cn.authing.guard.util.ALog;
 import cn.authing.guard.util.Const;
@@ -64,6 +67,10 @@ public class OIDCClient {
                 + (secret == null ? "&code_challenge=" + authRequest.getCodeChallenge() + "&code_challenge_method=" + PKCE.getCodeChallengeMethod() : "");
     }
 
+    public void registerByExtendField(String fieldName, String account, String password, String context, @NotNull AuthCallback<UserInfo> callback) {
+        AuthClient.registerByExtendField(authRequest, fieldName, account, password, context, callback);
+    }
+
     public void registerByEmail(String email, String password, @NotNull AuthCallback<UserInfo> callback) {
         AuthClient.registerByEmail(authRequest, email, password, null, callback);
     }
@@ -78,6 +85,10 @@ public class OIDCClient {
 
     public void registerByEmailCode(String email, String vCode, String context, @NotNull AuthCallback<UserInfo> callback) {
         AuthClient.registerByEmailCode(authRequest, email, vCode, context, callback);
+    }
+
+    public void registerByPhonePassword(String phoneCountryCode, String phone, String password, String context, @NotNull AuthCallback<UserInfo> callback) {
+        AuthClient.registerByPhonePassword(authRequest, phoneCountryCode, phone, password, context, callback);
     }
 
     public void registerByPhoneCode(String phone, String vCode, String password, @NotNull AuthCallback<UserInfo> callback) {

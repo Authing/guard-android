@@ -41,6 +41,31 @@ public class AuthClient {
         EStrong
     }
 
+    public static void registerByExtendField(String fieldName, String account, String password, String context, @NotNull AuthCallback<UserInfo> callback) {
+        registerByExtendField(null, fieldName, account, password, context, callback);
+    }
+
+    public static void registerByExtendField(AuthRequest authData, String fieldName, String account, String password, String context, @NotNull AuthCallback<UserInfo> callback) {
+        try {
+            String encryptPassword = Util.encryptPassword(password);
+            JSONObject body = new JSONObject();
+            body.put("account", account);
+            body.put("password", encryptPassword);
+            body.put("forceLogin", true);
+            if (!Util.isNull(context)){
+                body.put("context", context);
+            }
+            Guardian.post("/api/v2/register-"+fieldName, body, (data)-> {
+                if (data.getCode() == 200 || data.getCode() == EC_MFA_REQUIRED) {
+                    Safe.saveAccount(account);
+                }
+                startOidcInteraction(authData, data, callback);
+            });
+        } catch (Exception e) {
+            error(e, callback);
+        }
+    }
+
     public static void registerByEmail(String email, String password, @NotNull AuthCallback<UserInfo> callback) {
         registerByEmail(null, email, password, null, callback);
     }
@@ -99,13 +124,48 @@ public class AuthClient {
     }
 
     public static void registerByUserName(String username, String password, @NotNull AuthCallback<UserInfo> callback) {
+        registerByUserName(username, password, null, callback);
+    }
+
+    public static void registerByUserName(String username, String password, String context, @NotNull AuthCallback<UserInfo> callback) {
         try {
             String encryptPassword = Util.encryptPassword(password);
             JSONObject body = new JSONObject();
             body.put("username", username);
             body.put("password", encryptPassword);
             body.put("forceLogin", true);
+            if (!Util.isNull(context)){
+                body.put("context", context);
+            }
             Guardian.post("/api/v2/register/username", body, (data)-> createUserInfoFromResponse(data, callback));
+        } catch (Exception e) {
+            error(e, callback);
+        }
+    }
+
+    public static void registerByPhonePassword(String phoneCountryCode, String phone, String password, String context, @NotNull AuthCallback<UserInfo> callback) {
+        registerByExtendField(null, phoneCountryCode, phone, password, context, callback);
+    }
+
+    public static void registerByPhonePassword(AuthRequest authData, String phoneCountryCode, String phone, String password, String context, @NotNull AuthCallback<UserInfo> callback) {
+        try {
+            String encryptPassword = Util.encryptPassword(password);
+            JSONObject body = new JSONObject();
+            if (!Util.isNull(phoneCountryCode)){
+                body.put("phoneCountryCode", phoneCountryCode);
+            }
+            body.put("account", phone);
+            body.put("password", encryptPassword);
+            body.put("forceLogin", true);
+            if (!Util.isNull(context)){
+                body.put("context", context);
+            }
+            Guardian.post("/api/v2/register-phone", body, (data)-> {
+                if (data.getCode() == 200 || data.getCode() == EC_MFA_REQUIRED) {
+                    Safe.saveAccount(phone);
+                }
+                startOidcInteraction(authData, data, callback);
+            });
         } catch (Exception e) {
             error(e, callback);
         }

@@ -111,6 +111,7 @@
         </cn.authing.guard.RegisterContainer>
 
         <cn.authing.guard.RegisterContainer
+            android:visibility="invisible"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/authing_form_start_end_margin"
@@ -148,6 +149,73 @@
                     android:stateListAnimator="@null"
                     android:textColor="@color/authing_get_verify_code_button_text_color" />
             </LinearLayout>
+        </cn.authing.guard.RegisterContainer>
+
+        <cn.authing.guard.RegisterContainer
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/authing_form_start_end_margin"
+            android:layout_marginTop="14dp"
+            android:layout_marginEnd="@dimen/authing_form_start_end_margin"
+            android:clipChildren="false"
+            android:visibility="invisible"
+            app:type="phonePassword">
+            <cn.authing.guard.PhoneNumberEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@null"
+                app:errorEnabled="true"
+                app:pageType="register"/>
+            <cn.authing.guard.PasswordEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:background="@null"
+                app:clearAllEnabled="false"
+                app:errorEnabled="true"
+                app:leftIconDrawable="@drawable/ic_authing_password"/>
+            <cn.authing.guard.PasswordConfirmEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:background="@null"
+                app:clearAllEnabled="false"
+                app:errorEnabled="true"
+                app:leftIconDrawable="@drawable/ic_authing_password"/>
+        </cn.authing.guard.RegisterContainer>
+
+        <cn.authing.guard.RegisterContainer
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/authing_form_start_end_margin"
+            android:layout_marginTop="14dp"
+            android:layout_marginEnd="@dimen/authing_form_start_end_margin"
+            android:clipChildren="false"
+            android:visibility="invisible"
+            app:type="extendFiled">
+            <cn.authing.guard.RegisterExtendFiledEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@null"
+                app:errorEnabled="true"
+                app:leftIconDrawable="@drawable/ic_authing_user"
+                app:pageType="register"/>
+            <cn.authing.guard.PasswordEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:background="@null"
+                app:clearAllEnabled="false"
+                app:errorEnabled="true"
+                app:leftIconDrawable="@drawable/ic_authing_password"/>
+            <cn.authing.guard.PasswordConfirmEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:background="@null"
+                app:clearAllEnabled="false"
+                app:errorEnabled="true"
+                app:leftIconDrawable="@drawable/ic_authing_password"/>
         </cn.authing.guard.RegisterContainer>
 
         <cn.authing.guard.ErrorTextView
