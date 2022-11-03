@@ -25,6 +25,7 @@ public class AccountEditText extends EditTextLayout {
 
     protected final static int EMAIL_VALIDATOR = 1;
     protected final static int PHONE_VALIDATOR = 2;
+    protected final static int EXTEND_FILED_VALIDATOR = 3;
 
     protected int validator;
 
@@ -80,21 +81,29 @@ public class AccountEditText extends EditTextLayout {
             }
             for (int i = 0, n = enabledLoginMethods.size(); i < n; ++i) {
                 String opt = enabledLoginMethods.get(i);
+                if (TextUtils.isEmpty(opt)){
+                    continue;
+                }
+                String name = opt.replace("-password", "");
+                String label = Util.getLabel(config, name);
                 switch (opt) {
-                    case LOGIN_METHOD_UN:
-                        s.append(username);
+                    case LOGIN_METHOD_PHONE:
+                        s.append(TextUtils.isEmpty(label) ? phone : label);
+                        if (enabledLoginMethods.size() == 1) {
+                            validator |= PHONE_VALIDATOR;
+                        }
                         break;
                     case LOGIN_METHOD_EMAIL:
-                        s.append(email);
-                        if (enabledLoginMethods.size() == 1){
+                        s.append(TextUtils.isEmpty(label) ? email : label);
+                        if (enabledLoginMethods.size() == 1) {
                             validator |= EMAIL_VALIDATOR;
                         }
                         break;
-                    case LOGIN_METHOD_PHONE:
-                        s.append(phone);
-                        if (enabledLoginMethods.size() == 1){
-                            validator |= PHONE_VALIDATOR;
-                        }
+                    case LOGIN_METHOD_UN:
+                        s.append(TextUtils.isEmpty(label) ? username : label);
+                        break;
+                    default:
+                        s.append(label);
                         break;
                 }
                 if (i < n - 1) {
