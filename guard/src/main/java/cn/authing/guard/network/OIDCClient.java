@@ -1,7 +1,5 @@
 package cn.authing.guard.network;
 
-import static cn.authing.guard.util.Const.EC_MFA_REQUIRED;
-
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -13,7 +11,6 @@ import cn.authing.guard.AuthCallback;
 import cn.authing.guard.Authing;
 import cn.authing.guard.Callback;
 import cn.authing.guard.data.Config;
-import cn.authing.guard.data.Safe;
 import cn.authing.guard.data.UserInfo;
 import cn.authing.guard.util.ALog;
 import cn.authing.guard.util.Const;
@@ -108,7 +105,7 @@ public class OIDCClient {
     }
 
     public void loginByPhoneCode(String phoneCountryCode, String phone, String vCode, @NotNull AuthCallback<UserInfo> callback) {
-        AuthClient.loginByPhoneCode(authRequest, phoneCountryCode, phone, vCode, false, null, callback);
+        AuthClient.loginByPhoneCode(authRequest, phoneCountryCode, phone, vCode, true, null, callback);
     }
 
     public void loginByPhoneCode(String phoneCountryCode, String phone, String vCode, boolean autoRegister, String context, @NotNull AuthCallback<UserInfo> callback) {
@@ -116,7 +113,7 @@ public class OIDCClient {
     }
 
     public void loginByEmailCode(String email, String vCode, @NotNull AuthCallback<UserInfo> callback) {
-        AuthClient.loginByEmailCode(authRequest, email, vCode, false, null, callback);
+        AuthClient.loginByEmailCode(authRequest, email, vCode, true, null, callback);
     }
 
     public void loginByEmailCode(String email, String vCode, boolean autoRegister, String context, @NotNull AuthCallback<UserInfo> callback) {
@@ -124,7 +121,7 @@ public class OIDCClient {
     }
 
     public void loginByAccount(String account, String password, @NotNull AuthCallback<UserInfo> callback) {
-        loginByAccount(account, password, false, null, callback);
+        loginByAccount(account, password, true, null, callback);
     }
 
     public void loginByAccount(String account, String password, boolean autoRegister, String context, @NotNull AuthCallback<UserInfo> callback) {

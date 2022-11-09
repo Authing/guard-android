@@ -69,7 +69,14 @@ public class Config {
             if (loginTab.contains("phone-code")){
                 if (data.has("verifyCodeTabConfig")) {
                     JSONObject verifyCodeTabConfig = data.getJSONObject("verifyCodeTabConfig");
-                    JSONArray validLoginMethods = verifyCodeTabConfig.getJSONArray("validLoginMethods");
+                    JSONArray validLoginMethods = new JSONArray();
+                    if (verifyCodeTabConfig.has("validLoginMethods")){
+                        validLoginMethods = verifyCodeTabConfig.getJSONArray("validLoginMethods");
+                    }else{
+                        if (verifyCodeTabConfig.has("enabledLoginMethods")){
+                            validLoginMethods = verifyCodeTabConfig.getJSONArray("enabledLoginMethods");
+                        }
+                    }
                     List<String> validLoginMethodLis = toStringList(validLoginMethods);
                     if (!validLoginMethodLis.isEmpty()){
                         int index = loginTab.indexOf("phone-code");
@@ -95,8 +102,15 @@ public class Config {
 
         if (data.has("passwordTabConfig")) {
             JSONObject passwordTabConfig = data.getJSONObject("passwordTabConfig");
-            JSONArray validLoginMethods = passwordTabConfig.getJSONArray("validLoginMethods");
-            config.setEnabledLoginMethods(toStringList(validLoginMethods));
+            if (passwordTabConfig.has("validLoginMethods")){
+                JSONArray validLoginMethods = passwordTabConfig.getJSONArray("validLoginMethods");
+                config.setEnabledLoginMethods(toStringList(validLoginMethods));
+            } else {
+                if (passwordTabConfig.has("enabledLoginMethods")){
+                    JSONArray enabledLoginMethods = passwordTabConfig.getJSONArray("enabledLoginMethods");
+                    config.setEnabledLoginMethods(toStringList(enabledLoginMethods));
+                }
+            }
         }
 
         if (data.has("tabMethodsFields")) {

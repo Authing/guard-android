@@ -239,11 +239,11 @@ public class AuthClient {
     }
 
     public static void loginByPhoneCode(String phone, String code, @NotNull AuthCallback<UserInfo> callback) {
-        loginByPhoneCode(null, phone, code, false, null, callback);
+        loginByPhoneCode(null, phone, code, true, null, callback);
     }
 
     public static void loginByPhoneCode(String phoneCountryCode, String phone, String code, @NotNull AuthCallback<UserInfo> callback) {
-        loginByPhoneCode(null, phoneCountryCode, phone, code, false, null, callback);
+        loginByPhoneCode(null, phoneCountryCode, phone, code, true, null, callback);
     }
 
     public static void loginByPhoneCode(String phoneCountryCode, String phone, String code, boolean autoRegister, String context, @NotNull AuthCallback<UserInfo> callback) {
@@ -275,7 +275,7 @@ public class AuthClient {
     }
 
     public static void loginByEmailCode(String email, String code, @NotNull AuthCallback<UserInfo> callback) {
-        loginByEmailCode(null, email, code,false, null, callback);
+        loginByEmailCode(null, email, code, true, null, callback);
     }
 
     public static void loginByEmailCode(String email, String code, boolean autoRegister, String context, @NotNull AuthCallback<UserInfo> callback) {
@@ -303,7 +303,7 @@ public class AuthClient {
     }
 
     public static void loginByAccount(String account, String password, @NotNull AuthCallback<UserInfo> callback) {
-        loginByAccount(null, account, password, false, null, callback);
+        loginByAccount(null, account, password, true, null, callback);
     }
 
     public static void loginByAccount(String account, String password, boolean autoRegister, String context, @NotNull AuthCallback<UserInfo> callback) {
