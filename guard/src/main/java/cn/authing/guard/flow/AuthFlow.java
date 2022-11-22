@@ -14,7 +14,6 @@ import cn.authing.guard.R;
 import cn.authing.guard.activity.AuthActivity;
 import cn.authing.guard.activity.IndexAuthActivity;
 import cn.authing.guard.activity.UserProfileActivity;
-import cn.authing.guard.container.AuthContainer;
 import cn.authing.guard.data.UserInfo;
 
 public class AuthFlow implements Serializable {
@@ -45,9 +44,13 @@ public class AuthFlow implements Serializable {
     private int mfaPhoneCurrentStep;
     private int[] mfaEmailLayoutIds;
     private int mfaEmailCurrentStep; // index starting from 0
-    private int mfaOTPLayoutId;
+    //private int mfaOTPLayoutId;
+    private int[] mfaOTPLayoutIds;
+    private int mfaOTPCurrentStep; // index starting from 0
     private int[] mfaRecoveryLayoutIds;
     private int mfaRecoveryCurrentStep;
+    private int[] mfaFaceLayoutIds;
+    private int mfaFaceCurrentStep; // index starting from 0
 
     // user info complete
     private int[] userInfoCompleteLayoutIds;
@@ -257,7 +260,10 @@ public class AuthFlow implements Serializable {
 
     public int[] getMfaPhoneLayoutIds() {
         if (mfaPhoneLayoutIds == null) {
-            return new int[]{R.layout.authing_mfa_phone_0, R.layout.authing_mfa_phone_1};
+            return new int[]{R.layout.authing_mfa_phone_bind_tip,
+                    R.layout.authing_mfa_phone_bind,
+                    R.layout.authing_mfa_phone_bind_success,
+                    R.layout.authing_mfa_phone_verify};
         }
         return mfaPhoneLayoutIds;
     }
@@ -280,7 +286,10 @@ public class AuthFlow implements Serializable {
 
     public int[] getMfaEmailLayoutIds() {
         if (mfaEmailLayoutIds == null) {
-            return new int[]{R.layout.authing_mfa_email_0, R.layout.authing_mfa_email_1};
+            return new int[]{R.layout.authing_mfa_email_bind_tip,
+                    R.layout.authing_mfa_email_bind,
+                    R.layout.authing_mfa_email_bind_success,
+                    R.layout.authing_mfa_email_verify};
         }
         return mfaEmailLayoutIds;
     }
@@ -308,15 +317,26 @@ public class AuthFlow implements Serializable {
         return userInfoCompleteLayoutIds;
     }
 
-    public int getMfaOTPLayoutId() {
-        if (mfaOTPLayoutId == 0) {
-            return R.layout.authing_mfa_otp;
+    public int[] getMfaOTPLayoutIds() {
+        if (mfaOTPLayoutIds == null) {
+            return new int[]{R.layout.authing_mfa_otp_bind_tip,
+                    R.layout.authing_mfa_otp_bind,
+                    R.layout.authing_mfa_otp_bind_success,
+                    R.layout.authing_mfa_otp_verify};
         }
-        return mfaOTPLayoutId;
+        return mfaOTPLayoutIds;
     }
 
-    public void setMfaOTPLayoutId(int mfaOTPLayoutId) {
-        this.mfaOTPLayoutId = mfaOTPLayoutId;
+    public void setMfaOTPLayoutIds(int[] mfaOTPLayoutIds) {
+        this.mfaOTPLayoutIds = mfaOTPLayoutIds;
+    }
+
+    public int getMfaOTPCurrentStep() {
+        return mfaOTPCurrentStep;
+    }
+
+    public void setMfaOTPCurrentStep(int mfaOTPCurrentStep) {
+        this.mfaOTPCurrentStep = mfaOTPCurrentStep;
     }
 
     public int[] getMfaRecoveryLayoutIds() {
@@ -336,6 +356,33 @@ public class AuthFlow implements Serializable {
 
     public void setMfaRecoveryCurrentStep(int mfaRecoveryCurrentStep) {
         this.mfaRecoveryCurrentStep = mfaRecoveryCurrentStep;
+    }
+
+    public int[] getMfaFaceLayoutIds() {
+        if (mfaFaceLayoutIds == null) {
+            return new int[]{R.layout.authing_mfa_face_bind_tip,
+                    R.layout.authing_mfa_face_bind_before,
+                    R.layout.authing_mfa_face_bind,
+                    R.layout.authing_mfa_face_bind_success,
+                    R.layout.authing_mfa_face_bind_failed,
+                    R.layout.authing_mfa_face_verify_before,
+                    R.layout.authing_mfa_face_verify,
+                    R.layout.authing_mfa_face_verify_success,
+                    R.layout.authing_mfa_face_verify_failed};
+        }
+        return mfaFaceLayoutIds;
+    }
+
+    public void setMfaFaceLayoutIds(int[] mfaFaceLayoutIds) {
+        this.mfaFaceLayoutIds = mfaFaceLayoutIds;
+    }
+
+    public int getMfaFaceCurrentStep() {
+        return mfaFaceCurrentStep;
+    }
+
+    public void setMfaFaceCurrentStep(int mfaFaceCurrentStep) {
+        this.mfaFaceCurrentStep = mfaFaceCurrentStep;
     }
 
     public void setUserInfoCompleteLayoutIds(int[] userInfoCompleteLayoutIds) {

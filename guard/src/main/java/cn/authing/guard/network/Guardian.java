@@ -13,7 +13,6 @@ import java.nio.charset.StandardCharsets;
 import java.util.Objects;
 
 import cn.authing.guard.Authing;
-import cn.authing.guard.R;
 import cn.authing.guard.data.Config;
 import cn.authing.guard.data.UserInfo;
 import cn.authing.guard.util.Const;

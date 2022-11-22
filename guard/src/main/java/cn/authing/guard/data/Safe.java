@@ -17,6 +17,8 @@ public class Safe {
     private static final String SP_KEY_REFRESH_TOKEN = "SP_REFRESH_TOKEN";
     private static final String SP_KEY_PHONE_COUNTRY_CODE = "SP_PHONE_COUNTRY_CODE";
     private static final String SP_KEY_PRIVACY_CONFIRM = "SP_PRIVACY_CONFIRM";
+    private static final String SP_OTP_RECOVERY_CODE = "SP_OTP_RECOVERY_CODE";
+    private static final String SP_OTP_ENROLLMENT_TOKEN = "SP_OTP_ENROLLMENT_TOKEN";
 
     public static void saveAccount(String account) {
         SharedPreferences sp = Authing.getAppContext().getSharedPreferences(SP_NAME, MODE_PRIVATE);
@@ -73,6 +75,26 @@ public class Safe {
         } else {
             return false;
         }
+    }
+
+    public static void saveRecoveryCode(String recoveryCode) {
+        SharedPreferences sp = Authing.getAppContext().getSharedPreferences(SP_NAME, MODE_PRIVATE);
+        sp.edit().putString(SP_OTP_RECOVERY_CODE, recoveryCode).commit();
+    }
+
+    public static String loadRecoveryCode() {
+        SharedPreferences sp = Authing.getAppContext().getSharedPreferences(SP_NAME, 0);
+        return sp.getString(SP_OTP_RECOVERY_CODE, "");
+    }
+
+    public static void saveOtpEnrollmentToken(String recoveryCode) {
+        SharedPreferences sp = Authing.getAppContext().getSharedPreferences(SP_NAME, MODE_PRIVATE);
+        sp.edit().putString(SP_OTP_ENROLLMENT_TOKEN, recoveryCode).commit();
+    }
+
+    public static String loadOtpEnrollmentToken() {
+        SharedPreferences sp = Authing.getAppContext().getSharedPreferences(SP_NAME, 0);
+        return sp.getString(SP_OTP_ENROLLMENT_TOKEN, "");
     }
 
     public static void saveUser(UserInfo userInfo) {

@@ -790,7 +790,13 @@ public class AuthClient {
             body.put("phone", phone);
             body.put("code", code);
             String endpoint = "/api/v2/applications/mfa/sms/verify";
-            Guardian.post(endpoint, body, (data) -> createUserInfoFromResponse(data, callback));
+            Guardian.post(endpoint, body, response -> {
+                if (Authing.getAuthProtocol() == Authing.AuthProtocol.EOIDC){
+                    startOidcInteraction(new AuthRequest(), response, callback);
+                } else {
+                    createUserInfoFromResponse(response, callback);
+                }
+            });
         } catch (Exception e) {
             error(e, callback);
         }
@@ -802,7 +808,13 @@ public class AuthClient {
             body.put("email", email);
             body.put("code", code);
             String endpoint = "/api/v2/applications/mfa/email/verify";
-            Guardian.post(endpoint, body, (data) -> createUserInfoFromResponse(data, callback));
+            Guardian.post(endpoint, body, response -> {
+                if (Authing.getAuthProtocol() == Authing.AuthProtocol.EOIDC){
+                    startOidcInteraction(new AuthRequest(), response, callback);
+                } else {
+                    createUserInfoFromResponse(response, callback);
+                }
+            });
         } catch (Exception e) {
             error(e, callback);
         }
@@ -814,7 +826,31 @@ public class AuthClient {
             body.put("authenticatorType", "totp");
             body.put("totp", code);
             String endpoint = "/api/v2/mfa/totp/verify";
-            Guardian.post(endpoint, body, (data) -> createUserInfoFromResponse(data, callback));
+            Guardian.post(endpoint, body, response -> {
+                if (Authing.getAuthProtocol() == Authing.AuthProtocol.EOIDC){
+                    startOidcInteraction(new AuthRequest(), response, callback);
+                } else {
+                    createUserInfoFromResponse(response, callback);
+                }
+            });
+        } catch (Exception e) {
+            error(e, callback);
+        }
+    }
+
+    public static void mfaVerifyByFace(String photoKey, @NotNull AuthCallback<UserInfo> callback) {
+        try {
+            JSONObject body = new JSONObject();
+            body.put("type", "face");
+            body.put("photo", photoKey);
+            String endpoint = "/api/v2/mfa/face/verify";
+            Guardian.post(endpoint, body, response -> {
+                if (Authing.getAuthProtocol() == Authing.AuthProtocol.EOIDC){
+                    startOidcInteraction(new AuthRequest(), response, callback);
+                } else {
+                    createUserInfoFromResponse(response, callback);
+                }
+            });
         } catch (Exception e) {
             error(e, callback);
         }
@@ -826,6 +862,56 @@ public class AuthClient {
             body.put("authenticatorType", "totp");
             body.put("recoveryCode", code);
             String endpoint = "/api/v2/mfa/totp/recovery";
+            Guardian.post(endpoint, body, response -> {
+                if (Authing.getAuthProtocol() == Authing.AuthProtocol.EOIDC){
+                    startOidcInteraction(new AuthRequest(), response, callback);
+                } else {
+                    createUserInfoFromResponse(response, callback);
+                }
+            });
+        } catch (Exception e) {
+            error(e, callback);
+        }
+    }
+
+    public static void getOtpQrCode(@NotNull AuthCallback<JSONObject> callback) {
+        try {
+            JSONObject body = new JSONObject();
+            body.put("authenticator_type", "totp");
+            body.put("source", "SELF");
+            String endpoint = "/api/v2/mfa/totp/associate";
+            Guardian.post(endpoint, body, (data) -> callback.call(data.getCode(), data.getMessage(), data.getData()));
+        } catch (Exception e) {
+            error(e, callback);
+        }
+    }
+
+    public static void mfaBindByOtp(String code, @NotNull AuthCallback<UserInfo> callback) {
+        try {
+            JSONObject body = new JSONObject();
+            body.put("authenticator_type", "totp");
+            body.put("totp", code);
+            body.put("source", "SELF");
+            String endpoint = "/api/v2/mfa/totp/associate/confirm";
+            Guardian.post(endpoint, body, response -> {
+                if (response.getCode() == 200){
+                    mfaVerifyByOTP(code, callback);
+                } else {
+                    callback.call(response.getCode(), response.getMessage(), null);
+                }
+            });
+        } catch (Exception e) {
+            error(e, callback);
+        }
+    }
+
+    public static void mfaBindByFace(String photoKeyA, String photoKeyB, @NotNull AuthCallback<UserInfo> callback) {
+        try {
+            JSONObject body = new JSONObject();
+            body.put("photoA", photoKeyA);
+            body.put("photoB", photoKeyB);
+            body.put("isExternalPhoto", false);
+            String endpoint = "/api/v2/mfa/face/associate";
             Guardian.post(endpoint, body, (data) -> createUserInfoFromResponse(data, callback));
         } catch (Exception e) {
             error(e, callback);
@@ -847,7 +933,8 @@ public class AuthClient {
     }
 
     public static void getCurrentUser(@NotNull AuthCallback<UserInfo> callback) {
-        getCurrentUser(new UserInfo(), callback);
+        UserInfo userInfo = Authing.getCurrentUser() != null ? Authing.getCurrentUser() : new UserInfo();
+        getCurrentUser(userInfo, callback);
     }
 
     public static void getCurrentUser(UserInfo userInfo, @NotNull AuthCallback<UserInfo> callback) {
@@ -1025,7 +1112,8 @@ public class AuthClient {
     }
 
     public static void createUserInfoFromResponse(Response data, @NotNull AuthCallback<UserInfo> callback) {
-        createUserInfoFromResponse(new UserInfo(), data, callback);
+        UserInfo userInfo = Authing.getCurrentUser() != null ? Authing.getCurrentUser() : new UserInfo();
+        createUserInfoFromResponse(userInfo, data, callback);
     }
 
     public static void createUserInfoFromResponse(UserInfo userInfo, Response data, @NotNull AuthCallback<UserInfo> callback) {

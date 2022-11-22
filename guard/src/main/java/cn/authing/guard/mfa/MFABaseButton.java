@@ -2,6 +2,7 @@ package cn.authing.guard.mfa;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.TypedArray;
 import android.util.AttributeSet;
 
 import androidx.annotation.NonNull;
@@ -12,6 +13,7 @@ import com.netease.nis.quicklogin.QuickLogin;
 import java.util.List;
 
 import cn.authing.guard.Authing;
+import cn.authing.guard.R;
 import cn.authing.guard.activity.AuthActivity;
 import cn.authing.guard.data.Config;
 import cn.authing.guard.data.ExtendedField;
@@ -19,9 +21,13 @@ import cn.authing.guard.data.UserInfo;
 import cn.authing.guard.flow.AuthFlow;
 import cn.authing.guard.flow.FlowHelper;
 import cn.authing.guard.internal.LoadingButton;
+import cn.authing.guard.util.ToastUtil;
 
 public class MFABaseButton extends LoadingButton {
 
+    public static int MFA_TYPE_BIND = 0;
+    public static int MFA_TYPE_VERIFY = 1;
+    protected int currentMfaType;
 
     public MFABaseButton(@NonNull Context context) {
         super(context);
@@ -33,11 +39,13 @@ public class MFABaseButton extends LoadingButton {
 
     public MFABaseButton(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
+        TypedArray array = context.obtainStyledAttributes(attrs, R.styleable.MFABaseButton);
+        currentMfaType = array.getInt(R.styleable.MFABaseButton_mfaType, 0);
+        array.recycle();
     }
 
-
-    protected void mfaOk(int code, String message, UserInfo userInfo) {
-        Authing.getPublicConfig((config)->{
+    protected void mfaVerifyOk(int code, String message, UserInfo userInfo) {
+        Authing.getPublicConfig((config) -> {
             if (getContext() instanceof AuthActivity) {
                 AuthActivity activity = (AuthActivity) getContext();
                 AuthFlow flow = (AuthFlow) activity.getIntent().getSerializableExtra(AuthActivity.AUTH_FLOW);
@@ -59,6 +67,10 @@ public class MFABaseButton extends LoadingButton {
                 }
             }
         });
+    }
+
+    protected void showToast(int textResId, int imageResId) {
+        post(() -> ToastUtil.showCenter(getContext(), getContext().getString(textResId), imageResId));
     }
 
 

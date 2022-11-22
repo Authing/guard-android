@@ -77,6 +77,7 @@ public class GoLoginTipsText extends AppCompatTextView {
                     //intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     intent.putExtra(AuthActivity.CONTENT_LAYOUT_ID, flow.getIndexLayoutId());
                     activity.startActivityForResult(intent, AuthActivity.RC_LOGIN);
+                    activity.finish();
                 }
             }
         };

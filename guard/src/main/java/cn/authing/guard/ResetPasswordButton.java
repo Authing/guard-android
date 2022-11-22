@@ -228,9 +228,12 @@ public class ResetPasswordButton extends PrimaryButton {
     }
 
     private void gotoResetSuccess(AuthFlow flow) {
+        AuthActivity activity = (AuthActivity) getContext();
+
         Intent intent = new Intent(getContext(), AuthActivity.class);
         intent.putExtra(AuthActivity.AUTH_FLOW, flow);
         intent.putExtra(AuthActivity.CONTENT_LAYOUT_ID, flow.getRestPasswordSuccessLayoutId());
-        getContext().startActivity(intent);
+        activity.startActivity(intent);
+        activity.finish();
     }
 }

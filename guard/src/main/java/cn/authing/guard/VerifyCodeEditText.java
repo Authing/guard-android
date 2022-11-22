@@ -6,6 +6,7 @@ import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.graphics.Color;
 import android.text.Editable;
 import android.text.InputFilter;
 import android.text.InputType;
@@ -85,9 +86,13 @@ public class VerifyCodeEditText extends EditTextLayout implements TextWatcher {
         } else {
             root.removeAllViews();
 
-            int bw = (int)array.getDimension(R.styleable.VerifyCodeEditText_boxWidth, 108);
-            int bh = (int)array.getDimension(R.styleable.VerifyCodeEditText_boxHeight, 128);
-            int space = (int)array.getDimension(R.styleable.VerifyCodeEditText_boxSpacing, 36);
+            int defaultW = maxLength == 6 ?
+                    (int)Util.dp2px(getContext(), 40) : (int)Util.dp2px(getContext(), 64);
+            int bw = (int)array.getDimension(R.styleable.VerifyCodeEditText_boxWidth, defaultW);
+            int bh = (int)array.getDimension(R.styleable.VerifyCodeEditText_boxHeight, defaultW);
+            int defaultSpace = maxLength == 6 ?
+                    (int)Util.dp2px(getContext(), 10) : (int)Util.dp2px(getContext(), 12);
+            int space = (int)array.getDimension(R.styleable.VerifyCodeEditText_boxSpacing, defaultSpace);
             int p = space / 2;
             for (int i = 0;i < maxLength;++i) {
                 LayoutParams lp = new LayoutParams(bw, bh);
@@ -109,7 +114,7 @@ public class VerifyCodeEditText extends EditTextLayout implements TextWatcher {
                     addHyphenView(bw);
                 }
 
-                et.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 18);
+                et.setTextSize(TypedValue.COMPLEX_UNIT_SP, maxLength == 6 ? 20 : 24);
                 et.setInputType(InputType.TYPE_CLASS_NUMBER);
                 et.setTextAlignment(TEXT_ALIGNMENT_CENTER);
                 et.setText(" "); // when text is empty & cursor is hidden, menu will not show on long click
@@ -118,6 +123,7 @@ public class VerifyCodeEditText extends EditTextLayout implements TextWatcher {
                 et.setFilters(new InputFilter[]{new InputFilter.LengthFilter(1)});
                 et.setLayoutParams(lp);
                 et.setHighlightColor(0);
+                et.setPadding(0, 0, 0, 0);
                 et.setCustomSelectionActionModeCallback(new ActionMode.Callback() {
                     @Override
                     public boolean onCreateActionMode(ActionMode mode, Menu menu) {
@@ -249,7 +255,7 @@ public class VerifyCodeEditText extends EditTextLayout implements TextWatcher {
 
     private void addHyphenView(int bw) {
         View hyphenView = new View(getContext());
-        hyphenView.setBackgroundColor(0xFFDDDDDD);
+        hyphenView.setBackgroundColor(Color.parseColor("#D9D9D9"));
         int h = (int)Util.dp2px(getContext(), 2);
         LayoutParams lp = new LayoutParams(bw/3, h);
         hyphenView.setLayoutParams(lp);

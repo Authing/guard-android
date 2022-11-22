@@ -5,19 +5,6 @@
     android:layout_height="wrap_content"
     android:orientation="vertical">
 
-<!--    <TextView-->
-<!--        android:id="@+id/title_text"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:paddingStart="24dp"-->
-<!--        android:paddingEnd="24dp"-->
-<!--        android:layout_marginTop="32dp"-->
-<!--        android:gravity="center"-->
-<!--        android:textStyle="bold"-->
-<!--        android:text="@string/authing_reading_guide"-->
-<!--        android:textColor="@color/authing_text_black"-->
-<!--        android:textSize="@dimen/authing_text_large_size"/>-->
-
     <TextView
         android:id="@+id/content_text"
         android:layout_width="match_parent"

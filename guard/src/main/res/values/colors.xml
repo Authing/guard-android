@@ -12,4 +12,5 @@
     <color name="authing_text_black">#1D2129</color>
     <color name="authing_text_yellow">#FB9926</color>
     <color name="authing_developer_color">#F2F3F5</color>
+    <color name="authing_white">#FFFFFFFF</color>
 </resources>

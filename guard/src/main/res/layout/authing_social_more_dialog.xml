@@ -9,10 +9,11 @@
 
     <cn.authing.guard.PrivacyConfirmBox
         android:id="@+id/authing_social_more_privacy"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/authing_form_start_end_margin"
         android:layout_marginBottom="12dp"
+        android:layout_gravity="center"
         app:isRememberSate="false"
         app:button="@drawable/authing_checkbox_background"/>
 

@@ -46,6 +46,7 @@ public class GoLoginButton extends GoSomewhereButton {
                     GoLoginTipsText goLoginTipsText = (GoLoginTipsText) view;
                     goLoginTipsText.cancelCuntDown();
                 }
+                activity.finish();
             }
         });
     }

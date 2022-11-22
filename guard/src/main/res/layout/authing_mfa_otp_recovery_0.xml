@@ -1,55 +1,53 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:clipChildren="false"
     android:clipToPadding="false"
+    android:orientation="vertical"
     android:paddingStart="@dimen/authing_form_start_end_margin"
     android:paddingEnd="@dimen/authing_form_start_end_margin">
 
+    <cn.authing.guard.TitleLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/authing_title_layout_height"
+        app:showBackIcon="true"
+        app:showTitleText="true"
+        app:titleText="@string/authing_use_recovery_code" />
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="64dp"
-        android:textSize="24sp"
-        android:textColor="#000"
-        android:text="@string/authing_use_recovery_code" />
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="8dp"
-        android:text="@string/authing_use_recovery_code_tip" />
+        android:layout_marginTop="@dimen/authing_margin_40"
+        android:text="@string/authing_use_recovery_code_tip"
+        android:textColor="@color/authing_text_gray"
+        android:textSize="@dimen/authing_text_large_size" />
 
     <cn.authing.guard.mfa.RecoveryCodeEditText
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@null"
-        app:leftIconDrawable="@drawable/ic_authing_password"
+        android:layout_height="@dimen/authing_button_height"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="32dp" />
-
-    <cn.authing.guard.ErrorTextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:textColor="@color/authing_error" />
+        android:layout_marginTop="@dimen/authing_margin_16"
+        android:background="@null"
+        app:leftIconDrawable="@drawable/ic_authing_password" />
 
     <cn.authing.guard.mfa.MFARecoveryButton
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_height="@dimen/authing_button_height"
+        android:layout_marginTop="@dimen/authing_margin_24"
         android:background="@drawable/authing_button_background"
-        android:textColor="#FFF" />
+        android:gravity="center"
+        android:stateListAnimator="@null"
+        android:text="@string/authing_login"
+        android:textColor="@color/authing_white" />
 
     <Space
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:minHeight="16dp"
-        android:layout_weight="1"/>
+        android:layout_weight="1"
+        android:minHeight="16dp" />
 
     <include layout="@layout/authing_powered_by" />
 

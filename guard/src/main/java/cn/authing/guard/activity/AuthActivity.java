@@ -1,6 +1,7 @@
 package cn.authing.guard.activity;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.TextUtils;
@@ -10,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
@@ -27,6 +29,7 @@ import cn.authing.guard.data.UserInfo;
 import cn.authing.guard.flow.AuthFlow;
 import cn.authing.guard.internal.CircularAnimatedView;
 import cn.authing.guard.social.Google;
+import cn.authing.guard.util.ImageUtil;
 import cn.authing.guard.util.ToastUtil;
 import cn.authing.guard.util.Util;
 
@@ -39,12 +42,14 @@ public class AuthActivity extends AppCompatActivity {
     public static final String CONTENT_LAYOUT_ID = "content_layout_id";
 
     public static final String EVENT_VERIFY_CODE_ENTERED = "verify_code_entered";
+    public static final String EVENT_BIND_FACE_CARE_PERMISSION = "bind_face_carme_permission";
 
     protected AuthFlow flow;
 
     private final Map<String, List<EventListener>> eventMap = new HashMap<>();
     private FrameLayout loadingContainer;
     private View loading;
+    private Bitmap qrCodeBitmap;
 
     public interface EventListener {
         void happened(String what);
@@ -183,5 +188,20 @@ public class AuthActivity extends AppCompatActivity {
                 listener.happened(what);
             }
         }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == 101 && qrCodeBitmap != null){
+            ImageUtil.saveImage(this, qrCodeBitmap);
+        }
+        if (requestCode == 102){
+            fire(EVENT_BIND_FACE_CARE_PERMISSION, "");
+        }
+    }
+
+    public void setQrCodeBitmap(Bitmap qrCodeBitmap) {
+        this.qrCodeBitmap = qrCodeBitmap;
     }
 }

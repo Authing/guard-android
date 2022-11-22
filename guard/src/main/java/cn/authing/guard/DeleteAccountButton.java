@@ -18,6 +18,7 @@ import cn.authing.guard.data.UserInfo;
 import cn.authing.guard.flow.AuthFlow;
 import cn.authing.guard.internal.LoadingButton;
 import cn.authing.guard.network.AuthClient;
+import cn.authing.guard.util.Const;
 import cn.authing.guard.util.ToastUtil;
 import cn.authing.guard.util.Util;
 
@@ -71,7 +72,7 @@ public class DeleteAccountButton extends LoadingButton {
                 }
                 startLoadingVisualEffect();
                 AuthClient.loginByPhoneCode(phoneNumber, verifyCode, (AuthCallback<UserInfo>) (code, message, data) -> {
-                    if (code == 200) {
+                    if (code == 200 || code == Const.EC_MFA_REQUIRED) {
                         deleteAccount();
                     } else {
                         stopLoadingVisualEffect();

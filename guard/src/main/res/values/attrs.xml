@@ -173,7 +173,12 @@
             <enum name="login" value="1"/>
             <enum name="register" value="2"/>
             <enum name="resetPassword" value="3"/>
+            <enum name="mfaVerify" value="4"/>
+            <enum name="mfaBind" value="5"/>
         </attr>
+        <attr name="verifyCountDownTip" format="string"/>
+        <attr name="verifyAutoGetCode" format="boolean"/>
+        <attr name="verifyEnableTextColor" format="color|reference"/>
     </declare-styleable>
 
     <declare-styleable name="TitleLayout">
@@ -230,6 +235,44 @@
 
     <declare-styleable name="CircleImageView">
         <attr name="circleImageRadius" format="dimension"/>
+    </declare-styleable>
+
+    <declare-styleable name="MFAListView">
+        <attr name="mfaListTitleText" format="string" />
+        <attr name="mfaListTitleTextColor" format="reference|color"/>
+        <attr name="mfaListTitleTextSize" format="dimension"/>
+    </declare-styleable>
+
+    <declare-styleable name="GoOtherMFAVerifyButton">
+        <attr name="currentMfaVerifyType" format="enum" >
+            <enum name="sms" value="0"/>
+            <enum name="email" value="1"/>
+            <enum name="otp" value="2"/>
+            <enum name="face" value="3"/>
+        </attr>
+    </declare-styleable>
+
+    <declare-styleable name="GoMFABindButton">
+        <attr name="currentMfaBindType" format="enum" >
+            <enum name="sms" value="0"/>
+            <enum name="email" value="1"/>
+            <enum name="otp" value="2"/>
+            <enum name="face" value="3"/>
+        </attr>
+    </declare-styleable>
+
+    <declare-styleable name="MFABaseButton">
+        <attr name="mfaType" format="enum" >
+            <enum name="bind" value="0"/>
+            <enum name="verify" value="1"/>
+        </attr>
+    </declare-styleable>
+
+    <declare-styleable name="MFAFaceView">
+        <attr name="mfaFaceType" format="enum" >
+            <enum name="bind" value="0"/>
+            <enum name="verify" value="1"/>
+        </attr>
     </declare-styleable>
 
 </resources>

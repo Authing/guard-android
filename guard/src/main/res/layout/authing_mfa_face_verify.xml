@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <cn.authing.guard.TitleLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/authing_title_layout_height"
+        android:paddingStart="@dimen/authing_form_start_end_margin"
+        android:paddingEnd="@dimen/authing_form_start_end_margin"
+        app:showBackIcon="true"
+        app:showTitleText="true"
+        app:titleText="@string/authing_mfa_login_verify" />
+
+    <cn.authing.guard.mfa.MFAFaceView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        app:mfaFaceType="verify" />
+
+    <include layout="@layout/authing_powered_by" />
+
+</LinearLayout>

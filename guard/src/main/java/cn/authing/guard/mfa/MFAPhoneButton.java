@@ -12,8 +12,6 @@ import android.view.View;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import cn.authing.guard.CountryCodePicker;
-import cn.authing.guard.GetVerifyCodeButton;
 import cn.authing.guard.PhoneNumberEditText;
 import cn.authing.guard.R;
 import cn.authing.guard.VerifyCodeEditText;
@@ -47,49 +45,7 @@ public class MFAPhoneButton extends MFABaseButton {
 
         if (context instanceof AuthActivity) {
             setOnClickListener(this::click);
-            AuthActivity activity = (AuthActivity) context;
-            AuthFlow flow = activity.getFlow();
-            String phone = (String) flow.getData().get(AuthFlow.KEY_MFA_PHONE);
-            String phoneCountryCode = (String) flow.getData().get(AuthFlow.KEY_MFA_PHONE_COUNTRY_CODE);
-            if (!TextUtils.isEmpty(phone)) {
-                post(() -> {
-                    if (canSendSms()){
-                        beforeSendSms();
-                        AuthClient.sendSms(phoneCountryCode, phone, this::handleSmsResult);
-                    }
-                });
-            }
         }
-    }
-
-    private boolean canSendSms(){
-        GetVerifyCodeButton getVerifyCodeButton = getVerifyCodeButton();
-        if (null == getVerifyCodeButton){
-            return true;
-        }
-        return getVerifyCodeButton.isEnabled();
-    }
-
-    private void beforeSendSms(){
-        GetVerifyCodeButton getVerifyCodeButton = getVerifyCodeButton();
-        if (getVerifyCodeButton != null) {
-            getVerifyCodeButton.beforeSendSmsCode();
-        }
-    }
-
-    private void handleSmsResult(int code, String message, Object ignore){
-        GetVerifyCodeButton getVerifyCodeButton = getVerifyCodeButton();
-        if (getVerifyCodeButton != null) {
-            getVerifyCodeButton.handleSMSResult(code, message, ignore);
-        }
-    }
-
-    private GetVerifyCodeButton getVerifyCodeButton(){
-        View v = Util.findViewByClass(this, GetVerifyCodeButton.class);
-        if (v != null) {
-            return (GetVerifyCodeButton)v;
-        }
-        return null;
     }
 
     private void click(View clickedView) {
@@ -97,78 +53,76 @@ public class MFAPhoneButton extends MFABaseButton {
             return;
         }
 
-        AuthActivity activity = (AuthActivity) getContext();
-        AuthFlow flow = activity.getFlow();
-
         View v = Util.findViewByClass(this, VerifyCodeEditText.class);
-        if (v != null) {
-            String phone = (String) flow.getData().get(AuthFlow.KEY_MFA_PHONE);
-            String phoneCountryCode = (String) flow.getData().get(AuthFlow.KEY_MFA_PHONE_COUNTRY_CODE);
-            VerifyCodeEditText editText = (VerifyCodeEditText)v;
+        if (v instanceof VerifyCodeEditText) {
+            VerifyCodeEditText editText = (VerifyCodeEditText) v;
             String verifyCode = editText.getText().toString().trim();
-            startLoadingVisualEffect();
-            AuthClient.mfaVerifyByPhone(phoneCountryCode, phone, verifyCode, (code, message, data)-> activity.runOnUiThread(()-> mfaDone(code, message, data)));
-        } else {
-            v = Util.findViewByClass(this, PhoneNumberEditText.class);
-            if (v != null) {
-                PhoneNumberEditText editText = (PhoneNumberEditText) v;
-                String phone = editText.getText().toString();
-                CountryCodePicker countryCodePicker = (CountryCodePicker)Util.findViewByClass(this, CountryCodePicker.class);
-                String phoneCountryCode = (null == countryCodePicker) ? null :  countryCodePicker.getCountryCode();
-                flow.getData().put(AuthFlow.KEY_MFA_PHONE, phone);
-                flow.getData().put(AuthFlow.KEY_MFA_PHONE_COUNTRY_CODE, phoneCountryCode);
-                startLoadingVisualEffect();
-                AuthClient.mfaCheck(phone, null, (code, message, ok) -> {
-                    if (code == 200) {
-                        if (ok) {
-                            sendSms(flow, phoneCountryCode, phone);
-                        } else {
-                            stopLoadingVisualEffect();
-                            post(()->editText.showError(activity.getString(R.string.authing_phone_number_already_bound)));
-                        }
-                    } else {
-                        stopLoadingVisualEffect();
-                        Util.setErrorText(this, message);
+            boolean inputEmpty = false;
+            if (TextUtils.isEmpty(verifyCode)) {
+                Util.setErrorText(v, getContext().getString(R.string.authing_verify_code_empty));
+                inputEmpty = true;
+            }
+            AuthActivity activity = (AuthActivity) getContext();
+            AuthFlow flow = activity.getFlow();
+            if (currentMfaType == MFA_TYPE_BIND) {
+                String phone = Util.getPhoneNumber(this);
+                if (TextUtils.isEmpty(phone)) {
+                    View phoneNumberEditText = Util.findViewByClass(this, PhoneNumberEditText.class);
+                    if (phoneNumberEditText instanceof PhoneNumberEditText) {
+                        ((PhoneNumberEditText) phoneNumberEditText).showError(getContext().getString(R.string.authing_phone_number_empty));
+                        inputEmpty = true;
                     }
-                });
+                }
+                if (inputEmpty) {
+                    return;
+                }
+                startLoadingVisualEffect();
+                String phoneCountryCode = Util.getPhoneCountryCode(this);
+                AuthClient.mfaVerifyByPhone(phoneCountryCode, phone, verifyCode, (code, message, data) -> activity.runOnUiThread(() -> mfaBindDone(code, message, data)));
+            } else if (currentMfaType == MFA_TYPE_VERIFY) {
+                if (inputEmpty) {
+                    return;
+                }
+                startLoadingVisualEffect();
+                String phone = (String) flow.getData().get(AuthFlow.KEY_MFA_PHONE);
+                String phoneCountryCode = (String) flow.getData().get(AuthFlow.KEY_MFA_PHONE_COUNTRY_CODE);
+                AuthClient.mfaVerifyByPhone(phoneCountryCode, phone, verifyCode, (code, message, data) -> activity.runOnUiThread(() -> mfaVerifyDone(code, message, data)));
             }
         }
     }
 
-    private void sendSms(AuthFlow flow, String phoneCountryCode, String phone) {
-        AuthActivity activity = (AuthActivity) getContext();
-        AuthClient.sendSms(phoneCountryCode, phone, (code, message, data)-> activity.runOnUiThread(()->{
-            stopLoadingVisualEffect();
-            next(flow);
-        }));
-    }
-
-    private void next(AuthFlow flow) {
-        AuthActivity activity = (AuthActivity) getContext();
-
-        int step = flow.getMfaPhoneCurrentStep();
-        flow.setMfaPhoneCurrentStep(step++);
-
-        Intent intent = new Intent(getContext(), AuthActivity.class);
-        intent.putExtra(AuthActivity.AUTH_FLOW, flow);
-        int[] ids = flow.getMfaPhoneLayoutIds();
-        if (step < ids.length) {
-            intent.putExtra(AuthActivity.CONTENT_LAYOUT_ID, ids[step]);
-        } else {
-            // fallback to our default
-            intent.putExtra(AuthActivity.CONTENT_LAYOUT_ID, R.layout.authing_mfa_phone_1);
-        }
-        activity.startActivityForResult(intent, AuthActivity.RC_LOGIN);
-    }
-
-    private void mfaDone(int code, String message, UserInfo userInfo) {
+    private void mfaBindDone(int code, String message, UserInfo userInfo) {
         stopLoadingVisualEffect();
         if (code == 200) {
-            mfaOk(code, message, userInfo);
-        } else if (code == 500 && message.startsWith("duplicate key value violates unique constraint")) {
-            Util.setErrorText(this, "Phone number already bound by another user");
+            next();
         } else {
-            Util.setErrorText(this, message);
+            showToast(R.string.authing_otp_bind_failed, R.drawable.ic_authing_fail);
         }
     }
+
+    private void next() {
+        AuthActivity activity = (AuthActivity) getContext();
+        AuthFlow flow = activity.getFlow();
+        Intent intent = new Intent(getContext(), AuthActivity.class);
+        intent.putExtra(AuthActivity.AUTH_FLOW, flow);
+        intent.putExtra(AuthActivity.CONTENT_LAYOUT_ID, flow.getMfaPhoneLayoutIds()[2]);
+        intent.addFlags(Intent.FLAG_ACTIVITY_FORWARD_RESULT);
+        //activity.startActivityForResult(intent, AuthActivity.RC_LOGIN);
+        activity.startActivity(intent);
+        activity.finish();
+    }
+
+    private void mfaVerifyDone(int code, String message, UserInfo userInfo) {
+        stopLoadingVisualEffect();
+        if (code == 200) {
+            showToast(R.string.authing_verify_succeed, R.drawable.ic_authing_success);
+            mfaVerifyOk(code, message, userInfo);
+        } else if (code == 500 && message.startsWith("duplicate key value violates unique constraint")) {
+            showToast(R.string.authing_phone_verify_failed, R.drawable.ic_authing_fail);
+        } else {
+            showToast(R.string.authing_code_verify_failed, R.drawable.ic_authing_fail);
+        }
+    }
+
+
 }

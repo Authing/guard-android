@@ -46,6 +46,7 @@ import javax.crypto.Cipher;
 import cn.authing.guard.AccountEditText;
 import cn.authing.guard.Authing;
 import cn.authing.guard.CountryCodePicker;
+import cn.authing.guard.EmailEditText;
 import cn.authing.guard.ErrorTextView;
 import cn.authing.guard.PasswordEditText;
 import cn.authing.guard.PhoneNumberEditText;
@@ -131,7 +132,10 @@ public class Util {
 
     public static View findViewByClass(View current, Class<?> T, boolean onlyVisible) {
         View view = current.getRootView();
-        return findChildViewByClass((ViewGroup)view, T, onlyVisible);
+        if (view instanceof ViewGroup){
+            return findChildViewByClass((ViewGroup)view, T, onlyVisible);
+        }
+        return view;
     }
 
     public static View findChildViewByClass(ViewGroup parent, Class<?> T, boolean onlyVisible) {
@@ -154,7 +158,7 @@ public class Util {
     public static String getAccount(View current) {
         String account = null;
         View v = findViewByClass(current, AccountEditText.class);
-        if (v != null) {
+        if (v instanceof AccountEditText) {
             AccountEditText editText = (AccountEditText)v;
             account = editText.getText().toString();
         }
@@ -170,12 +174,18 @@ public class Util {
     public static String getPhoneNumber(View current) {
         String phone = null;
         View v = findViewByClass(current, PhoneNumberEditText.class);
-        if (v != null) {
+        if (v instanceof PhoneNumberEditText) {
             PhoneNumberEditText editText = (PhoneNumberEditText)v;
             phone = editText.getText().toString();
         }
         if (TextUtils.isEmpty(phone)) {
             phone = (String) AuthFlow.get(current.getContext(), AuthFlow.KEY_MFA_PHONE);
+        }
+        if (TextUtils.isEmpty(phone)) {
+            UserInfo userInfo = Authing.getCurrentUser();
+            if (userInfo != null) {
+                phone = userInfo.getPhone_number();
+            }
         }
         if (TextUtils.isEmpty(phone)) {
             String account = AuthFlow.getAccount(current.getContext());
@@ -186,19 +196,13 @@ public class Util {
         if (TextUtils.isEmpty(phone)) {
             phone = Safe.loadAccount();
         }
-        if (TextUtils.isEmpty(phone)) {
-            UserInfo userInfo = Authing.getCurrentUser();
-            if (userInfo != null) {
-                phone = userInfo.getPhone_number();
-            }
-        }
         return phone;
     }
 
     public static String getPhoneCountryCode(View current) {
         String phoneCountryCode = null;
         View v = findViewByClass(current, CountryCodePicker.class);
-        if (v != null) {
+        if (v instanceof CountryCodePicker) {
             phoneCountryCode = ((CountryCodePicker)v).getCountryCode();
         }
         if (TextUtils.isEmpty(phoneCountryCode)) {
@@ -221,11 +225,36 @@ public class Util {
         return phoneCountryCode;
     }
 
+    public static String getEmail(View current){
+        String email = "";
+        View v = findViewByClass(current, EmailEditText.class);
+        if (v instanceof EmailEditText) {
+            EmailEditText editText = (EmailEditText) v;
+            email = editText.getText().toString();
+        }
+        if (TextUtils.isEmpty(email)) {
+            email = (String) AuthFlow.get(current.getContext(), AuthFlow.KEY_ACCOUNT);
+        }
+        if (TextUtils.isEmpty(email)) {
+            email = (String) AuthFlow.get(current.getContext(), AuthFlow.KEY_MFA_EMAIL);
+        }
+        if (TextUtils.isEmpty(email)) {
+            String account = AuthFlow.getAccount(current.getContext());
+            if (Validator.isValidEmail(account)) {
+                email = account;
+            }
+        }
+        if (TextUtils.isEmpty(email)) {
+            email = Safe.loadAccount();
+        }
+        return email;
+    }
+
 
     public static String getPassword(View current) {
         String password = null;
         View v = findViewByClass(current, PasswordEditText.class);
-        if (v != null) {
+        if (v instanceof PasswordEditText) {
             PasswordEditText editText = (PasswordEditText)v;
             password = editText.getText().toString();
         }
@@ -237,7 +266,7 @@ public class Util {
 
     public static String getVerifyCode(View current) {
         View v = findViewByClass(current, VerifyCodeEditText.class);
-        if (v != null) {
+        if (v instanceof VerifyCodeEditText) {
             VerifyCodeEditText editText = (VerifyCodeEditText)v;
             return editText.getText().toString();
         }
@@ -247,15 +276,14 @@ public class Util {
     public static void setErrorText(View view, String text) {
         view.post(()->{
             View v = Util.findViewByClass(view, ErrorTextView.class);
-            if (v == null) {
-                return;
-            }
-            ErrorTextView errorView = (ErrorTextView)v;
-            errorView.setText(text);
-            if (TextUtils.isEmpty(text)) {
-                v.setVisibility(View.INVISIBLE);
-            } else {
-                v.setVisibility(View.VISIBLE);
+            if (v instanceof ErrorTextView) {
+                ErrorTextView errorView = (ErrorTextView)v;
+                errorView.setText(text);
+                if (TextUtils.isEmpty(text)) {
+                    v.setVisibility(View.INVISIBLE);
+                } else {
+                    v.setVisibility(View.VISIBLE);
+                }
             }
         });
     }

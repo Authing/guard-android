@@ -1,6 +1,7 @@
 package cn.authing.guard.flow;
 
 import static cn.authing.guard.util.Const.MFA_POLICY_EMAIL;
+import static cn.authing.guard.util.Const.MFA_POLICY_FACE;
 import static cn.authing.guard.util.Const.MFA_POLICY_OTP;
 import static cn.authing.guard.util.Const.MFA_POLICY_SMS;
 import static cn.authing.guard.util.Util.isNull;
@@ -22,6 +23,7 @@ import cn.authing.guard.AuthCallback;
 import cn.authing.guard.Authing;
 import cn.authing.guard.CaptchaContainer;
 import cn.authing.guard.PasswordEditText;
+import cn.authing.guard.R;
 import cn.authing.guard.activity.AuthActivity;
 import cn.authing.guard.data.Config;
 import cn.authing.guard.data.ExtendedField;
@@ -60,7 +62,10 @@ public class FlowHelper {
                 handleEmailMFA((AuthActivity) context, currentView, data.getEmail());
                 return;
             } else if (MFA_POLICY_OTP.equals(option)) {
-                handleOTPMFA((AuthActivity) context);
+                handleOTPMFA((AuthActivity) context, data.isTotpMfaEnabled(), false);
+                return;
+            } else if (MFA_POLICY_FACE.equals(option)) {
+                handleFaceMFA((AuthActivity) context, data.isFaceMfaEnabled(), false);
                 return;
             }
         }
@@ -72,7 +77,9 @@ public class FlowHelper {
         } else if (MFA_POLICY_EMAIL.equals(firstOption)) {
             handleEmailMFA((AuthActivity) context, currentView, data.getEmail());
         } else if (MFA_POLICY_OTP.equals(firstOption)) {
-            handleOTPMFA((AuthActivity) context);
+            handleOTPMFA((AuthActivity) context, data.isTotpMfaEnabled(), false);
+        } else if (MFA_POLICY_FACE.equals(firstOption)) {
+            handleFaceMFA((AuthActivity) context, data.isFaceMfaEnabled(), false);
         }
     }
 
@@ -135,20 +142,48 @@ public class FlowHelper {
         }
     }
 
-    public static void handleOTPMFA(AuthActivity activity) {
+    public static void handleOTPMFA(AuthActivity activity, boolean totpMfaEnabled, boolean forwardResult) {
         AuthFlow flow = activity.getFlow();
-        int id = flow.getMfaOTPLayoutId();
+        int[] ids = flow.getMfaOTPLayoutIds();
 
         Intent intent = new Intent(activity, AuthActivity.class);
-        intent.putExtra(AuthActivity.CONTENT_LAYOUT_ID, id);
         intent.putExtra(AuthActivity.AUTH_FLOW, flow);
-        intent.addFlags(Intent.FLAG_ACTIVITY_FORWARD_RESULT);
-        activity.startActivity(intent);
+        if (!totpMfaEnabled) {
+            intent.putExtra(AuthActivity.CONTENT_LAYOUT_ID, ids[0]);
+        } else {
+            int step = ids.length > 1 ? ids.length - 1 : 0;
+            intent.putExtra(AuthActivity.CONTENT_LAYOUT_ID, ids[step]);
+        }
+        if (forwardResult) {
+            intent.addFlags(Intent.FLAG_ACTIVITY_FORWARD_RESULT);
+            activity.startActivity(intent);
+        } else {
+            activity.startActivityForResult(intent, AuthActivity.RC_LOGIN);
+        }
+    }
+
+    public static void handleFaceMFA(AuthActivity activity, boolean faceMfaEnabled, boolean forwardResult) {
+        AuthFlow flow = activity.getFlow();
+        int[] ids = flow.getMfaFaceLayoutIds();
+
+        Intent intent = new Intent(activity, AuthActivity.class);
+        intent.putExtra(AuthActivity.AUTH_FLOW, flow);
+        if (!faceMfaEnabled) {
+            intent.putExtra(AuthActivity.CONTENT_LAYOUT_ID, ids[0]);
+        } else {
+            intent.putExtra(AuthActivity.CONTENT_LAYOUT_ID, R.layout.authing_mfa_face_verify_before);
+        }
+        if (forwardResult) {
+            intent.addFlags(Intent.FLAG_ACTIVITY_FORWARD_RESULT);
+            activity.startActivity(intent);
+        } else {
+            activity.startActivityForResult(intent, AuthActivity.RC_LOGIN);
+        }
     }
 
     public static List<ExtendedField> missingFields(Config config, UserInfo userInfo) {
         List<ExtendedField> missingFields = new ArrayList<>();
-        if (config != null){
+        if (config != null && userInfo != null){
             List<ExtendedField> fields = config.getExtendedFields();
             for (ExtendedField field : fields) {
                 String value = userInfo.getMappedData(field.getName());

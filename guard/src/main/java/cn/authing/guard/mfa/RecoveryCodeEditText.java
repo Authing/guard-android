@@ -7,6 +7,7 @@ import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.AttributeSet;
 import android.view.Gravity;
@@ -21,6 +22,7 @@ import androidx.annotation.Nullable;
 import cn.authing.guard.AccountEditText;
 import cn.authing.guard.R;
 import cn.authing.guard.analyze.Analyzer;
+import cn.authing.guard.data.Safe;
 import cn.authing.guard.util.ToastUtil;
 import cn.authing.guard.util.Util;
 
@@ -44,6 +46,12 @@ public class RecoveryCodeEditText extends AccountEditText implements TextWatcher
         TypedArray array = context.obtainStyledAttributes(attrs, R.styleable.RecoveryCodeEditText);
         boolean copyEnabled = array.getBoolean(R.styleable.RecoveryCodeEditText_copyEnabled, false);
         array.recycle();
+
+        String recoveryCode = Safe.loadRecoveryCode();
+        if (!TextUtils.isEmpty(recoveryCode)){
+            getEditText().setText(recoveryCode);
+            copyEnabled = true;
+        }
 
         if (copyEnabled) {
             LinearLayout copyTouchArea = new LinearLayout(context);

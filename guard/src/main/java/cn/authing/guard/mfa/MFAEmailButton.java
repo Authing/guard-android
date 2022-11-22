@@ -1,6 +1,5 @@
 package cn.authing.guard.mfa;
 
-import static cn.authing.guard.activity.AuthActivity.EVENT_VERIFY_CODE_ENTERED;
 import static cn.authing.guard.util.Const.NS_ANDROID;
 
 import android.content.Context;
@@ -14,7 +13,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import cn.authing.guard.EmailEditText;
-import cn.authing.guard.GetEmailCodeButton;
 import cn.authing.guard.R;
 import cn.authing.guard.VerifyCodeEditText;
 import cn.authing.guard.activity.AuthActivity;
@@ -47,48 +45,7 @@ public class MFAEmailButton extends MFABaseButton implements AuthActivity.EventL
 
         if (context instanceof AuthActivity) {
             setOnClickListener(this::click);
-            AuthActivity activity = (AuthActivity) getContext();
-            AuthFlow flow = activity.getFlow();
-            String email = (String) flow.getData().get(AuthFlow.KEY_MFA_EMAIL);
-            if (!TextUtils.isEmpty(email)) {
-                post(() -> {
-                    beforeSendEmailCode();
-                    AuthClient.sendMFAEmail(email, this::handleSMSResult);
-                });
-            }
-
-            activity.subscribe(EVENT_VERIFY_CODE_ENTERED, this);
-            post(this::initGetEmailCodeButton);
         }
-    }
-
-    private void beforeSendEmailCode(){
-        GetEmailCodeButton getEmailCodeButton = getEmailCodeButton();
-        if (getEmailCodeButton != null){
-            getEmailCodeButton.beforeSendEmailCode();
-        }
-    }
-
-    private void handleSMSResult(int code, String message, Object ignore){
-        GetEmailCodeButton getEmailCodeButton = getEmailCodeButton();
-        if (getEmailCodeButton != null){
-            getEmailCodeButton.handleResult(code, message, ignore);
-        }
-    }
-
-    private void initGetEmailCodeButton(){
-        GetEmailCodeButton getEmailCodeButton = getEmailCodeButton();
-        if (getEmailCodeButton != null){
-            getEmailCodeButton.setScene("MFA_VERIFY");
-        }
-    }
-
-    private GetEmailCodeButton getEmailCodeButton(){
-        View v = Util.findViewByClass(this, GetEmailCodeButton.class);
-        if (v != null) {
-            return (GetEmailCodeButton)v;
-        }
-        return null;
     }
 
     private void click(View clickedView) {
@@ -96,84 +53,78 @@ public class MFAEmailButton extends MFABaseButton implements AuthActivity.EventL
             return;
         }
 
-        AuthActivity activity = (AuthActivity) getContext();
-        AuthFlow flow = activity.getFlow();
+        doMFA();
+    }
 
+    private void doMFA() {
         View v = Util.findViewByClass(this, VerifyCodeEditText.class);
         if (v != null) {
-            doMFA(v);
-        } else {
-            v = Util.findViewByClass(this, EmailEditText.class);
-            if (v != null) {
-                EmailEditText editText = (EmailEditText) v;
-                String email = editText.getText().toString();
-                flow.getData().put(AuthFlow.KEY_MFA_EMAIL, email);
-                startLoadingVisualEffect();
-                AuthClient.mfaCheck(null, email, (code, message, ok) -> {
-                    if (code == 200) {
-                        if (ok) {
-                            sendEmail(flow, email);
-                        } else {
-                            stopLoadingVisualEffect();
-                            post(()-> editText.showError(activity.getString(R.string.authing_email_already_bound)));
-                        }
-                    } else {
-                        stopLoadingVisualEffect();
-                        Util.setErrorText(this, message);
+            VerifyCodeEditText editText = (VerifyCodeEditText)v;
+            String verifyCode = editText.getText().toString();
+            boolean inputEmpty = false;
+            if (TextUtils.isEmpty(verifyCode)){
+                Util.setErrorText(v, getContext().getString(R.string.authing_verify_code_empty));
+                inputEmpty = true;
+            }
+            startLoadingVisualEffect();
+            AuthActivity activity = (AuthActivity) getContext();
+            AuthFlow flow = activity.getFlow();
+            if (currentMfaType == MFA_TYPE_BIND){
+                String email = Util.getEmail(this);
+                if (TextUtils.isEmpty(email)){
+                    View emailEditText = Util.findViewByClass(this, EmailEditText.class);
+                    if (emailEditText instanceof EmailEditText){
+                        ((EmailEditText) emailEditText).showError(getContext().getString(R.string.authing_email_address_empty));
+                        inputEmpty = true;
                     }
-                });
+                }
+                if (inputEmpty){
+                    return;
+                }
+                AuthClient.mfaVerifyByEmail(email, verifyCode, (code, message, data)-> activity.runOnUiThread(()-> mfaBindDone(code, message, data)));
+            } else if (currentMfaType == MFA_TYPE_VERIFY){
+                if (inputEmpty){
+                    return;
+                }
+                String email = (String) flow.getData().get(AuthFlow.KEY_MFA_EMAIL);
+                AuthClient.mfaVerifyByEmail(email, verifyCode, (code, message, data)-> activity.runOnUiThread(()-> mfaVerifyDone(code, message, data)));
             }
         }
     }
 
-    private void sendEmail(AuthFlow flow, String email) {
-        AuthActivity activity = (AuthActivity) getContext();
-        AuthClient.sendMFAEmail(email, (code, message, data)-> activity.runOnUiThread(()->{
-            stopLoadingVisualEffect();
-            next(flow);
-        }));
-    }
-
-    private void next(AuthFlow flow) {
-        AuthActivity activity = (AuthActivity) getContext();
-
-        int step = flow.getMfaEmailCurrentStep();
-        flow.setMfaEmailCurrentStep(step++);
-
-        Intent intent = new Intent(getContext(), AuthActivity.class);
-        intent.putExtra(AuthActivity.AUTH_FLOW, flow);
-        int[] ids = flow.getMfaEmailLayoutIds();
-        if (step < ids.length) {
-            intent.putExtra(AuthActivity.CONTENT_LAYOUT_ID, ids[step]);
-        } else {
-            // fallback to our default
-            intent.putExtra(AuthActivity.CONTENT_LAYOUT_ID, R.layout.authing_mfa_email_1);
-        }
-        activity.startActivityForResult(intent, AuthActivity.RC_LOGIN);
-    }
-
-    private void doMFA(View v) {
-        AuthActivity activity = (AuthActivity) getContext();
-        AuthFlow flow = activity.getFlow();
-        String email = (String) flow.getData().get(AuthFlow.KEY_MFA_EMAIL);
-        VerifyCodeEditText editText = (VerifyCodeEditText)v;
-        String verifyCode = editText.getText().toString();
-        startLoadingVisualEffect();
-        AuthClient.mfaVerifyByEmail(email, verifyCode, (code, message, data)-> activity.runOnUiThread(()-> mfaDone(code, message, data)));
-    }
-
-    private void mfaDone(int code, String message, UserInfo userInfo) {
+    private void mfaBindDone(int code, String message, UserInfo userInfo){
         stopLoadingVisualEffect();
         if (code == 200) {
-            mfaOk(code, message, userInfo);
+            next();
         } else {
-            Util.setErrorText(this, message);
+            showToast(R.string.authing_otp_bind_failed, R.drawable.ic_authing_fail);
+        }
+    }
+
+    private void next(){
+        AuthActivity activity = (AuthActivity)getContext();
+        AuthFlow flow = activity.getFlow();
+        Intent intent = new Intent(getContext(), AuthActivity.class);
+        intent.putExtra(AuthActivity.AUTH_FLOW, flow);
+        intent.putExtra(AuthActivity.CONTENT_LAYOUT_ID, flow.getMfaEmailLayoutIds()[2]);
+        intent.addFlags(Intent.FLAG_ACTIVITY_FORWARD_RESULT);
+        //activity.startActivityForResult(intent, AuthActivity.RC_LOGIN);
+        activity.startActivity(intent);
+        activity.finish();
+    }
+
+    private void mfaVerifyDone(int code, String message, UserInfo userInfo) {
+        stopLoadingVisualEffect();
+        if (code == 200) {
+            showToast(R.string.authing_verify_succeed, R.drawable.ic_authing_success);
+            mfaVerifyOk(code, message, userInfo);
+        } else {
+            showToast(R.string.authing_code_verify_failed, R.drawable.ic_authing_fail);
         }
     }
 
     @Override
     public void happened(String what) {
-        View v = Util.findViewByClass(this, VerifyCodeEditText.class);
-        doMFA(v);
+        doMFA();
     }
 }

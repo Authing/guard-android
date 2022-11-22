@@ -3,6 +3,12 @@
     <dimen name="authing_form_start_end_margin">24dp</dimen>
     <dimen name="authing_form_top_margin">16dp</dimen>
     <dimen name="authing_small_top_margin">8dp</dimen>
+    <dimen name="authing_margin_8">8dp</dimen>
+    <dimen name="authing_margin_16">16dp</dimen>
+    <dimen name="authing_margin_20">20dp</dimen>
+    <dimen name="authing_margin_24">24dp</dimen>
+    <dimen name="authing_margin_40">40dp</dimen>
+    <dimen name="authing_margin_80">80dp</dimen>
     <dimen name="authing_action_bar_height">54dp</dimen>
     <dimen name="authing_user_profile_padding">12dp</dimen>
     <dimen name="authing_image_picker_item_size">75dp</dimen>

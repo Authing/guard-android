@@ -18,6 +18,7 @@ import cn.authing.guard.analyze.Analyzer;
 import cn.authing.guard.internal.LoadingButton;
 import cn.authing.guard.network.AuthClient;
 import cn.authing.guard.util.GlobalCountDown;
+import cn.authing.guard.util.ToastUtil;
 import cn.authing.guard.util.Util;
 import cn.authing.guard.util.Validator;
 
@@ -30,10 +31,19 @@ public class GetVerifyCodeButton extends LoadingButton {
     private String phoneNumber = "";
     private String email = "";
     private boolean autoRegister;
+    private int textColor;
+    private final int verifyEnableTextColor;
 
     private static final int VERIFY_CODE_NONE = 0;
     private static final int VERIFY_CODE_PHONE = 1;
     private static final int VERIFY_CODE_EMAIL = 2;
+
+    private static final int VERIFY_AUTH_NONE = 0;
+    private static final int VERIFY_AUTH_LOGIN = 1;
+    private static final int VERIFY_AUTH_REGISTER = 2;
+    private static final int VERIFY_AUTH_RESET_PASSWORD = 3;
+    private static final int VERIFY_AUTH_MFA_VERIFY = 4;
+    private static final int VERIFY_AUTH_MFA_BIND = 5;
 
 
     public GetVerifyCodeButton(@NonNull Context context) {
@@ -51,10 +61,9 @@ public class GetVerifyCodeButton extends LoadingButton {
 
         loadingLocation = OVER; // over on top since this button is usually small
 
-        countDownTip = context.getString(R.string.authing_resend_after);
-
-        if (attrs == null || attrs.getAttributeValue(NS_ANDROID, "textColor") == null) {
-            setTextColor(context.getColor(R.color.authing_main));
+        textColor = context.getColor(R.color.authing_main);
+        if (attrs != null && attrs.getAttributeValue(NS_ANDROID, "textColor") != null) {
+            textColor = getCurrentTextColor();
         }
 
         setSingleLine();
@@ -75,20 +84,34 @@ public class GetVerifyCodeButton extends LoadingButton {
         TypedArray array = context.obtainStyledAttributes(attrs, R.styleable.GetVerifyCodeButton);
         verifyCodeType = array.getInt(R.styleable.GetVerifyCodeButton_verifyCodeType, 1);
         verifyAuthType = array.getInt(R.styleable.GetVerifyCodeButton_verifyAuthType, 0);
+        countDownTip = array.getString(R.styleable.GetVerifyCodeButton_verifyCountDownTip);
+        boolean verifyAutoGetCode = array.getBoolean(R.styleable.GetVerifyCodeButton_verifyAutoGetCode, false);
+        verifyEnableTextColor = array.getColor(R.styleable.GetVerifyCodeButton_verifyEnableTextColor, getContext().getColor(R.color.authing_text_black));
+        if (TextUtils.isEmpty(countDownTip)) {
+            countDownTip = context.getString(R.string.authing_resend_after);
+        }
         array.recycle();
 
+        if (verifyAuthType == VERIFY_AUTH_RESET_PASSWORD){
+            scene = "RESET_PASSWORD";
+        } else if (verifyAuthType == VERIFY_AUTH_MFA_VERIFY || verifyAuthType == VERIFY_AUTH_MFA_BIND){
+            scene = "MFA_VERIFY";
+        }
         post(this::checkCountDown);
 
         Authing.getPublicConfig(config -> {
-            if (config == null){
+            if (config == null) {
                 return;
             }
-            if (config.isAutoRegisterThenLoginHintInfo()){
+            if (config.isAutoRegisterThenLoginHintInfo()) {
                 this.autoRegister = true;
             }
         });
 
         setOnClickListener((v -> getVerifyCode()));
+        if (verifyAutoGetCode) {
+            performClick();
+        }
     }
 
     private void getVerifyCode() {
@@ -104,7 +127,7 @@ public class GetVerifyCodeButton extends LoadingButton {
     private void checkAccount() {
         String account = "";
         View v = Util.findViewByClass(this, AccountEditText.class);
-        if (v != null) {
+        if (v instanceof AccountEditText) {
             AccountEditText editText = (AccountEditText) v;
             account = editText.getText().toString();
         }
@@ -133,19 +156,23 @@ public class GetVerifyCodeButton extends LoadingButton {
     }
 
     private void checkAccountByPhone() {
-        if (verifyAuthType == 0 || autoRegister) {
+        if (verifyAuthType == VERIFY_AUTH_NONE || verifyAuthType == VERIFY_AUTH_MFA_VERIFY || autoRegister) {
             getSMSCode(phoneNumber);
+            return;
+        }
+        if (verifyAuthType == VERIFY_AUTH_MFA_BIND){
+            mfaCheckByPhone(phoneNumber);
             return;
         }
         AuthClient.checkAccount("phone", phoneNumber, (AuthCallback<JSONObject>) (code, message, data) -> {
             showPhoneAccountMessage("");
             if (code == 200) {
                 boolean hasAccount = data.has("result") && data.optBoolean("result");
-                if ((verifyAuthType == 1 || verifyAuthType == 3) && !hasAccount) {
+                if ((verifyAuthType == VERIFY_AUTH_LOGIN || verifyAuthType == VERIFY_AUTH_RESET_PASSWORD) && !hasAccount) {
                     showPhoneAccountMessage(getContext().getString(R.string.authing_phone_account_not_found));
                     return;
                 }
-                if ((verifyAuthType == 2) && hasAccount) {
+                if ((verifyAuthType == VERIFY_AUTH_REGISTER) && hasAccount) {
                     showPhoneAccountMessage(getContext().getString(R.string.authing_phone_account_found));
                     return;
                 }
@@ -154,12 +181,22 @@ public class GetVerifyCodeButton extends LoadingButton {
         });
     }
 
+    private void mfaCheckByPhone(String phoneNumber){
+        AuthClient.mfaCheck(phoneNumber, null, (code, message, ok) -> {
+            if (code == 200) {
+                if (ok) {
+                    getSMSCode(phoneNumber);
+                } else {
+                    post(() -> ToastUtil.showCenter(getContext(), getContext().getString(R.string.authing_phone_number_already_bound), R.drawable.ic_authing_fail));
+                }
+            } else {
+                post(() -> ToastUtil.showCenter(getContext(), message, R.drawable.ic_authing_fail));
+            }
+        });
+    }
+
     private void checkEmail() {
-        View v = Util.findViewByClass(this, EmailEditText.class);
-        if (v != null) {
-            EmailEditText editText = (EmailEditText) v;
-            email = editText.getText().toString();
-        }
+        email = Util.getEmail(this);
         if (Util.isNull(email)) {
             showEmailAccountMessage(getContext().getString(R.string.authing_email_address_empty));
         } else if (Validator.isValidEmail(email)) {
@@ -170,24 +207,42 @@ public class GetVerifyCodeButton extends LoadingButton {
     }
 
     private void checkAccountByEmail() {
-        if (verifyAuthType == 0 || autoRegister) {
+        if (verifyAuthType == VERIFY_AUTH_NONE || verifyAuthType == VERIFY_AUTH_MFA_VERIFY || autoRegister) {
             getEmailCode(email);
+            return;
+        }
+        if (verifyAuthType == VERIFY_AUTH_MFA_BIND){
+            mfaCheckByEmail(email);
             return;
         }
         AuthClient.checkAccount("email", email, (AuthCallback<JSONObject>) (code, message, data) -> {
             showEmailAccountMessage("");
             if (code == 200) {
                 boolean hasAccount = data.has("result") && data.optBoolean("result");
-                if ((verifyAuthType == 1 || verifyAuthType == 3) && !hasAccount) {
+                if ((verifyAuthType == VERIFY_AUTH_LOGIN || verifyAuthType == VERIFY_AUTH_RESET_PASSWORD) && !hasAccount) {
                     showEmailAccountMessage(getContext().getString(R.string.authing_email_account_not_found));
                     return;
                 }
-                if ((verifyAuthType == 2) && hasAccount) {
+                if ((verifyAuthType == VERIFY_AUTH_REGISTER) && hasAccount) {
                     showEmailAccountMessage(getContext().getString(R.string.authing_email_account_found));
                     return;
                 }
             }
             getEmailCode(email);
+        });
+    }
+
+    private void mfaCheckByEmail(String email){
+        AuthClient.mfaCheck(null, email, (code, message, ok) -> {
+            if (code == 200) {
+                if (ok) {
+                    getEmailCode(email);
+                } else {
+                    post(() -> ToastUtil.showCenter(getContext(), getContext().getString(R.string.authing_email_already_bound), R.drawable.ic_authing_fail));
+                }
+            } else {
+                post(() -> ToastUtil.showCenter(getContext(), message, R.drawable.ic_authing_fail));
+            }
         });
     }
 
@@ -197,7 +252,7 @@ public class GetVerifyCodeButton extends LoadingButton {
                     GetVerifyCodeButton.this, PhoneNumberEditText.class);
             if (phoneNumberEditText != null && phoneNumberEditText.isErrorEnabled()) {
                 phoneNumberEditText.showError(message);
-                if (!"".equals(message)){
+                if (!"".equals(message)) {
                     phoneNumberEditText.showErrorBackGround();
                 }
                 return;
@@ -212,7 +267,7 @@ public class GetVerifyCodeButton extends LoadingButton {
                     GetVerifyCodeButton.this, EmailEditText.class);
             if (emailEditText != null && emailEditText.isErrorEnabled()) {
                 emailEditText.showError(message);
-                if (!"".equals(message)){
+                if (!"".equals(message)) {
                     emailEditText.showErrorBackGround();
                 }
                 return;
@@ -226,7 +281,7 @@ public class GetVerifyCodeButton extends LoadingButton {
                 GetVerifyCodeButton.this, AccountEditText.class);
         if (accountEditText != null && accountEditText.isErrorEnabled()) {
             accountEditText.showError(message);
-            if (!"".equals(message)){
+            if (!"".equals(message)) {
                 accountEditText.showErrorBackGround();
             }
             return;
@@ -258,26 +313,23 @@ public class GetVerifyCodeButton extends LoadingButton {
                     v.requestFocus();
                 }
             } else {
-                Util.setErrorText(this, message);
                 setText(getContext().getString(R.string.authing_get_verify_code_resend));
+                ToastUtil.showCenter(getContext(), getContext().getString(R.string.authing_get_verify_code_error));
             }
         });
     }
 
-    private void checkCountDown(){
+    private void checkCountDown() {
         if (verifyCodeType == VERIFY_CODE_PHONE) {
             String phone = Util.getPhoneNumber(this);
             String code = Util.getPhoneCountryCode(this);
-            if (GlobalCountDown.isCountingDown(phone+code)){
-                countDown(phone+code);
+            if (GlobalCountDown.isCountingDown(phone + code)) {
+                countDown(phone + code);
             }
         } else if (verifyCodeType == VERIFY_CODE_EMAIL) {
-            View emailView = Util.findViewByClass(GetVerifyCodeButton.this, EmailEditText.class);
-            if (emailView != null){
-                String email = ((EmailEditText)emailView).getText().toString();
-                if (GlobalCountDown.isCountingDown(email)){
-                    countDown(email);
-                }
+            String email = Util.getEmail(this);
+            if (GlobalCountDown.isCountingDown(email)) {
+                countDown(email);
             }
         } else {
             if (GlobalCountDown.isCountingDown()) {
@@ -291,7 +343,7 @@ public class GetVerifyCodeButton extends LoadingButton {
             updateCountDown(account);
             postDelayed(() -> countDown(account), 1000);
         } else {
-            setTextColor(getContext().getColor(R.color.authing_main));
+            setTextColor(textColor);
             setText(getContext().getString(R.string.authing_get_verify_code_resend));
             setEnabled(true);
         }
@@ -302,7 +354,7 @@ public class GetVerifyCodeButton extends LoadingButton {
             updateCountDown();
             postDelayed(this::countDown, 1000);
         } else {
-            setTextColor(getContext().getColor(R.color.authing_main));
+            setTextColor(textColor);
             setText(getContext().getString(R.string.authing_get_verify_code_resend));
             setEnabled(true);
         }
@@ -310,13 +362,13 @@ public class GetVerifyCodeButton extends LoadingButton {
 
     private void updateCountDown(String count) {
         setEnabled(false);
-        setTextColor(getContext().getColor(R.color.authing_text_black));
+        setTextColor(verifyEnableTextColor);
         setText(String.format(countDownTip, GlobalCountDown.getCountDown(count)));
     }
 
     private void updateCountDown() {
         setEnabled(false);
-        setTextColor(getContext().getColor(R.color.authing_text_black));
+        setTextColor(verifyEnableTextColor);
         setText(String.format(countDownTip, GlobalCountDown.getFirstCountDown()));
     }
 
@@ -348,8 +400,8 @@ public class GetVerifyCodeButton extends LoadingButton {
                     v.requestFocus();
                 }
             } else {
-                Util.setErrorText(this, message);
-                setText(getContext().getString(R.string.authing_get_email_code_failed));
+                setText(getContext().getString(R.string.authing_get_verify_code_resend));
+                ToastUtil.showCenter(getContext(), getContext().getString(R.string.authing_get_email_code_failed));
             }
         });
     }

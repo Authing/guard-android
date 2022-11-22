@@ -54,7 +54,7 @@ public class MFARecoveryButton extends MFABaseButton {
         AuthFlow flow = activity.getFlow();
         recoveryCode = (String) flow.getData().get(KEY_MFA_RECOVERY_CODE);
         if (!Util.isNull(recoveryCode)) {
-            post(()->{
+            post(() -> {
                 View v = Util.findViewByClass(this, RecoveryCodeEditText.class);
                 if (v != null) {
                     RecoveryCodeEditText editText = (RecoveryCodeEditText) v;
@@ -86,7 +86,7 @@ public class MFARecoveryButton extends MFABaseButton {
         }
         AuthActivity activity = (AuthActivity) getContext();
         View v = Util.findViewByClass(this, RecoveryCodeEditText.class);
-        if (v != null) {
+        if (v instanceof RecoveryCodeEditText) {
             RecoveryCodeEditText editText = (RecoveryCodeEditText) v;
             String recoveryCode = editText.getText().toString();
             startLoadingVisualEffect();
@@ -113,12 +113,15 @@ public class MFARecoveryButton extends MFABaseButton {
                     // fallback to our default
                     intent.putExtra(AuthActivity.CONTENT_LAYOUT_ID, R.layout.authing_mfa_otp_recovery_1);
                 }
-                activity.startActivityForResult(intent, AuthActivity.RC_LOGIN);
+                intent.addFlags(Intent.FLAG_ACTIVITY_FORWARD_RESULT);
+                //activity.startActivityForResult(intent, AuthActivity.RC_LOGIN);
+                activity.startActivity(intent);
+                activity.finish();
             } catch (Exception e) {
                 e.printStackTrace();
             }
         } else {
-            Util.setErrorText(this, message);
+            showToast(R.string.authing_otp_bind_failed, R.drawable.ic_authing_fail);
         }
     }
 
@@ -127,6 +130,6 @@ public class MFARecoveryButton extends MFABaseButton {
         AuthFlow flow = activity.getFlow();
         UserInfo userInfo = (UserInfo) flow.getData().get(KEY_USER_INFO);
 
-        mfaOk(200, "", userInfo);
+        mfaVerifyOk(200, "", userInfo);
     }
 }

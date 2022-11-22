@@ -548,8 +548,11 @@ public class UserInfo implements Serializable {
     }
 
     public static UserInfo createUserInfo(UserInfo userInfo, JSONObject data) throws JSONException {
-        if (userInfo == null || data == null) {
+        if (userInfo == null) {
             return null;
+        }
+        if (data == null){
+            return userInfo;
         }
         if (data.has("id")) {
             String id = data.getString("id");

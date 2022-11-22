@@ -67,8 +67,17 @@ public class ToastUtil {
         showCenter(context, text, 0);
     }
 
-    public static void showCenter(Context context, String text, int duration) {
+    public static void showCenter(Context context, String text, int imageResId) {
+        showCenter(context, text, imageResId, 0);
+    }
+
+    public static void showCenter(Context context, String text, int imageResId, int duration) {
         View view = LayoutInflater.from(context).inflate(R.layout.authing_toast_layout_center, null);
+        ImageView imageView = view.findViewById(R.id.toast_image);
+        if (imageResId != 0){
+            imageView.setVisibility(View.VISIBLE);
+            imageView.setImageResource(imageResId);
+        }
         TextView tv_msg = view.findViewById(R.id.toast_text);
         tv_msg.setText(text);
         Toast toast = Toast.makeText(context, text, Toast.LENGTH_LONG);

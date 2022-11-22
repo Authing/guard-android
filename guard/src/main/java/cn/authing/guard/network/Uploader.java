@@ -53,6 +53,14 @@ public class Uploader {
         }.start());
     }
 
+    public static void uploadFaceImage(InputStream in, @NotNull Callback<String> callback) {
+        Authing.getPublicConfig(config -> new Thread() {
+            public void run() {
+                _uploadFaceImage(config, in, callback);
+            }
+        }.start());
+    }
+
     private static void _uploadImage(Config config, InputStream inputStream, @NotNull Callback<String> callback) {
         RequestBody requestBody = create(MediaType.parse("image/png"), inputStream);
         RequestBody formBody = new MultipartBody.Builder()
@@ -69,7 +77,6 @@ public class Uploader {
             response = call.execute();
             String s = new String(Objects.requireNonNull(response.body()).bytes(), StandardCharsets.UTF_8);
             Log.i(TAG, "uploadFile result. " + response.code() + " message:" + s);
-
             if (response.code() == 200) {
                 JSONObject json;
                 try {
@@ -78,6 +85,50 @@ public class Uploader {
                         JSONObject data = json.getJSONObject("data");
                         if (data.has("url")) {
                             String uploadedUrl = data.getString("url");
+                            callback.call(true, uploadedUrl);
+                        } else {
+                            callback.call(false, s);
+                        }
+                    } else {
+                        callback.call(false, s);
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                    callback.call(false, s);
+                }
+            } else {
+                callback.call(false, s);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            callback.call(false, "exception when uploading image");
+        }
+    }
+
+    private static void _uploadFaceImage(Config config, InputStream inputStream, @NotNull Callback<String> callback) {
+        RequestBody requestBody = create(MediaType.parse("image/png"), inputStream);
+        RequestBody formBody = new MultipartBody.Builder()
+                .setType(MultipartBody.FORM)
+                .addFormDataPart("file", "aPhoto", requestBody)
+                .build();
+
+        String url = Authing.getScheme() + "://" + Util.getHost(config) + "/api/v2/upload?folder=photos&private=" + true;
+        Request request = new Request.Builder().url(url).post(formBody).build();
+        OkHttpClient client = new OkHttpClient().newBuilder().build();
+        Call call = client.newCall(request);
+        okhttp3.Response response;
+        try {
+            response = call.execute();
+            String s = new String(Objects.requireNonNull(response.body()).bytes(), StandardCharsets.UTF_8);
+            Log.i(TAG, "uploadFile result. " + response.code() + " message:" + s);
+            if (response.code() == 200) {
+                JSONObject json;
+                try {
+                    json = new JSONObject(s);
+                    if (json.has("data")) {
+                        JSONObject data = json.getJSONObject("data");
+                        if (data.has("key")) {
+                            String uploadedUrl = data.getString("key");
                             callback.call(true, uploadedUrl);
                         } else {
                             callback.call(false, s);

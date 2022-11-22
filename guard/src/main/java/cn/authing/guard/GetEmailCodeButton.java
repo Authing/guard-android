@@ -15,6 +15,7 @@ import cn.authing.guard.analyze.Analyzer;
 import cn.authing.guard.flow.AuthFlow;
 import cn.authing.guard.internal.LoadingButton;
 import cn.authing.guard.network.AuthClient;
+import cn.authing.guard.util.ToastUtil;
 import cn.authing.guard.util.Util;
 import cn.authing.guard.util.Validator;
 
@@ -60,7 +61,7 @@ public class GetEmailCodeButton extends LoadingButton {
     private void getEmailCode() {
         String email;
         View v = Util.findViewByClass(this, AccountEditText.class);
-        if (v != null) {
+        if (v instanceof AccountEditText) {
             AccountEditText editText = (AccountEditText)v;
             email = editText.getText().toString();
         } else {
@@ -72,12 +73,12 @@ public class GetEmailCodeButton extends LoadingButton {
         }
 
         if (!Validator.isValidEmail(email)) {
-            if (v != null){
+            if (v instanceof AccountEditText){
                 ((AccountEditText)v).showError("");
             }
             Util.setErrorText(this, "");
             String errorMsg = getContext().getString(R.string.authing_invalid_email);
-            if (v != null && ((AccountEditText)v).isErrorEnabled()){
+            if (v instanceof AccountEditText && ((AccountEditText)v).isErrorEnabled()){
                 ((AccountEditText)v).showError(errorMsg);
             } else {
                 Util.setErrorText(this, errorMsg);
@@ -106,7 +107,7 @@ public class GetEmailCodeButton extends LoadingButton {
                     v.requestFocus();
                 }
             } else {
-                Util.setErrorText(this, getContext().getString(R.string.authing_get_email_code_failed));
+                ToastUtil.showCenter(getContext(), getContext().getString(R.string.authing_get_email_code_failed));
             }
         });
     }
