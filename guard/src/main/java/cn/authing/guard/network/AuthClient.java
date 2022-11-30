@@ -901,7 +901,7 @@ public class AuthClient {
     }
 
     public static void getCurrentUser(@NotNull AuthCallback<UserInfo> callback) {
-        getCurrentUser(new UserInfo(), callback);
+        getCurrentUser(Authing.getCurrentUser() != null ? Authing.getCurrentUser() : new UserInfo(), callback);
     }
 
     public static void getCurrentUser(UserInfo userInfo, @NotNull AuthCallback<UserInfo> callback) {
@@ -1057,7 +1057,7 @@ public class AuthClient {
     }
 
     public static void createUserInfoFromResponse(Response data, @NotNull AuthCallback<UserInfo> callback) {
-        createUserInfoFromResponse(new UserInfo(), data, callback);
+        createUserInfoFromResponse(Authing.getCurrentUser() != null ? Authing.getCurrentUser() : new UserInfo(), data, callback);
     }
 
     public static void createUserInfoFromResponse(UserInfo userInfo, Response data, @NotNull AuthCallback<UserInfo> callback) {

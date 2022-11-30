@@ -30,6 +30,7 @@ public class LoginButton extends PrimaryButton implements ILoginRequestCallBack 
     protected AuthCallback<UserInfo> callback;
     private LoginRequestManager mLoginRequestManager;
     private boolean autoRegister;
+    private boolean useDefaultText;
 
     public LoginButton(@NonNull Context context) {
         this(context, null);
@@ -46,6 +47,7 @@ public class LoginButton extends PrimaryButton implements ILoginRequestCallBack 
 
         if (attrs == null || attrs.getAttributeValue(NS_ANDROID, "text") == null) {
             setText(R.string.authing_login);
+            useDefaultText = true;
         }
 
         Authing.getPublicConfig(config -> {
@@ -54,7 +56,7 @@ public class LoginButton extends PrimaryButton implements ILoginRequestCallBack 
             }
             if (!config.isRegisterDisabled() && config.isAutoRegisterThenLoginHintInfo()
                     && config.getRegisterTabList() != null && !config.getRegisterTabList().isEmpty()){
-                if (attrs == null || attrs.getAttributeValue(NS_ANDROID, "text") == null) {
+                if (useDefaultText) {
                     setText(R.string.authing_login_register);
                 }
                 this.autoRegister = true;
