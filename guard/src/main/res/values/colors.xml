@@ -9,4 +9,6 @@
     <color name="authing_status_bar_bg">#FFFFFFFF</color>
     <color name="authing_text_gray">#86909C</color>
     <color name="authing_text_black">#1D2129</color>
+    <color name="authing_white">#FFFFFF</color>
+    <color name="authing_gray">#fff0f0f0</color>
 </resources>

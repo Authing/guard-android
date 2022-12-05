@@ -24,6 +24,9 @@ public class WXCallbackActivity extends AppCompatActivity implements IWXAPIEvent
     public static final String TAG = WXCallbackActivity.class.getSimpleName();
 
     private static AuthCallback<UserInfo> callback;
+    private static AuthCallback<String> authCodeCallBack;
+    private static boolean onlyGetAuthCode;
+    private static String context;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,35 +47,8 @@ public class WXCallbackActivity extends AppCompatActivity implements IWXAPIEvent
         finish();
     }
 
-    @Override
-    public void onResp(BaseResp resp) {
-        switch (resp.errCode) {
-            case BaseResp.ErrCode.ERR_OK:
-                ALog.d(TAG, "Got wechat code: " + ((SendAuth.Resp) resp).code);
-                Authing.AuthProtocol authProtocol = Authing.getAuthProtocol();
-                if (authProtocol == Authing.AuthProtocol.EInHouse) {
-                    AuthClient.loginByWechat(((SendAuth.Resp) resp).code, callback);
-                } else if (authProtocol == Authing.AuthProtocol.EOIDC) {
-                    new OIDCClient().loginByWechat(((SendAuth.Resp) resp).code, callback);
-                }
-                break;
-            case BaseResp.ErrCode.ERR_USER_CANCEL:
-                ALog.i(TAG, "wechat user canceled");
-                if (callback != null) {
-                    callback.call(BaseResp.ErrCode.ERR_USER_CANCEL, "", null);
-                }
-                break;
-            case BaseResp.ErrCode.ERR_AUTH_DENIED:
-                ALog.w(TAG, "wechat user denied auth");
-                if (callback != null) {
-                    callback.call(BaseResp.ErrCode.ERR_AUTH_DENIED, "", null);
-                }
-                break;
-            default:
-                break;
-        }
-
-        finish();
+    public static void setContext(String context) {
+        WXCallbackActivity.context = context;
     }
 
     @Override
@@ -84,6 +60,63 @@ public class WXCallbackActivity extends AppCompatActivity implements IWXAPIEvent
 
     public static void setCallback(AuthCallback<UserInfo> callback) {
         WXCallbackActivity.callback = callback;
+    }
+
+    public static void setAuthCodeCallback(AuthCallback<String> callback) {
+        WXCallbackActivity.authCodeCallBack = callback;
+    }
+
+    public static void setOnlyGetAuthCode(boolean onlyGetAuthCode) {
+        WXCallbackActivity.onlyGetAuthCode = onlyGetAuthCode;
+    }
+
+    @Override
+    public void onResp(BaseResp resp) {
+        switch (resp.errCode) {
+            case BaseResp.ErrCode.ERR_OK:
+                ALog.d(TAG, "Got wechat code: " + ((SendAuth.Resp) resp).code);
+                Authing.AuthProtocol authProtocol = Authing.getAuthProtocol();
+                if (onlyGetAuthCode) {
+                    if (authCodeCallBack != null) {
+                        authCodeCallBack.call(200, "success", ((SendAuth.Resp) resp).code);
+                    }
+                } else {
+                    if (authProtocol == Authing.AuthProtocol.EInHouse) {
+                        AuthClient.loginByWechatWithBind(((SendAuth.Resp) resp).code, context, callback);
+                    } else if (authProtocol == Authing.AuthProtocol.EOIDC) {
+                        new OIDCClient().loginByWechatWithBind(((SendAuth.Resp) resp).code, context, callback);
+                    }
+                }
+                break;
+            case BaseResp.ErrCode.ERR_USER_CANCEL:
+                ALog.i(TAG, "wechat user canceled");
+                if (onlyGetAuthCode) {
+                    if (authCodeCallBack != null) {
+                        authCodeCallBack.call(BaseResp.ErrCode.ERR_USER_CANCEL, "canceled", null);
+                    }
+                } else {
+                    if (callback != null) {
+                        callback.call(BaseResp.ErrCode.ERR_USER_CANCEL, "canceled", null);
+                    }
+                }
+                break;
+            case BaseResp.ErrCode.ERR_AUTH_DENIED:
+                ALog.w(TAG, "wechat user denied auth");
+                if (onlyGetAuthCode) {
+                    if (authCodeCallBack != null) {
+                        authCodeCallBack.call(BaseResp.ErrCode.ERR_AUTH_DENIED, "denied", null);
+                    }
+                } else {
+                    if (callback != null) {
+                        callback.call(BaseResp.ErrCode.ERR_AUTH_DENIED, "denied", null);
+                    }
+                }
+                break;
+            default:
+                break;
+        }
+
+        finish();
     }
 
 }

@@ -140,7 +140,9 @@
             android:screenOrientation="portrait"/>
         <activity
             android:name=".guard.wxapi.WXEntryActivity"
-            android:exported="true" />
+            android:exported="true"
+            android:launchMode="singleTask"
+            android:taskAffinity="cn.authing.guard"/>
         <activity android:name=".SignInActivity" />
         <activity android:name=".ut.UTActivity" />
         <activity android:name=".ut.UTTestActivity" />

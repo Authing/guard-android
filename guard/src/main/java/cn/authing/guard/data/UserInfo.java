@@ -105,6 +105,7 @@ public class UserInfo implements Serializable {
     private MFAData mfaData;
     private String firstTimeLoginToken;
     private String recoveryCode;
+    private SocialBindData socialBindData;
 
     public String getId() {
         return id == null ? getSub() : id;
@@ -513,6 +514,14 @@ public class UserInfo implements Serializable {
 
     public void setRecoveryCode(String recoveryCode) {
         this.recoveryCode = recoveryCode;
+    }
+
+    public SocialBindData getSocialBindData() {
+        return socialBindData;
+    }
+
+    public void setSocialBindData(SocialBindData socialBindData) {
+        this.socialBindData = socialBindData;
     }
 
     public static UserInfo createUserInfo(JSONObject data) throws JSONException {

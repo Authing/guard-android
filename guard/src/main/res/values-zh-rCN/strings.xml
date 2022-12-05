@@ -74,6 +74,13 @@
     <string name="authing_cancel">取消</string>
     <string name="authing_confirm">确认</string>
     <string name="authing_picker_date">选择生日</string>
+    <string name="authing_choose_how_to_connect">选择关联方式</string>
+    <string name="authing_choose_how_to_connect_tip">如果绑定到已有账号，下次可以通过本次的方式直接登录已有账号</string>
+    <string name="authing_create_new_account">我想创建一个新账号</string>
+    <string name="authing_bind_to_existing_account">我想绑定到已有账号</string>
+    <string name="authing_bind_existing_account">绑定已有账号</string>
+    <string name="authing_bind_existing_account_tip">绑定后，下次可以直接通过这次的方式登录到此账号</string>
+    <string name="authing_bind_select_account">选择登录账号</string>
 
     <!--user profile-->
     <string name="authing_user_profile">个人中心</string>

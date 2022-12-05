@@ -37,6 +37,10 @@
         <attr name="type" />
     </declare-styleable>
 
+    <declare-styleable name="SocialBindContainer">
+        <attr name="type" />
+    </declare-styleable>
+
     <declare-styleable name="EditTextLayout">
         <attr name="pageType" />
         <attr name="leftIconDrawable" format="reference" />

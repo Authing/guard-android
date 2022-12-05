@@ -11,6 +11,9 @@ public class Const {
     public final static int EC_MFA_REQUIRED = 1636;
     public final static int EC_FIRST_TIME_LOGIN = 1639;
     public final static int EC_CAPTCHA = 2000;
+    public final static int EC_SOCIAL_BIND_LOGIN = 1640;
+    public final static int EC_SOCIAL_BIND_REGISTER = 1641;
+    public final static int EC_SOCIAL_BIND_SELECT = 2921;
 
     public final static int EC_INCORRECT_VERIFY_CODE = 2001;
     public final static int EC_INCORRECT_CREDENTIAL = 2333;

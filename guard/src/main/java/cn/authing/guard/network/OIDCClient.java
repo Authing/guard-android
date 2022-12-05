@@ -148,6 +148,10 @@ public class OIDCClient {
         AuthClient.loginByWechat(authRequest, authCode, callback);
     }
 
+    public void loginByWechatWithBind(String authCode, String context, @NotNull AuthCallback<UserInfo> callback) {
+        AuthClient.loginByWechatWithBind(authRequest, authCode, context, callback);
+    }
+
     public void loginByWecom(String authCode, @NotNull AuthCallback<UserInfo> callback) {
         AuthClient.loginByWecom(authRequest, authCode, callback);
     }

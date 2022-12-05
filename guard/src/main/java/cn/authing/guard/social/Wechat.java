@@ -23,6 +23,10 @@ public class Wechat extends SocialAuthenticator {
 
     @Override
     public void login(Context context, @NotNull AuthCallback<UserInfo> callback) {
+        login(context, null, callback);
+    }
+
+    public void login(Context context, String contextParam, @NotNull AuthCallback<UserInfo> callback) {
         Authing.getPublicConfig(config -> {
             String id = appId;
             if (id == null && config != null){
@@ -32,6 +36,26 @@ public class Wechat extends SocialAuthenticator {
             api.registerApp(id);
 
             WXCallbackActivity.setCallback(callback);
+            WXCallbackActivity.setContext(contextParam);
+
+            final SendAuth.Req req = new SendAuth.Req();
+            req.scope = "snsapi_userinfo";
+            req.state = "wechat_sdk_demo_test";
+            api.sendReq(req);
+        });
+    }
+
+    public void getAuthCode(Context context, @NotNull AuthCallback<String> callback){
+        Authing.getPublicConfig(config -> {
+            String id = appId;
+            if (id == null && config != null){
+                id = config.getSocialAppId(Const.EC_TYPE_WECHAT);
+            }
+            api = WXAPIFactory.createWXAPI(context, id, true);
+            api.registerApp(id);
+
+            WXCallbackActivity.setAuthCodeCallback(callback);
+            WXCallbackActivity.setOnlyGetAuthCode(true);
 
             final SendAuth.Req req = new SendAuth.Req();
             req.scope = "snsapi_userinfo";
