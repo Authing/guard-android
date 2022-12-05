@@ -127,11 +127,8 @@ public class MFAEmailButton extends MFABaseButton implements AuthActivity.EventL
     }
 
     private void sendEmail(AuthFlow flow, String email) {
-        AuthActivity activity = (AuthActivity) getContext();
-        AuthClient.sendMFAEmail(email, (code, message, data)-> activity.runOnUiThread(()->{
-            stopLoadingVisualEffect();
-            next(flow);
-        }));
+        stopLoadingVisualEffect();
+        next(flow);
     }
 
     private void next(AuthFlow flow) {
@@ -149,7 +146,9 @@ public class MFAEmailButton extends MFABaseButton implements AuthActivity.EventL
             // fallback to our default
             intent.putExtra(AuthActivity.CONTENT_LAYOUT_ID, R.layout.authing_mfa_email_1);
         }
-        activity.startActivityForResult(intent, AuthActivity.RC_LOGIN);
+        intent.addFlags(Intent.FLAG_ACTIVITY_FORWARD_RESULT);
+        activity.startActivity(intent);
+        activity.finish();
     }
 
     private void doMFA(View v) {

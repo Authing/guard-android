@@ -136,11 +136,8 @@ public class MFAPhoneButton extends MFABaseButton {
     }
 
     private void sendSms(AuthFlow flow, String phoneCountryCode, String phone) {
-        AuthActivity activity = (AuthActivity) getContext();
-        AuthClient.sendSms(phoneCountryCode, phone, (code, message, data)-> activity.runOnUiThread(()->{
-            stopLoadingVisualEffect();
-            next(flow);
-        }));
+        stopLoadingVisualEffect();
+        next(flow);
     }
 
     private void next(AuthFlow flow) {
@@ -158,7 +155,9 @@ public class MFAPhoneButton extends MFABaseButton {
             // fallback to our default
             intent.putExtra(AuthActivity.CONTENT_LAYOUT_ID, R.layout.authing_mfa_phone_1);
         }
-        activity.startActivityForResult(intent, AuthActivity.RC_LOGIN);
+        intent.addFlags(Intent.FLAG_ACTIVITY_FORWARD_RESULT);
+        activity.startActivity(intent);
+        activity.finish();
     }
 
     private void mfaDone(int code, String message, UserInfo userInfo) {
