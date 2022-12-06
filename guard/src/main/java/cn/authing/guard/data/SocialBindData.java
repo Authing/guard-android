@@ -11,10 +11,9 @@ import java.util.List;
 
 public class SocialBindData implements Serializable {
 
-    private List<String> tabMethods;
-    private List<String> passwordMethods;
+    private List<String> methods;
     private String key;
-    private List<UserInfo> accountList;
+    private List<UserInfo> accounts;
 
     public static SocialBindData create(JSONObject data) {
         SocialBindData socialBindData = new SocialBindData();
@@ -23,22 +22,7 @@ public class SocialBindData implements Serializable {
             if (data.has("methods")) {
                 JSONArray methods = data.getJSONArray("methods");
                 List<String> methodList = toStringList(methods);
-                List<String> tabMethodList = new ArrayList<>();
-                List<String> passwordMethods = new ArrayList<>();
-                for (String method : methodList) {
-                    if ("email-password".equals(method)
-                            || "username-password".equals(method)
-                            || "phone-password".equals(method)) {
-                        if (!tabMethodList.contains("password")) {
-                            tabMethodList.add("password");
-                        }
-                        passwordMethods.add(method);
-                    } else {
-                        tabMethodList.add(method);
-                    }
-                }
-                socialBindData.setTabMethods(tabMethodList);
-                socialBindData.setPasswordMethods(passwordMethods);
+                socialBindData.setMethods(methodList);
             }
 
             if (data.has("accounts")) {
@@ -49,7 +33,7 @@ public class SocialBindData implements Serializable {
                     UserInfo userInfo = UserInfo.createUserInfo(account);
                     accountList.add(userInfo);
                 }
-                socialBindData.setAccountList(accountList);
+                socialBindData.setAccounts(accountList);
             }
 
             if (data.has("key")) {
@@ -63,20 +47,12 @@ public class SocialBindData implements Serializable {
         return socialBindData;
     }
 
-    public List<String> getTabMethods() {
-        return tabMethods;
+    public List<String> getMethods() {
+        return methods;
     }
 
-    public void setTabMethods(List<String> tabMethods) {
-        this.tabMethods = tabMethods;
-    }
-
-    public List<String> getPasswordMethods() {
-        return passwordMethods;
-    }
-
-    public void setPasswordMethods(List<String> passwordMethods) {
-        this.passwordMethods = passwordMethods;
+    public void setMethods(List<String> methods) {
+        this.methods = methods;
     }
 
     public String getKey() {
@@ -87,11 +63,11 @@ public class SocialBindData implements Serializable {
         this.key = key;
     }
 
-    public List<UserInfo> getAccountList() {
-        return accountList;
+    public List<UserInfo> getAccounts() {
+        return accounts;
     }
 
-    public void setAccountList(List<UserInfo> accountList) {
-        this.accountList = accountList;
+    public void setAccounts(List<UserInfo> accounts) {
+        this.accounts = accounts;
     }
 }

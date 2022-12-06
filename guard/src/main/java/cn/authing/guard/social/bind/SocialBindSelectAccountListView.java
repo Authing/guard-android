@@ -57,10 +57,10 @@ public class SocialBindSelectAccountListView extends LinearLayout {
     }
 
     private void initView(SocialBindData socialBindData) {
-        if (socialBindData == null || socialBindData.getAccountList() == null) {
+        if (socialBindData == null || socialBindData.getAccounts() == null) {
             return;
         }
-        for (UserInfo userInfo : socialBindData.getAccountList()) {
+        for (UserInfo userInfo : socialBindData.getAccounts()) {
             if (userInfo == null) {
                 continue;
             }

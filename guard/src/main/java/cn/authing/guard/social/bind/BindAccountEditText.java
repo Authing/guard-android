@@ -7,12 +7,12 @@ import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.inputmethod.EditorInfo;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import cn.authing.guard.Authing;
 import cn.authing.guard.R;
 import cn.authing.guard.activity.AuthActivity;
-import cn.authing.guard.analyze.Analyzer;
 import cn.authing.guard.data.Config;
 import cn.authing.guard.data.SocialBindData;
 import cn.authing.guard.data.UserInfo;
@@ -81,10 +81,11 @@ public class BindAccountEditText extends EditTextLayout {
             if (socialBindData == null) {
                 return defaultHint;
             }
-            List<String> passwordMethods = socialBindData.getPasswordMethods();
+            List<String> passwordMethods = getPasswordMethods(socialBindData);
             if (passwordMethods == null || passwordMethods.size() == 0) {
                 return defaultHint;
             }
+
             for (int i = 0, n = passwordMethods.size(); i < n; ++i) {
                 String opt = passwordMethods.get(i);
                 if (TextUtils.isEmpty(opt)){
@@ -128,7 +129,7 @@ public class BindAccountEditText extends EditTextLayout {
             editText.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
             validator = EMAIL_VALIDATOR;
         } else if (socialBindData != null) {
-            List<String> passwordMethods = socialBindData.getPasswordMethods();
+            List<String> passwordMethods = getPasswordMethods(socialBindData);
             if (passwordMethods.size() == 1) {
                 String opt = passwordMethods.get(0);
                 switch (opt) {
@@ -143,6 +144,22 @@ public class BindAccountEditText extends EditTextLayout {
                 }
             }
         }
+    }
+
+    private List<String> getPasswordMethods(SocialBindData socialBindData){
+        List<String> methods = socialBindData.getMethods();
+        if (methods == null || methods.size() == 0) {
+            return methods;
+        }
+        List<String> passwordMethods = new ArrayList<>();
+        for (String method : methods) {
+            if (LOGIN_METHOD_UN.equals(method)
+                    || LOGIN_METHOD_EMAIL.equals(method)
+                    || LOGIN_METHOD_PHONE.equals(method)) {
+                passwordMethods.add(method);
+            }
+        }
+        return passwordMethods;
     }
 
     @Override

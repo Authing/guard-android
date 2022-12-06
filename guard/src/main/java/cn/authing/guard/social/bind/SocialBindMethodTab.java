@@ -86,14 +86,27 @@ public class SocialBindMethodTab extends LinearLayout {
             return;
         }
 
-        List<String> tabMethods = socialBindData.getTabMethods();
-        if (tabMethods == null || tabMethods.size() == 0) {
+        List<String> methods = socialBindData.getMethods();
+        if (methods == null || methods.size() == 0) {
             initDefaultLogins(container);
             return;
         }
 
+        List<String> tabMethodList = new ArrayList<>();
+        for (String method : methods) {
+            if ("email-password".equals(method)
+                    || "username-password".equals(method)
+                    || "phone-password".equals(method)) {
+                if (!tabMethodList.contains("password")) {
+                    tabMethodList.add("password");
+                }
+            } else {
+                tabMethodList.add(method);
+            }
+        }
+
         boolean addDefaultTab = false;
-        for (String s : tabMethods) {
+        for (String s : tabMethodList) {
             SocialBindMethodTabItem b = new SocialBindMethodTabItem(getContext());
             if ("phone-code".equals(s)) {
                 b.setText(getResources().getString(R.string.authing_login_by_phone_code));
@@ -108,7 +121,7 @@ public class SocialBindMethodTab extends LinearLayout {
                 continue;
             }
 
-            if (tabMethods.get(0).equals(s)) {
+            if (tabMethodList.get(0).equals(s)) {
                 b.gainFocus(null);
                 container.addView(b, 0);
                 addDefaultTab = true;
