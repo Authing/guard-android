@@ -72,6 +72,7 @@ public class LoginButton extends PrimaryButton implements ILoginRequestCallBack 
 
     public void setAutoRegister(boolean autoRegister) {
         this.autoRegister = autoRegister;
+        mLoginRequestManager = null;
     }
 
     private LoginRequestManager getLoginRequestManager(){

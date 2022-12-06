@@ -30,6 +30,8 @@ public class Config {
     private String defaultRegisterMethod;
     private boolean registerDisabled;
     private boolean autoRegisterThenLoginHintInfo;
+    private List<String> passwordTabValidRegisterMethods;
+    private List<String> verifyCodeTabValidRegisterMethods;
     private List<TabMethodsField> tabMethodsFields;
     private int verifyCodeLength = 6;
     private List<SocialConfig> socialConfigs;
@@ -83,6 +85,10 @@ public class Config {
                         loginTab.remove("phone-code");
                         loginTab.addAll(index, validLoginMethodLis);
                     }
+                    if (verifyCodeTabConfig.has("validRegisterMethods")){
+                        JSONArray validRegisterMethods = verifyCodeTabConfig.getJSONArray("validRegisterMethods");
+                        config.setVerifyCodeTabValidRegisterMethods(toStringList(validRegisterMethods));
+                    }
                 }
             }
             config.setLoginTabList(loginTab);
@@ -110,6 +116,10 @@ public class Config {
                     JSONArray enabledLoginMethods = passwordTabConfig.getJSONArray("enabledLoginMethods");
                     config.setEnabledLoginMethods(toStringList(enabledLoginMethods));
                 }
+            }
+            if (passwordTabConfig.has("validRegisterMethods")){
+                JSONArray validRegisterMethods = passwordTabConfig.getJSONArray("validRegisterMethods");
+                config.setPasswordTabValidRegisterMethods(toStringList(validRegisterMethods));
             }
         }
 
@@ -354,6 +364,22 @@ public class Config {
 
     public void setRegisterDisabled(boolean registerDisabled) {
         this.registerDisabled = registerDisabled;
+    }
+
+    public List<String> getPasswordTabValidRegisterMethods() {
+        return passwordTabValidRegisterMethods;
+    }
+
+    public void setPasswordTabValidRegisterMethods(List<String> passwordTabValidRegisterMethods) {
+        this.passwordTabValidRegisterMethods = passwordTabValidRegisterMethods;
+    }
+
+    public List<String> getVerifyCodeTabValidRegisterMethods() {
+        return verifyCodeTabValidRegisterMethods;
+    }
+
+    public void setVerifyCodeTabValidRegisterMethods(List<String> verifyCodeTabValidRegisterMethods) {
+        this.verifyCodeTabValidRegisterMethods = verifyCodeTabValidRegisterMethods;
     }
 
     public List<TabMethodsField> getTabMethodsFields() {
