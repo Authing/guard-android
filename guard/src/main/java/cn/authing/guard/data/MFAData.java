@@ -30,16 +30,16 @@ public class MFAData implements Serializable {
                 Guardian.MFA_TOKEN = v;
                 mfaData.setMfaToken(v);
             }
-            if (data.has("email")) {
-                String v = data.getString("email");
+            if (data.has("mfaEmail")) {
+                String v = data.getString("mfaEmail");
                 mfaData.setEmail(v);
             }
-            if (data.has("phone")) {
-                String v = data.getString("phone");
+            if (data.has("mfaPhone")) {
+                String v = data.getString("mfaPhone");
                 mfaData.setPhone(v);
             }
-            if (data.has("phoneCountryCode")) {
-                String v = data.getString("phoneCountryCode");
+            if (data.has("mfaPhoneCountryCode")) {
+                String v = data.getString("mfaPhoneCountryCode");
                 mfaData.setPhoneCountryCode(v);
             }
             if (data.has("faceMfaEnabled")) {

@@ -20,6 +20,7 @@ import com.netease.nis.quicklogin.QuickLogin;
 
 import java.util.List;
 
+import cn.authing.guard.AuthCallback;
 import cn.authing.guard.Authing;
 import cn.authing.guard.R;
 import cn.authing.guard.activity.AuthActivity;
@@ -42,6 +43,7 @@ public class OneClickAuthButton extends LoadingButton {
     private final boolean showByConfig;
     private boolean isConfigured;
     private final boolean linkNetWork;
+    protected AuthCallback<UserInfo> callback;
 
     public OneClickAuthButton(@NonNull Context context) {
         this(context, null);
@@ -143,6 +145,10 @@ public class OneClickAuthButton extends LoadingButton {
         if (showLoading) {
             stopLoadingVisualEffect();
         }
+        if (callback != null) {
+            callback.call(code, message, userInfo);
+            return;
+        }
         if (code == 200 && userInfo != null) {
             Authing.getPublicConfig((config) -> {
                 if (getContext() instanceof AuthActivity) {
@@ -172,6 +178,10 @@ public class OneClickAuthButton extends LoadingButton {
                 post(() -> ToastUtil.showCenter(getContext(), message));
             }
         }
+    }
+
+    public void setOnLoginListener(AuthCallback<UserInfo> callback) {
+        this.callback = callback;
     }
 
     private void startListeningNetWork() {

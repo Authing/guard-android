@@ -918,6 +918,26 @@ public class AuthClient {
         }
     }
 
+    public static void unBindMfaPhone(@NotNull AuthCallback<JSONObject> callback){
+        try {
+            JSONObject body = new JSONObject();
+            String endpoint = "/api/v2/mfa/phone/unbind";
+            Guardian.post(endpoint, body, response -> callback.call(response.getCode(), response.getMessage(), response.getData()));
+        } catch (Exception e) {
+            error(e, callback);
+        }
+    }
+
+    public static void unBindMfaEmail(@NotNull AuthCallback<JSONObject> callback){
+        try {
+            JSONObject body = new JSONObject();
+            String endpoint = "/api/v2/mfa/email/unbind";
+            Guardian.post(endpoint, body, response -> callback.call(response.getCode(), response.getMessage(), response.getData()));
+        } catch (Exception e) {
+            error(e, callback);
+        }
+    }
+
     public static void updatePassword(String newPassword, String oldPassword, @NotNull AuthCallback<JSONObject> callback) {
         try {
             JSONObject body = new JSONObject();
