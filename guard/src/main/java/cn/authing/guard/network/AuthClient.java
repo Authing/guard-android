@@ -654,8 +654,12 @@ public class AuthClient {
                 body.put("code", authCode);
                 body.put("appId", Authing.getAppId());
                 JSONObject options = new JSONObject();
-                options.put("scope", authData.getScope());
-                options.put("context", context);
+                if (authData != null){
+                    options.put("scope", authData.getScope());
+                }
+                if(context != null){
+                    options.put("context", context);
+                }
                 body.put("options", options);
                 Guardian.post("/api/v2/ecConn/wechatMobile/authByCodeIdentity", body, (data)-> {
                     createTokenFromResponse(data, callback);
