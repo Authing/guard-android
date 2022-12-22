@@ -27,7 +27,9 @@ import cn.authing.R;
 import cn.authing.guard.Authing;
 import cn.authing.guard.flow.AuthFlow;
 import cn.authing.guard.network.AuthClient;
+import cn.authing.guard.activity.AppScanLoginActivity;
 import cn.authing.guard.util.ALog;
+import cn.authing.guard.util.ToastUtil;
 
 public class ScanAuthActivity extends AppCompatActivity {
 
@@ -37,7 +39,6 @@ public class ScanAuthActivity extends AppCompatActivity {
     int REQ_QR_CODE = 1001;
     Button btnScan;
     TextView tvRes;
-    Button btnAuth;
 
     String random;
 
@@ -49,18 +50,11 @@ public class ScanAuthActivity extends AppCompatActivity {
         btnScan = findViewById(R.id.btn_scan);
         btnScan.setOnClickListener((v -> clicked()));
 
+        if (null != Authing.getCurrentUser()){
+            btnScan.setText("Start scan");
+        }
+
         tvRes = findViewById(R.id.tv_res);
-        btnAuth = findViewById(R.id.btn_auth);
-        btnAuth.setOnClickListener((v)-> {
-            AuthClient.loginByScannedTicket(random, (code, message, data1) -> {
-                ALog.d(TAG, "loginByScannedTicket result:" + code + " " + message);
-                if (code == 200) {
-                    setRes("login by qr code success");
-                } else {
-                    setRes(message);
-                }
-            });
-        });
     }
 
     private void clicked() {
@@ -103,14 +97,23 @@ public class ScanAuthActivity extends AppCompatActivity {
                         AuthClient.markQRCodeScanned(random, (code, message, data1) -> {
                             ALog.d(TAG, "markQRCodeScanned result:" + code + " " + message);
                             if (code == 200) {
-                                setRes("marked as scanned");
+                                Intent intent = new Intent(this, AppScanLoginActivity.class);
+                                intent.putExtra("random", random);
+                                startActivity(intent);
                             } else {
+                                runOnUiThread(() -> {
+                                    if (code == 2004){
+                                        ToastUtil.showCenter(ScanAuthActivity.this, "扫描登录失败，用户不存在于 Web 端应用中！");
+                                    } else {
+                                        ToastUtil.showCenter(ScanAuthActivity.this, message);
+                                    }
+                                });
                                 setRes(message);
                             }
                         });
                     }
                 } catch (Exception e) {
-
+                    e.printStackTrace();
                 }
             }
         }

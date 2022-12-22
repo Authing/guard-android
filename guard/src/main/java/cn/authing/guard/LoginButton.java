@@ -27,6 +27,7 @@ import cn.authing.guard.handler.login.ILoginRequestCallBack;
 import cn.authing.guard.handler.login.LoginRequestManager;
 import cn.authing.guard.internal.PrimaryButton;
 import cn.authing.guard.util.Const;
+import cn.authing.guard.util.ImageUtil;
 import cn.authing.guard.util.ToastUtil;
 import cn.authing.guard.util.Util;
 
@@ -186,6 +187,7 @@ public class LoginButton extends PrimaryButton implements ILoginRequestCallBack 
                         }
 
                         post(() -> {
+                            Util.pushDeviceInfo(activity);
                             Intent intent = new Intent();
                             intent.putExtra("user", userInfo);
                             activity.setResult(AuthActivity.OK, intent);

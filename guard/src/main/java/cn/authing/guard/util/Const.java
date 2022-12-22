@@ -50,6 +50,8 @@ public class Const {
     public static final String TYPE_ALIPAY = "alipay";
     public static final String TYPE_LARK = "lark";
     public static final String TYPE_GOOGLE = "google";
+    public static final String TYPE_FINGER = "fingerprint";
+    public static final String TYPE_FACE = "face";
 
     public static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
     public static final MediaType FORM = MediaType.parse("application/x-www-form-urlencoded; charset=utf-8");

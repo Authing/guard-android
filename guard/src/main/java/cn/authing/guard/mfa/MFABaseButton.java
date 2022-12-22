@@ -22,6 +22,7 @@ import cn.authing.guard.flow.AuthFlow;
 import cn.authing.guard.flow.FlowHelper;
 import cn.authing.guard.internal.LoadingButton;
 import cn.authing.guard.util.ToastUtil;
+import cn.authing.guard.util.Util;
 
 public class MFABaseButton extends LoadingButton {
 
@@ -58,7 +59,7 @@ public class MFABaseButton extends LoadingButton {
                     if (cb != null) {
                         cb.call(getContext(), code, message, userInfo);
                     }
-
+                    Util.pushDeviceInfo(activity);
                     Intent intent = new Intent();
                     intent.putExtra("user", userInfo);
                     activity.setResult(AuthActivity.OK, intent);

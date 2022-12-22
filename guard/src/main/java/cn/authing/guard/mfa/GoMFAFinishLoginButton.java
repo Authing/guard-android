@@ -15,7 +15,6 @@ import com.netease.nis.quicklogin.QuickLogin;
 import java.util.List;
 
 import cn.authing.guard.Authing;
-import cn.authing.guard.GoLoginTipsText;
 import cn.authing.guard.R;
 import cn.authing.guard.activity.AuthActivity;
 import cn.authing.guard.data.Config;
@@ -25,17 +24,17 @@ import cn.authing.guard.flow.AuthFlow;
 import cn.authing.guard.flow.FlowHelper;
 import cn.authing.guard.util.Util;
 
-public class GoFinishLoginButton extends androidx.appcompat.widget.AppCompatButton {
+public class GoMFAFinishLoginButton extends androidx.appcompat.widget.AppCompatButton {
 
-    public GoFinishLoginButton(@NonNull Context context) {
+    public GoMFAFinishLoginButton(@NonNull Context context) {
         this(context, null);
     }
 
-    public GoFinishLoginButton(@NonNull Context context, @Nullable AttributeSet attrs) {
+    public GoMFAFinishLoginButton(@NonNull Context context, @Nullable AttributeSet attrs) {
         this(context, attrs, R.attr.buttonStyle);
     }
 
-    public GoFinishLoginButton(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
+    public GoMFAFinishLoginButton(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
 
         if (attrs == null || attrs.getAttributeValue(NS_ANDROID, "textColor") == null) {
@@ -62,9 +61,9 @@ public class GoFinishLoginButton extends androidx.appcompat.widget.AppCompatButt
             Safe.saveRecoveryCode("");
             Authing.getPublicConfig((config) -> {
                 if (getContext() instanceof AuthActivity) {
-                    View view = Util.findViewByClass(this, GoFinishLoginTipsText.class);
-                    if (view instanceof GoFinishLoginTipsText){
-                        GoFinishLoginTipsText goFinishLoginTipsText = (GoFinishLoginTipsText) view;
+                    View view = Util.findViewByClass(this, GoMFAFinishLoginTipsText.class);
+                    if (view instanceof GoMFAFinishLoginTipsText){
+                        GoMFAFinishLoginTipsText goFinishLoginTipsText = (GoMFAFinishLoginTipsText) view;
                         goFinishLoginTipsText.cancelCuntDown();
                     }
 
@@ -75,6 +74,7 @@ public class GoFinishLoginButton extends androidx.appcompat.widget.AppCompatButt
                         flow.getData().put(AuthFlow.KEY_USER_INFO, Authing.getCurrentUser());
                         FlowHelper.handleUserInfoComplete(this, missingFields);
                     } else {
+                        Util.pushDeviceInfo(activity);
                         Intent intent = new Intent();
                         intent.putExtra("user", Authing.getCurrentUser());
                         activity.setResult(AuthActivity.OK, intent);

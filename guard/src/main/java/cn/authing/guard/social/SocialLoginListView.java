@@ -89,18 +89,31 @@ public class SocialLoginListView extends LinearLayout {
                 if (config == null) {
                     return;
                 }
-                List<SocialConfig> socialConfigs = config.getSocialConfigs();
-                if (socialConfigs == null || socialConfigs.isEmpty()){
-                    return;
-                }
                 List<String> types = new ArrayList<>();
-                for (int i = 0, n = socialConfigs.size(); i < n; i++) {
-                    SocialConfig sc = socialConfigs.get(i);
-                    if (sc.getType() != null){
-                        types.add(sc.getType());
+                List<String> livingAuthSortConfig = config.getLivingAuthSortConfig();
+                if (livingAuthSortConfig != null && !livingAuthSortConfig.isEmpty()){
+                    for (int i = 0, n = livingAuthSortConfig.size(); i < n; i++) {
+                        String type = livingAuthSortConfig.get(i);
+                        types.add(type);
+                    }
+                } else {
+                    if (config.isEnableFaceLogin()){
+                        types.add(Const.TYPE_FACE);
+                    }
+                    if (config.isEnableFingerprintLogin()){
+                        types.add(Const.TYPE_FINGER);
                     }
                 }
 
+                List<SocialConfig> socialConfigs = config.getSocialConfigs();
+                if (socialConfigs != null && !socialConfigs.isEmpty()){
+                    for (int i = 0, n = socialConfigs.size(); i < n; i++) {
+                        SocialConfig sc = socialConfigs.get(i);
+                        if (sc.getType() != null){
+                            types.add(sc.getType());
+                        }
+                    }
+                }
                 addSocialList(parsSource(types));
             }));
         } else {
@@ -133,6 +146,10 @@ public class SocialLoginListView extends LinearLayout {
         if (types.contains(Const.EC_TYPE_LARK_INTERNAL)
                 || types.contains(Const.EC_TYPE_LARK_PUBLIC)){
             sb.append(Const.TYPE_LARK);
+            sb.append("|");
+        }
+        if (types.contains(Const.TYPE_FINGER)){
+            sb.append(Const.TYPE_FINGER);
             sb.append("|");
         }
         String socialString = sb.toString();
@@ -224,6 +241,9 @@ public class SocialLoginListView extends LinearLayout {
             case Const.TYPE_GOOGLE:
                 button = new GoogleLoginButton(getContext());
                 break;
+            case Const.TYPE_FINGER:
+                button = new FingerLoginButton(getContext());
+                break;
         }
         return button;
     }
@@ -283,6 +303,9 @@ public class SocialLoginListView extends LinearLayout {
                 break;
             case Const.TYPE_GOOGLE:
                 title = getContext().getString(R.string.authing_social_google);
+                break;
+            case Const.TYPE_FINGER:
+                title = getContext().getString(R.string.authing_finger);
                 break;
         }
         textView.setText(title);

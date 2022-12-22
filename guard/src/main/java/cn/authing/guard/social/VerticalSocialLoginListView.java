@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import cn.authing.guard.AuthCallback;
@@ -83,38 +84,74 @@ public class VerticalSocialLoginListView extends LinearLayout {
                 if (config == null) {
                     return;
                 }
-                StringBuilder sb = new StringBuilder();
+                List<String> types = new ArrayList<>();
+                List<String> livingAuthSortConfig = config.getLivingAuthSortConfig();
+                if (livingAuthSortConfig !=null && !livingAuthSortConfig.isEmpty()){
+                    for (int i = 0, n = livingAuthSortConfig.size(); i < n; i++) {
+                        String type = livingAuthSortConfig.get(i);
+                        if (type != null){
+                            types.add(type);
+                        }
+                    }
+                } else {
+                    if (config.isEnableFaceLogin()){
+                        types.add(Const.TYPE_FACE);
+                    }
+                    if (config.isEnableFingerprintLogin()){
+                        types.add(Const.TYPE_FINGER);
+                    }
+                }
+
                 List<SocialConfig> socialConfigs = config.getSocialConfigs();
                 for (int i = 0, n = socialConfigs.size(); i < n; i++) {
                     SocialConfig sc = socialConfigs.get(i);
-                    parsSource(sb, sc);
-                    if (i < n - 1) {
-                        sb.append("|");
+                    if (sc.getType() != null){
+                        types.add(sc.getType());
                     }
                 }
-                addSocialList(sb.toString());
+                addSocialList(parsSource(types));
             }));
         } else {
             addSocialList(src);
         }
     }
 
-    private void parsSource(StringBuilder sb, SocialConfig sc) {
-        String type = sc.getType();
-        if (Const.EC_TYPE_WECHAT.equals(type)) {
+    private String parsSource(List<String> types) {
+        StringBuilder sb = new StringBuilder();
+        if (types.contains(Const.EC_TYPE_WECHAT)){
             sb.append(Const.TYPE_WECHAT);
-        } else if (Const.EC_TYPE_ALIPAY.equals(type)) {
-            sb.append(Const.TYPE_ALIPAY);
-        } else if (Const.EC_TYPE_WECHAT_COM.equals(type)) {
-            sb.append(Const.TYPE_WECHAT_COM);
-        } else if (Const.EC_TYPE_WECHAT_COM_AGENCY.equals(type)) {
-            sb.append(Const.TYPE_WECHAT_COM_AGENCY);
-        } else if (Const.EC_TYPE_LARK_INTERNAL.equals(type)
-                || Const.EC_TYPE_LARK_PUBLIC.equals(type)) {
-            sb.append(Const.TYPE_LARK);
-        } else if (Const.EC_TYPE_GOOGLE.equals(type)) {
-            sb.append(Const.TYPE_GOOGLE);
+            sb.append("|");
         }
+        if (types.contains(Const.EC_TYPE_ALIPAY)){
+            sb.append(Const.TYPE_ALIPAY);
+            sb.append("|");
+        }
+        if (types.contains(Const.EC_TYPE_GOOGLE)){
+            sb.append(Const.TYPE_GOOGLE);
+            sb.append("|");
+        }
+        if (types.contains(Const.EC_TYPE_WECHAT_COM)){
+            sb.append(Const.TYPE_WECHAT_COM);
+            sb.append("|");
+        }
+        if (types.contains(Const.EC_TYPE_WECHAT_COM_AGENCY)){
+            sb.append(Const.TYPE_WECHAT_COM_AGENCY);
+            sb.append("|");
+        }
+        if (types.contains(Const.EC_TYPE_LARK_INTERNAL)
+                || types.contains(Const.EC_TYPE_LARK_PUBLIC)){
+            sb.append(Const.TYPE_LARK);
+            sb.append("|");
+        }
+        if (types.contains(Const.TYPE_FINGER)){
+            sb.append(Const.TYPE_FINGER);
+            sb.append("|");
+        }
+        String socialString = sb.toString();
+        if (socialString.endsWith("|")){
+            socialString = socialString.substring(0, socialString.length() - 1);
+        }
+        return socialString;
     }
 
     private void addSocialList(String src) {
@@ -151,6 +188,9 @@ public class VerticalSocialLoginListView extends LinearLayout {
                 break;
             case Const.TYPE_GOOGLE:
                 button = new GoogleLoginButton(getContext());
+                break;
+            case Const.TYPE_FINGER:
+                button = new FingerLoginButton(getContext());
                 break;
         }
         if (button != null) {
@@ -199,6 +239,9 @@ public class VerticalSocialLoginListView extends LinearLayout {
                 break;
             case Const.TYPE_GOOGLE:
                 str = getContext().getString(R.string.authing_login_by_google);
+                break;
+            case Const.TYPE_FINGER:
+                str = getContext().getString(R.string.authing_login_by_finger);
                 break;
         }
         return str;

@@ -26,6 +26,7 @@ public class AuthFlow implements Serializable {
     public static final String KEY_MFA_EMAIL = "mfa_email";
     public static final String KEY_MFA_RECOVERY_CODE = "mfa_recovery_code";
     public static final String KEY_EXTENDED_FIELDS = "extended_fields";
+    public static final String KEY_PUSH_DATA = "push_data";
     private Map<String, Object> data = new HashMap<>();
 
     private int indexLayoutId;
@@ -51,7 +52,6 @@ public class AuthFlow implements Serializable {
     private int mfaRecoveryCurrentStep;
     private int[] mfaFaceLayoutIds;
     private int mfaFaceCurrentStep; // index starting from 0
-
     // user info complete
     private int[] userInfoCompleteLayoutIds;
     private int userInfoCompleteItemNormal;
@@ -59,9 +59,12 @@ public class AuthFlow implements Serializable {
     private int userInfoCompleteItemPhone;
     private int userInfoCompleteItemSelect;
     private int userInfoCompleteItemDatePicker;
-
+    //reset password
     private int resetPasswordFirstLoginLayoutId;
     private int verifyEmailSendSuccessLayoutId;
+    //push
+    private int pushLoginLayoutId;
+    private int pushLoginSuccessLayoutId;
 
     private String scope = "openid profile email phone username address offline_access role extended_fields";
     private boolean skipConsent;
@@ -468,6 +471,28 @@ public class AuthFlow implements Serializable {
 
     public void setVerifyEmailSendSuccessLayoutId(int verifyEmailSendSuccessLayoutId) {
         this.verifyEmailSendSuccessLayoutId = verifyEmailSendSuccessLayoutId;
+    }
+
+    public int getPushLoginLayoutId() {
+        if (pushLoginLayoutId == 0) {
+            pushLoginLayoutId = R.layout.authing_push_login;
+        }
+        return pushLoginLayoutId;
+    }
+
+    public void setPushLoginLayoutId(int pushLoginLayoutId) {
+        this.pushLoginLayoutId = pushLoginLayoutId;
+    }
+
+    public int getPushLoginSuccessLayoutId() {
+        if (pushLoginSuccessLayoutId == 0) {
+            pushLoginSuccessLayoutId = R.layout.authing_push_login_success;
+        }
+        return pushLoginSuccessLayoutId;
+    }
+
+    public void setPushLoginSuccessLayoutId(int pushLoginSuccessLayoutId) {
+        this.pushLoginSuccessLayoutId = pushLoginSuccessLayoutId;
     }
 
     public Callback<UserInfo> getAuthCallback() {

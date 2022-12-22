@@ -104,7 +104,7 @@ public class MFAFaceView extends RelativeLayout {
         textView.setGravity(Gravity.CENTER);
         textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
         textView.setTextColor(getContext().getColor(R.color.authing_text_gray));
-        textView.setText("请靠近摄像头，再试一次");
+        textView.setText(getContext().getString(R.string.authing_again_face_verify));
         addView(textView, textParams);
         textView.setVisibility(GONE);
 
@@ -411,15 +411,17 @@ public class MFAFaceView extends RelativeLayout {
         stopPreview();
         stopLoading();
 
-        AuthActivity activity = (AuthActivity) getContext();
-        AuthFlow flow = activity.getFlow();
-        Intent intent = new Intent(getContext(), AuthActivity.class);
-        intent.putExtra(AuthActivity.AUTH_FLOW, flow);
-        intent.putExtra(AuthActivity.CONTENT_LAYOUT_ID, contentLayoutId);
-        intent.addFlags(Intent.FLAG_ACTIVITY_FORWARD_RESULT);
-        //activity.startActivityForResult(intent, AuthActivity.RC_LOGIN);
-        activity.startActivity(intent);
-        activity.finish();
+        if (getContext() instanceof AuthActivity){
+            AuthActivity activity = (AuthActivity) getContext();
+            AuthFlow flow = activity.getFlow();
+            Intent intent = new Intent(getContext(), AuthActivity.class);
+            intent.putExtra(AuthActivity.AUTH_FLOW, flow);
+            intent.putExtra(AuthActivity.CONTENT_LAYOUT_ID, contentLayoutId);
+            intent.addFlags(Intent.FLAG_ACTIVITY_FORWARD_RESULT);
+            //activity.startActivityForResult(intent, AuthActivity.RC_LOGIN);
+            activity.startActivity(intent);
+            activity.finish();
+        }
     }
 
     @Override

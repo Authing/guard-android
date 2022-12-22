@@ -177,7 +177,7 @@ public class GetVerifyCodeButton extends LoadingButton {
                     return;
                 }
             }
-            getSMSCode(phoneNumber);
+            post(() -> getSMSCode(phoneNumber));
         });
     }
 
@@ -228,7 +228,7 @@ public class GetVerifyCodeButton extends LoadingButton {
                     return;
                 }
             }
-            getEmailCode(email);
+            post(() -> getEmailCode(email));
         });
     }
 

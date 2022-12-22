@@ -4,11 +4,11 @@ plugins {
 }
 
 android {
-    compileSdk 31
+    compileSdk 32
 
     defaultConfig {
         minSdk 24
-        targetSdk 31
+        targetSdk 32
         versionCode 1
         versionName "1.0"
 
@@ -31,6 +31,7 @@ android {
 dependencies {
     implementation 'androidx.appcompat:appcompat:1.4.1'
     implementation "com.squareup.okhttp3:okhttp:4.9.2"
+    implementation "androidx.biometric:biometric:1.1.0"
 
     compileOnly 'io.github.yidun:quicklogin:3.2.4'
     compileOnly 'com.tencent.mm.opensdk:wechat-sdk-android:6.8.0'
@@ -38,5 +39,7 @@ dependencies {
     compileOnly files('libs/alipaysdk.aar')
     compileOnly files ('libs/larksso-3.0.8.aar')
     compileOnly 'com.google.android.gms:play-services-auth:20.2.0'
+    compileOnly 'com.getui:gtsdk:3.2.13.0'  //个推SDK
+    compileOnly 'com.getui:gtc:3.1.12.0'  //个推核心组件
 
 }

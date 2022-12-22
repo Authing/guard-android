@@ -11,13 +11,17 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
+import cn.authing.guard.Authing;
+
 public class Config {
 
     public interface ConfigCallback {
         void call(Config config);
     }
 
+    private String id;
     private String userPoolId;
+    private String userPoolName;
     private String identifier; // tenant domain
     private String requestHostname;
     private String name;
@@ -40,12 +44,23 @@ public class Config {
     private boolean internationalSmsEnable;
     private String userAgent;
     private boolean autoRegisterThenLoginHintInfo;
+    private String publicKey;
+    private String webSocket;
+    private boolean enableAppLogin;
+    private boolean enableFingerprintLogin;
+    private boolean enableFaceLogin;
+    private List<String> livingAuthSortConfig;
+
 
     public static Config parse(JSONObject data) throws JSONException {
         Config config = new Config();
 
+        if (data.has("id"))
+            config.setId(data.getString("id"));
         if (data.has("userPoolId"))
             config.setUserPoolId(data.getString("userPoolId"));
+        if (data.has("userpoolName"))
+            config.setUserPoolName(data.getString("userpoolName"));
         if (data.has("identifier"))
             config.setIdentifier(data.getString("identifier"));
         if (data.has("requestHostname"))
@@ -60,6 +75,16 @@ public class Config {
             config.setVerifyCodeLength(data.getInt("verifyCodeLength"));
         if (data.has("passwordStrength"))
             config.setPasswordStrength(data.getInt("passwordStrength"));
+        if (data.has("publicKey"))
+            config.setPublicKey(data.getString("publicKey"));
+        if (data.has("websocket"))
+            config.setWebSocket(data.getString("websocket"));
+        if (data.has("enableAppLogin"))
+            config.setEnableAppLogin(data.getBoolean("enableAppLogin"));
+        if (data.has("enableFingerprintLogin"))
+            config.setEnableFingerprintLogin(data.getBoolean("enableFingerprintLogin"));
+        if (data.has("enableFaceLogin"))
+            config.setEnableFaceLogin(data.getBoolean("enableFaceLogin"));
 
         if (data.has("loginTabs")) {
             JSONObject loginTabs = data.getJSONObject("loginTabs");
@@ -139,7 +164,28 @@ public class Config {
                 config.setAutoRegisterThenLoginHintInfo(internationalSmsConfig.getBoolean("autoRegisterThenLoginHintInfo"));
             }
         }
+
+        if (data.has("livingAuthSortConfig") && !data.isNull("livingAuthSortConfig")) {
+            JSONArray livingAuthSortConfig = data.getJSONArray("livingAuthSortConfig");
+            config.setLivingAuthSortConfig(toStringList(livingAuthSortConfig));
+        }
         return config;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getUserPoolName() {
+        return userPoolName;
+    }
+
+    public void setUserPoolName(String userPoolName) {
+        this.userPoolName = userPoolName;
     }
 
     public String getUserPoolId() {
@@ -254,6 +300,29 @@ public class Config {
         this.passwordStrength = passwordStrength;
     }
 
+    public String getPublicKey() {
+        return publicKey;
+    }
+
+    public void setPublicKey(String publicKey) {
+        if (publicKey.contains("-----BEGIN PUBLIC KEY-----\n")
+                && publicKey.contains("\n-----END PUBLIC KEY-----\n")) {
+            this.publicKey = publicKey.substring("-----BEGIN PUBLIC KEY-----".length(),
+                    publicKey.length() - "-----END PUBLIC KEY-----".length() - 1);
+            return;
+        }
+        this.publicKey = publicKey;
+        Authing.setPublicKey(publicKey);
+    }
+
+    public String getWebSocket() {
+        return webSocket;
+    }
+
+    public void setWebSocket(String webSocket) {
+        this.webSocket = webSocket;
+    }
+
     public boolean isSkipComplateFileds() {
         return skipComplateFileds;
     }
@@ -316,6 +385,38 @@ public class Config {
 
     public void setAutoRegisterThenLoginHintInfo(boolean autoRegisterThenLoginHintInfo) {
         this.autoRegisterThenLoginHintInfo = autoRegisterThenLoginHintInfo;
+    }
+
+    public boolean isEnableAppLogin() {
+        return enableAppLogin;
+    }
+
+    public void setEnableAppLogin(boolean enableAppLogin) {
+        this.enableAppLogin = enableAppLogin;
+    }
+
+    public boolean isEnableFingerprintLogin() {
+        return enableFingerprintLogin;
+    }
+
+    public void setEnableFingerprintLogin(boolean enableFingerprintLogin) {
+        this.enableFingerprintLogin = enableFingerprintLogin;
+    }
+
+    public boolean isEnableFaceLogin() {
+        return enableFaceLogin;
+    }
+
+    public void setEnableFaceLogin(boolean enableFaceLogin) {
+        this.enableFaceLogin = enableFaceLogin;
+    }
+
+    public List<String> getLivingAuthSortConfig() {
+        return livingAuthSortConfig;
+    }
+
+    public void setLivingAuthSortConfig(List<String> livingAuthSortConfig) {
+        this.livingAuthSortConfig = livingAuthSortConfig;
     }
 
     public String getSocialConnectionId(String type) {

@@ -123,11 +123,15 @@
     <string name="authing_login_by_we_com">使用 企业微信 登录</string>
     <string name="authing_login_by_lark">使用 飞书 登录</string>
     <string name="authing_login_by_google">使用 Google 登录</string>
+    <string name="authing_login_by_finger">使用 指纹识别 登录</string>
+    <string name="authing_login_by_face">使用 人脸识别 登录</string>
     <string name="authing_social_alipay">支付宝</string>
     <string name="authing_social_wechat">微信</string>
     <string name="authing_social_we_com">企业微信</string>
     <string name="authing_social_lark">飞书</string>
     <string name="authing_social_google">Google</string>
+    <string name="authing_finger">指纹识别</string>
+    <string name="authing_face">人脸识别</string>
     <string name="authing_get_code_again">重新发送验证码</string>
     <string name="authing_verify_succeed">验证通过</string>
     <string name="authing_verify_failed">验证不通过，请再试一次</string>
@@ -139,6 +143,12 @@
     <string name="authing_phone_verify_failed">手机号码已经绑定了其它用户</string>
     <string name="authing_start_face_verify">开始人脸验证</string>
     <string name="authing_again_face_verify">请靠近摄像头，再试一次</string>
+    <string name="authing_push_login_confirm">登录确认</string>
+    <string name="authing_push_login_confirm_tip">用户「%1$s」登录应用「%2$s」网页端</string>
+    <string name="authing_push_confirm_login">确认登录</string>
+    <string name="authing_push_cancel_login">取消登录</string>
+    <string name="authing_push_login_success">登录成功</string>
+    <string name="authing_push_login_success_tip">你已成功登录应用「%1$s」网页端</string>
 
     <!--user profile-->
     <string name="authing_user_profile">个人中心</string>

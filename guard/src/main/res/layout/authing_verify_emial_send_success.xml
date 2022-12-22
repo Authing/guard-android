@@ -19,7 +19,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="80dp"
         android:layout_gravity="center"
-        android:src="@mipmap/authing_reset_password_success"/>
+        android:src="@mipmap/authing_flow_success"/>
 
     <TextView
         android:layout_width="match_parent"

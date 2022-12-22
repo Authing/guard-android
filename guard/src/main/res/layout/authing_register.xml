@@ -208,8 +208,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="40dp"
-            app:showSocialTitle="true"
-            app:socialTitle="@string/authing_3rd_login"/>
+            app:showSocialTitle="true"/>
 
         <Space
             android:layout_width="match_parent"

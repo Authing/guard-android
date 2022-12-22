@@ -98,25 +98,27 @@ public class MFARecoveryButton extends MFABaseButton {
         stopLoadingVisualEffect();
         if (code == 200) {
             try {
-                AuthActivity activity = (AuthActivity) getContext();
-                AuthFlow flow = activity.getFlow();
-                flow.getData().put(KEY_MFA_RECOVERY_CODE, userInfo.getRecoveryCode());
-                int step = flow.getMfaRecoveryCurrentStep();
-                flow.setMfaRecoveryCurrentStep(step++);
+                if (getContext() instanceof AuthActivity){
+                    AuthActivity activity = (AuthActivity) getContext();
+                    AuthFlow flow = activity.getFlow();
+                    flow.getData().put(KEY_MFA_RECOVERY_CODE, userInfo.getRecoveryCode());
+                    int step = flow.getMfaRecoveryCurrentStep();
+                    flow.setMfaRecoveryCurrentStep(step++);
 
-                Intent intent = new Intent(getContext(), AuthActivity.class);
-                intent.putExtra(AuthActivity.AUTH_FLOW, flow);
-                int[] ids = flow.getMfaRecoveryLayoutIds();
-                if (step < ids.length) {
-                    intent.putExtra(AuthActivity.CONTENT_LAYOUT_ID, ids[step]);
-                } else {
-                    // fallback to our default
-                    intent.putExtra(AuthActivity.CONTENT_LAYOUT_ID, R.layout.authing_mfa_otp_recovery_1);
+                    Intent intent = new Intent(getContext(), AuthActivity.class);
+                    intent.putExtra(AuthActivity.AUTH_FLOW, flow);
+                    int[] ids = flow.getMfaRecoveryLayoutIds();
+                    if (step < ids.length) {
+                        intent.putExtra(AuthActivity.CONTENT_LAYOUT_ID, ids[step]);
+                    } else {
+                        // fallback to our default
+                        intent.putExtra(AuthActivity.CONTENT_LAYOUT_ID, R.layout.authing_mfa_otp_recovery_1);
+                    }
+                    intent.addFlags(Intent.FLAG_ACTIVITY_FORWARD_RESULT);
+                    //activity.startActivityForResult(intent, AuthActivity.RC_LOGIN);
+                    activity.startActivity(intent);
+                    activity.finish();
                 }
-                intent.addFlags(Intent.FLAG_ACTIVITY_FORWARD_RESULT);
-                //activity.startActivityForResult(intent, AuthActivity.RC_LOGIN);
-                activity.startActivity(intent);
-                activity.finish();
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -126,10 +128,12 @@ public class MFARecoveryButton extends MFABaseButton {
     }
 
     private void done() {
-        AuthActivity activity = (AuthActivity) getContext();
-        AuthFlow flow = activity.getFlow();
-        UserInfo userInfo = (UserInfo) flow.getData().get(KEY_USER_INFO);
+        if (getContext() instanceof AuthActivity){
+            AuthActivity activity = (AuthActivity) getContext();
+            AuthFlow flow = activity.getFlow();
+            UserInfo userInfo = (UserInfo) flow.getData().get(KEY_USER_INFO);
 
-        mfaVerifyOk(200, "", userInfo);
+            mfaVerifyOk(200, "", userInfo);
+        }
     }
 }

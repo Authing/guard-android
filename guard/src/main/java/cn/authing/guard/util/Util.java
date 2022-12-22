@@ -1,10 +1,10 @@
 package cn.authing.guard.util;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
+import android.content.pm.PackageManager;
 import android.provider.Settings;
 import android.text.TextUtils;
 import android.util.Base64;
@@ -14,6 +14,9 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
+
+import com.igexin.sdk.PushManager;
+import com.netease.nis.quicklogin.QuickLogin;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -44,6 +47,7 @@ import java.util.regex.Pattern;
 import javax.crypto.Cipher;
 
 import cn.authing.guard.AccountEditText;
+import cn.authing.guard.AuthCallback;
 import cn.authing.guard.Authing;
 import cn.authing.guard.CountryCodePicker;
 import cn.authing.guard.EmailEditText;
@@ -52,11 +56,14 @@ import cn.authing.guard.PasswordEditText;
 import cn.authing.guard.PhoneNumberEditText;
 import cn.authing.guard.R;
 import cn.authing.guard.VerifyCodeEditText;
+import cn.authing.guard.activity.AuthActivity;
 import cn.authing.guard.data.Config;
 import cn.authing.guard.data.Country;
+import cn.authing.guard.data.DeviceInfo;
 import cn.authing.guard.data.Safe;
 import cn.authing.guard.data.UserInfo;
 import cn.authing.guard.flow.AuthFlow;
+import cn.authing.guard.network.AuthClient;
 
 public class Util {
 
@@ -79,7 +86,7 @@ public class Util {
     }
 
     public static String encryptPassword(String password) {
-        if (isNull(password)){
+        if (isNull(password)) {
             return null;
         }
         try {
@@ -99,17 +106,17 @@ public class Util {
     public static List<Integer> intDigits(int i) {
         int temp = i;
         ArrayList<Integer> array = new ArrayList<>();
-        do{
+        do {
             array.add(0, temp % 10);
             temp /= 10;
-        } while  (temp > 0);
+        } while (temp > 0);
         return array;
     }
 
     public static List<View> findAllViewByClass(View current, Class<?> T) {
         View view = current.getRootView();
         List<View> result = new ArrayList<>();
-        _findAllViewByClass((ViewGroup)view, T, result);
+        _findAllViewByClass((ViewGroup) view, T, result);
         return result;
     }
 
@@ -117,7 +124,7 @@ public class Util {
         for (int i = 0; i < parent.getChildCount(); i++) {
             View child = parent.getChildAt(i);
             if (child instanceof ViewGroup) {
-                _findAllViewByClass((ViewGroup)child, T, result);
+                _findAllViewByClass((ViewGroup) child, T, result);
             }
 
             if (child.getClass().equals(T)) {
@@ -132,8 +139,8 @@ public class Util {
 
     public static View findViewByClass(View current, Class<?> T, boolean onlyVisible) {
         View view = current.getRootView();
-        if (view instanceof ViewGroup){
-            return findChildViewByClass((ViewGroup)view, T, onlyVisible);
+        if (view instanceof ViewGroup) {
+            return findChildViewByClass((ViewGroup) view, T, onlyVisible);
         }
         return view;
     }
@@ -142,7 +149,7 @@ public class Util {
         for (int i = 0; i < parent.getChildCount(); i++) {
             View child = parent.getChildAt(i);
             if (child instanceof ViewGroup && (!onlyVisible || child.isShown())) {
-                View result = findChildViewByClass((ViewGroup)child, T, onlyVisible);
+                View result = findChildViewByClass((ViewGroup) child, T, onlyVisible);
                 if (result != null) {
                     return result;
                 }
@@ -159,7 +166,7 @@ public class Util {
         String account = null;
         View v = findViewByClass(current, AccountEditText.class);
         if (v instanceof AccountEditText) {
-            AccountEditText editText = (AccountEditText)v;
+            AccountEditText editText = (AccountEditText) v;
             account = editText.getText().toString();
         }
         if (TextUtils.isEmpty(account)) {
@@ -175,7 +182,7 @@ public class Util {
         String phone = null;
         View v = findViewByClass(current, PhoneNumberEditText.class);
         if (v instanceof PhoneNumberEditText) {
-            PhoneNumberEditText editText = (PhoneNumberEditText)v;
+            PhoneNumberEditText editText = (PhoneNumberEditText) v;
             phone = editText.getText().toString();
         }
         if (TextUtils.isEmpty(phone)) {
@@ -203,7 +210,7 @@ public class Util {
         String phoneCountryCode = null;
         View v = findViewByClass(current, CountryCodePicker.class);
         if (v instanceof CountryCodePicker) {
-            phoneCountryCode = ((CountryCodePicker)v).getCountryCode();
+            phoneCountryCode = ((CountryCodePicker) v).getCountryCode();
         }
         if (TextUtils.isEmpty(phoneCountryCode)) {
             return getPhoneCountryCodeByCache(current.getContext());
@@ -225,7 +232,7 @@ public class Util {
         return phoneCountryCode;
     }
 
-    public static String getEmail(View current){
+    public static String getEmail(View current) {
         String email = "";
         View v = findViewByClass(current, EmailEditText.class);
         if (v instanceof EmailEditText) {
@@ -255,7 +262,7 @@ public class Util {
         String password = null;
         View v = findViewByClass(current, PasswordEditText.class);
         if (v instanceof PasswordEditText) {
-            PasswordEditText editText = (PasswordEditText)v;
+            PasswordEditText editText = (PasswordEditText) v;
             password = editText.getText().toString();
         }
         if (TextUtils.isEmpty(password)) {
@@ -267,17 +274,17 @@ public class Util {
     public static String getVerifyCode(View current) {
         View v = findViewByClass(current, VerifyCodeEditText.class);
         if (v instanceof VerifyCodeEditText) {
-            VerifyCodeEditText editText = (VerifyCodeEditText)v;
+            VerifyCodeEditText editText = (VerifyCodeEditText) v;
             return editText.getText().toString();
         }
         return null;
     }
 
     public static void setErrorText(View view, String text) {
-        view.post(()->{
+        view.post(() -> {
             View v = Util.findViewByClass(view, ErrorTextView.class);
             if (v instanceof ErrorTextView) {
-                ErrorTextView errorView = (ErrorTextView)v;
+                ErrorTextView errorView = (ErrorTextView) v;
                 errorView.setText(text);
                 if (TextUtils.isEmpty(text)) {
                     v.setVisibility(View.INVISIBLE);
@@ -328,9 +335,9 @@ public class Util {
         return null;
     }
 
-    public static int getThemeAccentColor (final Context context) {
-        final TypedValue value = new TypedValue ();
-        context.getTheme().resolveAttribute (R.attr.colorAccent, value, true);
+    public static int getThemeAccentColor(final Context context) {
+        final TypedValue value = new TypedValue();
+        context.getTheme().resolveAttribute(R.attr.colorAccent, value, true);
         return value.data;
     }
 
@@ -344,7 +351,7 @@ public class Util {
         seed = asciiUpperCase + asciiLowerCase + digits;
         seedLength = seed.length();
         StringBuilder sb = new StringBuilder();
-        for (int i = 0;i < length;++i) {
+        for (int i = 0; i < length; ++i) {
             sb.append(seed.charAt(rand.nextInt(seedLength)));
         }
         return sb.toString();
@@ -376,7 +383,7 @@ public class Util {
         return countries;
     }
 
-    public static boolean isCn(){
+    public static boolean isCn() {
         String lang = Locale.getDefault().getLanguage();
         return !Util.isNull(lang) && lang.contains("zh");
     }
@@ -385,9 +392,9 @@ public class Util {
         String country = Locale.getDefault().getCountry();
         if ("TW".equals(country)) {
             return "zh-TW";
-        } else if("US".equals(country)) {
+        } else if ("US".equals(country)) {
             return "en-US";
-        } else if("JP".equals(country)) {
+        } else if ("JP".equals(country)) {
             return "ja-JP";
         }
         return "zh-CN";
@@ -415,7 +422,7 @@ public class Util {
                 + "(\\d{1,2}|(0|1)\\" + "d{2}|2[0-4]\\d|25[0-5])";
 
         Pattern ip_pattern = Pattern.compile(numRange);
-        Matcher match= ip_pattern.matcher(name);
+        Matcher match = ip_pattern.matcher(name);
         return match.matches();
     }
 
@@ -434,15 +441,17 @@ public class Util {
 
     public static List<String> toStringList(JSONArray array) throws JSONException {
         List<String> list = new ArrayList<>();
-        int size = array.length();
-        for (int i = 0; i < size; i++) {
-            list.add((array.getString(i)));
+        if (array != null){
+            int size = array.length();
+            for (int i = 0; i < size; i++) {
+                list.add((array.getString(i)));
+            }
         }
         return list;
     }
 
-    public static void setStatusBarColor(Activity activity, int colorResId){
-        if (null == activity){
+    public static void setStatusBarColor(Activity activity, int colorResId) {
+        if (null == activity) {
             return;
         }
         Window window = activity.getWindow();
@@ -458,25 +467,25 @@ public class Util {
     }
 
     public static void hideKeyboard(Activity activity) {
-        if (activity == null){
+        if (activity == null) {
             return;
         }
-        InputMethodManager imm = (InputMethodManager)activity.getSystemService(Context.INPUT_METHOD_SERVICE);
-        if (imm!= null && activity.getWindow().getAttributes().softInputMode != WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN) {
-            if (activity.getCurrentFocus() != null){
+        InputMethodManager imm = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
+        if (imm != null && activity.getWindow().getAttributes().softInputMode != WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN) {
+            if (activity.getCurrentFocus() != null) {
                 imm.hideSoftInputFromWindow(activity.getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
             }
         }
     }
 
-    public static JSONObject pareUnderLine(JSONObject object){
-        if (object == null){
+    public static JSONObject pareUnderLine(JSONObject object) {
+        if (object == null) {
             return object;
         }
         try {
             JSONObject parsedObject = new JSONObject();
             Iterator<String> sIterator = object.keys();
-            while(sIterator.hasNext()){
+            while (sIterator.hasNext()) {
                 String key = sIterator.next();
                 String value = object.getString(key);
                 String newKey = underlineToHump(key);
@@ -489,7 +498,7 @@ public class Util {
         return object;
     }
 
-    public static String underlineToHump(String str){
+    public static String underlineToHump(String str) {
         //正则匹配下划线及后一个字符，删除下划线并将匹配的字符转成大写
         Matcher matcher = Pattern.compile("_([a-z])").matcher(str);
         StringBuffer sb = new StringBuffer(str);
@@ -510,6 +519,93 @@ public class Util {
     public static boolean shouldCompleteAfterLogin(Config config) {
         List<String> complete = (config != null ? config.getCompleteFieldsPlace() : null);
         return complete != null && complete.contains("login");
+    }
+
+    public static String getUserName(UserInfo userInfo){
+        String userName = "-";
+        if (userInfo == null){
+            return userName;
+        }
+        if (!Util.isNull(userInfo.getUsername())){
+            return userInfo.getUsername();
+        }
+        if (!Util.isNull(userInfo.getName())){
+            return userInfo.getName();
+        }
+        if (!Util.isNull(userInfo.getNickname())){
+            return userInfo.getNickname();
+        }
+        if (!Util.isNull(userInfo.getPhone_number())){
+            return userInfo.getPhone_number();
+        }
+        if (!Util.isNull(userInfo.getEmail())){
+            return userInfo.getEmail();
+        }
+        return userName;
+    }
+
+
+    /**
+     * 登录成功逻辑统一处理
+     */
+    public static void loginSuccess(Activity activity, UserInfo userInfo){
+        pushDeviceInfo(activity);
+        Intent intent = new Intent();
+        intent.putExtra("user", userInfo);
+        activity.setResult(AuthActivity.OK, intent);
+        activity.finish();
+        QuickLogin.getInstance().quitActivity();
+    }
+
+
+    public static void pushDeviceInfo(Context context) {
+        String[] permissions = {Manifest.permission.READ_PHONE_STATE, Manifest.permission.ACCESS_FINE_LOCATION};
+        //验证是否许可权限
+        boolean hasPermission = true;
+        for (String str : permissions) {
+            if (context.checkSelfPermission(str) != PackageManager.PERMISSION_GRANTED) {
+                //申请权限
+                //int REQUEST_CODE_CONTACT = 103;
+                //((Activity) context).requestPermissions(permissions, REQUEST_CODE_CONTACT);
+                hasPermission = false;
+            }
+        }
+
+        if (!hasPermission) {
+            return;
+        }
+        DeviceInfo deviceInfo = new DeviceInfo();
+        deviceInfo.setUniqueId(DeviceUtils.getUniqueDeviceId(context));
+        deviceInfo.setName(PhoneUtils.getDeviceName());
+        deviceInfo.setVersion(PhoneUtils.getVerName(context));
+        deviceInfo.setHks("");
+        deviceInfo.setFde("");
+        deviceInfo.setHor(DeviceUtils.isDeviceRooted());
+        deviceInfo.setSn(PhoneUtils.getSerial());
+        deviceInfo.setType("Mobile");
+        deviceInfo.setProducer(PhoneUtils.getManufacturer());
+        deviceInfo.setMod(PhoneUtils.getModel());
+        deviceInfo.setOs("Android " + PhoneUtils.getSDKVersionName());
+        deviceInfo.setImei(PhoneUtils.getIMEI(context));
+        deviceInfo.setMeid(PhoneUtils.getMEID(context));
+        deviceInfo.setDescription("");
+        AuthClient.createDevice(deviceInfo, new AuthCallback<JSONObject>() {
+            @Override
+            public void call(int code, String message, JSONObject data) {
+            }
+        });
+    }
+
+    public static void pushCid(Context context){
+        String cid = PushManager.getInstance().getClientid(context);
+        AuthClient.bindPushCid(cid, new AuthCallback<JSONObject>() {
+            @Override
+            public void call(int code, String message, JSONObject data) {
+                if (code == 200){
+
+                }
+            }
+        });
     }
 
 }

@@ -169,6 +169,7 @@ public class RegisterButton extends LoadingButton implements IRegisterRequestCal
                         }
 
                         post(() -> {
+                            Util.pushDeviceInfo(activity);
                             Intent intent = new Intent();
                             intent.putExtra("user", userInfo);
                             activity.setResult(AuthActivity.OK, intent);

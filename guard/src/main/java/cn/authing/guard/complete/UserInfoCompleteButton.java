@@ -148,6 +148,7 @@ public class UserInfoCompleteButton extends LoadingButton {
             updateCustom();
         } else {
             AuthActivity activity = (AuthActivity) getContext();
+            Util.pushDeviceInfo(activity);
             Intent intent = new Intent();
             intent.putExtra("user", userInfo);
             activity.setResult(AuthActivity.OK, intent);

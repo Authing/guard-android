@@ -3,7 +3,9 @@ package cn.authing;
 import static cn.authing.guard.activity.AuthActivity.OK;
 import static cn.authing.guard.activity.AuthActivity.RC_LOGIN;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -216,5 +218,22 @@ public class SampleListActivity extends AppCompatActivity {
         new Push().registerDevice(this);
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        requestPermission();
+    }
+
+    private void requestPermission(){
+        String[] permissions = {android.Manifest.permission.READ_PHONE_STATE, Manifest.permission.ACCESS_FINE_LOCATION};
+        for (String str : permissions) {
+            if (checkSelfPermission(str) != PackageManager.PERMISSION_GRANTED) {
+                //申请权限
+                int REQUEST_CODE_CONTACT = 103;
+                requestPermissions(permissions, REQUEST_CODE_CONTACT);
+            }
+        }
     }
 }

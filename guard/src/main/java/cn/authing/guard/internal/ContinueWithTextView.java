@@ -34,7 +34,8 @@ public class ContinueWithTextView extends LinearLayout {
     public ContinueWithTextView(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         Authing.getPublicConfig(config -> {
-            if (config == null || config.getSocialConfigs() == null || config.getSocialConfigs().size() == 0) {
+            if (config == null || ((config.getSocialConfigs() == null || config.getSocialConfigs().size() == 0)
+                    && (!config.isEnableFingerprintLogin()))) {
                 setVisibility(View.GONE);
                 return;
             }
@@ -42,8 +43,10 @@ public class ContinueWithTextView extends LinearLayout {
                 SocialConfig socialConfig = config.getSocialConfigs().get(0);
                 if (socialConfig != null && !TextUtils.isEmpty(socialConfig.getType())
                         && Const.EC_TYPE_YI_DUN.endsWith(socialConfig.getType())){
-                    setVisibility(View.GONE);
-                    return;
+                    if (!config.isEnableFingerprintLogin()){
+                        setVisibility(View.GONE);
+                        return;
+                    }
                 }
             }
 
@@ -60,8 +63,11 @@ public class ContinueWithTextView extends LinearLayout {
             int textColor = array.getColor(R.styleable.ContinueWithTextView_middleTextColor, context.getColor(R.color.authing_text_gray));
             array.recycle();
 
+            String defaultText = config.isEnableFingerprintLogin()
+                    ? getContext().getString(R.string.authing_other_login)
+                    : getContext().getString(R.string.authing_3rd_login);
             textView = new TextView(getContext());
-            textView.setText(TextUtils.isEmpty(text) ? getContext().getString(R.string.authing_3rd_login) : text);
+            textView.setText(TextUtils.isEmpty(text) ? defaultText : text);
             textView.setTextSize(TypedValue.COMPLEX_UNIT_PX, textSize);
             textView.setTextColor(textColor);
             textView.setPadding((int) Util.dp2px(context, 8), 0, (int) Util.dp2px(context, 8), 0);

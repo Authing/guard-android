@@ -275,4 +275,18 @@
         </attr>
     </declare-styleable>
 
+    <declare-styleable name="PushLoginButton">
+        <attr name="pushLoginType" format="enum" >
+            <enum name="confirm" value="0"/>
+            <enum name="cancel" value="1"/>
+        </attr>
+    </declare-styleable>
+
+    <declare-styleable name="PushLoginTipsText">
+        <attr name="pushLoginTipsType" format="enum" >
+            <enum name="login_tip" value="0"/>
+            <enum name="login_success_tip" value="1"/>
+        </attr>
+    </declare-styleable>
+
 </resources>

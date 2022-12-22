@@ -100,16 +100,18 @@ public class MFAPhoneButton extends MFABaseButton {
         }
     }
 
-    private void next() {
-        AuthActivity activity = (AuthActivity) getContext();
-        AuthFlow flow = activity.getFlow();
-        Intent intent = new Intent(getContext(), AuthActivity.class);
-        intent.putExtra(AuthActivity.AUTH_FLOW, flow);
-        intent.putExtra(AuthActivity.CONTENT_LAYOUT_ID, flow.getMfaPhoneLayoutIds()[2]);
-        intent.addFlags(Intent.FLAG_ACTIVITY_FORWARD_RESULT);
-        //activity.startActivityForResult(intent, AuthActivity.RC_LOGIN);
-        activity.startActivity(intent);
-        activity.finish();
+    protected void next() {
+        if (getContext() instanceof AuthActivity){
+            AuthActivity activity = (AuthActivity) getContext();
+            AuthFlow flow = activity.getFlow();
+            Intent intent = new Intent(getContext(), AuthActivity.class);
+            intent.putExtra(AuthActivity.AUTH_FLOW, flow);
+            intent.putExtra(AuthActivity.CONTENT_LAYOUT_ID, flow.getMfaPhoneLayoutIds()[2]);
+            intent.addFlags(Intent.FLAG_ACTIVITY_FORWARD_RESULT);
+            //activity.startActivityForResult(intent, AuthActivity.RC_LOGIN);
+            activity.startActivity(intent);
+            activity.finish();
+        }
     }
 
     private void mfaVerifyDone(int code, String message, UserInfo userInfo) {

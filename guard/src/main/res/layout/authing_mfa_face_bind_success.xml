@@ -38,7 +38,7 @@
         android:layout_weight="1"
         android:minHeight="16dp" />
 
-    <cn.authing.guard.mfa.GoFinishLoginButton
+    <cn.authing.guard.mfa.GoMFAFinishLoginButton
         style="?android:attr/borderlessButtonStyle"
         android:layout_width="match_parent"
         android:layout_height="@dimen/authing_button_height"
@@ -52,7 +52,7 @@
         android:textColor="#FFF"
         android:textSize="@dimen/authing_text_large_size" />
 
-    <cn.authing.guard.mfa.GoFinishLoginTipsText
+    <cn.authing.guard.mfa.GoMFAFinishLoginTipsText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"

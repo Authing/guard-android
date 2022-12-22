@@ -4,15 +4,24 @@ plugins {
 }
 
 android {
-    compileSdk 31
+    compileSdk 32
 
     defaultConfig {
         applicationId "cn.authing.guard"
         minSdk 24
-        targetSdk 31
+        targetSdk 32
         versionCode 1
-        versionName "1.4.2"
+        versionName "1.4.4"
         archivesBaseName = "GuardDemo-$versionName"
+        ndk {
+            // 注意：这里需要添加项目所需 CPU 类型的最小集
+            abiFilters "armeabi", "armeabi-v7a", "x86_64", "x86"
+        }
+        manifestPlaceholders = [
+                //从 3.1.2.0 版本开始，APPID 占位符从 GETUI_APP_ID 切换为 GETUI_APPID
+                //后续所有产品的 APPID 均统一配置为 GETUI_APPID 占位符
+                GETUI_APPID       : "hi6dpigOEb8flDh6wQTy9",
+        ]
     }
 
     signingConfigs {
@@ -77,4 +86,7 @@ dependencies {
 
     // Google
     implementation 'com.google.android.gms:play-services-auth:20.2.0'
+
+    implementation 'com.getui:gtsdk:3.2.13.0'  //个推SDK
+    implementation 'com.getui:gtc:3.1.12.0'  //个推核心组件
 }

@@ -13,7 +13,6 @@
             android:layout_height="@dimen/authing_title_layout_height"
             android:paddingStart="@dimen/authing_form_start_end_margin"
             android:paddingEnd="@dimen/authing_form_start_end_margin"
-            app:checkNetWork="true"
             app:showTitleText="true"
             app:titleText="@string/authing_user_info_complete"
             app:showSkipText="true"

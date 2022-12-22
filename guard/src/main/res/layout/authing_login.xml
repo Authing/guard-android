@@ -243,8 +243,7 @@
             android:layout_marginTop="40dp"
             android:layout_marginStart="@dimen/authing_form_start_end_margin"
             android:layout_marginEnd="@dimen/authing_form_start_end_margin"
-            app:showSocialTitle="true"
-            app:socialTitle="@string/authing_3rd_login"/>
+            app:showSocialTitle="true" />
 
         <Space
             android:layout_width="match_parent"

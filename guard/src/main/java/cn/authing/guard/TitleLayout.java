@@ -217,6 +217,7 @@ public class TitleLayout extends RelativeLayout {
     private void skipClicked(View v){
         if (mContext instanceof AuthActivity) {
             AuthActivity activity = (AuthActivity) getContext();
+            Util.pushDeviceInfo(activity);
             Intent intent = new Intent();
             intent.putExtra("user", Authing.getCurrentUser());
             activity.setResult(AuthActivity.OK, intent);

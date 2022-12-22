@@ -22,25 +22,27 @@ import cn.authing.guard.R;
 import cn.authing.guard.activity.AuthActivity;
 import cn.authing.guard.data.Config;
 import cn.authing.guard.data.ExtendedField;
+import cn.authing.guard.data.Safe;
 import cn.authing.guard.flow.AuthFlow;
 import cn.authing.guard.flow.FlowHelper;
+import cn.authing.guard.util.Util;
 
-public class GoFinishLoginTipsText extends AppCompatTextView {
+public class GoMFAFinishLoginTipsText extends AppCompatTextView {
 
     private String countDownTip;
     private int countdown = 5;
     private CountDownTimer countDownTimer;
     private boolean canceled;
 
-    public GoFinishLoginTipsText(@NonNull Context context) {
+    public GoMFAFinishLoginTipsText(@NonNull Context context) {
         this(context, null);
     }
 
-    public GoFinishLoginTipsText(@NonNull Context context, @Nullable AttributeSet attrs) {
+    public GoMFAFinishLoginTipsText(@NonNull Context context, @Nullable AttributeSet attrs) {
         this(context, attrs, 0);
     }
 
-    public GoFinishLoginTipsText(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
+    public GoMFAFinishLoginTipsText(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         init(context, attrs);
     }
@@ -78,14 +80,16 @@ public class GoFinishLoginTipsText extends AppCompatTextView {
             @Override
             public void onFinish() {
                 if (!canceled && context instanceof AuthActivity) {
+                    Safe.saveRecoveryCode("");
                     Authing.getPublicConfig((config) -> {
                         AuthActivity activity = (AuthActivity) getContext();
                         AuthFlow flow = (AuthFlow) activity.getIntent().getSerializableExtra(AuthActivity.AUTH_FLOW);
                         List<ExtendedField> missingFields = FlowHelper.missingFields(config, Authing.getCurrentUser());
                         if (shouldCompleteAfterLogin(config) && missingFields.size() > 0) {
                             flow.getData().put(AuthFlow.KEY_USER_INFO, Authing.getCurrentUser());
-                            FlowHelper.handleUserInfoComplete(GoFinishLoginTipsText.this, missingFields);
+                            FlowHelper.handleUserInfoComplete(GoMFAFinishLoginTipsText.this, missingFields);
                         } else {
+                            Util.pushDeviceInfo(activity);
                             Intent intent = new Intent();
                             intent.putExtra("user", Authing.getCurrentUser());
                             activity.setResult(AuthActivity.OK, intent);

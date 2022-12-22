@@ -34,37 +34,41 @@ public class Guardian {
     }
 
     public static void get(String endpoint, @NotNull GuardianCallback callback) {
-        request(endpoint, "GET", null, callback);
+        request(endpoint, "GET", null, getToken(), callback);
     }
 
     public static void post(String endpoint, JSONObject body, @NotNull GuardianCallback callback) {
-        request(endpoint, "POST", body.toString(), callback);
+        request(endpoint, "POST", body.toString(), getToken(), callback);
+    }
+
+    public static void postMfa(String endpoint, JSONObject body, @NotNull GuardianCallback callback) {
+        request(endpoint, "POST", body.toString(), MFA_TOKEN, callback);
     }
 
     public static void delete(String endpoint, @NotNull GuardianCallback callback) {
-        request(endpoint, "DELETE", null, callback);
+        request(endpoint, "DELETE", null, getToken(), callback);
     }
 
-    private static void request(String url, String method, String body, @NotNull GuardianCallback callback) {
+    private static void request(String url, String method, String body, String token, @NotNull GuardianCallback callback) {
         Authing.getPublicConfig(config -> {
             if (config == null){
                 callback.call(new Response(Const.ERROR_CODE_10002, "Config not found", null));
                 return;
             }
 
-            request(config, url, method, body, callback);
+            request(config, url, method, body, token, callback);
         });
     }
 
-    public static void request(Config config, String url, String method, String body, @NotNull GuardianCallback callback) {
+    public static void request(Config config, String url, String method, String body, String token, @NotNull GuardianCallback callback) {
         new Thread() {
             public void run() {
-                _request(config, url, method, body, callback);
+                _request(config, url, method, body, token, callback);
             }
         }.start();
     }
 
-    private static void _request(Config config, String endpoint, String method, String body, @NotNull GuardianCallback callback) {
+    private static void _request(Config config, String endpoint, String method, String body, String token, @NotNull GuardianCallback callback) {
         String url;
         if (config == null) {
             url = endpoint;
@@ -86,20 +90,10 @@ public class Guardian {
         builder.addHeader("x-authing-app-id", Authing.getAppId());
         builder.addHeader("x-authing-request-from", Const.SDK_TAG + SDK_VERSION);
         builder.addHeader("x-authing-lang", Util.getLangHeader());
-        UserInfo currentUser = Authing.getCurrentUser();
-        if (currentUser != null) {
-            String token = currentUser.getIdToken();
-            if (!Util.isNull(token)) {
-                builder.addHeader("Authorization", "Bearer " + token);
-            } else {
-                token = currentUser.getAccessToken();
-                if (!Util.isNull(token)) {
-                    builder.addHeader("Authorization", "Bearer " + token);
-                }
-            }
-        } else if (MFA_TOKEN != null) {
-            builder.addHeader("Authorization", "Bearer " + MFA_TOKEN);
+        if(!Util.isNull(token)){
+            builder.addHeader("Authorization", "Bearer " + token);
         }
+
         if (null != body) {
             MediaType type = (body.startsWith("{") || body.startsWith("[")) && (body.endsWith("]") || body.endsWith("}")) ? Const.JSON : Const.FORM;
             RequestBody requestBody = RequestBody.create(body, type);
@@ -132,6 +126,10 @@ public class Guardian {
 
                 int code;
                 try {
+                    if (json.has("statusCode")) {
+                        code = json.getInt("statusCode");
+                        resp.setCode(code);
+                    }
                     if (json.has("code")) {
                         code = json.getInt("code");
                         resp.setCode(code);
@@ -171,7 +169,7 @@ public class Guardian {
                     } catch(JSONException ignored){
                     }
                 } else {
-                    if (!json.has("code")) {
+                    if (!json.has("code") && !json.has("statusCode")) {
                         resp.setCode(200);
                         resp.setData(json);
                     }
@@ -193,6 +191,18 @@ public class Guardian {
             e.printStackTrace();
             callback.call(new Response(Const.ERROR_CODE_10001, "Network error", null));
         }
+    }
+
+    private static String getToken(){
+        UserInfo currentUser = Authing.getCurrentUser();
+        String token = "";
+        if (currentUser != null) {
+            token = currentUser.getIdToken();
+            if (Util.isNull(token)) {
+                token = currentUser.getAccessToken();
+            }
+        }
+        return token;
     }
 
     public static void authRequest(String url, String method, RequestBody body, @NotNull GuardianCallback callback) {

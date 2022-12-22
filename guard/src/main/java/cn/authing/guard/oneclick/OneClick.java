@@ -260,7 +260,8 @@ public class OneClick extends SocialAuthenticator implements Serializable {
                 .setSloganColor(0)
                 .setMaskNumberTopYOffset(233)//160+52+21=233
                 .setSloganTopYOffset(265)//160+52+21+24+8=265
-                .setPrivacyTopYOffset(263)
+                //.setPrivacyTopYOffset(263)
+                .setPrivacyBottomYOffset(188)//126+48+12
                 .setPrivacyMarginLeft(24)
                 .setPrivacyMarginRight(24)
                 .setPrivacyLineSpacing(1, 1)
@@ -278,9 +279,10 @@ public class OneClick extends SocialAuthenticator implements Serializable {
                 .setPrivacySize(12) // 设置隐私栏区域字体大小
                 .setHidePrivacySmh(true)
                 .setLoginBtnText(context.getString(R.string.authing_current_phone_login))
-                .setLoginBtnTopYOffset(365)//160+52+21+24+102=359
+                //.setLoginBtnTopYOffset(365)//160+52+21+24+102=359
+                .setLoginBtnBottomYOffset(126)//48+12+66 = 126
                 .setLoginBtnWidth(screenWidth - 24 * 2)
-                .setLoginBtnHeight(44)
+                .setLoginBtnHeight(48)
                 .setLoginBtnBackgroundRes("authing_button_background")
                 .setLoginBtnTextSize(16)
                 .addCustomView(titleLayout, "titleLayout", UnifyUiConfig.POSITION_IN_BODY, null)
@@ -322,15 +324,15 @@ public class OneClick extends SocialAuthenticator implements Serializable {
     private RelativeLayout inflateOtherLayout() {
         RelativeLayout otherLoginRel = new RelativeLayout(context);
         RelativeLayout.LayoutParams layoutParamsOther = new RelativeLayout.LayoutParams(
-                RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-        layoutParamsOther.setMargins(0, (int) Util.dp2px(context, 12), 0, 0);
+                RelativeLayout.LayoutParams.WRAP_CONTENT, (int) Util.dp2px(context, 48));
+        layoutParamsOther.setMargins(0, -(int) Util.dp2px(context, 114), 0, 0);
         layoutParamsOther.addRule(RelativeLayout.CENTER_HORIZONTAL);
         layoutParamsOther.addRule(RelativeLayout.BELOW, com.netease.nis.quicklogin.R.id.yd_btn_oauth);
         otherLoginRel.setLayoutParams(layoutParamsOther);
 
         Button other = new Button(context);
-        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(
+                RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT);
         int m = (int) Util.dp2px(context, 24);
         lp.setMargins(m, 0, m, 0);
         other.setLayoutParams(lp);
@@ -343,7 +345,7 @@ public class OneClick extends SocialAuthenticator implements Serializable {
         other.setTextColor(context.getColor(R.color.authing_text_black));
         other.setBackgroundResource(R.drawable.authing_button_background_gray);
         other.setMinimumWidth((int) Util.dp2px(context, screenWidth - 24 * 2));
-        other.setMinimumHeight((int) Util.dp2px(context, 42));
+        other.setMinimumHeight((int) Util.dp2px(context, 48));
         other.setOnClickListener((v) -> {
             AuthFlow.start((Activity) context);
             clear();

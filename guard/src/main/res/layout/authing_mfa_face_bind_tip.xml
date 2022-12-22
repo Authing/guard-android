@@ -42,6 +42,7 @@
         android:layout_height="@dimen/authing_button_height"
         android:layout_marginStart="74dp"
         android:layout_marginEnd="74dp"
+        android:layout_marginBottom="@dimen/authing_margin_16"
         android:background="@drawable/authing_button_background"
         app:currentMfaBindType="face" />
 
@@ -49,7 +50,6 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/authing_button_height"
         android:layout_marginStart="74dp"
-        android:layout_marginTop="@dimen/authing_margin_16"
         android:layout_marginEnd="74dp"
         android:layout_marginBottom="@dimen/authing_margin_40"
         android:background="@drawable/authing_button_background_gray"

@@ -19,6 +19,7 @@ import cn.authing.guard.AuthCallback;
 import cn.authing.guard.Authing;
 import cn.authing.guard.R;
 import cn.authing.guard.data.Application;
+import cn.authing.guard.data.DeviceInfo;
 import cn.authing.guard.data.MFAData;
 import cn.authing.guard.data.Organization;
 import cn.authing.guard.data.Resource;
@@ -759,7 +760,7 @@ public class AuthClient {
             if (email != null)
                 body.put("email", email);
             String endpoint = "/api/v2/applications/mfa/check";
-            Guardian.post(endpoint, body, (data) -> {
+            Guardian.postMfa(endpoint, body, (data) -> {
                 try {
                     if (data.getCode() == 200) {
                         boolean ok = data.getData().getBoolean("result");
@@ -790,7 +791,7 @@ public class AuthClient {
             body.put("phone", phone);
             body.put("code", code);
             String endpoint = "/api/v2/applications/mfa/sms/verify";
-            Guardian.post(endpoint, body, response -> {
+            Guardian.postMfa(endpoint, body, response -> {
                 if (Authing.getAuthProtocol() == Authing.AuthProtocol.EOIDC){
                     startOidcInteraction(new AuthRequest(), response, callback);
                 } else {
@@ -808,7 +809,7 @@ public class AuthClient {
             body.put("email", email);
             body.put("code", code);
             String endpoint = "/api/v2/applications/mfa/email/verify";
-            Guardian.post(endpoint, body, response -> {
+            Guardian.postMfa(endpoint, body, response -> {
                 if (Authing.getAuthProtocol() == Authing.AuthProtocol.EOIDC){
                     startOidcInteraction(new AuthRequest(), response, callback);
                 } else {
@@ -826,7 +827,7 @@ public class AuthClient {
             body.put("authenticatorType", "totp");
             body.put("totp", code);
             String endpoint = "/api/v2/mfa/totp/verify";
-            Guardian.post(endpoint, body, response -> {
+            Guardian.postMfa(endpoint, body, response -> {
                 if (Authing.getAuthProtocol() == Authing.AuthProtocol.EOIDC){
                     startOidcInteraction(new AuthRequest(), response, callback);
                 } else {
@@ -844,7 +845,7 @@ public class AuthClient {
             body.put("type", "face");
             body.put("photo", photoKey);
             String endpoint = "/api/v2/mfa/face/verify";
-            Guardian.post(endpoint, body, response -> {
+            Guardian.postMfa(endpoint, body, response -> {
                 if (Authing.getAuthProtocol() == Authing.AuthProtocol.EOIDC){
                     startOidcInteraction(new AuthRequest(), response, callback);
                 } else {
@@ -862,7 +863,7 @@ public class AuthClient {
             body.put("authenticatorType", "totp");
             body.put("recoveryCode", code);
             String endpoint = "/api/v2/mfa/totp/recovery";
-            Guardian.post(endpoint, body, response -> {
+            Guardian.postMfa(endpoint, body, response -> {
                 if (Authing.getAuthProtocol() == Authing.AuthProtocol.EOIDC){
                     startOidcInteraction(new AuthRequest(), response, callback);
                 } else {
@@ -880,7 +881,7 @@ public class AuthClient {
             body.put("authenticator_type", "totp");
             body.put("source", "SELF");
             String endpoint = "/api/v2/mfa/totp/associate";
-            Guardian.post(endpoint, body, (data) -> callback.call(data.getCode(), data.getMessage(), data.getData()));
+            Guardian.postMfa(endpoint, body, (data) -> callback.call(data.getCode(), data.getMessage(), data.getData()));
         } catch (Exception e) {
             error(e, callback);
         }
@@ -893,7 +894,7 @@ public class AuthClient {
             body.put("totp", code);
             body.put("source", "SELF");
             String endpoint = "/api/v2/mfa/totp/associate/confirm";
-            Guardian.post(endpoint, body, response -> {
+            Guardian.postMfa(endpoint, body, response -> {
                 if (response.getCode() == 200){
                     mfaVerifyByOTP(code, callback);
                 } else {
@@ -912,7 +913,7 @@ public class AuthClient {
             body.put("photoB", photoKeyB);
             body.put("isExternalPhoto", false);
             String endpoint = "/api/v2/mfa/face/associate";
-            Guardian.post(endpoint, body, (data) -> createUserInfoFromResponse(data, callback));
+            Guardian.postMfa(endpoint, body, (data) -> createUserInfoFromResponse(data, callback));
         } catch (Exception e) {
             error(e, callback);
         }
@@ -1210,6 +1211,61 @@ public class AuthClient {
         try {
             String endpoint = "/api/v2/userpools/cooperated";
             Guardian.get(endpoint, (data) -> callback.call(data.getCode(), data.getMessage(), data.getData()));
+        } catch (Exception e) {
+            error(e, callback);
+        }
+    }
+
+    public static void bindPushCid(String cid, @NotNull AuthCallback<JSONObject> callback) {
+        try {
+            String endpoint = "/api/v3/user-bind-app";
+            JSONObject body = new JSONObject();
+            body.put("cid", cid);
+            Guardian.post(endpoint, body, (data) -> callback.call(data.getCode(), data.getMessage(), data.getData()));
+        } catch (Exception e) {
+            error(e, callback);
+        }
+    }
+
+    public static void unBindPushCid(String cid, @NotNull AuthCallback<JSONObject> callback) {
+        try {
+            String endpoint = "/api/v3/user-unbind-app";
+            JSONObject body = new JSONObject();
+            body.put("cid", cid);
+            Guardian.post(endpoint, body, (data) -> callback.call(data.getCode(), data.getMessage(), data.getData()));
+        } catch (Exception e) {
+            error(e, callback);
+        }
+    }
+
+    public static void changePushCodeStatus(String pushCodeId, String action, @NotNull AuthCallback<JSONObject> callback) {
+        try {
+            String endpoint = "/api/v3/change-pushcode-status";
+            JSONObject body = new JSONObject();
+            body.put("pushCodeId", pushCodeId);
+            body.put("action", action);
+            Guardian.post(endpoint, body, (data) -> callback.call(data.getCode(), data.getMessage(), data.getData()));
+        } catch (Exception e) {
+            error(e, callback);
+        }
+    }
+
+    public static void loginByQrCode(String qrcodeId, @NotNull AuthCallback<JSONObject> callback) {
+        try {
+            String endpoint = "/api/v3/qrcode-app-login";
+            JSONObject body = new JSONObject();
+            body.put("qrcodeId", qrcodeId);
+            body.put("action", "APP_LOGIN");
+            Guardian.post(endpoint, body, (data) -> callback.call(data.getCode(), data.getMessage(), data.getData()));
+        } catch (Exception e) {
+            error(e, callback);
+        }
+    }
+
+    public static void createDevice(DeviceInfo deviceInfo, @NotNull AuthCallback<JSONObject> callback) {
+        try {
+            String endpoint = "/api/v3/create-device";
+            Guardian.post(endpoint, deviceInfo.toJSON(), (data) -> callback.call(data.getCode(), data.getMessage(), data.getData()));
         } catch (Exception e) {
             error(e, callback);
         }

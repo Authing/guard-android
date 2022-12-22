@@ -5,12 +5,20 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:paddingStart="24dp"
+    android:paddingEnd="24dp"
     tools:context=".scan.ScanAuthActivity">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="提示：扫码之前需要先在移动端登录"/>
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btn_scan"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
         android:text="@string/authing_login" />
 
     <androidx.appcompat.widget.AppCompatTextView
@@ -18,11 +26,5 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="" />
-
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/btn_auth"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="授权" />
 
 </LinearLayout>
