@@ -25,6 +25,7 @@
     <string name="authing_register_by_phone_code">Phone Code</string>
     <string name="authing_register_by_email">Email PassWord</string>
     <string name="authing_register_by_email_code">Email Code</string>
+    <string name="authing_register_by_phone_password">Phone</string>
     <string name="authing_go_login">Sign In Instead</string>
     <string name="authing_tip_no_account">No account?</string>
     <string name="authing_register_now">Sign Up</string>
@@ -109,6 +110,13 @@
     <string name="authing_agree">Agree</string>
     <string name="authing_confirm">Confirm</string>
     <string name="authing_picker_date">Select birthday</string>
+    <string name="authing_choose_how_to_connect">Choose how to connect</string>
+    <string name="authing_choose_how_to_connect_tip">If you are bound to an existing account, you can directly log in to the existing account by this method next time.</string>
+    <string name="authing_create_new_account">Create a new account</string>
+    <string name="authing_bind_to_existing_account">Bind to an existing account</string>
+    <string name="authing_bind_existing_account">Bind existing account</string>
+    <string name="authing_bind_existing_account_tip">After binding, you can log in to this account directly by this method next time</string>
+    <string name="authing_bind_select_account">Select an Account to log in</string>
     <string name="authing_delete_account_tips">After logout, all data of this account will be deleted and irreversible, please operate with caution!</string>
     <string name="authing_code_sent_to_phone">A code will be sent to </string>
     <string name="authing_network_error_tips">The network is abnormal. Check the network Settings</string>

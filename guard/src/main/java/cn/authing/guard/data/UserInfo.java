@@ -108,6 +108,7 @@ public class UserInfo implements Serializable {
     private String recoveryCode;
     private String password;
     private List<Identities> identities;
+    private SocialBindData socialBindData;
 
     public String getId() {
         return id == null ? getSub() : id;
@@ -524,6 +525,14 @@ public class UserInfo implements Serializable {
 
     public void setRecoveryCode(String recoveryCode) {
         this.recoveryCode = recoveryCode;
+    }
+
+    public SocialBindData getSocialBindData() {
+        return socialBindData;
+    }
+
+    public void setSocialBindData(SocialBindData socialBindData) {
+        this.socialBindData = socialBindData;
     }
 
     public String getPassword() {

@@ -102,6 +102,15 @@ public class RegisterMethodTab extends RelativeLayout {
             } else if ("emailCode".equals(s)) {
                 b.setText(getResources().getString(R.string.authing_register_by_email_code));
                 b.setType(RegisterContainer.RegisterType.EByEmailCode);
+            } else if ("phone-password".equals(s)) {
+                b.setText(getResources().getString(R.string.authing_register_by_phone_password));
+                b.setType(RegisterContainer.RegisterType.EByPhonePassword);
+            } else {
+                String name = s.replace("-password", "");
+                String label = Util.getLabel(config, name);
+                b.setText(label + getResources().getString(R.string.authing_register));
+                b.setType(RegisterContainer.RegisterType.EByExtendFiled);
+                b.setFiledName(name);
             }
 
             initItemGravity(b);

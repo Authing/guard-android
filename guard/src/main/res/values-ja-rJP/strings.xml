@@ -25,6 +25,7 @@
     <string name="authing_register_by_phone_code">SMS確認コード</string>
     <string name="authing_register_by_email">メールのパスワード</string>
     <string name="authing_register_by_email_code">Eメール確認コード</string>
+    <string name="authing_register_by_phone_password">携帯番号登録</string>
     <string name="authing_go_login">すぐにログインする</string>
     <string name="authing_tip_no_account">アカウントがない？</string>
     <string name="authing_register_now">すぐに登録します</string>
@@ -109,6 +110,13 @@
     <string name="authing_agree">同意</string>
     <string name="authing_confirm">確認</string>
     <string name="authing_picker_date">誕生日を選択</string>
+    <string name="authing_choose_how_to_connect">つながり方を選ぶ</string>
+    <string name="authing_choose_how_to_connect_tip">既存アカウントに紐付いている場合は、今回の方法で直接既存アカウントにログインすることができます。</string>
+    <string name="authing_create_new_account">新しいアカウントを作成したい</string>
+    <string name="authing_bind_to_existing_account">既存のアカウントにバインドしたい</string>
+    <string name="authing_bind_existing_account">既存のアカウントを結びつける</string>
+    <string name="authing_bind_existing_account_tip">紐付け后、次回から直接今回の方法でこのアカウントにログインすることができます</string>
+    <string name="authing_bind_select_account">ログインするアカウントを選択</string>
     <string name="authing_delete_account_tips">ログアウト後、このアカウントのすべてのデータは削除され、元に戻すことはできません。注意して操作してください</string>
     <string name="authing_code_sent_to_phone">バインドされた携帯電話に確認コードが送信されます </string>
     <string name="authing_network_error_tips">ネットワークが異常です。ネットワーク設定を確認してください</string>

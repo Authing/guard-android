@@ -26,6 +26,7 @@ public class AuthFlow implements Serializable {
     public static final String KEY_MFA_EMAIL = "mfa_email";
     public static final String KEY_MFA_RECOVERY_CODE = "mfa_recovery_code";
     public static final String KEY_EXTENDED_FIELDS = "extended_fields";
+    public static final String KEY_SOCIAL_ACCOUNT_BIND_CODE = "social_account_bind_code";
     public static final String KEY_PUSH_DATA = "push_data";
     private Map<String, Object> data = new HashMap<>();
 
@@ -62,6 +63,9 @@ public class AuthFlow implements Serializable {
     //reset password
     private int resetPasswordFirstLoginLayoutId;
     private int verifyEmailSendSuccessLayoutId;
+    //社会化登录询问绑定
+    private int[] socialBindAccountLayoutIds;
+    private int socialBindAccountCurrentStep;
     //push
     private int pushLoginLayoutId;
     private int pushLoginSuccessLayoutId;
@@ -471,6 +475,25 @@ public class AuthFlow implements Serializable {
 
     public void setVerifyEmailSendSuccessLayoutId(int verifyEmailSendSuccessLayoutId) {
         this.verifyEmailSendSuccessLayoutId = verifyEmailSendSuccessLayoutId;
+    }
+
+    public int[] getSocialAccountBindLayoutIds() {
+        if (socialBindAccountLayoutIds == null) {
+            return new int[]{R.layout.authing_social_account_bind_before, R.layout.authing_social_account_bind};
+        }
+        return socialBindAccountLayoutIds;
+    }
+
+    public void setSocialAccountBindLayoutIds(int[] socialBindAccountLayoutIds) {
+        this.socialBindAccountLayoutIds = socialBindAccountLayoutIds;
+    }
+
+    public int getSocialBindAccountCurrentStep() {
+        return socialBindAccountCurrentStep;
+    }
+
+    public void setSocialBindAccountCurrentStep(int socialBindAccountCurrentStep) {
+        this.socialBindAccountCurrentStep = socialBindAccountCurrentStep;
     }
 
     public int getPushLoginLayoutId() {

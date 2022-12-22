@@ -61,6 +61,7 @@ import cn.authing.guard.data.Config;
 import cn.authing.guard.data.Country;
 import cn.authing.guard.data.DeviceInfo;
 import cn.authing.guard.data.Safe;
+import cn.authing.guard.data.TabMethodsField;
 import cn.authing.guard.data.UserInfo;
 import cn.authing.guard.flow.AuthFlow;
 import cn.authing.guard.network.AuthClient;
@@ -519,6 +520,43 @@ public class Util {
     public static boolean shouldCompleteAfterLogin(Config config) {
         List<String> complete = (config != null ? config.getCompleteFieldsPlace() : null);
         return complete != null && complete.contains("login");
+    }
+
+    /**
+     *  获取字段名称
+     */
+    public static String getLabel(Config config, String name){
+        String label = "";
+        List<TabMethodsField> tabMethodsFields = ( config != null ? config.getTabMethodsFields() : null);
+        if (TextUtils.isEmpty(name) || tabMethodsFields == null || tabMethodsFields.isEmpty()){
+            return label;
+        }
+        for (TabMethodsField tabMethodsField : tabMethodsFields){
+            if (tabMethodsField == null
+                    || TextUtils.isEmpty(tabMethodsField.getKey())
+                    || !name.equals(tabMethodsField.getKey())){
+                continue;
+            }
+
+            String language = Util.getAppLanguage();
+            if (language.equals("en-US")) {
+                label = tabMethodsField.getLabelEn();
+            } else {
+                label = tabMethodsField.getLabel();
+            }
+            JSONObject i18n = tabMethodsField.getI18n();
+            if (i18n == null){
+                break;
+            }
+            try {
+                if (i18n.has(language)){
+                    label = i18n.getString(language);
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+        return label;
     }
 
     public static String getUserName(UserInfo userInfo){

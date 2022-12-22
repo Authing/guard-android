@@ -181,6 +181,25 @@ public class FlowHelper {
         }
     }
 
+    public static void handleSocialAccountBind(AuthActivity activity, int code) {
+        AuthFlow flow = activity.getFlow();
+
+        Intent intent = new Intent(activity, AuthActivity.class);
+        intent.putExtra(AuthActivity.CONTENT_LAYOUT_ID, R.layout.authing_social_account_bind_before);
+        flow.getData().put(AuthFlow.KEY_SOCIAL_ACCOUNT_BIND_CODE, String.valueOf(code));
+        intent.putExtra(AuthActivity.AUTH_FLOW, flow);
+        activity.startActivityForResult(intent, AuthActivity.RC_LOGIN);
+    }
+
+    public static void handleSocialAccountSelect(AuthActivity activity) {
+        AuthFlow flow = activity.getFlow();
+
+        Intent intent = new Intent(activity, AuthActivity.class);
+        intent.putExtra(AuthActivity.CONTENT_LAYOUT_ID, R.layout.authing_social_account_select);
+        intent.putExtra(AuthActivity.AUTH_FLOW, flow);
+        activity.startActivityForResult(intent, AuthActivity.RC_LOGIN);
+    }
+
     public static List<ExtendedField> missingFields(Config config, UserInfo userInfo) {
         List<ExtendedField> missingFields = new ArrayList<>();
         if (config != null && userInfo != null){

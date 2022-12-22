@@ -25,6 +25,7 @@ import cn.authing.guard.data.Organization;
 import cn.authing.guard.data.Resource;
 import cn.authing.guard.data.Role;
 import cn.authing.guard.data.Safe;
+import cn.authing.guard.data.SocialBindData;
 import cn.authing.guard.data.UserInfo;
 import cn.authing.guard.util.ALog;
 import cn.authing.guard.util.Const;
@@ -40,6 +41,31 @@ public class AuthClient {
         EWeak,
         EMedium,
         EStrong
+    }
+
+    public static void registerByExtendField(String fieldName, String account, String password, String context, @NotNull AuthCallback<UserInfo> callback) {
+        registerByExtendField(null, fieldName, account, password, context, callback);
+    }
+
+    public static void registerByExtendField(AuthRequest authData, String fieldName, String account, String password, String context, @NotNull AuthCallback<UserInfo> callback) {
+        try {
+            String encryptPassword = Util.encryptPassword(password);
+            JSONObject body = new JSONObject();
+            body.put("account", account);
+            body.put("password", encryptPassword);
+            body.put("forceLogin", true);
+            if (!Util.isNull(context)){
+                body.put("context", context);
+            }
+            Guardian.post("/api/v2/register-"+fieldName, body, (data)-> {
+                if (data.getCode() == 200 || data.getCode() == EC_MFA_REQUIRED) {
+                    Safe.saveAccount(account);
+                }
+                startOidcInteraction(authData, data, callback);
+            });
+        } catch (Exception e) {
+            error(e, callback);
+        }
     }
 
     public static void registerByEmail(String email, String password, @NotNull AuthCallback<UserInfo> callback) {
@@ -100,13 +126,48 @@ public class AuthClient {
     }
 
     public static void registerByUserName(String username, String password, @NotNull AuthCallback<UserInfo> callback) {
+        registerByUserName(username, password, null, callback);
+    }
+
+    public static void registerByUserName(String username, String password, String context, @NotNull AuthCallback<UserInfo> callback) {
         try {
             String encryptPassword = Util.encryptPassword(password);
             JSONObject body = new JSONObject();
             body.put("username", username);
             body.put("password", encryptPassword);
             body.put("forceLogin", true);
+            if (!Util.isNull(context)){
+                body.put("context", context);
+            }
             Guardian.post("/api/v2/register/username", body, (data)-> createUserInfoFromResponse(data, callback));
+        } catch (Exception e) {
+            error(e, callback);
+        }
+    }
+
+    public static void registerByPhonePassword(String phoneCountryCode, String phone, String password, String context, @NotNull AuthCallback<UserInfo> callback) {
+        registerByExtendField(null, phoneCountryCode, phone, password, context, callback);
+    }
+
+    public static void registerByPhonePassword(AuthRequest authData, String phoneCountryCode, String phone, String password, String context, @NotNull AuthCallback<UserInfo> callback) {
+        try {
+            String encryptPassword = Util.encryptPassword(password);
+            JSONObject body = new JSONObject();
+            if (!Util.isNull(phoneCountryCode)){
+                body.put("phoneCountryCode", phoneCountryCode);
+            }
+            body.put("account", phone);
+            body.put("password", encryptPassword);
+            body.put("forceLogin", true);
+            if (!Util.isNull(context)){
+                body.put("context", context);
+            }
+            Guardian.post("/api/v2/register-phone", body, (data)-> {
+                if (data.getCode() == 200 || data.getCode() == EC_MFA_REQUIRED) {
+                    Safe.saveAccount(phone);
+                }
+                startOidcInteraction(authData, data, callback);
+            });
         } catch (Exception e) {
             error(e, callback);
         }
@@ -180,11 +241,11 @@ public class AuthClient {
     }
 
     public static void loginByPhoneCode(String phone, String code, @NotNull AuthCallback<UserInfo> callback) {
-        loginByPhoneCode(null, phone, code, false, null, callback);
+        loginByPhoneCode(null, phone, code, true, null, callback);
     }
 
     public static void loginByPhoneCode(String phoneCountryCode, String phone, String code, @NotNull AuthCallback<UserInfo> callback) {
-        loginByPhoneCode(null, phoneCountryCode, phone, code, false, null, callback);
+        loginByPhoneCode(null, phoneCountryCode, phone, code, true, null, callback);
     }
 
     public static void loginByPhoneCode(String phoneCountryCode, String phone, String code, boolean autoRegister, String context, @NotNull AuthCallback<UserInfo> callback) {
@@ -216,7 +277,7 @@ public class AuthClient {
     }
 
     public static void loginByEmailCode(String email, String code, @NotNull AuthCallback<UserInfo> callback) {
-        loginByEmailCode(null, email, code,false, null, callback);
+        loginByEmailCode(null, email, code,true, null, callback);
     }
 
     public static void loginByEmailCode(String email, String code, boolean autoRegister, String context, @NotNull AuthCallback<UserInfo> callback) {
@@ -369,7 +430,7 @@ public class AuthClient {
         Authing.getPublicConfig(config -> {
             try {
                 JSONObject body = new JSONObject();
-                body.put("connId", config != null ? config.getSocialConnectionId("wechat:mobile") : "");
+                body.put("connId", config != null ? config.getSocialConnectionId(Const.EC_TYPE_WECHAT) : "");
                 body.put("code", authCode);
                 Guardian.post("/api/v2/ecConn/wechatMobile/authByCode", body, (data) -> {
                     startOidcInteraction(authData, data, callback);
@@ -428,7 +489,7 @@ public class AuthClient {
         Authing.getPublicConfig(config -> {
             try {
                 JSONObject body = new JSONObject();
-                body.put("connId", config != null ? config.getSocialConnectionId("alipay") : "");
+                body.put("connId", config != null ? config.getSocialConnectionId(Const.EC_TYPE_ALIPAY) : "");
                 body.put("code", authCode);
                 String endpoint = "/api/v2/ecConn/alipay/authByCode";
                 Guardian.post(endpoint, body, (data) -> {
@@ -582,6 +643,102 @@ public class AuthClient {
             }
             String url = "/api/v2/users/phone/update";
             Guardian.post(url, body, (data) -> createUserInfoFromResponse(data, callback));
+        } catch (Exception e) {
+            error(e, callback);
+        }
+    }
+
+    public static void loginByWechatWithBind(String authCode, String context, @NotNull AuthCallback<UserInfo> callback) {
+        loginByWechatWithBind(null, authCode, context, callback);
+    }
+
+    public static void loginByWechatWithBind(AuthRequest authData, String authCode, String context, @NotNull AuthCallback<UserInfo> callback) {
+        Authing.getPublicConfig(config -> {
+            try {
+                JSONObject body = new JSONObject();
+                body.put("connId", config != null ? config.getSocialConnectionId(Const.EC_TYPE_WECHAT) : "");
+                body.put("code", authCode);
+                body.put("appId", Authing.getAppId());
+                JSONObject options = new JSONObject();
+                if (authData != null){
+                    options.put("scope", authData.getScope());
+                }
+                if(context != null){
+                    options.put("context", context);
+                }
+                body.put("options", options);
+                Guardian.post("/api/v2/ecConn/wechatMobile/authByCodeIdentity", body, (data)-> {
+                    createTokenFromResponse(data, callback);
+                });
+            } catch (Exception e) {
+                error(e, callback);
+            }
+        });
+    }
+
+    public static void bindWechatWithRegister(String key, @NotNull AuthCallback<UserInfo> callback) {
+        try {
+            JSONObject body = new JSONObject();
+            body.put("action", "create-federation-account");
+            body.put("key", key);
+            String endpoint = "/api/v2/ecConn/wechatMobile/register";
+            Guardian.post(endpoint, body, (data)-> createTokenFromResponse(data, callback));
+        } catch (Exception e) {
+            error(e, callback);
+        }
+    }
+
+    public static void bindWechatByAccount(String key, String account, String password,@NotNull AuthCallback<UserInfo> callback) {
+        try {
+            JSONObject body = new JSONObject();
+            body.put("action", "bind-identity-by-password");
+            body.put("key", key);
+            body.put("account", account);
+            body.put("password", Util.encryptPassword(password));
+            String endpoint = "/api/v2/ecConn/wechatMobile/byAccount";
+            Guardian.post(endpoint, body, (data)-> createTokenFromResponse(data, callback));
+        } catch (Exception e) {
+            error(e, callback);
+        }
+    }
+
+    public static void bindWechatByPhoneCode(String key, String phoneCountryCode, String phone, String code, @NotNull AuthCallback<UserInfo> callback) {
+        try {
+            JSONObject body = new JSONObject();
+            body.put("action", "bind-identity-by-phone-code");
+            body.put("key", key);
+            body.put("phoneCountryCode", phoneCountryCode);
+            body.put("phone", phone);
+            body.put("code", code);
+            String endpoint = "/api/v2/ecConn/wechatMobile/byPhoneCode";
+            Guardian.post(endpoint, body, (data)-> createTokenFromResponse(data, callback));
+        } catch (Exception e) {
+            error(e, callback);
+        }
+    }
+
+    public static void bindWechatByEmailCode(String key, String email, String code, @NotNull AuthCallback<UserInfo> callback) {
+        try {
+            JSONObject body = new JSONObject();
+            body.put("action", "bind-identity-by-email-code");
+            body.put("key", key);
+            body.put("email", email);
+            body.put("code", code);
+            String endpoint = "/api/v2/ecConn/wechatMobile/byEmailCode";
+            Guardian.post(endpoint, body, (data)-> createTokenFromResponse(data, callback));
+        } catch (Exception e) {
+            error(e, callback);
+        }
+    }
+
+    public static void bindWechatByAccountId(String key, String account, @NotNull AuthCallback<UserInfo> callback) {
+        try {
+            JSONObject body = new JSONObject();
+            body.put("action", "bind-identity-by-selection");
+            body.put("key", key);
+            body.put("account", account);
+            String endpoint = "/api/v2/ecConn/wechatMobile/select";
+            Guardian.post(endpoint, body, (data)-> createTokenFromResponse(data, callback));
         } catch (Exception e) {
             error(e, callback);
         }
@@ -1162,6 +1319,46 @@ public class AuthClient {
                 } else {
                     callback.call(code, data.getMessage(), null);
                 }
+            } else {
+                callback.call(code, data.getMessage(), null);
+            }
+        } catch (JSONException e) {
+            error(e, callback);
+        }
+    }
+
+    public static void createTokenFromResponse(Response data, @NotNull AuthCallback<UserInfo> callback) {
+        int code = data.getCode();
+        UserInfo userInfo = Authing.getCurrentUser() != null ? Authing.getCurrentUser() : new UserInfo();
+        try {
+            if (code == 200) {
+                userInfo = UserInfo.createUserInfo(userInfo, data.getData());
+                Authing.saveUser(userInfo);
+                String token = userInfo.getIdToken();
+                if (Util.isNull(token)) {
+                    callback.call(code, data.getMessage(), userInfo);
+                } else {
+                    getCurrentUser(userInfo, callback);
+                }
+            } else if (code == EC_MFA_REQUIRED) {
+                MFAData mfaData = MFAData.create(data.getData());
+                userInfo.setMfaData(mfaData);
+                callback.call(code, data.getMessage(), userInfo);
+            } else if (code == EC_FIRST_TIME_LOGIN) {
+                JSONObject o = data.getData();
+                if (o.has("token")) {
+                    String token = o.getString("token");
+                    userInfo.setFirstTimeLoginToken(token);
+                    callback.call(code, data.getMessage(), userInfo);
+                } else {
+                    callback.call(code, data.getMessage(), null);
+                }
+            } else if (code == Const.EC_SOCIAL_BIND_REGISTER ||
+                    code == Const.EC_SOCIAL_BIND_LOGIN ||
+                    code == Const.EC_SOCIAL_BIND_SELECT) {
+                SocialBindData socialBindData = SocialBindData.create(data.getData());
+                userInfo.setSocialBindData(socialBindData);
+                callback.call(code, data.getMessage(), userInfo);
             } else {
                 callback.call(code, data.getMessage(), null);
             }

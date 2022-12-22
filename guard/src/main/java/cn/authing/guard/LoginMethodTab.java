@@ -26,6 +26,7 @@ import cn.authing.guard.util.Util;
 public class LoginMethodTab extends RelativeLayout {
 
     private final List<LoginMethodTabItem> items = new ArrayList<>();
+    private Config config;
     private int itemGravity;
 
     public LoginMethodTab(Context context) {
@@ -82,6 +83,7 @@ public class LoginMethodTab extends RelativeLayout {
     }
 
     private void init(Config config, LinearLayout container) {
+        this.config = config;
         if (config == null) {
             initDefaultLogins(container);
             return;
@@ -125,10 +127,18 @@ public class LoginMethodTab extends RelativeLayout {
             }
 
             initItemGravity(b);
-            if (null != config.getDefaultLoginMethod() && config.getDefaultLoginMethod().equals(s)) {
+            if (null != config.getDefaultLoginMethod()
+                    && (config.getDefaultLoginMethod().equals(s)
+                    || ("phone-code".equals(config.getDefaultLoginMethod()) && !loginTabList.contains("phone-code") && "email-code".equals(s)))) {
                 b.gainFocus(null);
                 container.addView(b, 0);
                 addDefaultTab = true;
+                post(new Runnable() {
+                    @Override
+                    public void run() {
+                        changeLoginButtonState(b);
+                    }
+                });
             } else {
                 b.loseFocus();
                 container.addView(b);
@@ -142,6 +152,12 @@ public class LoginMethodTab extends RelativeLayout {
                 firstItem.gainFocus(null);
             }
             showForgotPassWord(firstItem.getType() == LoginContainer.LoginType.EByAccountPassword);
+            post(new Runnable() {
+                @Override
+                public void run() {
+                    changeLoginButtonState((LoginMethodTabItem) container.getChildAt(0));
+                }
+            });
         }
 
     }
@@ -171,11 +187,46 @@ public class LoginMethodTab extends RelativeLayout {
                 }
                 item.loseFocus();
             }
-            ((LoginMethodTabItem)v).gainFocus(lastFocused);
+            changeLoginButtonState((LoginMethodTabItem) v);
+            ((LoginMethodTabItem) v).gainFocus(lastFocused);
             showForgotPassWord(((LoginMethodTabItem)v).getType() == LoginContainer.LoginType.EByAccountPassword);
             Util.setErrorText(this, null);
             Util.hideKeyboard((Activity) getContext());
         });
+    }
+
+    private void changeLoginButtonState(LoginMethodTabItem item) {
+        if (config == null || config.isRegisterDisabled() || !config.isAutoRegisterThenLoginHintInfo()
+                || config.getRegisterTabList() == null || config.getRegisterTabList().isEmpty()) {
+            return;
+        }
+
+        View view = Util.findViewByClass(LoginMethodTab.this, LoginButton.class);
+        if (!(view instanceof LoginButton)) {
+            return;
+        }
+
+        LoginButton loginButton = (LoginButton) view;
+        boolean autoRegister = true;
+        if (item.getType() == LoginContainer.LoginType.EByAccountPassword) {
+            List<String> passwordTabValidRegisterMethods = config.getPasswordTabValidRegisterMethods();
+            autoRegister = passwordTabValidRegisterMethods != null && !passwordTabValidRegisterMethods.isEmpty();
+        } else if (item.getType() == LoginContainer.LoginType.EByPhoneCode) {
+            List<String> verifyCodeTabValidRegisterMethods = config.getVerifyCodeTabValidRegisterMethods();
+            autoRegister = verifyCodeTabValidRegisterMethods == null || (!verifyCodeTabValidRegisterMethods.isEmpty()
+                    && verifyCodeTabValidRegisterMethods.contains("phone-code"));
+        } else if (item.getType() == LoginContainer.LoginType.EByEmailCode) {
+            List<String> verifyCodeTabValidRegisterMethods = config.getVerifyCodeTabValidRegisterMethods();
+            autoRegister = verifyCodeTabValidRegisterMethods == null || (!verifyCodeTabValidRegisterMethods.isEmpty()
+                    && verifyCodeTabValidRegisterMethods.contains("email-code"));
+        }
+
+        changeLoginButtonState(loginButton, autoRegister);
+    }
+
+    private void changeLoginButtonState(LoginButton loginButton, boolean autoRegister) {
+        loginButton.setAutoRegister(autoRegister);
+        loginButton.setText(autoRegister ? R.string.authing_login_register : R.string.authing_login);
     }
 
     private void showForgotPassWord(boolean show){

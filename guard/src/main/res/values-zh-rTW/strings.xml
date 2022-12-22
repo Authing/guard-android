@@ -25,6 +25,7 @@
     <string name="authing_register_by_phone_code">短信驗證碼</string>
     <string name="authing_register_by_email">電子郵件密碼</string>
     <string name="authing_register_by_email_code">電子郵件驗證碼</string>
+    <string name="authing_register_by_phone_password">手機號碼註冊</string>
     <string name="authing_go_login">立即登入</string>
     <string name="authing_tip_no_account">沒有帳號？</string>
     <string name="authing_register_now">立即註冊</string>
@@ -109,6 +110,13 @@
     <string name="authing_agree">同意</string>
     <string name="authing_confirm">確認</string>
     <string name="authing_picker_date">選擇生日</string>
+    <string name="authing_choose_how_to_connect">選擇關聯方式</string>
+    <string name="authing_choose_how_to_connect_tip">如果綁定到已有賬號，下次可以通過本次的方式直接登入已有賬號</string>
+    <string name="authing_create_new_account">我想創建一個新賬號</string>
+    <string name="authing_bind_to_existing_account">我想綁定到已有賬號</string>
+    <string name="authing_bind_existing_account">綁定已有賬號</string>
+    <string name="authing_bind_existing_account_tip">綁定後，下次可以直接通過這次的方式登錄到此賬號</string>
+    <string name="authing_bind_select_account">選擇賬號登錄</string>
     <string name="authing_delete_account_tips">註銷後，此賬號的所有數據都將被刪除且不可逆，請謹慎操作</string>
     <string name="authing_code_sent_to_phone">將發送驗證碼至綁定手機 </string>
     <string name="authing_network_error_tips">網路異常，請檢查網路設置</string>

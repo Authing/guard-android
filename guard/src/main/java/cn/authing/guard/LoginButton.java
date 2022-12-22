@@ -61,7 +61,8 @@ public class LoginButton extends PrimaryButton implements ILoginRequestCallBack 
             if (config == null){
                 return;
             }
-            if (config.isAutoRegisterThenLoginHintInfo()){
+            if (!config.isRegisterDisabled() && config.isAutoRegisterThenLoginHintInfo()
+                    && config.getRegisterTabList() != null && !config.getRegisterTabList().isEmpty()){
                 if (useDefaultText) {
                     setText(R.string.authing_login_register);
                 }
@@ -79,6 +80,7 @@ public class LoginButton extends PrimaryButton implements ILoginRequestCallBack 
 
     public void setAutoRegister(boolean autoRegister) {
         this.autoRegister = autoRegister;
+        mLoginRequestManager = null;
     }
 
     private LoginRequestManager getLoginRequestManager(){

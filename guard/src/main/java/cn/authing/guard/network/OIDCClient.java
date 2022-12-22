@@ -64,6 +64,10 @@ public class OIDCClient {
                 + (secret == null ? "&code_challenge=" + authRequest.getCodeChallenge() + "&code_challenge_method=" + PKCE.getCodeChallengeMethod() : "");
     }
 
+    public void registerByExtendField(String fieldName, String account, String password, String context, @NotNull AuthCallback<UserInfo> callback) {
+        AuthClient.registerByExtendField(authRequest, fieldName, account, password, context, callback);
+    }
+
     public void registerByEmail(String email, String password, @NotNull AuthCallback<UserInfo> callback) {
         AuthClient.registerByEmail(authRequest, email, password, null, callback);
     }
@@ -78,6 +82,10 @@ public class OIDCClient {
 
     public void registerByEmailCode(String email, String vCode, String context, @NotNull AuthCallback<UserInfo> callback) {
         AuthClient.registerByEmailCode(authRequest, email, vCode, context, callback);
+    }
+
+    public void registerByPhonePassword(String phoneCountryCode, String phone, String password, String context, @NotNull AuthCallback<UserInfo> callback) {
+        AuthClient.registerByPhonePassword(authRequest, phoneCountryCode, phone, password, context, callback);
     }
 
     public void registerByPhoneCode(String phone, String vCode, String password, @NotNull AuthCallback<UserInfo> callback) {
@@ -97,7 +105,7 @@ public class OIDCClient {
     }
 
     public void loginByPhoneCode(String phoneCountryCode, String phone, String vCode, @NotNull AuthCallback<UserInfo> callback) {
-        AuthClient.loginByPhoneCode(authRequest, phoneCountryCode, phone, vCode, false, null, callback);
+        AuthClient.loginByPhoneCode(authRequest, phoneCountryCode, phone, vCode, true, null, callback);
     }
 
     public void loginByPhoneCode(String phoneCountryCode, String phone, String vCode, boolean autoRegister, String context, @NotNull AuthCallback<UserInfo> callback) {
@@ -105,7 +113,7 @@ public class OIDCClient {
     }
 
     public void loginByEmailCode(String email, String vCode, @NotNull AuthCallback<UserInfo> callback) {
-        AuthClient.loginByEmailCode(authRequest, email, vCode, false, null, callback);
+        AuthClient.loginByEmailCode(authRequest, email, vCode, true, null, callback);
     }
 
     public void loginByEmailCode(String email, String vCode, boolean autoRegister, String context, @NotNull AuthCallback<UserInfo> callback) {
@@ -113,7 +121,7 @@ public class OIDCClient {
     }
 
     public void loginByAccount(String account, String password, @NotNull AuthCallback<UserInfo> callback) {
-        loginByAccount(account, password, false, null, callback);
+        loginByAccount(account, password, true, null, callback);
     }
 
     public void loginByAccount(String account, String password, boolean autoRegister, String context, @NotNull AuthCallback<UserInfo> callback) {
@@ -138,6 +146,10 @@ public class OIDCClient {
 
     public void loginByWechat(String authCode, @NotNull AuthCallback<UserInfo> callback) {
         AuthClient.loginByWechat(authRequest, authCode, callback);
+    }
+
+    public void loginByWechatWithBind(String authCode, String context, @NotNull AuthCallback<UserInfo> callback) {
+        AuthClient.loginByWechatWithBind(authRequest, authCode, context, callback);
     }
 
     public void loginByWecom(String authCode, @NotNull AuthCallback<UserInfo> callback) {

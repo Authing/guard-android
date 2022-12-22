@@ -26,6 +26,9 @@ public class WXCallbackActivity extends AppCompatActivity implements IWXAPIEvent
     public static final String TAG = WXCallbackActivity.class.getSimpleName();
 
     private static AuthCallback<UserInfo> callback;
+    private static AuthCallback<String> authCodeCallBack;
+    private static boolean onlyGetAuthCode;
+    private static String context;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,22 +56,40 @@ public class WXCallbackActivity extends AppCompatActivity implements IWXAPIEvent
                 ALog.i(TAG, "Auth success");
                 callback.call(SocialLoginButton.AUTH_SUCCESS, "Auth success", null);
                 Authing.AuthProtocol authProtocol = Authing.getAuthProtocol();
-                if (authProtocol == Authing.AuthProtocol.EInHouse) {
-                    AuthClient.loginByWechat(((SendAuth.Resp) resp).code, callback);
-                } else if (authProtocol == Authing.AuthProtocol.EOIDC) {
-                    new OIDCClient().loginByWechat(((SendAuth.Resp) resp).code, callback);
+                if (onlyGetAuthCode) {
+                    if (authCodeCallBack != null) {
+                        authCodeCallBack.call(200, "success", ((SendAuth.Resp) resp).code);
+                    }
+                } else {
+                    if (authProtocol == Authing.AuthProtocol.EInHouse) {
+                        AuthClient.loginByWechatWithBind(((SendAuth.Resp) resp).code, context, callback);
+                    } else if (authProtocol == Authing.AuthProtocol.EOIDC) {
+                        new OIDCClient().loginByWechatWithBind(((SendAuth.Resp) resp).code, context, callback);
+                    }
                 }
                 break;
             case BaseResp.ErrCode.ERR_USER_CANCEL:
                 ALog.d(TAG, "wechat user canceled");
-                if (callback != null) {
-                    callback.call(BaseResp.ErrCode.ERR_USER_CANCEL, getString(R.string.authing_cancelled_by_user), null);
+                if (onlyGetAuthCode) {
+                    if (authCodeCallBack != null) {
+                        authCodeCallBack.call(BaseResp.ErrCode.ERR_USER_CANCEL, "canceled", null);
+                    }
+                } else {
+                    if (callback != null) {
+                        callback.call(BaseResp.ErrCode.ERR_USER_CANCEL, "canceled", null);
+                    }
                 }
                 break;
             case BaseResp.ErrCode.ERR_AUTH_DENIED:
                 ALog.w(TAG, "wechat user denied auth");
-                if (callback != null) {
-                    callback.call(BaseResp.ErrCode.ERR_AUTH_DENIED, "", null);
+                if (onlyGetAuthCode) {
+                    if (authCodeCallBack != null) {
+                        authCodeCallBack.call(BaseResp.ErrCode.ERR_AUTH_DENIED, "denied", null);
+                    }
+                } else {
+                    if (callback != null) {
+                        callback.call(BaseResp.ErrCode.ERR_AUTH_DENIED, "denied", null);
+                    }
                 }
                 break;
             default:
@@ -87,6 +108,18 @@ public class WXCallbackActivity extends AppCompatActivity implements IWXAPIEvent
 
     public static void setCallback(AuthCallback<UserInfo> callback) {
         WXCallbackActivity.callback = callback;
+    }
+
+    public static void setContext(String context) {
+        WXCallbackActivity.context = context;
+    }
+
+    public static void setAuthCodeCallback(AuthCallback<String> callback) {
+        WXCallbackActivity.authCodeCallBack = callback;
+    }
+
+    public static void setOnlyGetAuthCode(boolean onlyGetAuthCode) {
+        WXCallbackActivity.onlyGetAuthCode = onlyGetAuthCode;
     }
 
 }

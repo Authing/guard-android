@@ -10,6 +10,8 @@
         <enum name="phoneCodePassword" value="2"/>
         <enum name="emailPassword" value="3"/>
         <enum name="emailCode" value="4"/>
+        <enum name="phonePassword" value="5"/>
+        <enum name="extendFiled" value="6"/>
     </attr>
 
     <attr name="pageType" format="enum" >
@@ -48,6 +50,10 @@
     </declare-styleable>
 
     <declare-styleable name="RegisterContainer">
+        <attr name="type" />
+    </declare-styleable>
+
+    <declare-styleable name="SocialBindContainer">
         <attr name="type" />
     </declare-styleable>
 

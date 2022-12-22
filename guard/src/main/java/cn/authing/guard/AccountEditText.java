@@ -25,6 +25,7 @@ public class AccountEditText extends EditTextLayout {
 
     protected final static int PHONE_VALIDATOR = 1;
     protected final static int EMAIL_VALIDATOR = 2;
+    protected final static int EXTEND_FILED_VALIDATOR = 3;
 
     protected int validator;
 
@@ -78,21 +79,29 @@ public class AccountEditText extends EditTextLayout {
             if (enabledLoginMethods == null || enabledLoginMethods.size() == 0) {
                 return defaultHint;
             }
+            boolean addPhone = false;
             if (enabledLoginMethods.contains(LOGIN_METHOD_PHONE)){
                 s.append(phone);
+                addPhone = true;
                 if (enabledLoginMethods.size() == 1){
                     validator |= PHONE_VALIDATOR;
                 }
             }
+            boolean addEmail = false;
             if (enabledLoginMethods.contains(LOGIN_METHOD_EMAIL)){
-                s.append(" / ");
+                if (addPhone){
+                    s.append(" / ");
+                }
                 s.append(email);
+                addEmail = true;
                 if (enabledLoginMethods.size() == 1){
                     validator |= EMAIL_VALIDATOR;
                 }
             }
             if (enabledLoginMethods.contains(LOGIN_METHOD_UN)){
-                s.append(" / ");
+                if (addEmail){
+                    s.append(" / ");
+                }
                 s.append(username);
             }
             return s.toString();

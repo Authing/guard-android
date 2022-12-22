@@ -86,6 +86,21 @@ public abstract class SocialLoginButton extends androidx.appcompat.widget.AppCom
                     flow.getData().put(AuthFlow.KEY_USER_INFO, userInfo);
                 }
                 FlowHelper.handleMFA(this, userInfo.getMfaData());
+            } else if (code == Const.EC_SOCIAL_BIND_LOGIN
+                    || code == Const.EC_SOCIAL_BIND_REGISTER) {
+                if (getContext() instanceof AuthActivity) {
+                    AuthActivity activity = (AuthActivity) getContext();
+                    AuthFlow flow = (AuthFlow) activity.getIntent().getSerializableExtra(AuthActivity.AUTH_FLOW);
+                    flow.getData().put(AuthFlow.KEY_USER_INFO, userInfo);
+                }
+                FlowHelper.handleSocialAccountBind((AuthActivity) getContext(), code);
+            } else if (code == Const.EC_SOCIAL_BIND_SELECT) {
+                if (getContext() instanceof AuthActivity) {
+                    AuthActivity activity = (AuthActivity) getContext();
+                    AuthFlow flow = (AuthFlow) activity.getIntent().getSerializableExtra(AuthActivity.AUTH_FLOW);
+                    flow.getData().put(AuthFlow.KEY_USER_INFO, userInfo);
+                }
+                FlowHelper.handleSocialAccountSelect((AuthActivity) getContext());
             } else {
                 if (!TextUtils.isEmpty(message)
                         && getContext().getString(R.string.authing_cancelled_by_user).equals(message)){
