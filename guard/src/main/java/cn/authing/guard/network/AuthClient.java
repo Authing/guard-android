@@ -19,9 +19,11 @@ import cn.authing.guard.AuthCallback;
 import cn.authing.guard.Authing;
 import cn.authing.guard.R;
 import cn.authing.guard.data.Application;
+import cn.authing.guard.data.AuthenticationParams;
 import cn.authing.guard.data.DeviceInfo;
 import cn.authing.guard.data.MFAData;
 import cn.authing.guard.data.Organization;
+import cn.authing.guard.data.RegistrationParams;
 import cn.authing.guard.data.Resource;
 import cn.authing.guard.data.Role;
 import cn.authing.guard.data.Safe;
@@ -305,7 +307,7 @@ public class AuthClient {
     }
 
     public static void loginByAccount(String account, String password, @NotNull AuthCallback<UserInfo> callback) {
-        loginByAccount(null, account, password, false, null, callback);
+        loginByAccount(null, account, password, true, null, callback);
     }
 
     public static void loginByAccount(String account, String password, boolean autoRegister, String context, @NotNull AuthCallback<UserInfo> callback) {
@@ -1463,6 +1465,76 @@ public class AuthClient {
         try {
             String endpoint = "/api/v3/create-device";
             Guardian.post(endpoint, deviceInfo.toJSON(), (data) -> callback.call(data.getCode(), data.getMessage(), data.getData()));
+        } catch (Exception e) {
+            error(e, callback);
+        }
+    }
+
+    public static void bindBiometricRequest(@NotNull AuthCallback<JSONObject> callback) {
+        try {
+            String endpoint = "/api/v3/webauthn/registration";
+            Guardian.get(endpoint, (data) -> callback.call(data.getCode(), data.getMessage(), data.getData()));
+        } catch (Exception e) {
+            error(e, callback);
+        }
+    }
+
+    public static void bindBiometric(RegistrationParams registrationParams, @NotNull AuthCallback<JSONObject> callback) {
+        try {
+            String endpoint = "/api/v3/webauthn/registration";
+            Guardian.post(endpoint, registrationParams.toJSON(), (data) -> callback.call(data.getCode(), data.getMessage(), data.getData()));
+        } catch (Exception e) {
+            error(e, callback);
+        }
+    }
+
+    public static void unBindBiometric(String credentialID, @NotNull AuthCallback<JSONObject> callback) {
+        try {
+            String endpoint = "/api/v3/webauthn/remove-credential/"+credentialID;
+            JSONObject body = new JSONObject();
+            body.put("credentialID", credentialID);
+            Guardian.post(endpoint, body, (data) -> callback.call(data.getCode(), data.getMessage(), data.getData()));
+        } catch (Exception e) {
+            error(e, callback);
+        }
+    }
+
+    public static void getBiometricList(String authenticatorCode, @NotNull AuthCallback<JSONObject> callback) {
+        try {
+            String endpoint = "/api/v3/webauthn/page-authenticator-device";
+            JSONObject body = new JSONObject();
+            body.put("authenticatorCode", authenticatorCode);
+            Guardian.post(endpoint, body, (data) -> callback.call(data.getCode(), data.getMessage(), data.getData()));
+        } catch (Exception e) {
+            error(e, callback);
+        }
+    }
+
+    public static void checkBiometricBind(String authenticatorCode, String[] credentialIds, @NotNull AuthCallback<JSONObject> callback) {
+        try {
+            String endpoint = "/api/v3/webauthn/check-valid-credentials-by-credIds";
+            JSONObject body = new JSONObject();
+            body.put("authenticatorCode", authenticatorCode);
+            body.put("credentialIds", credentialIds);
+            Guardian.post(endpoint, body, (data) -> callback.call(data.getCode(), data.getMessage(), data.getData()));
+        } catch (Exception e) {
+            error(e, callback);
+        }
+    }
+
+    public static void biometricAuthenticationRequest(@NotNull AuthCallback<JSONObject> callback) {
+        try {
+            String endpoint = "/api/v3/webauthn/authentication";
+            Guardian.get(endpoint, (data) -> callback.call(data.getCode(), data.getMessage(), data.getData()));
+        } catch (Exception e) {
+            error(e, callback);
+        }
+    }
+
+    public static void biometricAuthentication(AuthenticationParams authenticationParams, @NotNull AuthCallback<JSONObject> callback) {
+        try {
+            String endpoint = "/api/v3/webauthn/authentication";
+            Guardian.post(endpoint, authenticationParams.toJSON(), (data) -> callback.call(data.getCode(), data.getMessage(), data.getData()));
         } catch (Exception e) {
             error(e, callback);
         }

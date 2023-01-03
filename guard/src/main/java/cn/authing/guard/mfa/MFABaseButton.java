@@ -48,6 +48,9 @@ public class MFABaseButton extends LoadingButton {
     protected void mfaVerifyOk(int code, String message, UserInfo userInfo) {
         Authing.getPublicConfig((config) -> {
             if (getContext() instanceof AuthActivity) {
+                if (checkBiometricBind((AuthActivity) getContext())){
+                    return;
+                }
                 AuthActivity activity = (AuthActivity) getContext();
                 AuthFlow flow = (AuthFlow) activity.getIntent().getSerializableExtra(AuthActivity.AUTH_FLOW);
                 List<ExtendedField> missingFields = FlowHelper.missingFields(config, userInfo);
@@ -68,6 +71,17 @@ public class MFABaseButton extends LoadingButton {
                 }
             }
         });
+    }
+
+    protected boolean checkBiometricBind(AuthActivity activity){
+        AuthFlow flow = (AuthFlow) activity.getIntent().getSerializableExtra(AuthActivity.AUTH_FLOW);
+        boolean isBiometricBind = (Boolean) flow.getData().get(AuthFlow.KEY_BIOMETRIC_BIND);
+        if (isBiometricBind){
+            activity.setResult(AuthActivity.BIOMETRIC_BIND_OK);
+            activity.finish();
+            return true;
+        }
+        return false;
     }
 
     protected void showToast(int textResId, int imageResId) {

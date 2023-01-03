@@ -29,14 +29,17 @@ import cn.authing.guard.data.UserInfo;
 import cn.authing.guard.flow.AuthFlow;
 import cn.authing.guard.internal.CircularAnimatedView;
 import cn.authing.guard.social.Google;
+import cn.authing.guard.util.Const;
 import cn.authing.guard.util.ImageUtil;
 import cn.authing.guard.util.ToastUtil;
 import cn.authing.guard.util.Util;
+import cn.authing.guard.webauthn.WebAuthNAuthentication;
 
 public class AuthActivity extends AppCompatActivity {
 
     public static final int RC_LOGIN = 1024;
     public static final int OK = 42;
+    public static final int BIOMETRIC_BIND_OK = 43;
 
     public static final String AUTH_FLOW = "auth_flow";
     public static final String CONTENT_LAYOUT_ID = "content_layout_id";
@@ -50,6 +53,7 @@ public class AuthActivity extends AppCompatActivity {
     private FrameLayout loadingContainer;
     private View loading;
     private Bitmap qrCodeBitmap;
+    private WebAuthNAuthentication webAuthNAuthentication;
 
     public interface EventListener {
         void happened(String what);
@@ -120,6 +124,9 @@ public class AuthActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        if (webAuthNAuthentication != null){
+            webAuthNAuthentication.onActivityResult(requestCode, resultCode, data);
+        }
         try {
             Class.forName("com.ss.android.larksso.LarkSSO");
             LarkSSO.inst().parseIntent(this, data);
@@ -135,6 +142,9 @@ public class AuthActivity extends AppCompatActivity {
         if (requestCode == Google.RC_SIGN_IN && data != null) {
             data.setAction("cn.authing.guard.broadcast.GOOGLE_LOGIN");
             sendBroadcast(data);
+        }
+        if (resultCode == BIOMETRIC_BIND_OK){
+            Util.biometricBind(this);
         }
     }
 
@@ -193,10 +203,10 @@ public class AuthActivity extends AppCompatActivity {
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if (requestCode == 101 && qrCodeBitmap != null){
+        if (requestCode == Const.REQUEST_CODE_QR && qrCodeBitmap != null){
             ImageUtil.saveImage(this, qrCodeBitmap);
         }
-        if (requestCode == 102){
+        if (requestCode == Const.REQUEST_MFA_BINDING){
             fire(EVENT_BIND_FACE_CARE_PERMISSION, "");
         }
     }
@@ -204,4 +214,9 @@ public class AuthActivity extends AppCompatActivity {
     public void setQrCodeBitmap(Bitmap qrCodeBitmap) {
         this.qrCodeBitmap = qrCodeBitmap;
     }
+
+    public void setWebAuthNAuthentication(WebAuthNAuthentication webAuthNAuthentication) {
+        this.webAuthNAuthentication = webAuthNAuthentication;
+    }
+
 }

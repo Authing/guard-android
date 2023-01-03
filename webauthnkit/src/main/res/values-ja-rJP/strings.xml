@@ -1,0 +1,6 @@
+<resources>
+
+    <string name="authing_biometric_title">生体認証</string>
+    <string name="authing_biometric_tip">生体情報で登録する</string>
+
+</resources>

@@ -20,6 +20,7 @@ import cn.authing.guard.R;
 import cn.authing.guard.activity.AuthActivity;
 import cn.authing.guard.data.Safe;
 import cn.authing.guard.network.AuthClient;
+import cn.authing.guard.util.Const;
 import cn.authing.guard.util.ImageUtil;
 
 /**
@@ -85,7 +86,6 @@ public class OtpQrCodeImageView extends AppCompatImageView {
     }
 
     private void saveImage() {
-        int REQUEST_CODE_CONTACT = 101;
         String[] permissions = {Manifest.permission.WRITE_EXTERNAL_STORAGE};
         //验证是否许可权限
         boolean hasPermission = true;
@@ -95,7 +95,7 @@ public class OtpQrCodeImageView extends AppCompatImageView {
                 if (getContext() instanceof AuthActivity) {
                     ((AuthActivity) getContext()).setQrCodeBitmap(bitmap);
                 }
-                ((Activity) getContext()).requestPermissions(permissions, REQUEST_CODE_CONTACT);
+                ((Activity) getContext()).requestPermissions(permissions, Const.REQUEST_CODE_QR);
                 hasPermission = false;
             }
         }

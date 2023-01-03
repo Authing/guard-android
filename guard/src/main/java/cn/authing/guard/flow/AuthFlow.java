@@ -28,6 +28,7 @@ public class AuthFlow implements Serializable {
     public static final String KEY_EXTENDED_FIELDS = "extended_fields";
     public static final String KEY_SOCIAL_ACCOUNT_BIND_CODE = "social_account_bind_code";
     public static final String KEY_PUSH_DATA = "push_data";
+    public static final String KEY_BIOMETRIC_BIND = "biometric_bind";
     private Map<String, Object> data = new HashMap<>();
 
     private int indexLayoutId;
@@ -69,6 +70,9 @@ public class AuthFlow implements Serializable {
     //push
     private int pushLoginLayoutId;
     private int pushLoginSuccessLayoutId;
+    //push
+    private int biometricAccountBindLayoutId;
+    private int biometricAccountBindSuccessLayoutId;
 
     private String scope = "openid profile email phone username address offline_access role extended_fields";
     private boolean skipConsent;
@@ -516,6 +520,28 @@ public class AuthFlow implements Serializable {
 
     public void setPushLoginSuccessLayoutId(int pushLoginSuccessLayoutId) {
         this.pushLoginSuccessLayoutId = pushLoginSuccessLayoutId;
+    }
+
+    public int getBiometricAccountBindLayoutId() {
+        if (biometricAccountBindLayoutId == 0) {
+            biometricAccountBindLayoutId = R.layout.authing_biometric_account_bind;
+        }
+        return biometricAccountBindLayoutId;
+    }
+
+    public void setBiometricAccountBindLayoutId(int biometricAccountBindLayoutId) {
+        this.biometricAccountBindLayoutId = biometricAccountBindLayoutId;
+    }
+
+    public int getBiometricAccountBindSuccessLayoutId() {
+        if (biometricAccountBindSuccessLayoutId == 0) {
+            biometricAccountBindSuccessLayoutId = R.layout.authing_biometric_account_bind_success;
+        }
+        return biometricAccountBindSuccessLayoutId;
+    }
+
+    public void setBiometricAccountBindSuccessLayoutId(int biometricAccountBindSuccessLayoutId) {
+        this.biometricAccountBindSuccessLayoutId = biometricAccountBindSuccessLayoutId;
     }
 
     public Callback<UserInfo> getAuthCallback() {

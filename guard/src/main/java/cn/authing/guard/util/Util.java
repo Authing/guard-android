@@ -8,6 +8,7 @@ import android.content.pm.PackageManager;
 import android.provider.Settings;
 import android.text.TextUtils;
 import android.util.Base64;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
@@ -65,6 +66,7 @@ import cn.authing.guard.data.TabMethodsField;
 import cn.authing.guard.data.UserInfo;
 import cn.authing.guard.flow.AuthFlow;
 import cn.authing.guard.network.AuthClient;
+import cn.authing.guard.webauthn.WebAuthNRegister;
 
 public class Util {
 
@@ -87,7 +89,7 @@ public class Util {
     }
 
     public static String encryptPassword(String password) {
-        if (isNull(password)) {
+        if (isNull(password)){
             return null;
         }
         try {
@@ -602,9 +604,6 @@ public class Util {
         boolean hasPermission = true;
         for (String str : permissions) {
             if (context.checkSelfPermission(str) != PackageManager.PERMISSION_GRANTED) {
-                //申请权限
-                //int REQUEST_CODE_CONTACT = 103;
-                //((Activity) context).requestPermissions(permissions, REQUEST_CODE_CONTACT);
                 hasPermission = false;
             }
         }
@@ -615,7 +614,7 @@ public class Util {
         DeviceInfo deviceInfo = new DeviceInfo();
         deviceInfo.setUniqueId(DeviceUtils.getUniqueDeviceId(context));
         deviceInfo.setName(PhoneUtils.getDeviceName());
-        deviceInfo.setVersion(PhoneUtils.getVerName(context));
+        deviceInfo.setVersion(PhoneUtils.getSDKVersionName());
         deviceInfo.setHks("");
         deviceInfo.setFde("");
         deviceInfo.setHor(DeviceUtils.isDeviceRooted());
@@ -630,6 +629,7 @@ public class Util {
         AuthClient.createDevice(deviceInfo, new AuthCallback<JSONObject>() {
             @Override
             public void call(int code, String message, JSONObject data) {
+                Log.d("Util", "createDevice : code = " +code + " message = " + message);
             }
         });
     }
@@ -640,10 +640,39 @@ public class Util {
             @Override
             public void call(int code, String message, JSONObject data) {
                 if (code == 200){
-
+                    Log.e("Util", "pushCid : code = " +code + " message = " + message);
                 }
             }
         });
+    }
+
+    public static String encodeBase64URL(byte[] bytes){
+        return Base64.encodeToString(bytes, Base64.URL_SAFE|Base64.NO_PADDING|Base64.NO_WRAP);
+    }
+
+    public static void biometricBind(AuthActivity activity){
+        WebAuthNRegister webAuthNRegister = new WebAuthNRegister(activity, new WebAuthNRegister.WebAuthNRegisterCallBack() {
+            @Override
+            public void onSuccess() {
+                AuthFlow flow = activity.getFlow();
+                Intent intent = new Intent(activity, AuthActivity.class);
+                intent.putExtra(AuthActivity.AUTH_FLOW, flow);
+                intent.putExtra(AuthActivity.CONTENT_LAYOUT_ID, flow.getBiometricAccountBindSuccessLayoutId());
+                intent.addFlags(Intent.FLAG_ACTIVITY_FORWARD_RESULT);
+                activity.startActivity(intent);
+                activity.finish();
+            }
+
+            @Override
+            public void onFailed(int code, String message) {
+                if (!TextUtils.isEmpty(message) && (message.contains("CancelledException")
+                        || message.contains("TimeoutException"))){
+                    return;
+                }
+                activity.runOnUiThread(() -> ToastUtil.showCenter(activity, message));
+            }
+        });
+        webAuthNRegister.startRegister();
     }
 
 }

@@ -13,6 +13,7 @@ import androidx.annotation.Nullable;
 
 import cn.authing.guard.R;
 import cn.authing.guard.activity.AuthActivity;
+import cn.authing.guard.util.Const;
 
 public abstract class GoMFAFaceButton extends androidx.appcompat.widget.AppCompatButton implements AuthActivity.EventListener {
 
@@ -55,7 +56,6 @@ public abstract class GoMFAFaceButton extends androidx.appcompat.widget.AppCompa
     }
 
     private void initPermission() {
-        int REQUEST_CODE_CONTACT = 102;
         String[] permissions = {Manifest.permission.CAMERA};
         //验证是否许可权限
         boolean hasPermission = true;
@@ -65,7 +65,7 @@ public abstract class GoMFAFaceButton extends androidx.appcompat.widget.AppCompa
                 if (getContext() instanceof AuthActivity) {
                     ((AuthActivity) getContext()).subscribe(AuthActivity.EVENT_BIND_FACE_CARE_PERMISSION, this);
                 }
-                ((Activity) getContext()).requestPermissions(permissions, REQUEST_CODE_CONTACT);
+                ((Activity) getContext()).requestPermissions(permissions, Const.REQUEST_MFA_BINDING);
                 hasPermission = false;
             }
         }

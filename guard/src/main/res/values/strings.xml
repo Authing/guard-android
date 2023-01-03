@@ -117,6 +117,9 @@
     <string name="authing_bind_existing_account">Bind existing account</string>
     <string name="authing_bind_existing_account_tip">After binding, you can log in to this account directly by this method next time</string>
     <string name="authing_bind_select_account">Select an Account to log in</string>
+    <string name="authing_bind_biometric_account_tip">If no fingerprint/face account is identified, please bind an existing account.</string>
+    <string name="authing_bind_biometric_account_result">Binding Results</string>
+    <string name="authing_bind_biometric_account_success">You have successfully bound「%1$s」</string>
     <string name="authing_delete_account_tips">After logout, all data of this account will be deleted and irreversible, please operate with caution!</string>
     <string name="authing_code_sent_to_phone">A code will be sent to </string>
     <string name="authing_network_error_tips">The network is abnormal. Check the network Settings</string>

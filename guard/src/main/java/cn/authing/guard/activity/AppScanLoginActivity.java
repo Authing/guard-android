@@ -17,6 +17,8 @@ import cn.authing.guard.util.Util;
 
 public class AppScanLoginActivity extends AppCompatActivity {
 
+    private String random = "";;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -27,7 +29,14 @@ public class AppScanLoginActivity extends AppCompatActivity {
         Util.setStatusBarColor(this, R.color.authing_white);
         setContentView(R.layout.authing_scan_login);
         Intent intent = getIntent();
-        String random = intent.getStringExtra("random");
+        if (intent.hasExtra("random")){
+            random = intent.getStringExtra("random");
+        }
+        String appName = "";
+        if (intent.hasExtra("appName")){
+            appName = intent.getStringExtra("appName");
+        }
+
         findViewById(R.id.btn_confirm).setOnClickListener(v -> AuthClient.loginByScannedTicket(random, (code, message, data) -> {
             if (code == 200) {
                 finish();
@@ -43,6 +52,6 @@ public class AppScanLoginActivity extends AppCompatActivity {
         }));
         UserInfo userInfo = Authing.getCurrentUser();
         TextView textTip = findViewById(R.id.qr_login_tip);
-        textTip.setText(getString(R.string.authing_push_login_confirm_tip, Util.getUserName(userInfo), ""));
+        textTip.setText(getString(R.string.authing_push_login_confirm_tip, Util.getUserName(userInfo), appName));
     }
 }

@@ -19,12 +19,12 @@ import cn.authing.guard.util.Validator;
 
 public class AccountEditText extends EditTextLayout {
 
-    protected final static String LOGIN_METHOD_PHONE = "phone-password";
-    protected final static String LOGIN_METHOD_EMAIL = "email-password";
     protected final static String LOGIN_METHOD_UN = "username-password";
+    protected final static String LOGIN_METHOD_EMAIL = "email-password";
+    protected final static String LOGIN_METHOD_PHONE = "phone-password";
 
-    protected final static int PHONE_VALIDATOR = 1;
-    protected final static int EMAIL_VALIDATOR = 2;
+    protected final static int EMAIL_VALIDATOR = 1;
+    protected final static int PHONE_VALIDATOR = 2;
     protected final static int EXTEND_FILED_VALIDATOR = 3;
 
     protected int validator;
@@ -64,14 +64,14 @@ public class AccountEditText extends EditTextLayout {
 
     private String getHintByConfig(Config config, Context context) {
         StringBuilder s = new StringBuilder(context.getString(R.string.authing_account_edit_text_hint));
-        String phone = context.getString(R.string.authing_phone);
-        String email = context.getString(R.string.authing_email);
         String username = context.getString(R.string.authing_username);
+        String email = context.getString(R.string.authing_email);
+        String phone = context.getString(R.string.authing_phone);
 
         if (pageType == 1) {
             return s.append(email).toString();
         } else {
-            String defaultHint = s + phone + " / " + email + " / " + username;
+            String defaultHint = s + username + " / " + email + " / " + phone;
             if (config == null) {
                 return defaultHint;
             }
@@ -79,30 +79,36 @@ public class AccountEditText extends EditTextLayout {
             if (enabledLoginMethods == null || enabledLoginMethods.size() == 0) {
                 return defaultHint;
             }
-            boolean addPhone = false;
-            if (enabledLoginMethods.contains(LOGIN_METHOD_PHONE)){
-                s.append(phone);
-                addPhone = true;
-                if (enabledLoginMethods.size() == 1){
-                    validator |= PHONE_VALIDATOR;
+            for (int i = 0, n = enabledLoginMethods.size(); i < n; ++i) {
+                String opt = enabledLoginMethods.get(i);
+                if (TextUtils.isEmpty(opt)){
+                    continue;
                 }
-            }
-            boolean addEmail = false;
-            if (enabledLoginMethods.contains(LOGIN_METHOD_EMAIL)){
-                if (addPhone){
+                String name = opt.replace("-password", "");
+                String label = Util.getLabel(config, name);
+                switch (opt) {
+                    case LOGIN_METHOD_PHONE:
+                        s.append(TextUtils.isEmpty(label) ? phone : label);
+                        if (enabledLoginMethods.size() == 1) {
+                            validator |= PHONE_VALIDATOR;
+                        }
+                        break;
+                    case LOGIN_METHOD_EMAIL:
+                        s.append(TextUtils.isEmpty(label) ? email : label);
+                        if (enabledLoginMethods.size() == 1) {
+                            validator |= EMAIL_VALIDATOR;
+                        }
+                        break;
+                    case LOGIN_METHOD_UN:
+                        s.append(TextUtils.isEmpty(label) ? username : label);
+                        break;
+                    default:
+                        s.append(label);
+                        break;
+                }
+                if (i < n - 1) {
                     s.append(" / ");
                 }
-                s.append(email);
-                addEmail = true;
-                if (enabledLoginMethods.size() == 1){
-                    validator |= EMAIL_VALIDATOR;
-                }
-            }
-            if (enabledLoginMethods.contains(LOGIN_METHOD_UN)){
-                if (addEmail){
-                    s.append(" / ");
-                }
-                s.append(username);
             }
             return s.toString();
         }
@@ -120,13 +126,13 @@ public class AccountEditText extends EditTextLayout {
             if (enabledLoginMethods.size() == 1) {
                 String opt = enabledLoginMethods.get(0);
                 switch (opt) {
-                    case LOGIN_METHOD_PHONE:
-                        editText.setInputType(InputType.TYPE_CLASS_PHONE);
+                    case LOGIN_METHOD_UN:
                         break;
                     case LOGIN_METHOD_EMAIL:
                         editText.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
                         break;
-                    case LOGIN_METHOD_UN:
+                    case LOGIN_METHOD_PHONE:
+                        editText.setInputType(InputType.TYPE_CLASS_PHONE);
                         break;
                 }
             }
@@ -144,21 +150,18 @@ public class AccountEditText extends EditTextLayout {
         }
 
         boolean valid = false;
-        if ((validator & PHONE_VALIDATOR) != 0) {
-            valid = Validator.isValidPhoneNumber(s.toString());
-        }
         if ((validator & EMAIL_VALIDATOR) != 0) {
-            valid |= Validator.isValidEmail(s.toString());
+            valid = Validator.isValidEmail(s.toString());
+        }
+        if ((validator & PHONE_VALIDATOR) != 0) {
+            valid |= Validator.isValidPhoneNumber(s.toString());
         }
 
-        clearErrorText();
         if (!valid) {
-            if (validator == PHONE_VALIDATOR) {
-                showError(getResources().getString(R.string.authing_invalid_phone));
-                showErrorBackGround();
-            } else if (validator == EMAIL_VALIDATOR) {
+            if (validator == EMAIL_VALIDATOR) {
                 showError(getResources().getString(R.string.authing_invalid_email));
-                showErrorBackGround();
+            } else if (validator == PHONE_VALIDATOR) {
+                showError(getResources().getString(R.string.authing_invalid_phone));
             }
         }
     }

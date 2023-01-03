@@ -117,6 +117,9 @@
     <string name="authing_bind_existing_account">既存のアカウントを結びつける</string>
     <string name="authing_bind_existing_account_tip">紐付け后、次回から直接今回の方法でこのアカウントにログインすることができます</string>
     <string name="authing_bind_select_account">ログインするアカウントを選択</string>
+    <string name="authing_bind_biometric_account_tip">指紋/顔対応アカウントが認識されていない場合は、既存のアカウントと結びつけてください。</string>
+    <string name="authing_bind_biometric_account_result">バインド結果</string>
+    <string name="authing_bind_biometric_account_success">あなたは「%1$s」アカウントのバインドに成功しました</string>
     <string name="authing_delete_account_tips">ログアウト後、このアカウントのすべてのデータは削除され、元に戻すことはできません。注意して操作してください</string>
     <string name="authing_code_sent_to_phone">バインドされた携帯電話に確認コードが送信されます </string>
     <string name="authing_network_error_tips">ネットワークが異常です。ネットワーク設定を確認してください</string>

@@ -111,9 +111,9 @@ public class PhoneUtils {
     @SuppressLint("HardwareIds")
     @RequiresPermission(READ_PHONE_STATE)
     public static String getImeiOrMeid(boolean isImei, Context context) {
-//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-//            return "";
-//        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            return "";
+        }
         TelephonyManager tm = getTelephonyManager(context);
         /*if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             if (isImei) {

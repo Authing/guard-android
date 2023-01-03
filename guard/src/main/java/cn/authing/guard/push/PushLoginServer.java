@@ -25,7 +25,6 @@ import cn.authing.guard.util.Util;
 public class PushLoginServer extends GTIntentService {
 
     private static final String TAG = "PushLoginServer";
-    private String clientId = "";
     private String mMid = "";
 
     @Override
@@ -41,6 +40,7 @@ public class PushLoginServer extends GTIntentService {
     public void onReceiveMessageData(Context context, GTTransmitMessage msg) {
         byte[] payload = msg.getPayload();
         String data = new String(payload);
+        Log.d(TAG, "onReceiveMessageData");
 
         //taskid和messageid字段，是用于回执上报的必要参数。详情见下方文档“6.2 上报透传消息的展示和点击数据”
         String taskid = msg.getTaskId();
@@ -98,7 +98,6 @@ public class PushLoginServer extends GTIntentService {
     }
 
     private void goToPushLoginPage(Context context, PushData pushData) {
-        Log.e(TAG, "goToPushLoginPage");
         AuthFlow authFlow = new AuthFlow();
         authFlow.getData().put(AuthFlow.KEY_PUSH_DATA, pushData);
         Intent intent = new Intent(context, AuthActivity.class);
@@ -111,11 +110,10 @@ public class PushLoginServer extends GTIntentService {
     // 接收 cid
     @Override
     public void onReceiveClientId(Context context, String clientid) {
-        Log.e(TAG, "onReceiveClientId -> ");
-        if (clientid == null || clientid.equals(clientId)) {
+        Log.d(TAG, "onReceiveClientId");
+        if (clientid == null) {
             return;
         }
-        this.clientId = clientid;
         if (Authing.getCurrentUser() != null) {
             Util.pushCid(context);
         }
@@ -124,25 +122,25 @@ public class PushLoginServer extends GTIntentService {
     // cid 离线上线通知
     @Override
     public void onReceiveOnlineState(Context context, boolean online) {
-        Log.e(TAG, "onReceiveOnlineState online = ");
+        Log.d(TAG, "onReceiveOnlineState");
     }
 
     // 各种事件处理回执
     @Override
     public void onReceiveCommandResult(Context context, GTCmdMessage cmdMessage) {
-        Log.e(TAG, "onNotificationMessageArrived ");
+        Log.d(TAG, "onNotificationMessageArrived");
     }
 
     // 通知到达，只有个推通道下发的通知会回调此方法
     @Override
     public void onNotificationMessageArrived(Context context, GTNotificationMessage msg) {
-        Log.e(TAG, "onNotificationMessageArrived");
+        Log.d(TAG, "onNotificationMessageArrived");
     }
 
     // 通知点击，只有个推通道下发的通知会回调此方法
     @Override
     public void onNotificationMessageClicked(Context context, GTNotificationMessage msg) {
-        Log.e(TAG, "onNotificationMessageClicked");
+        Log.d(TAG, "onNotificationMessageClicked");
     }
 
 

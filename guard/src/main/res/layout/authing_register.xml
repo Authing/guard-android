@@ -163,9 +163,7 @@
         <cn.authing.guard.RegisterContainer
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/authing_form_start_end_margin"
             android:layout_marginTop="14dp"
-            android:layout_marginEnd="@dimen/authing_form_start_end_margin"
             android:clipChildren="false"
             android:visibility="invisible"
             app:type="phonePassword">
@@ -196,9 +194,7 @@
         <cn.authing.guard.RegisterContainer
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/authing_form_start_end_margin"
             android:layout_marginTop="14dp"
-            android:layout_marginEnd="@dimen/authing_form_start_end_margin"
             android:clipChildren="false"
             android:visibility="invisible"
             app:type="extendFiled">

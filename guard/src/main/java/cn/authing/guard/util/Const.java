@@ -6,7 +6,7 @@ public class Const {
     public final static String NS_ANDROID = "http://schemas.android.com/apk/res/android";
 
     public static final String SDK_TAG = "Guard-Android@";
-    public static final String SDK_VERSION = "1.4.4";
+    public static final String SDK_VERSION = "1.4.6";
 
     public final static int EC_MFA_REQUIRED = 1636;
     public final static int EC_FIRST_TIME_LOGIN = 1639;
@@ -19,6 +19,7 @@ public class Const {
     public final static int EC_ACCOUNT_EXIST = 2004;
     public final static int EC_ACCOUNT_NOT_LOGIN = 2020;
     public final static int EC_400 = 400;
+    public final static int EC_422 = 422;
 
     public final static int EC_INCORRECT_VERIFY_CODE = 2001;
     public final static int EC_INCORRECT_CREDENTIAL = 2333;
@@ -32,6 +33,7 @@ public class Const {
     public final static int ERROR_CODE_10007 = 10007; // Alipay auth failed
     public final static int ERROR_CODE_10008 = 10008; // 在 60 秒内已发送短信验证码
     public final static int ERROR_CODE_10009 = 10009; // Upload avatar failed
+    public final static int ERROR_CODE_10010 = 10010; //webauthn error
 
     public static final String MFA_POLICY_SMS = "SMS";
     public static final String MFA_POLICY_EMAIL = "EMAIL";
@@ -58,4 +60,8 @@ public class Const {
 
     public static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
     public static final MediaType FORM = MediaType.parse("application/x-www-form-urlencoded; charset=utf-8");
+
+
+    public static final int REQUEST_CODE_QR = 101;
+    public static final int REQUEST_MFA_BINDING = 102;
 }

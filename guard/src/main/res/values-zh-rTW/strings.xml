@@ -117,6 +117,9 @@
     <string name="authing_bind_existing_account">綁定已有賬號</string>
     <string name="authing_bind_existing_account_tip">綁定後，下次可以直接通過這次的方式登錄到此賬號</string>
     <string name="authing_bind_select_account">選擇賬號登錄</string>
+    <string name="authing_bind_biometric_account_tip">未識別到指紋/人臉對應帳號，請綁定已有帳號。</string>
+    <string name="authing_bind_biometric_account_result">綁定結果</string>
+    <string name="authing_bind_biometric_account_success">你已成功綁定「%1$s」帳號</string>
     <string name="authing_delete_account_tips">註銷後，此賬號的所有數據都將被刪除且不可逆，請謹慎操作</string>
     <string name="authing_code_sent_to_phone">將發送驗證碼至綁定手機 </string>
     <string name="authing_network_error_tips">網路異常，請檢查網路設置</string>

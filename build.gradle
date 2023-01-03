@@ -1,5 +1,6 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 buildscript {
+    ext.kotlin_version = '1.3.70'
     repositories {
         google()
         mavenCentral()
@@ -14,5 +15,7 @@ buildscript {
 
         // huawei push
         classpath 'com.huawei.agconnect:agcp:1.6.0.300'
+
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
     }
 }

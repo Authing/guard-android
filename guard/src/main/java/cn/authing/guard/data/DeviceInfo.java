@@ -19,6 +19,9 @@ public class DeviceInfo {
     private String imei;    //国际识别码
     private String meid;    //设备识别码
     private String description; //设备识别码
+    private String language;
+    private boolean cookie;
+    private String userAgent;
 
     public String getUniqueId() {
         return uniqueId;
@@ -132,6 +135,29 @@ public class DeviceInfo {
         this.description = description;
     }
 
+    public String getLanguage() {
+        return language;
+    }
+
+    public void setLanguage(String language) {
+        this.language = language;
+    }
+
+    public boolean isCookie() {
+        return cookie;
+    }
+
+    public void setCookie(boolean cookie) {
+        this.cookie = cookie;
+    }
+
+    public String getUserAgent() {
+        return userAgent;
+    }
+
+    public void setUserAgent(String userAgent) {
+        this.userAgent = userAgent;
+    }
 
     public JSONObject toJSON() {
         JSONObject jsonObject = new JSONObject();
@@ -178,6 +204,13 @@ public class DeviceInfo {
             if (getDescription() != null) {
                 jsonObject.put("description", getDescription());
             }
+//            if (getLanguage() != null) {
+//                jsonObject.put("language", getLanguage());
+//            }
+//            jsonObject.put("cookie", isCookie());
+//            if (getUserAgent() != null) {
+//                jsonObject.put("userAgent", getUserAgent());
+//            }
         } catch (JSONException e) {
             e.printStackTrace();
         }

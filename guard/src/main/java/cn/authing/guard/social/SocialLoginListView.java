@@ -94,15 +94,20 @@ public class SocialLoginListView extends LinearLayout {
                 if (livingAuthSortConfig != null && !livingAuthSortConfig.isEmpty()){
                     for (int i = 0, n = livingAuthSortConfig.size(); i < n; i++) {
                         String type = livingAuthSortConfig.get(i);
-                        types.add(type);
+                        if (Const.TYPE_FINGER.equals(type) && config.isEnableFingerprintLogin()){
+                            types.add(type);
+                        }
+//                        if (Const.TYPE_FACE.equals(type) && config.isEnableFaceLogin()){
+//                            types.add(type);
+//                        }
                     }
                 } else {
-                    if (config.isEnableFaceLogin()){
-                        types.add(Const.TYPE_FACE);
-                    }
                     if (config.isEnableFingerprintLogin()){
                         types.add(Const.TYPE_FINGER);
                     }
+//                    if (config.isEnableFaceLogin()){
+//                        types.add(Const.TYPE_FACE);
+//                    }
                 }
 
                 List<SocialConfig> socialConfigs = config.getSocialConfigs();

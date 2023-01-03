@@ -103,6 +103,9 @@ public class MFAEmailButton extends MFABaseButton implements AuthActivity.EventL
 
     protected void next(){
         if (getContext() instanceof AuthActivity){
+            if (checkBiometricBind((AuthActivity)getContext())){
+                return;
+            }
             AuthActivity activity = (AuthActivity)getContext();
             AuthFlow flow = activity.getFlow();
             Intent intent = new Intent(getContext(), AuthActivity.class);

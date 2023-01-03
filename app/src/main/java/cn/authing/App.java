@@ -3,6 +3,8 @@ package cn.authing;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import com.igexin.sdk.PushManager;
+
 import cn.authing.guard.Authing;
 
 
@@ -56,5 +58,15 @@ public class App extends android.app.Application {
         //OneClick.bizId = "74ae90bd84f74b69a88b578bbbbcdcfd";
 
         Authing.init(getApplicationContext(), appid);
+        Authing.setAuthProtocol(Authing.AuthProtocol.EOIDC);
+
+        PushManager.getInstance().initialize(this);
+//        PushManager.getInstance().setDebugLogger(this, new IUserLoggerInterface() {
+//            @Override
+//            public void log(String s) {
+//                Log.i("PUSH_LOG",s);
+//            }
+//        });
+
     }
 }
