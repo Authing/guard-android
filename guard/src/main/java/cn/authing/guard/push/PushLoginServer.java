@@ -38,9 +38,12 @@ public class PushLoginServer extends GTIntentService {
      */
     @Override
     public void onReceiveMessageData(Context context, GTTransmitMessage msg) {
+        Log.d(TAG, "onReceiveMessageData");
+        if (Authing.getCurrentUser() == null) {
+            return;
+        }
         byte[] payload = msg.getPayload();
         String data = new String(payload);
-        Log.d(TAG, "onReceiveMessageData");
 
         //taskid和messageid字段，是用于回执上报的必要参数。详情见下方文档“6.2 上报透传消息的展示和点击数据”
         String taskid = msg.getTaskId();
@@ -51,6 +54,7 @@ public class PushLoginServer extends GTIntentService {
             return;
         }
         mMid = pushData.getMid();
+        pushGtShow(context, taskid, messageid);
         goToPushLoginPage(context, pushData);
     }
 

@@ -429,7 +429,11 @@ public class MFAFaceView extends RelativeLayout {
 
     protected boolean checkBiometricBind(AuthActivity activity){
         AuthFlow flow = (AuthFlow) activity.getIntent().getSerializableExtra(AuthActivity.AUTH_FLOW);
-        boolean isBiometricBind = (Boolean) flow.getData().get(AuthFlow.KEY_BIOMETRIC_BIND);
+        Object object = flow.getData().get(AuthFlow.KEY_BIOMETRIC_BIND);
+        if (object == null){
+            return false;
+        }
+        boolean isBiometricBind = (Boolean) object;
         if (isBiometricBind){
             activity.setResult(AuthActivity.BIOMETRIC_BIND_OK);
             activity.finish();

@@ -614,7 +614,7 @@ public class Util {
         DeviceInfo deviceInfo = new DeviceInfo();
         deviceInfo.setUniqueId(DeviceUtils.getUniqueDeviceId(context));
         deviceInfo.setName(PhoneUtils.getDeviceName());
-        deviceInfo.setVersion(PhoneUtils.getSDKVersionName());
+        deviceInfo.setVersion("Android " + PhoneUtils.getSDKVersionName());
         deviceInfo.setHks("");
         deviceInfo.setFde("");
         deviceInfo.setHor(DeviceUtils.isDeviceRooted());
@@ -622,7 +622,7 @@ public class Util {
         deviceInfo.setType("Mobile");
         deviceInfo.setProducer(PhoneUtils.getManufacturer());
         deviceInfo.setMod(PhoneUtils.getModel());
-        deviceInfo.setOs("Android " + PhoneUtils.getSDKVersionName());
+        deviceInfo.setOs("Android");
         deviceInfo.setImei(PhoneUtils.getIMEI(context));
         deviceInfo.setMeid(PhoneUtils.getMEID(context));
         deviceInfo.setDescription("");
