@@ -21,7 +21,7 @@
 
 ## 参考文档
 
-- [中文文档请移步至这里查看](https://docs.authing.cn/v2/android/)
+- [中文文档请移步至这里查看](https://docs.authing.cn/v2/sdk-for-android/)
 
 ## Authing 控制台配置
 
@@ -48,4 +48,4 @@ Copyright (c) 2019-present, Authing
 
 通过微信联系我们的高级Android开发者:
 
-<img width="120" src="/Users/zhongjiahui/AndroidStudioProjects/guard-android/doc/images/zhongjiahui.jpg">
+<img width="120" src="./doc/images/zhongjiahui.jpg">
