@@ -48,4 +48,4 @@ Copyright (c) 2019-present, Authing
 
 通过微信联系我们的高级Android开发者:
 
-<img width="120" src="./doc/images/zhongjiahui.jpg">
+<img width="120" src="./doc/images/zhongjiahui.png">
