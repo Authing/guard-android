@@ -725,13 +725,26 @@ public class AuthClient {
         }
     }
 
-    public static void bindWechatByAccountId(String key, String account, @NotNull AuthCallback<UserInfo> callback) {
+    public static void bindWechatBySelectedAccountId(String key, String account, @NotNull AuthCallback<UserInfo> callback) {
         try {
             JSONObject body = new JSONObject();
             body.put("action", "bind-identity-by-selection");
             body.put("key", key);
             body.put("account", account);
             String endpoint = "/api/v2/ecConn/wechatMobile/select";
+            Guardian.post(endpoint, body, (data)-> createTokenFromResponse(data, callback));
+        } catch (Exception e) {
+            error(e, callback);
+        }
+    }
+
+    public static void bindWechatByAccountId(String key, String accountId, @NotNull AuthCallback<UserInfo> callback) {
+        try {
+            JSONObject body = new JSONObject();
+            body.put("action", "bind-identity-by-account-id");
+            body.put("key", key);
+            body.put("accountId", accountId);
+            String endpoint = "/api/v2/ecConn/wechatMobile/byAccountId";
             Guardian.post(endpoint, body, (data)-> createTokenFromResponse(data, callback));
         } catch (Exception e) {
             error(e, callback);
