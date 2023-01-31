@@ -154,12 +154,15 @@
     <string name="authing_phone_verify_failed">手機號碼已經綁定了其它用戶</string>
     <string name="authing_start_face_verify">開始人臉驗證</string>
     <string name="authing_again_face_verify">請靠近攝像頭，再試一次</string>
-    <string name="authing_push_login_confirm">登录确认</string>
-    <string name="authing_push_login_confirm_tip">用户「%1$s」登录应用「%2$s」网页端</string>
-    <string name="authing_push_confirm_login">确认登录</string>
-    <string name="authing_push_cancel_login">取消登录</string>
-    <string name="authing_push_login_success">登录成功</string>
-    <string name="authing_push_login_success_tip">你已成功登录应用「%1$s」网页端</string>
+    <string name="authing_push_login_confirm">登入確認</string>
+    <string name="authing_push_login_confirm_tip">用戶「%1$s」登入應用「%2$s」網頁端</string>
+    <string name="authing_push_confirm_login">確認登入</string>
+    <string name="authing_push_cancel_login">取消登錄</string>
+    <string name="authing_push_login_success">取消登錄成功</string>
+    <string name="authing_push_login_success_tip">你已成功登入應用「%1$s」網頁端</string>
+    <string name="authing_enable_fingerprint">您的手機不支持指紋功能</string>
+    <string name="authing_at_least_one_fingerprint">請至少在系統設置中添加一個指紋</string>
+    <string name="authing_enable_fingerprint_unlock">請先開啟指紋解鎖</string>
 
     <!--user profile-->
     <string name="authing_user_profile">個人中心</string>

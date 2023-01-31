@@ -22,6 +22,7 @@ import cn.authing.guard.data.SocialConfig;
 import cn.authing.guard.data.UserInfo;
 import cn.authing.guard.internal.ContinueWithTextView;
 import cn.authing.guard.util.Const;
+import cn.authing.guard.util.SystemUtil;
 import cn.authing.guard.util.Util;
 
 public class SocialLoginListView extends LinearLayout {
@@ -94,7 +95,9 @@ public class SocialLoginListView extends LinearLayout {
                 if (livingAuthSortConfig != null && !livingAuthSortConfig.isEmpty()){
                     for (int i = 0, n = livingAuthSortConfig.size(); i < n; i++) {
                         String type = livingAuthSortConfig.get(i);
-                        if (Const.TYPE_FINGER.equals(type) && config.isEnableFingerprintLogin()){
+                        if (Const.TYPE_FINGER.equals(type)
+                                && config.isEnableFingerprintLogin()
+                                && SystemUtil.isHardwareDetected(getContext())){
                             types.add(type);
                         }
 //                        if (Const.TYPE_FACE.equals(type) && config.isEnableFaceLogin()){
@@ -102,7 +105,8 @@ public class SocialLoginListView extends LinearLayout {
 //                        }
                     }
                 } else {
-                    if (config.isEnableFingerprintLogin()){
+                    if (config.isEnableFingerprintLogin()
+                            && SystemUtil.isHardwareDetected(getContext())){
                         types.add(Const.TYPE_FINGER);
                     }
 //                    if (config.isEnableFaceLogin()){

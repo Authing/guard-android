@@ -25,9 +25,7 @@
     <cn.authing.guard.LoginMethodTab
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/authing_form_start_end_margin"
         android:layout_marginTop="40dp"
-        android:layout_marginEnd="@dimen/authing_form_start_end_margin"
         app:itemGravity="start" />
 
     <cn.authing.guard.LoginContainer

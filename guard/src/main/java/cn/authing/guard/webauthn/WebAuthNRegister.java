@@ -20,6 +20,7 @@ import cn.authing.guard.data.RegistrationOptions;
 import cn.authing.guard.data.RegistrationParams;
 import cn.authing.guard.network.AuthClient;
 import cn.authing.guard.util.Const;
+import cn.authing.guard.util.SystemUtil;
 import cn.authing.guard.util.Util;
 import webauthnkit.core.client.WebAuthAttestationCallback;
 import webauthnkit.core.client.WebAuthManager;
@@ -42,6 +43,10 @@ public class WebAuthNRegister {
     }
 
     public void startRegister() {
+        if (!SystemUtil.checkFingerprintEnable(activity)){
+            return;
+        }
+
         AuthClient.bindBiometricRequest((AuthCallback<JSONObject>) (code, message, data) -> {
             if (code != 200) {
                 if (webAuthNRegisterCallBack != null) {

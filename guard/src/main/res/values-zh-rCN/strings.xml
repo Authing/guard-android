@@ -160,6 +160,9 @@
     <string name="authing_push_cancel_login">取消登录</string>
     <string name="authing_push_login_success">登录成功</string>
     <string name="authing_push_login_success_tip">你已成功登录应用「%1$s」网页端</string>
+    <string name="authing_enable_fingerprint">您的手机不支持指纹功能</string>
+    <string name="authing_at_least_one_fingerprint">请至少在系统设置中添加一个指纹</string>
+    <string name="authing_enable_fingerprint_unlock">请先开启指纹解锁</string>
 
     <!--user profile-->
     <string name="authing_user_profile">个人中心</string>

@@ -154,12 +154,15 @@
     <string name="authing_phone_verify_failed">Phone number already bound by another user</string>
     <string name="authing_start_face_verify">Start face verification</string>
     <string name="authing_again_face_verify">Please move closer to the camera and try again</string>
-    <string name="authing_push_login_confirm">登录确认</string>
-    <string name="authing_push_login_confirm_tip">用户「%1$s」登录应用「%2$s」网页端</string>
-    <string name="authing_push_confirm_login">确认登录</string>
-    <string name="authing_push_cancel_login">取消登录</string>
-    <string name="authing_push_login_success">登录成功</string>
-    <string name="authing_push_login_success_tip">你已成功登录应用「%1$s」网页端</string>
+    <string name="authing_push_login_confirm">Login confirmation</string>
+    <string name="authing_push_login_confirm_tip">User「%1$s」 logs in to the application web page「%2$s」</string>
+    <string name="authing_push_confirm_login">Confirm login</string>
+    <string name="authing_push_cancel_login">Cancel login</string>
+    <string name="authing_push_login_success">Login success</string>
+    <string name="authing_push_login_success_tip">You have successfully logged in to the「%1$s」webpage of the application</string>
+    <string name="authing_enable_fingerprint">Your phone does not support fingerprint function</string>
+    <string name="authing_at_least_one_fingerprint">Please add at least one fingerprint to your system Settings</string>
+    <string name="authing_enable_fingerprint_unlock">Please enable fingerprint unlock first</string>
 
     <!--user profile-->
     <string name="authing_user_profile">User profile</string>

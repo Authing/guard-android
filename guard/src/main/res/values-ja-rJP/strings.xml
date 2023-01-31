@@ -154,12 +154,15 @@
     <string name="authing_phone_verify_failed">電話番号が別のユーザーにバインドされています</string>
     <string name="authing_start_face_verify">顔認証開始</string>
     <string name="authing_again_face_verify">カメラに近づいて、もう一度お試しください</string>
-    <string name="authing_push_login_confirm">登录确认</string>
-    <string name="authing_push_login_confirm_tip">用户「%1$s」登录应用「%2$s」网页端</string>
-    <string name="authing_push_confirm_login">确认登录</string>
-    <string name="authing_push_cancel_login">取消登录</string>
-    <string name="authing_push_login_success">登录成功</string>
-    <string name="authing_push_login_success_tip">你已成功登录应用「%1$s」网页端</string>
+    <string name="authing_push_login_confirm">ログインの確認</string>
+    <string name="authing_push_login_confirm_tip">ユーザー「%1$s」ログインアプリケーション「%2$s」ウェブ端</string>
+    <string name="authing_push_confirm_login">ログインの確認</string>
+    <string name="authing_push_cancel_login">ログインのキャンセル</string>
+    <string name="authing_push_login_success">ログイン成功</string>
+    <string name="authing_push_login_success_tip">アプリケーションへのログインに成功しました「%1$s」Webページ端</string>
+    <string name="authing_enable_fingerprint">あなたの携帯電話は指紋機能をサポートしていません</string>
+    <string name="authing_at_least_one_fingerprint">少なくとも1つの指紋をシステム設定に追加してください</string>
+    <string name="authing_enable_fingerprint_unlock">まず指紋ロック解除をオンにしてください</string>
 
     <!--user profile-->
     <string name="authing_user_profile">個人センター</string>
