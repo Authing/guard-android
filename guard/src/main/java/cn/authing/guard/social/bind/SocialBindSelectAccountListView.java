@@ -133,7 +133,7 @@ public class SocialBindSelectAccountListView extends LinearLayout {
         UserInfo userInfo = (UserInfo) flow.getData().get(AuthFlow.KEY_USER_INFO);
         if (userInfo != null && userInfo.getSocialBindData() != null) {
             SocialBindData socialBindData = userInfo.getSocialBindData();
-            AuthClient.bindWechatByAccountId(socialBindData.getKey(), account, (AuthCallback<UserInfo>) (code, message, data) -> {
+            AuthClient.bindWechatBySelectedAccountId(socialBindData.getKey(), account, (AuthCallback<UserInfo>) (code, message, data) -> {
                 if (code == 200) {
                     Authing.getPublicConfig((config) -> {
                         if (getContext() instanceof AuthActivity) {

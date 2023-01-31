@@ -11,7 +11,6 @@ import cn.authing.MainActivity;
 import cn.authing.R;
 import cn.authing.guard.WebAuthView;
 import cn.authing.guard.activity.AuthActivity;
-import cn.authing.guard.activity.BaseAuthActivity;
 import cn.authing.guard.data.UserInfo;
 import cn.authing.guard.flow.AuthFlow;
 
