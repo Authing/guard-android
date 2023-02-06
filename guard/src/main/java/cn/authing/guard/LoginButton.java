@@ -164,8 +164,10 @@ public class LoginButton extends PrimaryButton implements ILoginRequestCallBack 
                     intent.putExtra(AuthActivity.AUTH_FLOW, flow);
                     intent.putExtra(AuthActivity.CONTENT_LAYOUT_ID, flow.getVerifyEmailSendSuccessLayoutId());
                 }
-            } if (code == Const.EC_ACCOUNT_LOCKED) {
+            } else if (code == Const.EC_ACCOUNT_LOCKED) {
                 post(() -> ToastUtil.showCenterWarning(getContext(), getContext().getString(R.string.authing_account_locked)));
+            } else if (code == Const.EC_CAPTCHA) {
+                FlowHelper.handleCaptcha(this);
             } else {
                 post(() -> ToastUtil.showCenter(getContext(), message));
             }

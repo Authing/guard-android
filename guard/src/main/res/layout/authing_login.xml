@@ -158,21 +158,21 @@
                 app:clearAllEnabled="false" />
             <cn.authing.guard.CaptchaContainer
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
+                android:layout_height="@dimen/authing_edit_text_height"
+                android:layout_marginTop="@dimen/authing_form_top_margin"
                 android:visibility="gone"
                 android:clipChildren="false"
                 android:gravity="center_vertical">
                 <cn.authing.guard.CaptchaCodeEditText
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:background="@null"
                     app:leftIconDrawable="@drawable/ic_authing_shield_check"/>
                 <cn.authing.guard.CaptchaImageView
                     android:background="@drawable/authing_edit_text_background_normal"
-                    android:layout_width="126dp"
-                    android:layout_height="42dp"
+                    android:layout_width="110dp"
+                    android:layout_height="match_parent"
                     android:layout_marginStart="4dp" />
             </cn.authing.guard.CaptchaContainer>
         </cn.authing.guard.LoginContainer>

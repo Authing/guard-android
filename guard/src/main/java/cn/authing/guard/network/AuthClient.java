@@ -3,6 +3,7 @@ package cn.authing.guard.network;
 import static cn.authing.guard.util.Const.EC_FIRST_TIME_LOGIN;
 import static cn.authing.guard.util.Const.EC_MFA_REQUIRED;
 
+import android.graphics.drawable.Drawable;
 import android.text.TextUtils;
 
 import org.jetbrains.annotations.NotNull;
@@ -12,8 +13,10 @@ import org.json.JSONObject;
 
 import java.io.InputStream;
 import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Objects;
 
 import cn.authing.guard.AuthCallback;
 import cn.authing.guard.Authing;
@@ -29,11 +32,16 @@ import cn.authing.guard.data.Role;
 import cn.authing.guard.data.Safe;
 import cn.authing.guard.data.SocialBindData;
 import cn.authing.guard.data.UserInfo;
+import cn.authing.guard.svg.SVG;
+import cn.authing.guard.svg.SVGParser;
 import cn.authing.guard.util.ALog;
 import cn.authing.guard.util.Const;
 import cn.authing.guard.util.GlobalCountDown;
 import cn.authing.guard.util.Util;
 import cn.authing.guard.util.Validator;
+import okhttp3.Call;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
 
 public class AuthClient {
 
@@ -307,14 +315,18 @@ public class AuthClient {
     }
 
     public static void loginByAccount(String account, String password, @NotNull AuthCallback<UserInfo> callback) {
-        loginByAccount(null, account, password, true, null, callback);
+        loginByAccount(null, account, password, true, null, null, callback);
     }
 
     public static void loginByAccount(String account, String password, boolean autoRegister, String context, @NotNull AuthCallback<UserInfo> callback) {
-        loginByAccount(null, account, password, autoRegister, context, callback);
+        loginByAccount(null, account, password, autoRegister, context, null, callback);
     }
 
-    public static void loginByAccount(AuthRequest authData, String account, String password, boolean autoRegister, String context, @NotNull AuthCallback<UserInfo> callback) {
+    public static void loginByAccount(String account, String password, boolean autoRegister, String context, String captchaCode, @NotNull AuthCallback<UserInfo> callback) {
+        loginByAccount(null, account, password, autoRegister, context, captchaCode, callback);
+    }
+
+    public static void loginByAccount(AuthRequest authData, String account, String password, boolean autoRegister, String context, String captchaCode, @NotNull AuthCallback<UserInfo> callback) {
         try {
             long now = System.currentTimeMillis();
             String encryptPassword = Util.encryptPassword(password);
@@ -324,6 +336,9 @@ public class AuthClient {
             body.put("autoRegister", autoRegister);
             if (!Util.isNull(context)){
                 body.put("context", context);
+            }
+            if (!Util.isNull(captchaCode)){
+                body.put("captchaCode", captchaCode);
             }
             Guardian.post("/api/v2/login/account", body, (data) -> {
                 ALog.d(TAG, "loginByAccount cost:" + (System.currentTimeMillis() - now) + "ms");
@@ -1551,6 +1566,36 @@ public class AuthClient {
         } catch (Exception e) {
             error(e, callback);
         }
+    }
+
+    public static void getCaptchaCode(@NotNull AuthCallback<Drawable> callback) {
+        Authing.getPublicConfig(config -> {
+            if (config == null) {
+                callback.call(Const.ERROR_CODE_10002, "Config not found", null);
+                return;
+            }
+            try {
+                String url = Authing.getScheme() + "://" + Util.getHost(config) + "/api/v2/security/captcha?r=" + Util.randomString(10) + "&userpool_id=" + config.getUserPoolId();
+                Request.Builder builder = new Request.Builder();
+                builder.url(url);
+                Request request = builder.build();
+                OkHttpClient client = new OkHttpClient().newBuilder().build();
+                Call call = client.newCall(request);
+                okhttp3.Response response;
+                response = call.execute();
+                String s = new String(Objects.requireNonNull(response.body()).bytes(), StandardCharsets.UTF_8);
+                SVG svg = SVGParser.getSVGFromString(s);
+                if (response.code() == 200) {
+                    callback.call(response.code(), s, svg.createPictureDrawable());
+                } else {
+                    ALog.w("Guard", "getCaptcha failed. " + response.code() + " message:" + s);
+                    callback.call(response.code(), s, null);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+                callback.call(Const.ERROR_CODE_10004, "JSON parse failed", null);
+            }
+        });
     }
 
     private static void startOidcInteraction(AuthRequest authData, Response data, @NotNull AuthCallback<UserInfo> callback) {

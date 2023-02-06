@@ -227,6 +227,7 @@
     <string name="authing_get_verify_code_failed">發送短信失敗：無效手機號碼</string>
     <string name="authing_account_empty">賬號未填寫</string>
     <string name="authing_password_empty">密碼未填寫</string>
+    <string name="authing_captcha_code_empty">驗證碼未填寫</string>
     <string name="authing_phone_country_code_empty">未選擇國家碼</string>
     <string name="authing_phone_number_empty">手機號未填寫</string>
     <string name="authing_email_address_empty">電子郵件未填寫</string>

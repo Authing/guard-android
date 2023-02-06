@@ -5,6 +5,7 @@ import android.view.View;
 
 import cn.authing.guard.AccountEditText;
 import cn.authing.guard.Authing;
+import cn.authing.guard.CaptchaCodeEditText;
 import cn.authing.guard.LoginButton;
 import cn.authing.guard.PasswordEditText;
 import cn.authing.guard.R;
@@ -40,24 +41,34 @@ public class AccountLoginHandler extends AbsLoginHandler {
                 showError = true;
             }
 
+            CaptchaCodeEditText captchaCodeET = (CaptchaCodeEditText) Util.findViewByClass(loginButton, CaptchaCodeEditText.class);
+            String captchaCode = null;
+            if (captchaCodeET != null){
+                captchaCode = captchaCodeET.getText().toString();
+                if (TextUtils.isEmpty(captchaCode)) {
+                    showError(captchaCodeET, mContext.getString(R.string.authing_captcha_code_empty));
+                    showError = true;
+                }
+            }
+
             if (showError){
                 return false;
             }
 
             loginButton.startLoadingVisualEffect();
-            loginByAccount(account, password);
+            loginByAccount(account, password, captchaCode);
             return true;
         }
         return false;
     }
 
-    private void loginByAccount(String account, String password) {
+    private void loginByAccount(String account, String password, String captchaCode) {
         clearError();
         Authing.AuthProtocol authProtocol = getAuthProtocol();
         if (authProtocol == Authing.AuthProtocol.EInHouse) {
-            AuthClient.loginByAccount(account, password, isAutoRegister(), null, this::fireCallback);
+            AuthClient.loginByAccount(account, password, isAutoRegister(), null, captchaCode, this::fireCallback);
         } else if (authProtocol == Authing.AuthProtocol.EOIDC) {
-            new OIDCClient().loginByAccount(account, password, isAutoRegister(), null, this::fireCallback);
+            new OIDCClient().loginByAccount(account, password, isAutoRegister(), null, captchaCode, this::fireCallback);
         }
         ALog.d(TAG, "login by account");
     }

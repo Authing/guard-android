@@ -227,6 +227,7 @@
     <string name="authing_get_verify_code_failed">メール送信の失敗:携帯電話番号の無効化</string>
     <string name="authing_account_empty">アカウントが入力されていません</string>
     <string name="authing_password_empty">パスワードが未入力です</string>
+    <string name="authing_captcha_code_empty">認証コードが未記入です</string>
     <string name="authing_phone_country_code_empty">国コードが選択されていません</string>
     <string name="authing_phone_number_empty">携帯電話番号が入力されていません</string>
     <string name="authing_email_address_empty">メールアドレスが未入力です</string>

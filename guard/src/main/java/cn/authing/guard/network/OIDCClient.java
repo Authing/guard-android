@@ -121,12 +121,16 @@ public class OIDCClient {
     }
 
     public void loginByAccount(String account, String password, @NotNull AuthCallback<UserInfo> callback) {
-        loginByAccount(account, password, true, null, callback);
+        loginByAccount(account, password, true, null, null, callback);
     }
 
     public void loginByAccount(String account, String password, boolean autoRegister, String context, @NotNull AuthCallback<UserInfo> callback) {
+        loginByAccount(account, password, autoRegister, context, null, callback);
+    }
+
+    public void loginByAccount(String account, String password, boolean autoRegister, String context, String captchaCode, @NotNull AuthCallback<UserInfo> callback) {
         long now = System.currentTimeMillis();
-        AuthClient.loginByAccount(authRequest, account, password, autoRegister, context, ((c, m, data) -> {
+        AuthClient.loginByAccount(authRequest, account, password, autoRegister, context, captchaCode, ((c, m, data) -> {
             ALog.d(TAG, "OIDCClient.loginByAccount cost:" + (System.currentTimeMillis() - now) + "ms");
             callback.call(c, m, data);
         }));

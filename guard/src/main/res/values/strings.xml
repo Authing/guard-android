@@ -227,6 +227,7 @@
     <string name="authing_get_verify_code_failed">Send SMS failed. Invalid phone number</string>
     <string name="authing_account_empty">Account is missing</string>
     <string name="authing_password_empty">Password is missing</string>
+    <string name="authing_captcha_code_empty">Captcha code is missing</string>
     <string name="authing_phone_country_code_empty">Invalid phone country code</string>
     <string name="authing_phone_number_empty">Phone number is missing</string>
     <string name="authing_email_address_empty">Email is missing</string>

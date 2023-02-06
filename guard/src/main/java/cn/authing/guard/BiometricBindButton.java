@@ -176,8 +176,6 @@ public class BiometricBindButton extends LoginButton implements ILoginRequestCal
             FlowHelper.handleMFA(this, userInfo.getMfaData());
         } else if (code == Const.EC_FIRST_TIME_LOGIN) {
             FlowHelper.handleFirstTimeLogin(this, userInfo);
-        } else if (code == Const.EC_CAPTCHA) {
-            FlowHelper.handleCaptcha(this);
         } else {
             post(() -> ToastUtil.showCenter(getContext(), message));
             refreshFeedBackView(true);

@@ -129,8 +129,6 @@ public class SocialBindButton extends PrimaryButton implements IBindRequestCallB
             FlowHelper.handleMFA(this, userInfo.getMfaData());
         } else if (code == Const.EC_FIRST_TIME_LOGIN) {
             FlowHelper.handleFirstTimeLogin(this, userInfo);
-        } else if (code == Const.EC_CAPTCHA) {
-            FlowHelper.handleCaptcha(this);
         } else {
             Util.setErrorText(this, message);
         }
