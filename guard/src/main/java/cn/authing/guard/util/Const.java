@@ -27,6 +27,7 @@ public class Const {
     public final static int ERROR_CODE_10007 = 10007; // Alipay auth failed
     public final static int ERROR_CODE_10008 = 10008; // 在 60 秒内已发送短信验证码
     public final static int ERROR_CODE_10009 = 10009; // Upload avatar failed
+    public final static int ERROR_CODE_10010 = 10010; // FaceBook auth failed
 
     public static final String MFA_POLICY_SMS = "SMS";
     public static final String MFA_POLICY_EMAIL = "EMAIL";
@@ -41,6 +42,7 @@ public class Const {
     public static final String EC_TYPE_LARK_PUBLIC = "lark-public";
     public static final String EC_TYPE_YI_DUN = "yidun";
     public static final String EC_TYPE_GOOGLE = "google:mobile";
+    public static final String EC_TYPE_FACE_BOOK = "facebook:mobile";
 
     public static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
     public static final MediaType FORM = MediaType.parse("application/x-www-form-urlencoded; charset=utf-8");

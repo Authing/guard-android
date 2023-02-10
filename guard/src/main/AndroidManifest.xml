@@ -99,4 +99,8 @@
         <package android:name="com.ss.android.lark" />
     </queries>
 
+    <queries>
+        <package android:name="com.facebook.katana" />
+    </queries>
+
 </manifest>

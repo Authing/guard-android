@@ -38,5 +38,7 @@ dependencies {
     compileOnly files('libs/alipaysdk.aar')
     compileOnly files ('libs/larksso-3.0.8.aar')
     compileOnly 'com.google.android.gms:play-services-auth:20.2.0'
+    compileOnly 'com.facebook.android:facebook-login:latest.release'
+
 
 }
