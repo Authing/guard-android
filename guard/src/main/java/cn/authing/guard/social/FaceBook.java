@@ -28,7 +28,6 @@ public class FaceBook extends SocialAuthenticator {
 
     public static final int RC_SIGN_IN = 64206;
     private static final String TAG = "FaceBook";
-    public static String appId;
     private CallbackManager callbackManager;
 
     private FaceBook() {
