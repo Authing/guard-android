@@ -67,6 +67,7 @@
 
     <declare-styleable name="PhoneNumberEditText">
         <attr name="dividerPattern" format="integer" />
+        <attr name="showCountryCodePicker" format="boolean" />
     </declare-styleable>
 
     <declare-styleable name="VerifyCodeEditText">

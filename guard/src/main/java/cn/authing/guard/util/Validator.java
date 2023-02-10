@@ -3,13 +3,40 @@ package cn.authing.guard.util;
 import android.telephony.PhoneNumberUtils;
 import android.text.TextUtils;
 import android.util.Patterns;
+import android.view.View;
 
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import cn.authing.guard.data.Config;
+import cn.authing.guard.data.RegexRules;
 
 public class Validator {
     public static boolean isValidEmail(CharSequence target) {
         return (!TextUtils.isEmpty(target) && Patterns.EMAIL_ADDRESS.matcher(target).matches());
+    }
+
+    public static boolean isPhoneNumber(View view, Config config, String phone) {
+        if (config == null || config.getRegexRules() == null || config.getRegexRules().isEmpty()){
+            return isValidPhoneNumber(phone);
+        }
+        String phoneCountryCode = Util.getPhoneCountryCode(view);
+        if (config.isInternationalSmsEnable() && !"+86".equals(phoneCountryCode)){
+            return isValidPhoneNumber(phone);
+        }
+
+        List<RegexRules> regexRules =  config.getRegexRules();
+        String userPoolLevel = "";
+        for (RegexRules regexRule : regexRules){
+            if ("phone".equals(regexRule.getKey())){
+                userPoolLevel = regexRule.getUserPoolLevel();
+            }
+        }
+        if (TextUtils.isEmpty(userPoolLevel)){
+            return isValidPhoneNumber(phone);
+        }
+        return phone != null && phone.matches(userPoolLevel);
     }
 
     public static boolean isValidPhoneNumber(CharSequence target) {

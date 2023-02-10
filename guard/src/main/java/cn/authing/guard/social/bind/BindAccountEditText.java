@@ -32,6 +32,7 @@ public class BindAccountEditText extends EditTextLayout {
     protected final static int EXTEND_FILED_VALIDATOR = 3;
 
     protected int validator;
+    private Config mConfig;
 
     public BindAccountEditText(Context context) {
         this(context, null);
@@ -56,6 +57,7 @@ public class BindAccountEditText extends EditTextLayout {
             CharSequence s = getEditText().getHint();
             if (s == null) {
                 Authing.getPublicConfig((config -> {
+                    this.mConfig = config;
                     if (config == null){
                         return;
                     }
@@ -177,7 +179,7 @@ public class BindAccountEditText extends EditTextLayout {
             valid = Validator.isValidEmail(s.toString());
         }
         if ((validator & PHONE_VALIDATOR) != 0) {
-            valid |= Validator.isValidPhoneNumber(s.toString());
+            valid |= Validator.isPhoneNumber(this, mConfig, s.toString());
         }
 
         if (!valid) {
