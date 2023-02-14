@@ -35,6 +35,7 @@ public class Const {
     public static final String MFA_POLICY_FACE = "FACE";
 
     public static final String EC_TYPE_WECHAT = "wechat:mobile";
+    public static final String EC_TYPE_WECHAT_MINI_PROGRAM = "wechat:miniprogram:app-launch";
     public static final String EC_TYPE_WECHAT_COM = "wechatwork:mobile";
     public static final String EC_TYPE_WECHAT_COM_AGENCY = "wechatwork:agency:mobile";
     public static final String EC_TYPE_ALIPAY = "alipay";

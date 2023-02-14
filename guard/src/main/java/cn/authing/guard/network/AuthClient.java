@@ -562,6 +562,30 @@ public class AuthClient {
         });
     }
 
+    public static void loginByWechatMiniProgram(String code, String phoneInfoCode, @NotNull AuthCallback<UserInfo> callback) {
+        loginByWechatMiniProgram(null, code, phoneInfoCode, callback);
+    }
+
+    public static void loginByWechatMiniProgram(AuthRequest authData, String code, String phoneInfoCode, @NotNull AuthCallback<UserInfo> callback) {
+        Authing.getPublicConfig(config -> {
+            try {
+                JSONObject body = new JSONObject();
+                String connId = config != null ? config.getSocialConnectionId(Const.EC_TYPE_WECHAT_MINI_PROGRAM) : "";
+                body.put("connId", connId);
+                body.put("iv", "");
+                body.put("encryptedData", "");
+                body.put("code", code);
+                body.put("phoneInfoCode", phoneInfoCode);
+                String endpoint = "/api/v2/ecConn/wechatminiprogramapplaunch/authByCode";
+                Guardian.post(endpoint, body, (data)-> {
+                    startOidcInteraction(authData, data, callback);
+                });
+            } catch (Exception e) {
+                error(e, callback);
+            }
+        });
+    }
+
     public static void loginByOneAuth(String token, String accessToken, @NotNull AuthCallback<UserInfo> callback) {
         loginByOneAuth(null, token, accessToken, 0, callback);
     }

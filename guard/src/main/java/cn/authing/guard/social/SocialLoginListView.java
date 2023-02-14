@@ -83,6 +83,8 @@ public class SocialLoginListView extends LinearLayout {
             sb.append("lark");
         } else if (Const.EC_TYPE_GOOGLE.equals(type)) {
             sb.append("google");
+        } else if (Const.EC_TYPE_WECHAT_MINI_PROGRAM.equals(type)) {
+            sb.append("wechat-mini-program");
         } else if (Const.EC_TYPE_FACE_BOOK.equals(type)) {
             sb.append("facebook");
         }
@@ -112,6 +114,9 @@ public class SocialLoginListView extends LinearLayout {
                     break;
                 case "google":
                     button = new GoogleLoginButton(context);
+                    break;
+                case "wechat-mini-program":
+                    button = new WechatMiniProgramLoginButton(context);
                     break;
                 case "facebook":
                     button = new FaceBookLoginButton(context);

@@ -176,6 +176,10 @@ public class OIDCClient {
         AuthClient.loginByFaceBook(authRequest, authCode, callback);
     }
 
+    public void loginByWechatMiniProgram(String code, String phoneInfoCode, @NotNull AuthCallback<UserInfo> callback) {
+        AuthClient.loginByWechatMiniProgram(authRequest, code, phoneInfoCode, callback);
+    }
+
     private static void error(Exception e, @NotNull AuthCallback<?> callback){
         e.printStackTrace();
         callback.call(Const.ERROR_CODE_10004, "JSON parse failed", null);
