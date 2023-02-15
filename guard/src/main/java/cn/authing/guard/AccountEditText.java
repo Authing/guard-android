@@ -28,6 +28,7 @@ public class AccountEditText extends EditTextLayout {
     protected final static int EXTEND_FILED_VALIDATOR = 3;
 
     protected int validator;
+    private Config mConfig;
 
     public AccountEditText(Context context) {
         this(context, null);
@@ -43,6 +44,7 @@ public class AccountEditText extends EditTextLayout {
         report();
 
         Authing.getPublicConfig((config -> {
+            this.mConfig = config;
             CharSequence s = getEditText().getHint();
             if (s == null) {
                 getEditText().setHint(getHintByConfig(config, context));
@@ -154,7 +156,7 @@ public class AccountEditText extends EditTextLayout {
             valid = Validator.isValidEmail(s.toString());
         }
         if ((validator & PHONE_VALIDATOR) != 0) {
-            valid |= Validator.isValidPhoneNumber(s.toString());
+            valid |= Validator.isPhoneNumber(this, mConfig, s.toString());
         }
 
         if (!valid) {

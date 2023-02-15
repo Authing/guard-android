@@ -54,6 +54,7 @@ public class Config {
     private boolean enableFingerprintLogin;
     private boolean enableFaceLogin;
     private List<String> livingAuthSortConfig;
+    private List<RegexRules> regexRules;
 
 
     public static Config parse(JSONObject data) throws JSONException {
@@ -201,6 +202,11 @@ public class Config {
             JSONArray livingAuthSortConfig = data.getJSONArray("livingAuthSortConfig");
             config.setLivingAuthSortConfig(toStringList(livingAuthSortConfig));
         }
+
+        if (data.has("regexRules")){
+            JSONArray regexRules = data.getJSONArray("regexRules");
+            config.setRegexRules(toRegexRules(regexRules));
+        }
         return config;
     }
 
@@ -298,6 +304,30 @@ public class Config {
 
     public void setRegisterTabList(List<String> registerTabList) {
         this.registerTabList = registerTabList;
+    }
+
+    private static List<RegexRules> toRegexRules(JSONArray array) throws JSONException {
+        List<RegexRules> list = new ArrayList<>();
+        int size = array.length();
+        for (int i = 0; i < size; i++) {
+            RegexRules regexRules = new RegexRules();
+            JSONObject obj = array.getJSONObject(i);
+            if (obj.has("key")) {
+                regexRules.setKey(obj.getString("key"));
+            }
+            if (obj.has("appLevel")) {
+                regexRules.setAppLevel(obj.getString("appLevel"));
+            }
+            if (obj.has("userpoolLevel")) {
+                regexRules.setUserPoolLevel(obj.getString("userpoolLevel"));
+            }
+            list.add(regexRules);
+        }
+        return list;
+    }
+
+    public List<RegexRules> getRegexRules() {
+        return regexRules;
     }
 
     private static List<TabMethodsField> toTabMethodFieldsList(JSONArray array) throws JSONException {
@@ -675,6 +705,10 @@ public class Config {
             list.add(rule);
         }
         return list;
+    }
+
+    public void setRegexRules(List<RegexRules> regexRules) {
+        this.regexRules = regexRules;
     }
 
     public void setTabMethodsFields(List<TabMethodsField> tabMethodsFields) {

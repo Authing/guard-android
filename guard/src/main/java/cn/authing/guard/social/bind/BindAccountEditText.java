@@ -179,7 +179,7 @@ public class BindAccountEditText extends EditTextLayout {
             valid = Validator.isValidEmail(s.toString());
         }
         if ((validator & PHONE_VALIDATOR) != 0) {
-            valid |= Validator.isValidPhoneNumber(s.toString());
+            valid |= Validator.isPhoneNumber(this, mConfig, s.toString());
         }
 
         if (!valid) {

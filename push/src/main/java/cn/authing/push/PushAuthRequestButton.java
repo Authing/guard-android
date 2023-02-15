@@ -32,6 +32,7 @@ import okhttp3.RequestBody;
 public class PushAuthRequestButton extends PrimaryButton {
 
     private static final String TAG = "PushAuthRequestButton";
+    private Config mConfig;
 
     public PushAuthRequestButton(Context context) {
         this(context, null);
@@ -45,6 +46,9 @@ public class PushAuthRequestButton extends PrimaryButton {
         super(context, attrs, defStyleAttr);
 
         setOnClickListener((v -> login()));
+        Authing.getPublicConfig((config -> {
+            this.mConfig = config;
+        }));
     }
 
     public void login() {
@@ -56,7 +60,7 @@ public class PushAuthRequestButton extends PrimaryButton {
         if (v != null) {
             AccountEditText accountEditText = (AccountEditText)v;
             String account = accountEditText.getText().toString();
-            if (Validator.isValidPhoneNumber(account)) {
+            if (Validator.isPhoneNumber(this, mConfig, account)) {
                 authRequest("phone", account);
             } else if (Validator.isValidEmail(account)) {
                 authRequest("email", account);

@@ -12,6 +12,8 @@ import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.AttributeSet;
 import android.util.TypedValue;
+import android.view.View;
+import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -19,6 +21,7 @@ import androidx.annotation.Nullable;
 import java.util.List;
 
 import cn.authing.guard.analyze.Analyzer;
+import cn.authing.guard.data.Config;
 import cn.authing.guard.util.SpaceOnTheLeftSpan;
 import cn.authing.guard.util.Util;
 import cn.authing.guard.util.Validator;
@@ -29,6 +32,7 @@ public class PhoneNumberEditText extends AccountEditText implements TextWatcher 
     private final float padding;
     private CountryCodePicker countryCodePicker;
     private boolean isInternationalSmsEnable;
+    private Config mConfig;
 
     public PhoneNumberEditText(@NonNull Context context) {
         this(context, null);
@@ -49,14 +53,19 @@ public class PhoneNumberEditText extends AccountEditText implements TextWatcher 
 
         TypedArray array = context.obtainStyledAttributes(attrs, R.styleable.PhoneNumberEditText);
         int dp = array.getInt(R.styleable.PhoneNumberEditText_dividerPattern, 344);
+        boolean showCountryCodePicker = array.getBoolean(R.styleable.PhoneNumberEditText_showCountryCodePicker , false);
         dividerPattern = Util.intDigits(dp);
         array.recycle();
 
         padding = Util.dp2px(context, 6);
-
         getEditText().addTextChangedListener(this);
+        if (showCountryCodePicker){
+            addCountryCodePicker();
+            return;
+        }
 
         Authing.getPublicConfig(config -> {
+            mConfig = config;
             isInternationalSmsEnable = config != null && config.isInternationalSmsEnable();
             if (isInternationalSmsEnable) {
                 addCountryCodePicker();
@@ -84,6 +93,15 @@ public class PhoneNumberEditText extends AccountEditText implements TextWatcher 
         if (leftIcon != null){
             leftIcon.setImageDrawable(getResources().getDrawable(R.drawable.ic_authing_cellphone));
             leftIcon.setVisibility(VISIBLE);
+        }
+    }
+
+    @Override
+    public void addView(@NonNull View child, int index, @NonNull final ViewGroup.LayoutParams params) {
+        if (child instanceof CountryCodePicker) {
+            root.addView(child, 0, params);
+        } else {
+            super.addView(child, index, params);
         }
     }
 
@@ -144,7 +162,7 @@ public class PhoneNumberEditText extends AccountEditText implements TextWatcher 
     @Override
     protected void syncData() {
         String account = Util.getAccount(this);
-        if (Validator.isValidPhoneNumber(account)) {
+        if (Validator.isPhoneNumber(this, mConfig, account)) {
             getEditText().setText(account);
         }
     }
@@ -157,6 +175,20 @@ public class PhoneNumberEditText extends AccountEditText implements TextWatcher 
     public void showCountryCodePicker(boolean show){
         if (countryCodePicker != null){
             countryCodePicker.setVisibility(show ? VISIBLE : GONE);
+        }
+    }
+
+    @Override
+    protected void onAttachedToWindow() {
+        super.onAttachedToWindow();
+
+        // add left icon
+        if (leftIcon != null){
+            View child = Util.findChildViewByClass(this, CountryCodePicker.class, false);
+            if (child instanceof CountryCodePicker && child.getVisibility() == GONE){
+                leftIcon.setImageDrawable(getResources().getDrawable(R.drawable.ic_authing_cellphone));
+                leftIcon.setVisibility(VISIBLE);
+            }
         }
     }
 

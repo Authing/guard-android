@@ -17,6 +17,7 @@ import androidx.annotation.Nullable;
 import cn.authing.guard.activity.AuthActivity;
 import cn.authing.guard.activity.IndexAuthActivity;
 import cn.authing.guard.analyze.Analyzer;
+import cn.authing.guard.data.Config;
 import cn.authing.guard.data.UserInfo;
 import cn.authing.guard.flow.AuthFlow;
 import cn.authing.guard.internal.EditTextLayout;
@@ -26,6 +27,8 @@ import cn.authing.guard.util.Util;
 import cn.authing.guard.util.Validator;
 
 public class ResetPasswordButton extends PrimaryButton {
+
+    private Config mConfig;
 
     public ResetPasswordButton(@NonNull Context context) {
         this(context, null);
@@ -47,6 +50,10 @@ public class ResetPasswordButton extends PrimaryButton {
         loading.setTint(Color.WHITE);
 
         setOnClickListener(this::click);
+
+        Authing.getPublicConfig((config -> {
+            this.mConfig = config;
+        }));
     }
 
     private void click(View clickedView) {
@@ -84,7 +91,7 @@ public class ResetPasswordButton extends PrimaryButton {
                             Util.setErrorText(this, message);
                         }
                     }));
-                } else if (Validator.isValidPhoneNumber(s)) {
+                } else if (Validator.isPhoneNumber(this, mConfig, s)) {
                     AuthFlow.put(getContext(), AuthFlow.KEY_ACCOUNT, s);
                     next(flow, flow.getResetPasswordByPhoneLayoutId());
                 }
@@ -150,7 +157,7 @@ public class ResetPasswordButton extends PrimaryButton {
 
         if (Validator.isValidEmail(account)) {
             resetPasswordByEmail(account, password, verifyCode);
-        } else if (Validator.isValidPhoneNumber(account)) {
+        } else if (Validator.isPhoneNumber(this, mConfig, account)) {
             resetPasswordByPhone(account, password, verifyCode);
         }
     }
