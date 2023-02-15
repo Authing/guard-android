@@ -161,6 +161,10 @@ public class SocialLoginListView extends LinearLayout {
             sb.append(Const.TYPE_FACEBOOK);
             sb.append("|");
         }
+        if (types.contains(Const.EC_TYPE_WECHAT_MINI_PROGRAM)){
+            sb.append(Const.TYPE_WECHAT_MINI_PROGRAM);
+            sb.append("|");
+        }
         if (types.contains(Const.TYPE_FINGER)){
             sb.append(Const.TYPE_FINGER);
             sb.append("|");
@@ -257,6 +261,9 @@ public class SocialLoginListView extends LinearLayout {
             case Const.TYPE_FACEBOOK:
                 button = new FaceBookLoginButton(getContext());
                 break;
+            case Const.TYPE_WECHAT_MINI_PROGRAM:
+                button = new WechatMiniProgramLoginButton(getContext());
+                break;
             case Const.TYPE_FINGER:
                 button = new FingerLoginButton(getContext());
                 break;
@@ -322,6 +329,9 @@ public class SocialLoginListView extends LinearLayout {
                 break;
             case Const.TYPE_FACEBOOK:
                 title = getContext().getString(R.string.authing_social_facebook);
+                break;
+            case Const.TYPE_WECHAT_MINI_PROGRAM:
+                title = getContext().getString(R.string.authing_social_wechat_miniprogram);
                 break;
             case Const.TYPE_FINGER:
                 title = getContext().getString(R.string.authing_finger);

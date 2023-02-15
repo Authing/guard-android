@@ -554,6 +554,14 @@ public class Config {
         return getSocialValue(type, "clientId");
     }
 
+    public String getSocialMobileAppID(String type) {
+        return getSocialValue(type, "mobileAppID");
+    }
+
+    public String getSocialOriginalID(String type) {
+        return getSocialValue(type, "originalID");
+    }
+
     public String getSocialValue(String type, String fieldName) {
         String value = "";
         List<SocialConfig> configs = getSocialConfigs();
@@ -578,6 +586,12 @@ public class Config {
                         break;
                     case "clientId":
                         value = c.getClientId();
+                        break;
+                    case "mobileAppID":
+                        value = c.getMobileAppID();
+                        break;
+                    case "originalID":
+                        value = c.getOriginalID();
                         break;
                 }
                 break;
@@ -623,6 +637,12 @@ public class Config {
                 }
                 if (fields.has("clientID")) {
                     config.setClientId(fields.getString("clientID"));
+                }
+                if (fields.has("mobileAppID")) {
+                    config.setMobileAppID(fields.getString("mobileAppID"));
+                }
+                if (fields.has("originalID")) {
+                    config.setOriginalID(fields.getString("originalID"));
                 }
             }
             list.add(config);

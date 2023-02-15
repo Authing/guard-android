@@ -2,14 +2,20 @@ package cn.authing.guard.social.wechat;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.tencent.mm.opensdk.constants.ConstantsAPI;
 import com.tencent.mm.opensdk.modelbase.BaseReq;
 import com.tencent.mm.opensdk.modelbase.BaseResp;
+import com.tencent.mm.opensdk.modelbiz.WXLaunchMiniProgram;
 import com.tencent.mm.opensdk.modelmsg.SendAuth;
 import com.tencent.mm.opensdk.openapi.IWXAPIEventHandler;
 import com.tencent.mm.opensdk.openapi.WXAPIFactory;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import cn.authing.guard.AuthCallback;
 import cn.authing.guard.Authing;
@@ -55,17 +61,10 @@ public class WXCallbackActivity extends AppCompatActivity implements IWXAPIEvent
             case BaseResp.ErrCode.ERR_OK:
                 ALog.i(TAG, "Auth success");
                 callback.call(SocialLoginButton.AUTH_SUCCESS, "Auth success", null);
-                Authing.AuthProtocol authProtocol = Authing.getAuthProtocol();
-                if (onlyGetAuthCode) {
-                    if (authCodeCallBack != null) {
-                        authCodeCallBack.call(200, "success", ((SendAuth.Resp) resp).code);
-                    }
+                if (resp.getType() == ConstantsAPI.COMMAND_LAUNCH_WX_MINIPROGRAM){
+                    handlerWechatMiniProgram(resp);
                 } else {
-                    if (authProtocol == Authing.AuthProtocol.EInHouse) {
-                        AuthClient.loginByWechatWithBind(((SendAuth.Resp) resp).code, context, callback);
-                    } else if (authProtocol == Authing.AuthProtocol.EOIDC) {
-                        new OIDCClient().loginByWechatWithBind(((SendAuth.Resp) resp).code, context, callback);
-                    }
+                    handlerWechat(resp);
                 }
                 break;
             case BaseResp.ErrCode.ERR_USER_CANCEL:
@@ -120,6 +119,66 @@ public class WXCallbackActivity extends AppCompatActivity implements IWXAPIEvent
 
     public static void setOnlyGetAuthCode(boolean onlyGetAuthCode) {
         WXCallbackActivity.onlyGetAuthCode = onlyGetAuthCode;
+    }
+
+    private void handlerWechat(BaseResp resp){
+        SendAuth.Resp sendAuthResp = (SendAuth.Resp) resp;
+        String code = sendAuthResp.code;
+        ALog.d(TAG, "Got wechat code: " + code);
+        if (onlyGetAuthCode) {
+            if (authCodeCallBack != null) {
+                authCodeCallBack.call(200, "success", code);
+            }
+        } else {
+            Authing.AuthProtocol authProtocol = Authing.getAuthProtocol();
+            if (authProtocol == Authing.AuthProtocol.EInHouse) {
+                AuthClient.loginByWechatWithBind(code, context, callback);
+            } else if (authProtocol == Authing.AuthProtocol.EOIDC) {
+                new OIDCClient().loginByWechatWithBind(code, context, callback);
+            }
+        }
+    }
+
+    private void handlerWechatMiniProgram(BaseResp resp){
+        WXLaunchMiniProgram.Resp launchMiniProResp = (WXLaunchMiniProgram.Resp) resp;
+        String extraData = launchMiniProResp.extMsg;
+        ALog.d(TAG, "Got wechat miniProgram extMsg: " + extraData);
+        if (TextUtils.isEmpty(extraData)){
+            if (callback != null) {
+                callback.call(BaseResp.ErrCode.ERR_AUTH_DENIED, "extraData is empty", null);
+            }
+            return;
+        }
+
+        JSONObject jsonExtraData;
+//        String iv = null;
+//        String encryptedData = null;
+        String code = null;
+        String phoneInfoCode = null;
+        try {
+            jsonExtraData = new JSONObject(extraData);
+//            if (jsonExtraData.has("iv")) {
+//                iv = jsonExtraData.getString("iv");
+//            }
+//            if (jsonExtraData.has("encryptedData")) {
+//                encryptedData = jsonExtraData.getString("encryptedData");
+//            }
+            if (jsonExtraData.has("code")) {
+                code = jsonExtraData.getString("code");
+            }
+            if (jsonExtraData.has("phoneInfoCode")) {
+                phoneInfoCode = jsonExtraData.getString("phoneInfoCode");
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        Authing.AuthProtocol authProtocol = Authing.getAuthProtocol();
+        if (authProtocol == Authing.AuthProtocol.EInHouse) {
+            AuthClient.loginByWechatMiniProgram(code, phoneInfoCode, callback);
+        } else if (authProtocol == Authing.AuthProtocol.EOIDC) {
+            new OIDCClient().loginByWechatMiniProgram(code, phoneInfoCode, callback);
+        }
     }
 
 }

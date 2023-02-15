@@ -134,7 +134,8 @@
     <string name="authing_login_by_we_com">エンタープライズ WeChat でログイン</string>
     <string name="authing_login_by_lark">フェイシュウでログイン</string>
     <string name="authing_login_by_google">使グーグルでログイン</string>
-    <string name="authing_login_by_facebook">Login by Facebook</string>
+    <string name="authing_login_by_facebook">Facebookでログインする</string>
+    <string name="authing_login_by_wechat_miniprogram">Wechatアプレットを使用してログインする</string>
     <string name="authing_login_by_finger">指紋認証を使ってログインします</string>
     <string name="authing_login_by_face">顔認証を使ってログインします</string>
     <string name="authing_social_alipay">アリペイ</string>
@@ -143,6 +144,7 @@
     <string name="authing_social_lark">フライングブック</string>
     <string name="authing_social_google">Google</string>
     <string name="authing_social_facebook">Facebook</string>
+    <string name="authing_social_wechat_miniprogram">Wechat MiniProgram</string>
     <string name="authing_finger">指紋認識です</string>
     <string name="authing_face">顔認識です</string>
     <string name="authing_get_code_again">コードの再送信</string>
