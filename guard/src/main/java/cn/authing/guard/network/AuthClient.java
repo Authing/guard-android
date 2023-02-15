@@ -564,6 +564,27 @@ public class AuthClient {
         });
     }
 
+    public static void loginByFaceBook(String accessToken, @NotNull AuthCallback<UserInfo> callback) {
+        loginByFaceBook(null, accessToken, callback);
+    }
+
+    public static void loginByFaceBook(AuthRequest authData, String accessToken, @NotNull AuthCallback<UserInfo> callback) {
+        Authing.getPublicConfig(config -> {
+            try {
+                JSONObject body = new JSONObject();
+                String connId = config != null ? config.getSocialConnectionId(Const.EC_TYPE_FACEBOOK) : "";
+                body.put("connId", connId);
+                body.put("access_token", accessToken);
+                String endpoint = "/api/v2/ecConn/facebook/authByAccessToken";
+                Guardian.post(endpoint, body, (data)-> {
+                    startOidcInteraction(authData, data, callback);
+                });
+            } catch (Exception e) {
+                error(e, callback);
+            }
+        });
+    }
+
     public static void loginByOneAuth(String token, String accessToken, @NotNull AuthCallback<UserInfo> callback) {
         loginByOneAuth(null, token, accessToken, 0, callback);
     }

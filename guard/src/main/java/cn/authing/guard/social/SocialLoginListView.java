@@ -157,6 +157,10 @@ public class SocialLoginListView extends LinearLayout {
             sb.append(Const.TYPE_LARK);
             sb.append("|");
         }
+        if (types.contains(Const.EC_TYPE_FACEBOOK)){
+            sb.append(Const.TYPE_FACEBOOK);
+            sb.append("|");
+        }
         if (types.contains(Const.TYPE_FINGER)){
             sb.append(Const.TYPE_FINGER);
             sb.append("|");
@@ -250,6 +254,9 @@ public class SocialLoginListView extends LinearLayout {
             case Const.TYPE_GOOGLE:
                 button = new GoogleLoginButton(getContext());
                 break;
+            case Const.TYPE_FACEBOOK:
+                button = new FaceBookLoginButton(getContext());
+                break;
             case Const.TYPE_FINGER:
                 button = new FingerLoginButton(getContext());
                 break;
@@ -312,6 +319,9 @@ public class SocialLoginListView extends LinearLayout {
                 break;
             case Const.TYPE_GOOGLE:
                 title = getContext().getString(R.string.authing_social_google);
+                break;
+            case Const.TYPE_FACEBOOK:
+                title = getContext().getString(R.string.authing_social_facebook);
                 break;
             case Const.TYPE_FINGER:
                 title = getContext().getString(R.string.authing_finger);

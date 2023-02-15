@@ -2,4 +2,9 @@
     <string name="app_name">Guard</string>
 
     <string name="nvk_reset_pwd_title">Please enter the temporary code we\'ve sent to %1$s to reset your password</string>
+
+    <string name="facebook_app_id">708096037702599</string>
+    <string name="fb_login_protocol_scheme">fb708096037702599</string>
+    <string name="facebook_client_token">47e6797c6e9e7be886ff8b62f18d06ce</string>
+
 </resources>

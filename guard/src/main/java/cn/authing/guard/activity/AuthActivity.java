@@ -28,6 +28,7 @@ import cn.authing.guard.R;
 import cn.authing.guard.data.UserInfo;
 import cn.authing.guard.flow.AuthFlow;
 import cn.authing.guard.internal.CircularAnimatedView;
+import cn.authing.guard.social.FaceBook;
 import cn.authing.guard.social.Google;
 import cn.authing.guard.util.Const;
 import cn.authing.guard.util.ImageUtil;
@@ -143,6 +144,7 @@ public class AuthActivity extends AppCompatActivity {
             data.setAction("cn.authing.guard.broadcast.GOOGLE_LOGIN");
             sendBroadcast(data);
         }
+        FaceBook.getInstance().onActivityResult(requestCode, resultCode, data);
         if (resultCode == BIOMETRIC_BIND_OK){
             Util.biometricBind(this);
         }

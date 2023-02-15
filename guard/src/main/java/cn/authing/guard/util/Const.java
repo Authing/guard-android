@@ -33,7 +33,8 @@ public class Const {
     public final static int ERROR_CODE_10007 = 10007; // Alipay auth failed
     public final static int ERROR_CODE_10008 = 10008; // 在 60 秒内已发送短信验证码
     public final static int ERROR_CODE_10009 = 10009; // Upload avatar failed
-    public final static int ERROR_CODE_10010 = 10010; //webauthn error
+    public final static int ERROR_CODE_10010 = 10010; // FaceBook auth failed
+    public final static int ERROR_CODE_10011 = 10011; //webauthn error
 
     public static final String MFA_POLICY_SMS = "SMS";
     public static final String MFA_POLICY_EMAIL = "EMAIL";
@@ -48,6 +49,7 @@ public class Const {
     public static final String EC_TYPE_LARK_PUBLIC = "lark-public";
     public static final String EC_TYPE_YI_DUN = "yidun";
     public static final String EC_TYPE_GOOGLE = "google:mobile";
+    public static final String EC_TYPE_FACEBOOK = "facebook:mobile";
 
     public static final String TYPE_WECHAT = "wechat";
     public static final String TYPE_WECHAT_COM = "wecom";
@@ -55,6 +57,7 @@ public class Const {
     public static final String TYPE_ALIPAY = "alipay";
     public static final String TYPE_LARK = "lark";
     public static final String TYPE_GOOGLE = "google";
+    public static final String TYPE_FACEBOOK = "facebook";
     public static final String TYPE_FINGER = "fingerprint";
     public static final String TYPE_FACE = "face";
 
