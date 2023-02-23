@@ -90,7 +90,7 @@ public class WebAuthNAuthentication {
                         @Override
                         public void onError(@NonNull String error) {
                             if (webAuthNVerifyCallBack != null) {
-                                webAuthNVerifyCallBack.onFailed(Const.ERROR_CODE_10010, error);
+                                webAuthNVerifyCallBack.onFailed(Const.ERROR_CODE_10011, error);
                             }
                         }
                     });

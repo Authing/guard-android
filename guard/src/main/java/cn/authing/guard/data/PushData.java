@@ -13,6 +13,7 @@ public class PushData implements Serializable {
     private String account;
     private String scene;
     private String random;
+    private String apiHost;
 
     public String getUserId() {
         return userId;
@@ -84,5 +85,13 @@ public class PushData implements Serializable {
 
     public void setRandom(String random) {
         this.random = random;
+    }
+
+    public String getApiHost() {
+        return apiHost;
+    }
+
+    public void setApiHost(String apiHost) {
+        this.apiHost = apiHost;
     }
 }

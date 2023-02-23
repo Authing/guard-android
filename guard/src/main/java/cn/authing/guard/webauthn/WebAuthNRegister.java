@@ -109,7 +109,7 @@ public class WebAuthNRegister {
                         @Override
                         public void onError(@NonNull String error) {
                             if (webAuthNRegisterCallBack != null) {
-                                webAuthNRegisterCallBack.onFailed(Const.ERROR_CODE_10010, error);
+                                webAuthNRegisterCallBack.onFailed(Const.ERROR_CODE_10011, error);
                             }
                         }
                     });

@@ -391,6 +391,11 @@ public class Util {
         return !Util.isNull(lang) && lang.contains("zh");
     }
 
+    public static boolean isEn() {
+        String lang = Locale.getDefault().getLanguage();
+        return !Util.isNull(lang) && lang.contains("en");
+    }
+
     public static String getAppLanguage() {
         String country = Locale.getDefault().getCountry();
         if ("TW".equals(country)) {
@@ -665,8 +670,14 @@ public class Util {
 
             @Override
             public void onFailed(int code, String message) {
+                AuthClient.logout(new AuthCallback<Object>() {
+                    @Override
+                    public void call(int code, String message, Object data) {
+
+                    }
+                });
                 if (!TextUtils.isEmpty(message) && (message.contains("CancelledException")
-                        || message.contains("TimeoutException"))){
+                        || message.contains("TimeoutException") || message.contains("UnknownException"))){
                     return;
                 }
                 activity.runOnUiThread(() -> ToastUtil.showCenter(activity, message));

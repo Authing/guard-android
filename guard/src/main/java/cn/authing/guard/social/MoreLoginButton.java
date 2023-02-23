@@ -41,4 +41,13 @@ public class MoreLoginButton extends SocialLoginButton {
     protected int getImageRes() {
         return R.drawable.ic_authing_more;
     }
+
+    @Override
+    protected void onDetachedFromWindow() {
+        super.onDetachedFromWindow();
+        if (socialLoginListDialog != null && socialLoginListDialog.isShowing()){
+            socialLoginListDialog.dismiss();
+        }
+        socialLoginListDialog = null;
+    }
 }

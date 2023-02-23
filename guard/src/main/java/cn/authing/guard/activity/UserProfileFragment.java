@@ -133,7 +133,11 @@ public class UserProfileFragment extends Fragment {
 
     private void logout() {
         AuthClient.logout((code, message, data)-> {
-            AuthFlow.start(getActivity());
+            if (code == 200) {
+                AuthFlow.start(getActivity());
+            } else {
+                getActivity().runOnUiThread(()-> ToastUtil.showTop(getContext(), message));
+            }
         });
     }
 

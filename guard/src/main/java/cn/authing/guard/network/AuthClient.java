@@ -1613,6 +1613,24 @@ public class AuthClient {
         }
     }
 
+    public static void getFastPassClientApps(String qrcodeId, String appId, @NotNull AuthCallback<JSONObject> callback) {
+        try {
+            String endpoint = "/api/v3/get-fastpass-client-apps?qrcodeId="+qrcodeId+"&appId="+appId;
+            Guardian.get(endpoint, (data) -> callback.call(data.getCode(), data.getMessage(), data.getData()));
+        } catch (Exception e) {
+            error(e, callback);
+        }
+    }
+
+    public static void getRelatedClientApps(String appId, @NotNull AuthCallback<JSONObject> callback) {
+        try {
+            String endpoint = "/api/v2/applications/"+appId+"/related-client-apps";
+            Guardian.get(endpoint, (data) -> callback.call(data.getCode(), data.getMessage(), data.getData()));
+        } catch (Exception e) {
+            error(e, callback);
+        }
+    }
+
     public static void getCaptchaCode(@NotNull AuthCallback<Drawable> callback) {
         Authing.getPublicConfig(config -> {
             if (config == null) {

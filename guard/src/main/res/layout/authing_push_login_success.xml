@@ -29,8 +29,7 @@
         android:gravity="center"
         android:text="@string/authing_push_login_success_tip"
         android:textColor="@color/authing_text_gray"
-        android:textSize="@dimen/authing_text_middle_size"
-        app:pushLoginTipsType="login_success_tip"/>
+        android:textSize="@dimen/authing_text_middle_size" />
 
     <Space
         android:layout_width="match_parent"
@@ -47,7 +46,7 @@
         android:layout_marginBottom="40dp"
         android:background="@drawable/authing_button_background"
         android:gravity="center"
-        android:text="@string/authing_confirm"
+        android:text="@string/authing_push_login_success_confirm"
         android:textAppearance="@android:style/Widget.TextView"
         android:textColor="#FFF"
         android:textSize="@dimen/authing_text_large_size" />

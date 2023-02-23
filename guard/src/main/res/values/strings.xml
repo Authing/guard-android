@@ -117,7 +117,7 @@
     <string name="authing_bind_existing_account">Bind existing account</string>
     <string name="authing_bind_existing_account_tip">After binding, you can log in to this account directly by this method next time</string>
     <string name="authing_bind_select_account">Select an Account to log in</string>
-    <string name="authing_bind_biometric_account_tip">If no fingerprint/face account is identified, please bind an existing account.</string>
+    <string name="authing_bind_biometric_account_tip">The fingerprint binding account is not identified. Please enter the account information to bind.</string>
     <string name="authing_bind_biometric_account_result">Binding Results</string>
     <string name="authing_bind_biometric_account_success">You have successfully bound「%1$s」</string>
     <string name="authing_delete_account_tips">After logout, all data of this account will be deleted and irreversible, please operate with caution!</string>
@@ -159,11 +159,12 @@
     <string name="authing_start_face_verify">Start face verification</string>
     <string name="authing_again_face_verify">Please move closer to the camera and try again</string>
     <string name="authing_push_login_confirm">Login confirmation</string>
-    <string name="authing_push_login_confirm_tip">User「%1$s」 logs in to the application web page「%2$s」</string>
+    <string name="authing_push_login_confirm_tip">Are you trying to sign in?</string>
     <string name="authing_push_confirm_login">Confirm login</string>
-    <string name="authing_push_cancel_login">Cancel login</string>
-    <string name="authing_push_login_success">Login success</string>
+    <string name="authing_push_cancel_login">Ignore</string>
+    <string name="authing_push_login_success">Login results</string>
     <string name="authing_push_login_success_tip">You have successfully logged in to the「%1$s」webpage of the application</string>
+    <string name="authing_push_login_success_confirm">Ok</string>
     <string name="authing_enable_fingerprint">Your phone does not support fingerprint function</string>
     <string name="authing_at_least_one_fingerprint">Please add at least one fingerprint to your system Settings</string>
     <string name="authing_enable_fingerprint_unlock">Please enable fingerprint unlock first</string>

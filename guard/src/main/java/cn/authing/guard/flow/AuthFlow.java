@@ -5,20 +5,23 @@ import static cn.authing.guard.activity.AuthActivity.RC_LOGIN;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
+import cn.authing.guard.Authing;
 import cn.authing.guard.R;
 import cn.authing.guard.activity.AuthActivity;
 import cn.authing.guard.activity.IndexAuthActivity;
 import cn.authing.guard.activity.UserProfileActivity;
 import cn.authing.guard.data.UserInfo;
+import cn.authing.guard.util.ToastUtil;
 
 public class AuthFlow implements Serializable {
 
-//    public static final String KEY_PHONE_NUMBER = "phoneNumber";
+    //    public static final String KEY_PHONE_NUMBER = "phoneNumber";
     public static final String KEY_ACCOUNT = "account";
     public static final String KEY_USER_INFO = "user_info";
     public static final String KEY_MFA_PHONE = "mfa_phone";
@@ -70,7 +73,7 @@ public class AuthFlow implements Serializable {
     //push
     private int pushLoginLayoutId;
     private int pushLoginSuccessLayoutId;
-    //push
+    //biometric
     private int biometricAccountBindLayoutId;
     private int biometricAccountBindSuccessLayoutId;
 
@@ -82,6 +85,7 @@ public class AuthFlow implements Serializable {
     public interface Callback<T> extends Serializable {
         void call(Context context, int code, String message, T userInfo);
     }
+
     private Callback<UserInfo> authCallback;
 
     public static AuthFlow start(Activity context) {
@@ -96,15 +100,21 @@ public class AuthFlow implements Serializable {
         final AuthFlow flow = new AuthFlow();
         flow.indexLayoutId = layoutId;
 
-        new Thread() {
-            public void run() {
-                activity.runOnUiThread(()->{
-                    Intent intent = new Intent(activity, IndexAuthActivity.class);
-                    intent.putExtra(AuthActivity.AUTH_FLOW, flow);
-                    activity.startActivityForResult(intent, RC_LOGIN);
-                });
-            }
-        }.start();
+        if (Authing.getAppId() == null) {
+            ToastUtil.showCenterWarning(activity, "请先设置appId");
+            Log.e("AuthFlow", activity.getString(R.string.authing_uninitialized));
+        } else {
+            new Thread() {
+                public void run() {
+                    activity.runOnUiThread(() -> {
+                        Intent intent = new Intent(activity, IndexAuthActivity.class);
+                        intent.putExtra(AuthActivity.AUTH_FLOW, flow);
+                        activity.startActivityForResult(intent, RC_LOGIN);
+                    });
+                }
+            }.start();
+        }
+
         return flow;
     }
 
@@ -141,7 +151,7 @@ public class AuthFlow implements Serializable {
     }
 
     public static String getAccount(Context context) {
-        return (String)get(context, KEY_ACCOUNT);
+        return (String) get(context, KEY_ACCOUNT);
     }
 
     public int getIndexLayoutId() {

@@ -15,6 +15,7 @@ import org.json.JSONObject;
 
 import cn.authing.guard.Authing;
 import cn.authing.guard.activity.AuthActivity;
+import cn.authing.guard.activity.IndexAuthActivity;
 import cn.authing.guard.data.PushData;
 import cn.authing.guard.flow.AuthFlow;
 import cn.authing.guard.util.Util;
@@ -50,7 +51,8 @@ public class PushLoginServer extends GTIntentService {
         String messageid = msg.getMessageId();
 
         PushData pushData = parseData(data);
-        if (mMid.equals(pushData.getMid())) {
+        if (mMid.equals(pushData.getMid())
+                || (pushData.getUserId() != null && !pushData.getUserId().equals(Authing.getCurrentUser().getId()))) {
             return;
         }
         mMid = pushData.getMid();
@@ -58,7 +60,7 @@ public class PushLoginServer extends GTIntentService {
         goToPushLoginPage(context, pushData);
     }
 
-    private PushData parseData(String data){
+    protected PushData parseData(String data) {
         PushData pushData = new PushData();
         try {
             JSONObject result = new JSONObject(data);
@@ -76,6 +78,9 @@ public class PushLoginServer extends GTIntentService {
             }
             if (result.has("type")) {
                 pushData.setType(result.getString("type"));
+            }
+            if (result.has("apiHost")) {
+                pushData.setApiHost(result.getString("apiHost"));
             }
             if (result.has("content")) {
                 JSONObject content = result.getJSONObject("content");
@@ -101,10 +106,10 @@ public class PushLoginServer extends GTIntentService {
         return pushData;
     }
 
-    private void goToPushLoginPage(Context context, PushData pushData) {
+    protected void goToPushLoginPage(Context context, PushData pushData) {
         AuthFlow authFlow = new AuthFlow();
         authFlow.getData().put(AuthFlow.KEY_PUSH_DATA, pushData);
-        Intent intent = new Intent(context, AuthActivity.class);
+        Intent intent = new Intent(context, IndexAuthActivity.class);
         intent.putExtra(AuthActivity.AUTH_FLOW, authFlow);
         intent.putExtra(AuthActivity.CONTENT_LAYOUT_ID, authFlow.getPushLoginLayoutId());
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);

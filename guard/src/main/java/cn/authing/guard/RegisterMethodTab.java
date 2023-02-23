@@ -108,7 +108,11 @@ public class RegisterMethodTab extends RelativeLayout {
             } else {
                 String name = s.replace("-password", "");
                 String label = Util.getLabel(config, name);
-                b.setText(label + getResources().getString(R.string.authing_register));
+                if (Util.isEn()){
+                    b.setText(label + " " + getResources().getString(R.string.authing_register));
+                } else {
+                    b.setText(label + getResources().getString(R.string.authing_register));
+                }
                 b.setType(RegisterContainer.RegisterType.EByExtendFiled);
                 b.setFiledName(name);
             }

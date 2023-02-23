@@ -3,6 +3,7 @@ package cn.authing.guard.push;
 import static cn.authing.guard.util.Const.NS_ANDROID;
 
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.util.AttributeSet;
 import android.util.TypedValue;
 
@@ -15,17 +16,20 @@ import cn.authing.guard.activity.AuthActivity;
 import cn.authing.guard.data.PushData;
 import cn.authing.guard.flow.AuthFlow;
 
-public class PushLoginTipsText extends AppCompatTextView {
+public class PushLoginText extends AppCompatTextView {
 
-    public PushLoginTipsText(@NonNull Context context) {
+    public static final int TYPE_APP = 0;
+    public static final int TYPE_ACCOUNT = 1;
+
+    public PushLoginText(@NonNull Context context) {
         this(context, null);
     }
 
-    public PushLoginTipsText(@NonNull Context context, @Nullable AttributeSet attrs) {
+    public PushLoginText(@NonNull Context context, @Nullable AttributeSet attrs) {
         this(context, attrs, 0);
     }
 
-    public PushLoginTipsText(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
+    public PushLoginText(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         init(context, attrs);
     }
@@ -43,6 +47,10 @@ public class PushLoginTipsText extends AppCompatTextView {
             return;
         }
 
+        TypedArray array = context.obtainStyledAttributes(attrs, R.styleable.PushLoginText);
+        int type = array.getInt(R.styleable.PushLoginText_pushLoginTextType, 0);
+        array.recycle();
+
         AuthActivity activity = (AuthActivity) getContext();
         AuthFlow authFlow = activity.getFlow();
         PushData pushData = null;
@@ -50,7 +58,11 @@ public class PushLoginTipsText extends AppCompatTextView {
             pushData = (PushData) authFlow.getData().get(AuthFlow.KEY_PUSH_DATA);
         }
         if (pushData != null) {
-            setText(getContext().getString(R.string.authing_push_login_success_tip, pushData.getAppName()));
+            if (type == TYPE_APP) {
+                setText(pushData.getAppName());
+            } else if (type == TYPE_ACCOUNT) {
+                setText(pushData.getAccount());
+            }
         }
     }
 }

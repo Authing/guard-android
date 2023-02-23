@@ -50,11 +50,11 @@ public class Finger extends SocialAuthenticator {
                     @Override
                     public void onFailed(int code, String message) {
                         if (!TextUtils.isEmpty(message) && (message.contains("CancelledException")
-                                || message.contains("TimeoutException"))) {
+                                || message.contains("TimeoutException")) || message.contains("UnknownException")) {
                             return;
                         }
 
-                        if (code == Const.ERROR_CODE_10010 || code == Const.EC_422) {
+                        if (code == Const.ERROR_CODE_10011 || code == Const.EC_422) {
                             FlowHelper.handleBiometricAccountBind(activity);
                         }
                     }

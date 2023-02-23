@@ -5,6 +5,7 @@ import android.app.Activity.RESULT_OK
 import android.content.Intent
 import android.os.Build
 import android.text.format.DateFormat
+import android.widget.Toast
 import androidx.biometric.BiometricManager
 import androidx.biometric.BiometricPrompt
 import androidx.biometric.BiometricPrompt.PromptInfo
@@ -45,13 +46,11 @@ class DefaultUserConsentUI(
     private var cancelled: ErrorReason? = null
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?): Boolean {
-
         WAKLogger.d(TAG, "onActivityResult")
 
         return if (requestCode == REQUEST_CODE) {
 
             WAKLogger.d(TAG, "This is my result")
-
             keyguardResultListener?.let {
                 if (resultCode == RESULT_OK) {
                     WAKLogger.d(TAG, "OK")
@@ -96,6 +95,12 @@ class DefaultUserConsentUI(
         } else {
             cont.resumeWithException(CancelledException())
         }
+    }
+
+    private fun <T> fail(cont: Continuation<T>, errorMessage: String) {
+        WAKLogger.d(TAG, "fail")
+        isOpen = false
+        cont.resumeWithException(UnknownException(errorMessage))
     }
 
     override fun cancel(reason: ErrorReason) {
@@ -250,6 +255,10 @@ class DefaultUserConsentUI(
                 ) {
                     super.onAuthenticationError(errorCode, errString)
                     WAKLogger.d(TAG, "failed keyguard authentication")
+                    //errorCode = 13 errorMessage = 取消
+                    //errorCode = 7 errorMessage = 尝试次数过多，请稍后重试。
+                    //errorCode = 9 errorMessage = 尝试次数过多。指纹传感器已停用。
+                    Toast.makeText(activity, errString, Toast.LENGTH_SHORT).show()
                     fail(cont)
                 }
 
@@ -264,7 +273,7 @@ class DefaultUserConsentUI(
                 override fun onAuthenticationFailed() {
                     super.onAuthenticationFailed()
                     WAKLogger.d(TAG, "failed keyguard authentication")
-                    fail(cont)
+                    //fail(cont)
                 }
             })
 

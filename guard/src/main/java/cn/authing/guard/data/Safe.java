@@ -98,7 +98,7 @@ public class Safe {
     }
 
     public static void saveUser(UserInfo userInfo) {
-        if (Authing.getAppContext() != null) {
+        if (Authing.getAppContext() != null && userInfo != null) {
             SharedPreferences sp = Authing.getAppContext().getSharedPreferences(SP_NAME, MODE_PRIVATE);
             sp.edit().putString(SP_KEY_TOKEN, userInfo.getIdToken()).commit();
             sp.edit().putString(SP_KEY_REFRESH_TOKEN, userInfo.getRefreshToken()).commit();

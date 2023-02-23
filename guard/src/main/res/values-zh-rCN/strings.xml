@@ -117,7 +117,7 @@
     <string name="authing_bind_existing_account">绑定已有账号</string>
     <string name="authing_bind_existing_account_tip">绑定后，下次可以直接通过这次的方式登录到此账号</string>
     <string name="authing_bind_select_account">选择登录账号</string>
-    <string name="authing_bind_biometric_account_tip">未识别到指纹 / 人脸对应账号，请绑定已有账号。</string>
+    <string name="authing_bind_biometric_account_tip">未识别到指纹绑定账户，请输入账号信息，进行绑定。</string>
     <string name="authing_bind_biometric_account_result">绑定结果</string>
     <string name="authing_bind_biometric_account_success">你已成功绑定「%1$s」账号</string>
     <string name="authing_delete_account_tips">注销后，此账号的所有数据都将被删除且不可逆，请谨慎操作</string>
@@ -159,11 +159,12 @@
     <string name="authing_start_face_verify">开始人脸验证</string>
     <string name="authing_again_face_verify">请靠近摄像头，再试一次</string>
     <string name="authing_push_login_confirm">登录确认</string>
-    <string name="authing_push_login_confirm_tip">用户「%1$s」登录应用「%2$s」网页端</string>
+    <string name="authing_push_login_confirm_tip">你是否正在尝试登录？</string>
     <string name="authing_push_confirm_login">确认登录</string>
-    <string name="authing_push_cancel_login">取消登录</string>
-    <string name="authing_push_login_success">登录成功</string>
-    <string name="authing_push_login_success_tip">你已成功登录应用「%1$s」网页端</string>
+    <string name="authing_push_cancel_login">忽略</string>
+    <string name="authing_push_login_success">登录结果</string>
+    <string name="authing_push_login_success_tip">你已成功登录应用「%1$s」</string>
+    <string name="authing_push_login_success_confirm">好的</string>
     <string name="authing_enable_fingerprint">您的手机不支持指纹功能</string>
     <string name="authing_at_least_one_fingerprint">请至少在系统设置中添加一个指纹</string>
     <string name="authing_enable_fingerprint_unlock">请先开启指纹解锁</string>

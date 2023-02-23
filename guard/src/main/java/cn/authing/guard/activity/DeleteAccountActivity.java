@@ -13,6 +13,8 @@ import cn.authing.guard.util.Util;
 
 public class DeleteAccountActivity extends BaseAuthActivity {
 
+    public static final int RC_DELETE = 1025;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

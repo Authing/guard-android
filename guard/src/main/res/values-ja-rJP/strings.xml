@@ -117,7 +117,7 @@
     <string name="authing_bind_existing_account">既存のアカウントを結びつける</string>
     <string name="authing_bind_existing_account_tip">紐付け后、次回から直接今回の方法でこのアカウントにログインすることができます</string>
     <string name="authing_bind_select_account">ログインするアカウントを選択</string>
-    <string name="authing_bind_biometric_account_tip">指紋/顔対応アカウントが認識されていない場合は、既存のアカウントと結びつけてください。</string>
+    <string name="authing_bind_biometric_account_tip">指紋バインドアカウントが認識されませんでした。アカウント情報を入力して、バインドしてください。</string>
     <string name="authing_bind_biometric_account_result">バインド結果</string>
     <string name="authing_bind_biometric_account_success">あなたは「%1$s」アカウントのバインドに成功しました</string>
     <string name="authing_delete_account_tips">ログアウト後、このアカウントのすべてのデータは削除され、元に戻すことはできません。注意して操作してください</string>
@@ -159,11 +159,12 @@
     <string name="authing_start_face_verify">顔認証開始</string>
     <string name="authing_again_face_verify">カメラに近づいて、もう一度お試しください</string>
     <string name="authing_push_login_confirm">ログインの確認</string>
-    <string name="authing_push_login_confirm_tip">ユーザー「%1$s」ログインアプリケーション「%2$s」ウェブ端</string>
+    <string name="authing_push_login_confirm_tip">ログインしようとしていますか？</string>
     <string name="authing_push_confirm_login">ログインの確認</string>
-    <string name="authing_push_cancel_login">ログインのキャンセル</string>
-    <string name="authing_push_login_success">ログイン成功</string>
+    <string name="authing_push_cancel_login">無視する</string>
+    <string name="authing_push_login_success">ログイン結菓</string>
     <string name="authing_push_login_success_tip">アプリケーションへのログインに成功しました「%1$s」Webページ端</string>
+    <string name="authing_push_login_success_confirm">はい</string>
     <string name="authing_enable_fingerprint">あなたの携帯電話は指紋機能をサポートしていません</string>
     <string name="authing_at_least_one_fingerprint">少なくとも1つの指紋をシステム設定に追加してください</string>
     <string name="authing_enable_fingerprint_unlock">まず指紋ロック解除をオンにしてください</string>

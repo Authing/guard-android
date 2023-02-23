@@ -11,8 +11,11 @@ import android.util.TypedValue;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.igexin.sdk.PushManager;
+
 import org.json.JSONObject;
 
+import cn.authing.guard.activity.DeleteAccountActivity;
 import cn.authing.guard.analyze.Analyzer;
 import cn.authing.guard.data.UserInfo;
 import cn.authing.guard.flow.AuthFlow;
@@ -107,12 +110,30 @@ public class DeleteAccountButton extends LoadingButton {
     }
 
     private void deleteAccount() {
+        //解除推送绑定
+        String cid = PushManager.getInstance().getClientid(getContext());
+        if (!TextUtils.isEmpty(cid)){
+            AuthClient.unBindPushCid(cid, new AuthCallback<JSONObject>() {
+                @Override
+                public void call(int code, String message, JSONObject data) {
+                    delete();
+                }
+            });
+        } else {
+            delete();
+        }
+    }
+
+    private void delete(){
         AuthClient.deleteAccount((code, message, data) -> {
             stopLoadingVisualEffect();
             if (code == 200) {
                 ((Activity) getContext()).runOnUiThread(() -> {
                     AuthFlow.start((Activity) getContext());
                     ToastUtil.showTop(getContext(), getContext().getString(R.string.authing_delete_account_success));
+                    if (getContext() instanceof DeleteAccountActivity){
+                        ((DeleteAccountActivity)getContext()).setResult(DeleteAccountActivity.RC_DELETE);
+                    }
                     ((Activity) getContext()).finish();
                 });
             } else {
