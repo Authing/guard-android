@@ -130,6 +130,10 @@ public class Guardian {
                         code = json.getInt("statusCode");
                         resp.setCode(code);
                     }
+                    if (json.has("apiCode")) {
+                        code = json.getInt("apiCode");
+                        resp.setCode(code);
+                    }
                     if (json.has("code")) {
                         code = json.getInt("code");
                         resp.setCode(code);

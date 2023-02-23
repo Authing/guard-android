@@ -20,6 +20,7 @@ import cn.authing.guard.analyze.Analyzer;
 import cn.authing.guard.data.UserInfo;
 import cn.authing.guard.flow.AuthFlow;
 import cn.authing.guard.network.AuthClient;
+import cn.authing.guard.util.ToastUtil;
 import cn.authing.guard.util.Util;
 
 public class MFAEmailButton extends MFABaseButton implements AuthActivity.EventListener {
@@ -97,7 +98,8 @@ public class MFAEmailButton extends MFABaseButton implements AuthActivity.EventL
         if (code == 200) {
             next();
         } else {
-            showToast(R.string.authing_otp_bind_failed, R.drawable.ic_authing_fail);
+            //showToast(R.string.authing_otp_bind_failed, R.drawable.ic_authing_fail);
+            post(() -> ToastUtil.showCenter(getContext(), message, R.drawable.ic_authing_fail));
         }
     }
 
@@ -124,7 +126,8 @@ public class MFAEmailButton extends MFABaseButton implements AuthActivity.EventL
             showToast(R.string.authing_verify_succeed, R.drawable.ic_authing_success);
             mfaVerifyOk(code, message, userInfo);
         } else {
-            showToast(R.string.authing_code_verify_failed, R.drawable.ic_authing_fail);
+            //showToast(R.string.authing_code_verify_failed, R.drawable.ic_authing_fail);
+            post(() -> ToastUtil.showCenter(getContext(), message, R.drawable.ic_authing_fail));
         }
     }
 
