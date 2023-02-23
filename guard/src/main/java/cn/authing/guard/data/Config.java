@@ -55,6 +55,7 @@ public class Config {
     private boolean enableFaceLogin;
     private List<String> livingAuthSortConfig;
     private List<RegexRules> regexRules;
+    private String appType;
 
 
     public static Config parse(JSONObject data) throws JSONException {
@@ -90,6 +91,8 @@ public class Config {
             config.setEnableFingerprintLogin(data.getBoolean("enableFingerprintLogin"));
         if (data.has("enableFaceLogin"))
             config.setEnableFaceLogin(data.getBoolean("enableFaceLogin"));
+        if (data.has("appType"))
+            config.setAppType(data.getString("appType"));
 
         if (data.has("loginTabs")) {
             JSONObject loginTabs = data.getJSONObject("loginTabs");
@@ -520,6 +523,14 @@ public class Config {
 
     public void setEnableFaceLogin(boolean enableFaceLogin) {
         this.enableFaceLogin = enableFaceLogin;
+    }
+
+    public String getAppType() {
+        return appType;
+    }
+
+    public void setAppType(String appType) {
+        this.appType = appType;
     }
 
     public List<String> getLivingAuthSortConfig() {

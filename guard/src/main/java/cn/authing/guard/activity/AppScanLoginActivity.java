@@ -51,7 +51,9 @@ public class AppScanLoginActivity extends AppCompatActivity {
             finish();
         }));
         UserInfo userInfo = Authing.getCurrentUser();
-        TextView textTip = findViewById(R.id.qr_login_tip);
-        textTip.setText(getString(R.string.authing_push_login_confirm_tip, Util.getUserName(userInfo), appName));
+        TextView userNameText = findViewById(R.id.user_name);
+        userNameText.setText(Util.getUserName(userInfo));
+        TextView appNameText = findViewById(R.id.app_name);
+        appNameText.setText(appName);
     }
 }

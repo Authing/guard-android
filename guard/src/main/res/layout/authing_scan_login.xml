@@ -21,16 +21,61 @@
         android:layout_marginTop="80dp"
         android:src="@drawable/ic_authing_push_login" />
 
-    <TextView
-        android:id="@+id/qr_login_tip"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
+        android:layout_height="79dp"
         android:layout_marginTop="@dimen/authing_form_top_margin"
-        android:gravity="center"
-        android:text="@string/authing_push_login_confirm_tip"
-        android:textColor="@color/authing_text_gray"
-        android:textSize="@dimen/authing_text_middle_size" />
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:background="@drawable/authing_layout_background"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp">
+
+        <cn.authing.guard.AppLogo
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:scaleType="centerCrop"
+            app:circleImageRadius="4dp" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/app_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/authing_text_black"
+                android:textSize="@dimen/authing_text_large_size"
+                app:pushLoginTextType="app" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_authing_user" />
+
+                <TextView
+                    android:id="@+id/user_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="4dp"
+                    android:textColor="@color/authing_text_gray"
+                    android:textSize="13sp"
+                    app:pushLoginTextType="account" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </LinearLayout>
 
     <Space
         android:layout_width="match_parent"
