@@ -22,12 +22,12 @@ import cn.authing.guard.network.AuthClient;
 import cn.authing.guard.util.Const;
 import cn.authing.guard.util.SystemUtil;
 import cn.authing.guard.util.Util;
-import webauthnkit.core.client.WebAuthAttestationCallback;
-import webauthnkit.core.client.WebAuthManager;
-import webauthnkit.core.data.AttestationConveyancePreference;
-import webauthnkit.core.data.AuthenticatorAttestationResponse;
-import webauthnkit.core.data.PublicKeyCredential;
-import webauthnkit.core.data.UserVerificationRequirement;
+import cn.authing.webauthn.client.WebAuthAttestationCallback;
+import cn.authing.webauthn.client.WebAuthManager;
+import cn.authing.webauthn.data.AttestationConveyancePreference;
+import cn.authing.webauthn.data.AuthenticatorAttestationResponse;
+import cn.authing.webauthn.data.PublicKeyCredential;
+import cn.authing.webauthn.data.UserVerificationRequirement;
 
 public class WebAuthNRegister {
 

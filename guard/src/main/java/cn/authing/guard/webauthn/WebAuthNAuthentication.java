@@ -22,11 +22,11 @@ import cn.authing.guard.network.AuthClient;
 import cn.authing.guard.util.Const;
 import cn.authing.guard.util.SystemUtil;
 import cn.authing.guard.util.Util;
-import webauthnkit.core.client.WebAuthAssertionCallback;
-import webauthnkit.core.client.WebAuthManager;
-import webauthnkit.core.data.AuthenticatorAssertionResponse;
-import webauthnkit.core.data.PublicKeyCredential;
-import webauthnkit.core.data.UserVerificationRequirement;
+import cn.authing.webauthn.client.WebAuthAssertionCallback;
+import cn.authing.webauthn.client.WebAuthManager;
+import cn.authing.webauthn.data.AuthenticatorAssertionResponse;
+import cn.authing.webauthn.data.PublicKeyCredential;
+import cn.authing.webauthn.data.UserVerificationRequirement;
 
 public class WebAuthNAuthentication {
 

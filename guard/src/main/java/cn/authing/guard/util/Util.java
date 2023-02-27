@@ -438,13 +438,31 @@ public class Util {
         if (isIp(Authing.getHost())) {
             return Authing.getHost();
         } else if (config != null) {
-            String appHost = config.getIdentifier() + "." + Authing.getHost();
+            String appHost = Authing.getHost().contains(config.getIdentifier())
+                    ? Authing.getHost() : config.getIdentifier() + "." + Authing.getHost();
             String ssoHost = config.getRequestHostname();
             return Util.isNull(ssoHost) ? appHost : ssoHost;
         } else {
             ALog.e("Guard", "invalid host");
             return "core." + Authing.getHost();
         }
+    }
+
+    public static String getIdentifierHost(Config config){
+        if (config != null) {
+            String identifier = config.getIdentifier();
+            String ssoHost = config.getRequestHostname();
+            if (Util.isNull(ssoHost)){
+                return Authing.getHost().contains(identifier)
+                        ? Authing.getHost() : identifier + "." + Authing.getHost();
+            }
+            if (ssoHost.contains(identifier)){
+                return ssoHost;
+            }
+            int firstIndex = ssoHost.indexOf(".");
+            return identifier + ssoHost.substring(firstIndex, ssoHost.length());
+        }
+        return Authing.getHost();
     }
 
     public static List<String> toStringList(JSONArray array) throws JSONException {
