@@ -6,6 +6,7 @@ import android.net.Network;
 import android.net.NetworkRequest;
 import android.os.Handler;
 import android.os.Looper;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 
@@ -34,6 +35,7 @@ public class Authing {
     private static Context sAppContext;
     private static String scheme = "https";
     private static String sHost = "authing.cn"; // for private deployment
+    private static String sWebSocketHost = "wss://events.authing.com"; // for private deployment
     private static String sPublicKey = DEF_PUBLIC_KEY;
     private static boolean isOnPremises;
     private static String sAppId;
@@ -79,6 +81,13 @@ public class Authing {
         Authing.sPublicKey = publicKey;
     }
 
+    public static String getWebSocketHostHost() {
+        return sWebSocketHost;
+    }
+
+    public static void setWebSocketHost(String host) {
+        Authing.sWebSocketHost = host;
+    }
     public static void setAuthProtocol(AuthProtocol authProtocol) {
         Authing.authProtocol = authProtocol;
     }
@@ -187,6 +196,7 @@ public class Authing {
             host = "console." + sHost;
         }
         String url = scheme + "://" + host + "/api/v2/applications/" + sAppId + "/public-config";
+        Log.e("zjh", "url = " + url);
         Guardian.request(null, url, "get", null, (response)->{
             try {
                 if (response.getCode() == 200) {

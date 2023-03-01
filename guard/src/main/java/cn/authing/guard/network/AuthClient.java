@@ -1231,6 +1231,41 @@ public class AuthClient {
         }
     }
 
+
+    /**
+     * 发布事件
+     */
+    public static void pubEvent(String eventCode, String eventData, @NotNull AuthCallback<JSONObject> callback) {
+        try {
+            String endpoint = "/api/v3/pub-userEvent";
+            JSONObject body = new JSONObject();
+            body.put("eventType", eventCode);
+            body.put("eventData", eventData);
+            Guardian.post(endpoint, body, (data)-> callback.call(data.getCode(), data.getMessage(), data.getData()));
+        } catch (Exception e) {
+            error(e, callback);
+        }
+    }
+
+    /**
+     * 订阅事件
+     */
+    public static void subEvent(String eventCode, @NotNull Receiver receiver) {
+        Authing.getPublicConfig(config -> {
+            if (config == null){
+                receiver.onError("Config not found");
+                return;
+            }
+            try {
+                String endpoint = Authing.getWebSocketHostHost() + "/events/v1/authentication/sub?code="+eventCode
+                        +"&token="+Authing.getCurrentUser().getAccessToken();
+                WebSocketClient.getInstance(receiver).connect(endpoint);
+            } catch (Exception e) {
+                receiver.onError(e.toString());
+            }
+        });
+    }
+
     public static void createUserInfoFromResponse(Response data, @NotNull AuthCallback<UserInfo> callback) {
         createUserInfoFromResponse(Authing.getCurrentUser() != null ? Authing.getCurrentUser() : new UserInfo(), data, callback);
     }

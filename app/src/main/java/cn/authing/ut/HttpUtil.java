@@ -15,6 +15,7 @@ import cn.authing.guard.data.Resource;
 import cn.authing.guard.data.Role;
 import cn.authing.guard.data.UserInfo;
 import cn.authing.guard.network.AuthClient;
+import cn.authing.guard.network.Receiver;
 
 public class HttpUtil {
 
@@ -103,7 +104,49 @@ public class HttpUtil {
             checkPassword(params, callBack);
         } else if ("getSecurityLevel".equals(apiName)) {
             getSecurityLevel(callBack);
+        } else if ("putEvent".equals(apiName)) {
+            putEvent(params, callBack);
+        } else if ("subEvent".equals(apiName)) {
+            subEvent(callBack);
         }
+    }
+
+    private static void putEvent(String params, IHttpCallBack callBack) {
+        JSONObject object = new JSONObject();
+        try {
+            object.put("id", "63fd984af55f69c79002edf3");
+            object.put("createdAt", "2023-02-28T05:59:38.340Z");
+            object.put("updatedAt", "2023-02-28T05:59:38.509Z");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        AuthClient.pubEvent("custom_aouaw.sxytestevent", object.toString(), new AuthCallback<JSONObject>() {
+            @Override
+            public void call(int code, String message, JSONObject data) {
+                callBack.showResult("putEvent", code, message, null);
+            }
+        });
+    }
+
+
+    private static void subEvent(IHttpCallBack callBack) {
+        AuthClient.subEvent("authing.user.updated", new Receiver() {
+
+            @Override
+            public void onOpen() {
+                callBack.showResult("putEvent", 200, "", null);
+            }
+
+            @Override
+            public void onReceiverMessage(String msg) {
+
+            }
+
+            @Override
+            public void onError(String errorMsg) {
+
+            }
+        });
     }
 
 

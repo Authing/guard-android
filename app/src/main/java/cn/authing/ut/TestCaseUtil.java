@@ -618,6 +618,26 @@ public class TestCaseUtil {
         return testCase;
     }
 
+    public static TestCase createPutEventCase() {
+        TestCase testCase = new TestCase();
+        testCase.setModuleName("事件订阅");
+        testCase.setCaseName("发布事件");
+        testCase.setApiName("putEvent");
+        testCase.setMethod("post");
+        testCase.setUrl("/api/v3/pub-userEvent");
+        return testCase;
+    }
+
+    public static TestCase createSubEventCase() {
+        TestCase testCase = new TestCase();
+        testCase.setModuleName("事件订阅");
+        testCase.setCaseName("订阅事件");
+        testCase.setApiName("subEvent");
+        testCase.setMethod("post");
+        testCase.setUrl("/events/v1/authentication/sub");
+        return testCase;
+    }
+
     public static String getUserName(){
         UserInfo userInfo = Authing.getCurrentUser();
         String userName = "-";

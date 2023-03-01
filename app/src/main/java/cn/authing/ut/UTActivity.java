@@ -19,7 +19,7 @@ import cn.authing.R;
 public class UTActivity extends AppCompatActivity implements ExpandableListView.OnGroupClickListener, ExpandableListView.OnChildClickListener {
 
     private static final String[] mParentMenu = {
-            "注册", "登录", "社会化登录", "发送验证码", "获取用户信息", "更新用户信息", "MFA", "账号密码"
+            "注册", "登录", "社会化登录", "发送验证码", "获取用户信息", "更新用户信息", "MFA", "账号密码", "事件订阅"
     };
     private GroupListAdapter mAdapter;
     private List<List<TestCase>> mChildMenu;
@@ -211,6 +211,13 @@ public class UTActivity extends AppCompatActivity implements ExpandableListView.
         accountList.add(TestCaseUtil.createGetSecurityLevelCase());
         mChildMenu.add(accountList);
         mAllTestList.addAll(accountList);
+
+
+        List<TestCase> eventList = new ArrayList<>();
+        eventList.add(TestCaseUtil.createPutEventCase());
+        eventList.add(TestCaseUtil.createSubEventCase());
+        mChildMenu.add(eventList);
+        mAllTestList.addAll(eventList);
 
     }
 
