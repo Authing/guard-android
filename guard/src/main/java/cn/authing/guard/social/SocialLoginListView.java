@@ -17,6 +17,8 @@ import cn.authing.guard.Authing;
 import cn.authing.guard.R;
 import cn.authing.guard.data.SocialConfig;
 import cn.authing.guard.data.UserInfo;
+import cn.authing.guard.social.view.QQLoginButton;
+import cn.authing.guard.social.view.WeiboLoginButton;
 import cn.authing.guard.util.Const;
 import cn.authing.guard.util.Util;
 
@@ -87,6 +89,10 @@ public class SocialLoginListView extends LinearLayout {
             sb.append("wechat-mini-program");
         } else if (Const.EC_TYPE_FACE_BOOK.equals(type)) {
             sb.append("facebook");
+        } else if (Const.EC_TYPE_QQ.equals(type)) {
+            sb.append("qq");
+        } else if (Const.EC_TYPE_WEIBO.equals(type)) {
+            sb.append("weibo");
         }
     }
 
@@ -120,6 +126,12 @@ public class SocialLoginListView extends LinearLayout {
                     break;
                 case "facebook":
                     button = new FaceBookLoginButton(context);
+                    break;
+                case "qq":
+                    button = new QQLoginButton(context);
+                    break;
+                case "weibo":
+                    button = new WeiboLoginButton(context);
                     break;
             }
 

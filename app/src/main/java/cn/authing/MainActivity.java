@@ -21,15 +21,15 @@ public class MainActivity extends UserProfileActivity {
     }
 
     private void logout() {
-        long now = System.currentTimeMillis();
-        Push.unregister(this, ((ok, msg) -> {
-            ALog.d("MainActivity", "Push.unregister cost:" + (System.currentTimeMillis() - now));
+        //long now = System.currentTimeMillis();
+        //Push.unregister(this, ((ok, msg) -> {
+            //ALog.d("MainActivity", "Push.unregister cost:" + (System.currentTimeMillis() - now));
             AuthClient.logout((code, message, data)->{
                 Intent intent = new Intent(this, SampleListActivity.class);
                 startActivity(intent);
                 finish();
             });
-        }));
+       // }));
     }
 
     private void delete() {

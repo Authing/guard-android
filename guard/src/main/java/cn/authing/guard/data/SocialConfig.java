@@ -10,6 +10,8 @@ public class SocialConfig {
     private String clientId;
     private String mobileAppID;
     private String originalID;
+    private String appKey;
+    private String redirectUrl;
 
     public String getId() {
         return id;
@@ -81,5 +83,21 @@ public class SocialConfig {
 
     public void setOriginalID(String originalID) {
         this.originalID = originalID;
+    }
+
+    public String getAppKey() {
+        return appKey;
+    }
+
+    public void setAppKey(String appKey) {
+        this.appKey = appKey;
+    }
+
+    public String getRedirectUrl() {
+        return redirectUrl;
+    }
+
+    public void setRedirectUrl(String redirectUrl) {
+        this.redirectUrl = redirectUrl;
     }
 }

@@ -96,7 +96,13 @@ public class SampleListActivity extends AppCompatActivity {
                 return;
             }
             if (pos == AUTHING_LOGIN) {//Authing 标准登录
-                AuthFlow.start(this);
+                AuthFlow authFlow = AuthFlow.start(this);
+//                authFlow.setAuthCallback(new AuthFlow.Callback<UserInfo>() {
+//                    @Override
+//                    public void call(Context context, int code, String message, UserInfo userInfo) {
+//                        Log.e("zjh", "code = " + code);
+//                    }
+//                });
             } else if (pos == 1) {//手机号一键登录（Authing UI）
                 Intent intent = new Intent(SampleListActivity.this, OneClickActivity.class);
                 startActivityForResult(intent, RC_LOGIN);
@@ -223,7 +229,7 @@ public class SampleListActivity extends AppCompatActivity {
     }
 
     private void gotoMain() {
-        new Push().registerDevice(this);
+        //new Push().registerDevice(this);
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
     }

@@ -172,12 +172,20 @@ public class OIDCClient {
         AuthClient.loginByGoogle(authRequest, authCode, callback);
     }
 
-    public void loginByFaceBook(String authCode, @NotNull AuthCallback<UserInfo> callback) {
-        AuthClient.loginByFaceBook(authRequest, authCode, callback);
+    public void loginByFaceBook(String accessToken, @NotNull AuthCallback<UserInfo> callback) {
+        AuthClient.loginByFaceBook(authRequest, accessToken, callback);
     }
 
     public void loginByWechatMiniProgram(String code, String phoneInfoCode, @NotNull AuthCallback<UserInfo> callback) {
         AuthClient.loginByWechatMiniProgram(authRequest, code, phoneInfoCode, callback);
+    }
+
+    public void loginByQQ(String accessToken, @NotNull AuthCallback<UserInfo> callback) {
+        AuthClient.loginByQQ(authRequest, accessToken, callback);
+    }
+
+    public void loginByWeibo(String accessToken, @NotNull AuthCallback<UserInfo> callback) {
+        AuthClient.loginByWeibo(authRequest, accessToken, callback);
     }
 
     private static void error(Exception e, @NotNull AuthCallback<?> callback){

@@ -81,6 +81,12 @@
             android:name=".activity.UserProfileActivity"
             android:exported="false"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+
+        <activity
+            android:name="com.tencent.connect.common.AssistActivity"
+            android:configChanges="orientation|keyboardHidden"
+            android:screenOrientation="behind"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
     </application>
 
     <queries>
@@ -101,6 +107,10 @@
 
     <queries>
         <package android:name="com.facebook.katana" />
+    </queries>
+
+    <queries>
+        <package android:name="com.tencent.mobileqq" />
     </queries>
 
 </manifest>

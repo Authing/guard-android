@@ -13,6 +13,9 @@ android {
         versionCode 1
         versionName "1.4.8"
         archivesBaseName = "GuardDemo-$versionName"
+        ndk {
+            abiFilters 'armeabi' //, 'armeabi-v7a','arm64-v8a'
+        }
     }
 
     signingConfigs {
@@ -58,28 +61,24 @@ dependencies {
 
     // 通过网易云盾实现一键登录
     implementation 'io.github.yidun:quicklogin:3.1.1'
-
     // 微信登录
     implementation 'com.tencent.mm.opensdk:wechat-sdk-android:6.8.0'
-
     // 支付宝登录
     implementation files('libs/alipaysdk.aar')
-
     // 企业微信
     implementation files('libs/lib_wwapi-2.0.12.11.aar')
-
     // 飞书
     implementation files ('libs/larksso-3.0.8.aar')
     implementation 'com.alibaba:fastjson:1.1.58.android'
-
     // AppAuth
     implementation 'net.openid:appauth:0.10.0'
-
     // google
     implementation 'com.google.android.gms:play-services-auth:20.2.0'
-
     // facebook
     implementation 'com.facebook.android:facebook-login:latest.release'
-
+    // QQ
+    implementation 'com.tencent.tauth:qqopensdk:3.52.0'
+    // 新浪微博
+    implementation 'io.github.sinaweibosdk:core:12.5.0@aar'
 
 }

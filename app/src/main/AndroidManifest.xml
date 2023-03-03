@@ -138,15 +138,17 @@
             android:name=".authenticator.AuthenticatorActivity"
             android:exported="false"
             android:screenOrientation="portrait"/>
+        <activity android:name=".SignInActivity" />
+        <activity android:name=".ut.UTActivity" />
+        <activity android:name=".ut.UTTestActivity" />
+        <activity android:name=".ut.UTTestAllActivity" />
+
+
         <activity
             android:name=".guard.wxapi.WXEntryActivity"
             android:exported="true"
             android:launchMode="singleTask"
             android:taskAffinity="cn.authing.guard"/>
-        <activity android:name=".SignInActivity" />
-        <activity android:name=".ut.UTActivity" />
-        <activity android:name=".ut.UTTestActivity" />
-        <activity android:name=".ut.UTTestAllActivity" />
 
         <activity android:name="com.facebook.FacebookActivity"
             android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
@@ -163,6 +165,19 @@
         </activity>
         <meta-data android:name="com.facebook.sdk.ApplicationId" android:value="@string/facebook_app_id"/>
         <meta-data android:name="com.facebook.sdk.ClientToken" android:value="@string/facebook_client_token"/>
+
+        <activity
+            android:name="com.tencent.tauth.AuthActivity"
+            android:exported="true"
+            android:launchMode="singleTask"
+            android:noHistory="true">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="tencent102043018" />
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>

@@ -29,6 +29,8 @@ import cn.authing.guard.flow.AuthFlow;
 import cn.authing.guard.internal.CircularAnimatedView;
 import cn.authing.guard.social.FaceBook;
 import cn.authing.guard.social.Google;
+import cn.authing.guard.social.handler.QQ;
+import cn.authing.guard.social.handler.Weibo;
 import cn.authing.guard.util.Util;
 
 public class AuthActivity extends AppCompatActivity {
@@ -133,6 +135,8 @@ public class AuthActivity extends AppCompatActivity {
             sendBroadcast(data);
         }
         FaceBook.getInstance().onActivityResult(requestCode, resultCode, data);
+        QQ.getInstance().onActivityResult(requestCode, resultCode, data);
+        Weibo.getInstance().onActivityResult(this, requestCode, resultCode, data);
     }
 
 
