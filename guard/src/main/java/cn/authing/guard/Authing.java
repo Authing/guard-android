@@ -34,6 +34,7 @@ public class Authing {
     private static Context sAppContext;
     private static String scheme = "https";
     private static String sHost = "authing.cn"; // for private deployment
+    private static String sWebSocketHost = "wss://events.authing.com";
     private static boolean isOnPremises;
     private static String sPublicKey = DEF_PUBLIC_KEY;
     private static String sAppId;
@@ -77,6 +78,14 @@ public class Authing {
 
     public static void setPublicKey(String publicKey) {
         Authing.sPublicKey = publicKey;
+    }
+
+    public static String getWebSocketHostHost() {
+        return sWebSocketHost;
+    }
+
+    public static void setWebSocketHost(String host) {
+        Authing.sWebSocketHost = host;
     }
 
     public static void setOnPremiseInfo(String host, String publicKey) {
