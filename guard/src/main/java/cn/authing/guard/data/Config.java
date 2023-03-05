@@ -484,8 +484,8 @@ public class Config {
                 if (fields.has("appKey")) {
                     config.setAppKey(fields.getString("appKey"));
                 }
-                if (fields.has("redirectUrl")) {
-                    config.setRedirectUrl(fields.getString("redirectUrl"));
+                if (fields.has("redirectURI")) {
+                    config.setRedirectUrl(fields.getString("redirectURI"));
                 }
             }
             list.add(config);
@@ -510,7 +510,7 @@ public class Config {
     }
 
     public String getSocialRedirectUrl(String type) {
-        return getSocialValue(type, "redirectUrl");
+        return getSocialValue(type, "redirectURI");
     }
 
     public String getSocialValue(String type, String fieldName) {
@@ -547,7 +547,7 @@ public class Config {
                     case "appKey":
                         value = c.getAppKey();
                         break;
-                    case "redirectUrl":
+                    case "redirectURI":
                         value = c.getRedirectUrl();
                         break;
                 }
