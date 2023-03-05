@@ -21,6 +21,8 @@ import cn.authing.guard.R;
 import cn.authing.guard.data.SocialConfig;
 import cn.authing.guard.data.UserInfo;
 import cn.authing.guard.internal.ContinueWithTextView;
+import cn.authing.guard.social.view.QQLoginButton;
+import cn.authing.guard.social.view.WeiboLoginButton;
 import cn.authing.guard.util.Const;
 import cn.authing.guard.util.Util;
 
@@ -155,6 +157,14 @@ public class VerticalSocialLoginListView extends LinearLayout {
             sb.append(Const.TYPE_FINGER);
             sb.append("|");
         }
+        if (types.contains(Const.EC_TYPE_QQ)){
+            sb.append(Const.TYPE_QQ);
+            sb.append("|");
+        }
+        if (types.contains(Const.EC_TYPE_WEIBO)){
+            sb.append(Const.TYPE_WEIBO);
+            sb.append("|");
+        }
         String socialString = sb.toString();
         if (socialString.endsWith("|")){
             socialString = socialString.substring(0, socialString.length() - 1);
@@ -205,6 +215,12 @@ public class VerticalSocialLoginListView extends LinearLayout {
                 break;
             case Const.TYPE_FINGER:
                 button = new FingerLoginButton(getContext());
+                break;
+            case Const.TYPE_QQ:
+                button = new QQLoginButton(getContext());
+                break;
+            case Const.TYPE_WEIBO:
+                button = new WeiboLoginButton(getContext());
                 break;
         }
         if (button != null) {
@@ -262,6 +278,12 @@ public class VerticalSocialLoginListView extends LinearLayout {
                 break;
             case Const.TYPE_FINGER:
                 str = getContext().getString(R.string.authing_login_by_finger);
+                break;
+            case Const.TYPE_QQ:
+                str = getContext().getString(R.string.authing_login_by_qq);
+                break;
+            case Const.TYPE_WEIBO:
+                str = getContext().getString(R.string.authing_login_by_weibo);
                 break;
         }
         return str;

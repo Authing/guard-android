@@ -573,6 +573,14 @@ public class Config {
         return getSocialValue(type, "originalID");
     }
 
+    public String getSocialAppKey(String type) {
+        return getSocialValue(type, "appKey");
+    }
+
+    public String getSocialRedirectUrl(String type) {
+        return getSocialValue(type, "redirectURI");
+    }
+
     public String getSocialValue(String type, String fieldName) {
         String value = "";
         List<SocialConfig> configs = getSocialConfigs();
@@ -603,6 +611,12 @@ public class Config {
                         break;
                     case "originalID":
                         value = c.getOriginalID();
+                        break;
+                    case "appKey":
+                        value = c.getAppKey();
+                        break;
+                    case "redirectURI":
+                        value = c.getRedirectUrl();
                         break;
                 }
                 break;
@@ -654,6 +668,12 @@ public class Config {
                 }
                 if (fields.has("originalID")) {
                     config.setOriginalID(fields.getString("originalID"));
+                }
+                if (fields.has("appKey")) {
+                    config.setAppKey(fields.getString("appKey"));
+                }
+                if (fields.has("redirectURI")) {
+                    config.setRedirectUrl(fields.getString("redirectURI"));
                 }
             }
             list.add(config);

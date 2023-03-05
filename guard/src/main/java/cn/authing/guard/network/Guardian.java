@@ -70,7 +70,7 @@ public class Guardian {
 
     private static void _request(Config config, String endpoint, String method, String body, String token, @NotNull GuardianCallback callback) {
         String url;
-        if (config == null) {
+        if (config == null || endpoint.contains(Authing.getScheme())) {
             url = endpoint;
         } else {
             url = Authing.getScheme() + "://" + Util.getHost(config) + endpoint;

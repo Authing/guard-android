@@ -609,6 +609,48 @@ public class AuthClient {
         });
     }
 
+    public static void loginByQQ(String accessToken, @NotNull AuthCallback<UserInfo> callback) {
+        loginByQQ(null, accessToken, callback);
+    }
+
+    public static void loginByQQ(AuthRequest authData, String accessToken, @NotNull AuthCallback<UserInfo> callback) {
+        Authing.getPublicConfig(config -> {
+            try {
+                JSONObject body = new JSONObject();
+                String connId = config != null ? config.getSocialConnectionId(Const.EC_TYPE_QQ) : "";
+                body.put("connId", connId);
+                body.put("access_token", accessToken);
+                String endpoint = "/api/v2/ecConn/QQConnect/authByAccessToken";
+                Guardian.post(endpoint, body, (data)-> {
+                    startOidcInteraction(authData, data, callback);
+                });
+            } catch (Exception e) {
+                error(e, callback);
+            }
+        });
+    }
+
+    public static void loginByWeibo(String accessToken, @NotNull AuthCallback<UserInfo> callback) {
+        loginByWeibo(null, accessToken, callback);
+    }
+
+    public static void loginByWeibo(AuthRequest authData, String accessToken, @NotNull AuthCallback<UserInfo> callback) {
+        Authing.getPublicConfig(config -> {
+            try {
+                JSONObject body = new JSONObject();
+                String connId = config != null ? config.getSocialConnectionId(Const.EC_TYPE_WEIBO) : "";
+                body.put("connId", connId);
+                body.put("access_token", accessToken);
+                String endpoint = "/api/v2/ecConn/weibo/authByAccessToken";
+                Guardian.post(endpoint, body, (data)-> {
+                    startOidcInteraction(authData, data, callback);
+                });
+            } catch (Exception e) {
+                error(e, callback);
+            }
+        });
+    }
+
     public static void loginByOneAuth(String token, String accessToken, @NotNull AuthCallback<UserInfo> callback) {
         loginByOneAuth(null, token, accessToken, 0, callback);
     }

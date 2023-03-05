@@ -136,6 +136,8 @@
     <string name="authing_login_by_google">使用 Google 登錄</string>
     <string name="authing_login_by_facebook">使用 Facebook 登錄</string>
     <string name="authing_login_by_wechat_miniprogram">使用微信小程序登錄</string>
+    <string name="authing_login_by_qq">使用 QQ 登錄</string>
+    <string name="authing_login_by_weibo">使用 微博 登錄</string>
     <string name="authing_login_by_finger">使用 指紋識別 登錄</string>
     <string name="authing_login_by_face">使用 人臉識別 登錄</string>
     <string name="authing_social_alipay">支付寶</string>
@@ -145,6 +147,8 @@
     <string name="authing_social_google">Google</string>
     <string name="authing_social_facebook">Facebook</string>
     <string name="authing_social_wechat_miniprogram">微信小程序</string>
+    <string name="authing_social_qq">QQ</string>
+    <string name="authing_social_weibo">Weibo</string>
     <string name="authing_finger">指紋識別</string>
     <string name="authing_face">人臉識別</string>
     <string name="authing_get_code_again">重新發送驗證碼</string>
