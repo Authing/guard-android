@@ -15,13 +15,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 import cn.authing.guard.AuthCallback;
+import cn.authing.guard.Authing;
+import cn.authing.guard.R;
 import cn.authing.guard.data.AuthenticationCredential;
 import cn.authing.guard.data.AuthenticationOptions;
 import cn.authing.guard.data.AuthenticationParams;
 import cn.authing.guard.network.AuthClient;
 import cn.authing.guard.util.Const;
 import cn.authing.guard.util.SystemUtil;
+import cn.authing.guard.util.ToastUtil;
 import cn.authing.guard.util.Util;
+import cn.authing.webauthn.authenticator.internal.PublicKeyCredentialSource;
 import cn.authing.webauthn.client.WebAuthAssertionCallback;
 import cn.authing.webauthn.client.WebAuthManager;
 import cn.authing.webauthn.data.AuthenticatorAssertionResponse;
@@ -42,7 +46,7 @@ public class WebAuthNAuthentication {
     }
 
     public void startAuthentication() {
-        if (!SystemUtil.checkFingerprintEnable(activity)){
+        if (!SystemUtil.checkFingerprintEnable(activity)) {
             return;
         }
 
@@ -118,11 +122,40 @@ public class WebAuthNAuthentication {
                 if (webAuthNVerifyCallBack != null) {
                     webAuthNVerifyCallBack.onFailed(code, message);
                 }
+                //账号已经被删除，需要删除本地数据
+                if (code == 431) {
+                    activity.runOnUiThread(() -> ToastUtil.showCenterWarning(activity, activity.getString(R.string.authing_account_error)));
+                    deleteLocalSource(rep.getId());
+                }
                 return;
             }
 
             if (webAuthNVerifyCallBack != null) {
                 webAuthNVerifyCallBack.onSuccess(code, message, data);
+            }
+        });
+    }
+
+    /**
+     * 删除本地数据
+     */
+    private void deleteLocalSource(String credentialId) {
+        if (TextUtils.isEmpty(credentialId)) {
+            return;
+        }
+        Authing.getPublicConfig(config -> {
+            List<PublicKeyCredentialSource> sources = WebAuthNSource.getSourceList(activity, config);
+            if (sources.isEmpty()) {
+                return;
+            }
+            for (PublicKeyCredentialSource source : sources) {
+                if (source != null) {
+                    String cid = Util.encodeBase64URL(source.getId());
+                    if (credentialId.equals(cid)) {
+                        WebAuthNSource.deleteSource(activity, config, source.getUserHandle());
+                        break;
+                    }
+                }
             }
         });
     }
@@ -135,7 +168,6 @@ public class WebAuthNAuthentication {
                 if (authenticationObject.has("challenge")) {
                     authenticationOptions.setChallenge(authenticationObject.getString("challenge"));
                 }
-
                 if (authenticationObject.has("allowCredentials") && !authenticationObject.isNull("allowCredentials")) {
                     JSONArray allowCredentials = authenticationObject.getJSONArray("allowCredentials");
                     authenticationOptions.setAllowCredentials(toAllowCredentialsList(allowCredentials));

@@ -168,6 +168,8 @@
     <string name="authing_enable_fingerprint">Your phone does not support fingerprint function</string>
     <string name="authing_at_least_one_fingerprint">Please add at least one fingerprint to your system Settings</string>
     <string name="authing_enable_fingerprint_unlock">Please enable fingerprint unlock first</string>
+    <string name="authing_no_social_tips">Unable to experience ID source login. Please experience it after integrating Guard SDK on the client APP developed by yourself.</string>
+    <string name="authing_account_error">The account no longer exists</string>
 
     <!--user profile-->
     <string name="authing_user_profile">User profile</string>

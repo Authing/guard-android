@@ -40,11 +40,11 @@ public class SystemUtil {
      * 检查指纹
      */
     public static boolean checkFingerprintEnable(Activity activity){
-        if (!SystemUtil.isHardwareDetected(activity)){
+        if (!isHardwareDetected(activity)){
             ToastUtil.showCenter(activity, activity.getString(R.string.authing_enable_fingerprint));
             return false;
         }
-        if (!SystemUtil.hasEnrolledFingerprints(activity)){
+        if (!hasEnrolledFingerprints(activity)){
             ToastUtil.showCenter(activity, activity.getString(R.string.authing_at_least_one_fingerprint));
             Util.openSettingUI(activity);
             return false;
@@ -82,7 +82,13 @@ public class SystemUtil {
      * 判断指纹硬件是否存在并且功能正常
      */
     public static boolean isHardwareDetected(Context context){
+        if (context == null){
+            return false;
+        }
         FingerprintManager fingerprintManager = context.getSystemService(FingerprintManager.class);
+        if (fingerprintManager == null){
+            return false;
+        }
         return fingerprintManager.isHardwareDetected();
     }
 
@@ -90,7 +96,13 @@ public class SystemUtil {
      * 判断是否至少有一个指纹登记
      */
     public static boolean hasEnrolledFingerprints(Context context){
+        if (context == null){
+            return false;
+        }
         FingerprintManager fingerprintManager = context.getSystemService(FingerprintManager.class);
+        if (fingerprintManager == null){
+            return false;
+        }
         return fingerprintManager.hasEnrolledFingerprints();
     }
 

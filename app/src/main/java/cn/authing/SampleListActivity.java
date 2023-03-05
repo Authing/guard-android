@@ -215,7 +215,7 @@ public class SampleListActivity extends AppCompatActivity {
     }
 
     private void gotoMain() {
-        new Push().registerDevice(this);
+        //new Push().registerDevice(this);
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
     }

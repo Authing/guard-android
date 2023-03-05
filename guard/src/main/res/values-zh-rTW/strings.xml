@@ -168,6 +168,8 @@
     <string name="authing_enable_fingerprint">您的手機不支持指紋功能</string>
     <string name="authing_at_least_one_fingerprint">請至少在系統設置中添加一個指紋</string>
     <string name="authing_enable_fingerprint_unlock">請先開啟指紋解鎖</string>
+    <string name="authing_no_social_tips">無法體驗身份源登錄，請您在自己開發的客戶端 APP 上集成 Guard SDK 之後體驗。</string>
+    <string name="authing_account_error">賬號已不存在</string>
 
     <!--user profile-->
     <string name="authing_user_profile">個人中心</string>

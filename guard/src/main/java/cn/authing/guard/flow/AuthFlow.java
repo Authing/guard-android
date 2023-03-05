@@ -106,6 +106,9 @@ public class AuthFlow implements Serializable {
         } else {
             new Thread() {
                 public void run() {
+                    if (activity == null){
+                        return;
+                    }
                     activity.runOnUiThread(() -> {
                         Intent intent = new Intent(activity, IndexAuthActivity.class);
                         intent.putExtra(AuthActivity.AUTH_FLOW, flow);

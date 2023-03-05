@@ -1631,6 +1631,18 @@ public class AuthClient {
         }
     }
 
+    public static void getPushLoginRelationApps(String pushCodeId, String appId, @NotNull AuthCallback<JSONObject> callback) {
+        try {
+            String endpoint = "/api/v3/get-pushlogin-relation-apps";
+            JSONObject body = new JSONObject();
+            body.put("pushCodeId", pushCodeId);
+            body.put("appId", appId);
+            Guardian.post(endpoint, body, (data) -> callback.call(data.getCode(), data.getMessage(), data.getData()));
+        } catch (Exception e) {
+            error(e, callback);
+        }
+    }
+
     public static void getCaptchaCode(@NotNull AuthCallback<Drawable> callback) {
         Authing.getPublicConfig(config -> {
             if (config == null) {

@@ -106,6 +106,10 @@ public class Authing {
         Authing.autoCheckNetWork = autoCheckNetWork;
     }
 
+    public static void setIsOverseas() {
+       sHost = "us.authing.co";
+    }
+
     public static void autoLogin(AuthCallback<UserInfo> callback) {
         if (getCurrentUser() == null) {
             callback.call(Const.ERROR_CODE_10003, "Login failed", null);

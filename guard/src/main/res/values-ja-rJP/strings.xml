@@ -168,6 +168,8 @@
     <string name="authing_enable_fingerprint">あなたの携帯電話は指紋機能をサポートしていません</string>
     <string name="authing_at_least_one_fingerprint">少なくとも1つの指紋をシステム設定に追加してください</string>
     <string name="authing_enable_fingerprint_unlock">まず指紋ロック解除をオンにしてください</string>
+    <string name="authing_no_social_tips">IDソースログインは体験できません。自分で開発したクライアントアプリにGuardSDKを統合してから体験してください。</string>
+    <string name="authing_account_error">アカウントは既に存在しません</string>
 
     <!--user profile-->
     <string name="authing_user_profile">個人センター</string>
