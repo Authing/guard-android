@@ -44,7 +44,7 @@ public abstract class SocialLoginButton extends androidx.appcompat.widget.AppCom
     protected abstract int getImageRes();
 
     private void loginDone(int code, String message, UserInfo userInfo) {
-        if (code == AUTH_SUCCESS){
+        if (code == AUTH_SUCCESS) {
             post(this::startLoading);
             return;
         }
@@ -54,7 +54,7 @@ public abstract class SocialLoginButton extends androidx.appcompat.widget.AppCom
             callback.call(code, message, userInfo);
         } else if (getContext() instanceof AuthActivity) {
             if (code == 200) {
-                Authing.getPublicConfig((config)->{
+                Authing.getPublicConfig((config) -> {
                     if (getContext() instanceof AuthActivity) {
                         AuthActivity activity = (AuthActivity) getContext();
                         AuthFlow flow = (AuthFlow) activity.getIntent().getSerializableExtra(AuthActivity.AUTH_FLOW);
@@ -103,7 +103,7 @@ public abstract class SocialLoginButton extends androidx.appcompat.widget.AppCom
                 FlowHelper.handleSocialAccountSelect((AuthActivity) getContext());
             } else {
                 if (!TextUtils.isEmpty(message)
-                        && getContext().getString(R.string.authing_cancelled_by_user).equals(message)){
+                        && getContext().getString(R.string.authing_cancelled_by_user).equals(message)) {
                     post(() -> ToastUtil.showCenter(getContext(), message));
                 }
             }
@@ -122,30 +122,25 @@ public abstract class SocialLoginButton extends androidx.appcompat.widget.AppCom
         }
         setImageResource(getImageRes());
 
-        backgroundDrawable = (AnimatedVectorDrawable)context.getDrawable(R.drawable.ic_authing_animated_loading_blue);
+        backgroundDrawable = (AnimatedVectorDrawable) context.getDrawable(R.drawable.ic_authing_animated_loading_blue);
         setOnClickListener((v -> {
-            //特殊代码，只针对 Authing 令牌
-            if (!"62cfd7a88f9dafbfe4a7c9aa".equals(Authing.getAppId()) && !(this instanceof FingerLoginButton)){
-                ToastUtil.showCenter(context, context.getString(R.string.authing_no_social_tips));
-                return;
-            }
             if (requiresAgreement()) {
                 return;
             }
 
-            if (authenticator == null){
+            if (authenticator == null) {
                 authenticator = createAuthenticator();
             }
             authenticator.login(context, this::loginDone);
         }));
     }
 
-    private void startLoading(){
+    private void startLoading() {
         setImageDrawable(backgroundDrawable);
         backgroundDrawable.start();
     }
 
-    private void stopLoading(){
+    private void stopLoading() {
         backgroundDrawable.stop();
         setImageResource(getImageRes());
     }
@@ -156,25 +151,25 @@ public abstract class SocialLoginButton extends androidx.appcompat.widget.AppCom
             return false;
         }
 
-        return ((PrivacyConfirmBox)box).require(new PrivacyConfirmDialog.OnPrivacyListener() {
+        return ((PrivacyConfirmBox) box).require(new PrivacyConfirmDialog.OnPrivacyListener() {
 
             @Override
             public void onShow() {
-                if (callback != null){
+                if (callback != null) {
                     callback.call(1000, "", null);
                 }
             }
 
             @Override
             public void onCancel() {
-                if (callback != null){
+                if (callback != null) {
                     callback.call(1001, "", null);
                 }
             }
 
             @Override
             public void onAgree() {
-                if (callback != null){
+                if (callback != null) {
                     callback.call(1001, "", null);
                 }
                 performClick();
@@ -193,7 +188,7 @@ public abstract class SocialLoginButton extends androidx.appcompat.widget.AppCom
     @Override
     protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();
-        if (authenticator != null){
+        if (authenticator != null) {
             authenticator.onDetachedFromWindow();
         }
     }
