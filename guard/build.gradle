@@ -41,5 +41,6 @@ dependencies {
     compileOnly 'com.facebook.android:facebook-login:latest.release'
     compileOnly 'com.tencent.tauth:qqopensdk:3.52.0'
     compileOnly 'io.github.sinaweibosdk:core:12.5.0@aar'
+    compileOnly files('libs/baidu-android-openapi-sdk.jar')
 
 }

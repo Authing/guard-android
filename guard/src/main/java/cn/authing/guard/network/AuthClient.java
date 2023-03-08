@@ -628,6 +628,27 @@ public class AuthClient {
         });
     }
 
+    public static void loginByBaidu(String access_token, @NotNull AuthCallback<UserInfo> callback) {
+        loginByBaidu(null, access_token, callback);
+    }
+
+    public static void loginByBaidu(AuthRequest authData, String access_token, @NotNull AuthCallback<UserInfo> callback) {
+        Authing.getPublicConfig(config -> {
+            try {
+                JSONObject body = new JSONObject();
+                String connId = config != null ? config.getSocialConnectionId(Const.EC_TYPE_BAIDU) : "";
+                body.put("connId", connId);
+                body.put("access_token", access_token);
+                String endpoint = "/api/v2/ecConn/baidu/authByAccessToken";
+                Guardian.post(endpoint, body, (data)-> {
+                    startOidcInteraction(authData, data, callback);
+                });
+            } catch (Exception e) {
+                error(e, callback);
+            }
+        });
+    }
+
     public static void loginByOneAuth(String token, String accessToken, @NotNull AuthCallback<UserInfo> callback) {
         loginByOneAuth(null, token, accessToken, 0, callback);
     }

@@ -113,4 +113,12 @@
         <package android:name="com.tencent.mobileqq" />
     </queries>
 
+    <queries>
+        <package android:name="com.sina.weibo" />
+    </queries>
+
+    <queries>
+        <package android:name="com.baidu.oauth.sdk" />
+    </queries>
+
 </manifest>

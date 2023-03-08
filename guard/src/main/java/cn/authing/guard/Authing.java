@@ -196,7 +196,6 @@ public class Authing {
             host = "console." + sHost;
         }
         String url = scheme + "://" + host + "/api/v2/applications/" + sAppId + "/public-config";
-        Log.e("zjh", "url = " + url);
         Guardian.request(null, url, "get", null, (response)->{
             try {
                 if (response.getCode() == 200) {

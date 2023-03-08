@@ -29,6 +29,7 @@ public class Const {
     public final static int ERROR_CODE_10010 = 10010; // FaceBook auth failed
     public final static int ERROR_CODE_10012 = 10012; // Weibo auth failed
     public final static int ERROR_CODE_10013 = 10013; // QQ auth failed
+    public final static int ERROR_CODE_10014 = 10014; // 百度 auth failed
 
     // mfa
     public static final String MFA_POLICY_SMS = "SMS";
@@ -49,6 +50,7 @@ public class Const {
     public static final String EC_TYPE_FACE_BOOK = "facebook:mobile";
     public static final String EC_TYPE_QQ = "qq:mobile";
     public static final String EC_TYPE_WEIBO = "weibo:mobile";
+    public static final String EC_TYPE_BAIDU = "baidu:mobile";
 
     // network
     public static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");

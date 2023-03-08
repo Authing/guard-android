@@ -17,6 +17,7 @@ import cn.authing.guard.Authing;
 import cn.authing.guard.R;
 import cn.authing.guard.data.SocialConfig;
 import cn.authing.guard.data.UserInfo;
+import cn.authing.guard.social.view.BaiduLoginButton;
 import cn.authing.guard.social.view.QQLoginButton;
 import cn.authing.guard.social.view.WeiboLoginButton;
 import cn.authing.guard.util.Const;
@@ -93,6 +94,8 @@ public class SocialLoginListView extends LinearLayout {
             sb.append("qq");
         } else if (Const.EC_TYPE_WEIBO.equals(type)) {
             sb.append("weibo");
+        } else if (Const.EC_TYPE_BAIDU.equals(type)) {
+            sb.append("baidu");
         }
     }
 
@@ -132,6 +135,9 @@ public class SocialLoginListView extends LinearLayout {
                     break;
                 case "weibo":
                     button = new WeiboLoginButton(context);
+                    break;
+                case "baidu":
+                    button = new BaiduLoginButton(context);
                     break;
             }
 
