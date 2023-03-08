@@ -86,6 +86,8 @@ dependencies {
     implementation 'com.tencent.tauth:qqopensdk:3.52.0'
     // 新浪微博
     implementation 'io.github.sinaweibosdk:core:12.5.0@aar'
+    // 百度
+    implementation files('libs/baidu-android-openapi-sdk.jar')
 
     implementation 'com.getui:gtsdk:3.2.13.0'  //个推SDK
     implementation 'com.getui:gtc:3.1.12.0'  //个推核心组件

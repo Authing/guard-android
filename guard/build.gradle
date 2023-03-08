@@ -28,6 +28,13 @@ android {
     }
 }
 
+//tasks.withType(Javadoc) {
+//    failOnError false
+//    options.addStringOption('Xdoclint:none', '-quiet')
+//    options.addStringOption('encoding', 'UTF-8')
+//    options.addStringOption('charSet', 'UTF-8')
+//}
+
 dependencies {
     implementation 'androidx.appcompat:appcompat:1.4.1'
     implementation "com.squareup.okhttp3:okhttp:4.9.2"
@@ -45,5 +52,6 @@ dependencies {
     compileOnly 'cn.authing:authing-android-webauthn:1.0.0'
     compileOnly 'com.tencent.tauth:qqopensdk:3.52.0'
     compileOnly 'io.github.sinaweibosdk:core:12.5.0@aar'
+    compileOnly files('libs/baidu-android-openapi-sdk.jar')
 
 }

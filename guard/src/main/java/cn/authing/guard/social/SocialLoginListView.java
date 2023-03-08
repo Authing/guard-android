@@ -21,6 +21,7 @@ import cn.authing.guard.R;
 import cn.authing.guard.data.SocialConfig;
 import cn.authing.guard.data.UserInfo;
 import cn.authing.guard.internal.ContinueWithTextView;
+import cn.authing.guard.social.view.BaiduLoginButton;
 import cn.authing.guard.social.view.QQLoginButton;
 import cn.authing.guard.social.view.WeiboLoginButton;
 import cn.authing.guard.util.Const;
@@ -179,6 +180,10 @@ public class SocialLoginListView extends LinearLayout {
             sb.append(Const.TYPE_WEIBO);
             sb.append("|");
         }
+        if (types.contains(Const.EC_TYPE_BAIDU)){
+            sb.append(Const.TYPE_BAIDU);
+            sb.append("|");
+        }
         String socialString = sb.toString();
         if (socialString.endsWith("|")){
             socialString = socialString.substring(0, socialString.length() - 1);
@@ -283,6 +288,9 @@ public class SocialLoginListView extends LinearLayout {
             case Const.TYPE_WEIBO:
                 button = new WeiboLoginButton(getContext());
                 break;
+            case Const.TYPE_BAIDU:
+                button = new BaiduLoginButton(getContext());
+                break;
         }
         return button;
     }
@@ -348,6 +356,15 @@ public class SocialLoginListView extends LinearLayout {
                 break;
             case Const.TYPE_WECHAT_MINI_PROGRAM:
                 title = getContext().getString(R.string.authing_social_wechat_miniprogram);
+                break;
+            case Const.TYPE_QQ:
+                title = getContext().getString(R.string.authing_social_qq);
+                break;
+            case Const.TYPE_WEIBO:
+                title = getContext().getString(R.string.authing_social_weibo);
+                break;
+            case Const.TYPE_BAIDU:
+                title = getContext().getString(R.string.authing_social_baidu);
                 break;
             case Const.TYPE_FINGER:
                 title = getContext().getString(R.string.authing_finger);

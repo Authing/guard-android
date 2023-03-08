@@ -76,6 +76,8 @@ public class Guardian {
             url = Authing.getScheme() + "://" + Util.getHost(config) + endpoint;
         }
 
+        Log.e("zjh", "url = " + url);
+        Log.e("zjh", "body = " + body);
         Request.Builder builder = new Request.Builder();
         builder.url(url);
         if (config != null) {
@@ -113,6 +115,7 @@ public class Guardian {
 
                 Response resp = new Response();
                 String s = new String(Objects.requireNonNull(response.body()).bytes(), StandardCharsets.UTF_8);
+                Log.e("zjh", "result = " + s);
                 JSONObject json;
                 try {
                     json = new JSONObject(s);
