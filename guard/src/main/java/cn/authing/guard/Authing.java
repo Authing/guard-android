@@ -208,7 +208,7 @@ public class Authing {
             host = "console." + sHost;
         }
         String url = scheme + "://" + host + "/api/v2/applications/" + sAppId + "/public-config";
-        Guardian.request(null, url, "get", null, null, (response) -> {
+        Guardian.request(null, url, "get", null, null, false, (response) -> {
             try {
                 if (response.getCode() == 200) {
                     JSONObject data = response.getData();

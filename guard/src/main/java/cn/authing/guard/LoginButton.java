@@ -168,6 +168,9 @@ public class LoginButton extends PrimaryButton implements ILoginRequestCallBack 
                 post(() -> ToastUtil.showCenterWarning(getContext(), getContext().getString(R.string.authing_account_locked)));
             } else if (code == Const.EC_CAPTCHA) {
                 FlowHelper.handleCaptcha(this);
+                if (!"请输入图形验证码".equals(message)){
+                    post(() -> ToastUtil.showCenter(getContext(), message));
+                }
             } else {
                 post(() -> ToastUtil.showCenter(getContext(), message));
             }
@@ -210,8 +213,6 @@ public class LoginButton extends PrimaryButton implements ILoginRequestCallBack 
             FlowHelper.handleMFA(this, userInfo.getMfaData());
         } else if (code == Const.EC_FIRST_TIME_LOGIN) {
             FlowHelper.handleFirstTimeLogin(this, userInfo);
-        } else if (code == Const.EC_CAPTCHA) {
-            FlowHelper.handleCaptcha(this);
         } else {
             post(() -> ToastUtil.showCenter(getContext(), message));
             refreshFeedBackView(true);

@@ -271,11 +271,6 @@ public class FlowHelper {
     }
 
     public static void handleCaptcha(View currentView) {
-//        final View editText = Util.findViewByClass(currentView, PasswordEditText.class);
-//        if (editText != null) {
-//            currentView.post(()-> ((PasswordEditText)editText).setErrorEnabled(true));
-//        }
-
         View v = Util.findViewByClass(currentView, CaptchaContainer.class);
         if (v != null) {
             currentView.post(() -> v.setVisibility(View.VISIBLE));

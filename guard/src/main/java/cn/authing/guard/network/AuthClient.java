@@ -339,12 +339,20 @@ public class AuthClient {
             }
             if (!Util.isNull(captchaCode)){
                 body.put("captchaCode", captchaCode);
+                Guardian.post("/api/v2/login/account", body, true, (data) -> {
+                    ALog.d(TAG, "loginByAccount cost:" + (System.currentTimeMillis() - now) + "ms");
+                    if (data.getCode() == 200 || data.getCode() == EC_MFA_REQUIRED) {
+                        Safe.saveAccount(account);
+                    }
+
+                    startOidcInteraction(authData, data, callback);
+                });
+                return;
             }
             Guardian.post("/api/v2/login/account", body, (data) -> {
                 ALog.d(TAG, "loginByAccount cost:" + (System.currentTimeMillis() - now) + "ms");
                 if (data.getCode() == 200 || data.getCode() == EC_MFA_REQUIRED) {
                     Safe.saveAccount(account);
-//                        Safe.savePassword(password);
                 }
 
                 startOidcInteraction(authData, data, callback);
@@ -1724,6 +1732,7 @@ public class AuthClient {
                 String s = new String(Objects.requireNonNull(response.body()).bytes(), StandardCharsets.UTF_8);
                 SVG svg = SVGParser.getSVGFromString(s);
                 if (response.code() == 200) {
+                    CookieManager.addCookies(response);
                     callback.call(response.code(), s, svg.createPictureDrawable());
                 } else {
                     ALog.w("Guard", "getCaptcha failed. " + response.code() + " message:" + s);

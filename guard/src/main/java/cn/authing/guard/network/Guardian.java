@@ -34,41 +34,45 @@ public class Guardian {
     }
 
     public static void get(String endpoint, @NotNull GuardianCallback callback) {
-        request(endpoint, "GET", null, getToken(), callback);
+        request(endpoint, "GET", null, getToken(), false, callback);
     }
 
     public static void post(String endpoint, JSONObject body, @NotNull GuardianCallback callback) {
-        request(endpoint, "POST", body.toString(), getToken(), callback);
+        request(endpoint, "POST", body.toString(), getToken(), false, callback);
+    }
+
+    public static void post(String endpoint, JSONObject body, boolean needCookie, @NotNull GuardianCallback callback) {
+        request(endpoint, "POST", body.toString(), getToken(), needCookie, callback);
     }
 
     public static void postMfa(String endpoint, JSONObject body, @NotNull GuardianCallback callback) {
-        request(endpoint, "POST", body.toString(), MFA_TOKEN, callback);
+        request(endpoint, "POST", body.toString(), MFA_TOKEN, false, callback);
     }
 
     public static void delete(String endpoint, @NotNull GuardianCallback callback) {
-        request(endpoint, "DELETE", null, getToken(), callback);
+        request(endpoint, "DELETE", null, getToken(), false, callback);
     }
 
-    private static void request(String url, String method, String body, String token, @NotNull GuardianCallback callback) {
+    private static void request(String url, String method, String body, String token, boolean needCookie, @NotNull GuardianCallback callback) {
         Authing.getPublicConfig(config -> {
-            if (config == null){
+            if (config == null) {
                 callback.call(new Response(Const.ERROR_CODE_10002, "Config not found", null));
                 return;
             }
 
-            request(config, url, method, body, token, callback);
+            request(config, url, method, body, token, needCookie, callback);
         });
     }
 
-    public static void request(Config config, String url, String method, String body, String token, @NotNull GuardianCallback callback) {
+    public static void request(Config config, String url, String method, String body, String token, boolean needCookie, @NotNull GuardianCallback callback) {
         new Thread() {
             public void run() {
-                _request(config, url, method, body, token, callback);
+                _request(config, url, method, body, token, needCookie, callback);
             }
         }.start();
     }
 
-    private static void _request(Config config, String endpoint, String method, String body, String token, @NotNull GuardianCallback callback) {
+    private static void _request(Config config, String endpoint, String method, String body, String token, boolean needCookie, @NotNull GuardianCallback callback) {
         String url;
         if (config == null || endpoint.contains(Authing.getScheme())) {
             url = endpoint;
@@ -76,15 +80,13 @@ public class Guardian {
             url = Authing.getScheme() + "://" + Util.getHost(config) + endpoint;
         }
 
-        Log.e("zjh", "url = " + url);
-        Log.e("zjh", "body = " + body);
         Request.Builder builder = new Request.Builder();
         builder.url(url);
         if (config != null) {
-            if (config.getUserPoolId() != null){
+            if (config.getUserPoolId() != null) {
                 builder.addHeader("x-authing-userpool-id", config.getUserPoolId());
             }
-            if (!Util.isNull(config.getUserAgent())){
+            if (!Util.isNull(config.getUserAgent())) {
                 builder.removeHeader("User-Agent");
                 builder.addHeader("User-Agent", config.getUserAgent());
             }
@@ -92,7 +94,7 @@ public class Guardian {
         builder.addHeader("x-authing-app-id", Authing.getAppId());
         builder.addHeader("x-authing-request-from", Const.SDK_TAG + SDK_VERSION);
         builder.addHeader("x-authing-lang", Util.getLangHeader());
-        if(!Util.isNull(token)){
+        if (!Util.isNull(token)) {
             builder.addHeader("Authorization", "Bearer " + token);
         }
 
@@ -102,6 +104,9 @@ public class Guardian {
             builder.method(method.toUpperCase(), requestBody);
         } else {
             builder.method(method.toUpperCase(), null);
+        }
+        if (needCookie) {
+            builder.addHeader("Cookie", CookieManager.getCookie());
         }
 
         Request request = builder.build();
@@ -115,7 +120,6 @@ public class Guardian {
 
                 Response resp = new Response();
                 String s = new String(Objects.requireNonNull(response.body()).bytes(), StandardCharsets.UTF_8);
-                Log.e("zjh", "result = " + s);
                 JSONObject json;
                 try {
                     json = new JSONObject(s);
@@ -157,7 +161,7 @@ public class Guardian {
                     try {
                         JSONObject data = json.getJSONObject("data");
                         resp.setData(data);
-                    } catch(JSONException ignored){
+                    } catch (JSONException ignored) {
                     }
 
                     try {
@@ -165,7 +169,7 @@ public class Guardian {
                         JSONObject data = new JSONObject();
                         data.put("data", array);
                         resp.setData(data);
-                    } catch(JSONException ignored){
+                    } catch (JSONException ignored) {
                     }
 
                     try {
@@ -173,7 +177,7 @@ public class Guardian {
                         JSONObject booleanResult = new JSONObject();
                         booleanResult.put("result", data);
                         resp.setData(booleanResult);
-                    } catch(JSONException ignored){
+                    } catch (JSONException ignored) {
                     }
                 } else {
                     if (!json.has("code") && !json.has("statusCode")) {
@@ -200,7 +204,7 @@ public class Guardian {
         }
     }
 
-    private static String getToken(){
+    private static String getToken() {
         UserInfo currentUser = Authing.getCurrentUser();
         String token = "";
         if (currentUser != null) {
