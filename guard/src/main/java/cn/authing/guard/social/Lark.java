@@ -53,7 +53,6 @@ public class Lark extends SocialAuthenticator {
                         return;
                     }
                     ALog.i(TAG, "Auth success");
-                    callback.call(SocialLoginButton.AUTH_SUCCESS, "Auth success", null);
                     login(context, callBackData.code, callback);
                 }
 

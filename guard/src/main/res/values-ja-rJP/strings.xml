@@ -139,6 +139,7 @@
     <string name="authing_login_by_qq">QQでログインする</string>
     <string name="authing_login_by_weibo">ウェイボーを使ってログインする</string>
     <string name="authing_login_by_baidu">バイドゥを使ってログインする</string>
+    <string name="authing_login_by_linkedin">Login by Linkedin</string>
     <string name="authing_login_by_finger">指紋認証を使ってログインします</string>
     <string name="authing_login_by_face">顔認証を使ってログインします</string>
     <string name="authing_social_alipay">アリペイ</string>
@@ -151,6 +152,7 @@
     <string name="authing_social_qq">QQ</string>
     <string name="authing_social_weibo">Weibo</string>
     <string name="authing_social_baidu">Baidu</string>
+    <string name="authing_social_linkedin">Linkedin</string>
     <string name="authing_finger">指紋認識です</string>
     <string name="authing_face">顔認識です</string>
     <string name="authing_get_code_again">コードの再送信</string>

@@ -1,0 +1,18 @@
+1<?xml version="1.0" encoding="utf-8"?>
+2<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+3    package="com.shantanudeshmukh.linkedinsdk" >
+4
+5    <uses-sdk
+6        android:minSdkVersion="15"
+6-->/Users/zhongjiahui/AndroidStudioProjects/guard-android-mobile/guard-android/linkedinsdk/src/main/AndroidManifest.xml
+7        android:targetSdkVersion="32" />
+7-->/Users/zhongjiahui/AndroidStudioProjects/guard-android-mobile/guard-android/linkedinsdk/src/main/AndroidManifest.xml
+8
+9    <application>
+9-->/Users/zhongjiahui/AndroidStudioProjects/guard-android-mobile/guard-android/linkedinsdk/src/main/AndroidManifest.xml:5:5-7:19
+10        <activity android:name="com.shantanudeshmukh.linkedinsdk.LinkedInAuthenticationActivity" />
+10-->/Users/zhongjiahui/AndroidStudioProjects/guard-android-mobile/guard-android/linkedinsdk/src/main/AndroidManifest.xml:6:9-68
+10-->/Users/zhongjiahui/AndroidStudioProjects/guard-android-mobile/guard-android/linkedinsdk/src/main/AndroidManifest.xml:6:19-65
+11    </application>
+12
+13</manifest>

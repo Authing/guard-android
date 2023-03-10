@@ -1,0 +1,7 @@
+R_DEF: Internal format may change without notice
+local
+id web_view_linkedin_login
+layout sh_linkedin_activity_linkedin_authentication
+layout sh_linkedin_layout_progress_dialog
+string sh_linkedin_app_name
+string sh_linkedin_progress_dialog_message

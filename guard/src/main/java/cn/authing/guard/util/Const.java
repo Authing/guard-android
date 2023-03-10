@@ -37,6 +37,7 @@ public class Const {
     public final static int ERROR_CODE_10012 = 10012; // Weibo auth failed
     public final static int ERROR_CODE_10013 = 10013; // QQ auth failed
     public final static int ERROR_CODE_10014 = 10014; // 百度 auth failed
+    public final static int ERROR_CODE_10015 = 10015; // Linkedin auth failed
 
     // mfa
     public static final String MFA_POLICY_SMS = "SMS";
@@ -58,6 +59,7 @@ public class Const {
     public static final String EC_TYPE_QQ = "qq:mobile";
     public static final String EC_TYPE_WEIBO = "weibo:mobile";
     public static final String EC_TYPE_BAIDU = "baidu:mobile";
+    public static final String EC_TYPE_LINKEDIN = "linkedin:mobile";
 
     public static final String TYPE_WECHAT = "wechat";
     public static final String TYPE_WECHAT_MINI_PROGRAM = "wechat-miniprogram";
@@ -71,6 +73,7 @@ public class Const {
     public static final String TYPE_WEIBO = "weibo";
     public static final String TYPE_BAIDU = "baidu";
     public static final String TYPE_FINGER = "fingerprint";
+    public static final String TYPE_LINKEDIN = "linkedin";
     public static final String TYPE_FACE = "face";
 
     // network

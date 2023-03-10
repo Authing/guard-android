@@ -23,7 +23,6 @@ import cn.authing.guard.data.UserInfo;
 import cn.authing.guard.network.AuthClient;
 import cn.authing.guard.network.OIDCClient;
 import cn.authing.guard.social.SocialAuthenticator;
-import cn.authing.guard.social.SocialLoginButton;
 import cn.authing.guard.util.ALog;
 import cn.authing.guard.util.Const;
 
@@ -66,7 +65,6 @@ public class Weibo extends SocialAuthenticator {
                 @Override
                 public void onComplete(Oauth2AccessToken token) {
                     ALog.i(TAG, "Auth onSuccess");
-                    callback.call(SocialLoginButton.AUTH_SUCCESS, "Auth success", null);
                     login(context, token.getAccessToken(), callback);
                 }
 

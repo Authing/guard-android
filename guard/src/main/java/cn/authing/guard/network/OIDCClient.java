@@ -196,6 +196,10 @@ public class OIDCClient {
         AuthClient.loginByBaidu(authRequest, access_token, callback);
     }
 
+    public void loginByLinkedin(String authCode, @NotNull AuthCallback<UserInfo> callback) {
+        AuthClient.loginByLinkedin(authRequest, authCode, callback);
+    }
+
     private static void error(Exception e, @NotNull AuthCallback<?> callback){
         e.printStackTrace();
         callback.call(Const.ERROR_CODE_10004, "JSON parse failed", null);

@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="sh_linkedin_app_name">LinkedInSDK</string>
+    <string name="sh_linkedin_progress_dialog_message">Please wait! This may take a moment.</string>
+</resources>

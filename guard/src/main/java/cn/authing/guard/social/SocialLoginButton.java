@@ -124,6 +124,11 @@ public abstract class SocialLoginButton extends androidx.appcompat.widget.AppCom
 
         backgroundDrawable = (AnimatedVectorDrawable) context.getDrawable(R.drawable.ic_authing_animated_loading_blue);
         setOnClickListener((v -> {
+            //特殊代码，只针对 Authing 令牌
+//            if (!"62cfd7a88f9dafbfe4a7c9aa".equals(Authing.getAppId()) && !(this instanceof FingerLoginButton)){
+//                ToastUtil.showCenter(context, context.getString(R.string.authing_no_social_tips));
+//                return;
+//            }
             if (requiresAgreement()) {
                 return;
             }

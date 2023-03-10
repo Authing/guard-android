@@ -21,7 +21,6 @@ import cn.authing.guard.data.UserInfo;
 import cn.authing.guard.network.AuthClient;
 import cn.authing.guard.network.OIDCClient;
 import cn.authing.guard.social.SocialAuthenticator;
-import cn.authing.guard.social.SocialLoginButton;
 import cn.authing.guard.util.ALog;
 import cn.authing.guard.util.Const;
 
@@ -105,7 +104,6 @@ public class QQ extends SocialAuthenticator {
                 mTencent.setOpenId(openID);
                 mTencent.setAccessToken(accessToken, expires);
                 mInstance.login(context, accessToken, callback);
-                callback.call(SocialLoginButton.AUTH_SUCCESS, "Auth success", null);
             } catch (JSONException e) {
                 e.printStackTrace();
             }

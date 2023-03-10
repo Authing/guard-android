@@ -82,7 +82,6 @@ public class Google extends SocialAuthenticator{
 
         try {
             GoogleSignInAccount account = task.getResult(ApiException.class);
-            callback.call(SocialLoginButton.AUTH_SUCCESS, "Auth success", null);
             login(context, account.getServerAuthCode(), callback);
         } catch (ApiException e) {
             ALog.e("Google", e.toString());

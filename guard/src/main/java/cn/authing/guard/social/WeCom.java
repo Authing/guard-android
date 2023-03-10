@@ -74,7 +74,6 @@ public class WeCom extends SocialAuthenticator {
                         fireCallback(callback, context.getString(R.string.authing_auth_failed));
                     } else if (rsp.errCode == WWAuthMessage.ERR_OK) {
                         ALog.i(TAG, "Auth success");
-                        callback.call(SocialLoginButton.AUTH_SUCCESS, "Auth success", null);
                         login(context, rsp.code, callback);
                     } else {
                         ALog.e(TAG, "Auth failed");
