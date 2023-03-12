@@ -54,5 +54,7 @@ dependencies {
     compileOnly 'com.tencent.tauth:qqopensdk:3.52.0'
     compileOnly 'io.github.sinaweibosdk:core:12.5.0@aar'
     compileOnly files('libs/baidu-android-openapi-sdk.jar')
+    compileOnly 'com.alibaba.android:ddopenauth:1.5.0.8'
+    compileOnly 'com.alibaba.android:ddsharesdk:1.1.0'
 
 }

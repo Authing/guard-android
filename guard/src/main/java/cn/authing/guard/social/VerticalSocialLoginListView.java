@@ -22,6 +22,7 @@ import cn.authing.guard.data.SocialConfig;
 import cn.authing.guard.data.UserInfo;
 import cn.authing.guard.internal.ContinueWithTextView;
 import cn.authing.guard.social.view.BaiduLoginButton;
+import cn.authing.guard.social.view.DingTalkLoginButton;
 import cn.authing.guard.social.view.LinkedinLoginButton;
 import cn.authing.guard.social.view.QQLoginButton;
 import cn.authing.guard.social.view.WeiboLoginButton;
@@ -175,6 +176,10 @@ public class VerticalSocialLoginListView extends LinearLayout {
             sb.append(Const.TYPE_LINKEDIN);
             sb.append("|");
         }
+        if (types.contains(Const.EC_TYPE_DING_TALK)){
+            sb.append(Const.TYPE_DING_TALK);
+            sb.append("|");
+        }
         String socialString = sb.toString();
         if (socialString.endsWith("|")){
             socialString = socialString.substring(0, socialString.length() - 1);
@@ -237,6 +242,9 @@ public class VerticalSocialLoginListView extends LinearLayout {
                 break;
             case Const.TYPE_LINKEDIN:
                 button = new LinkedinLoginButton(getContext());
+                break;
+            case Const.TYPE_DING_TALK:
+                button = new DingTalkLoginButton(getContext());
                 break;
         }
         if (button != null) {
@@ -306,6 +314,9 @@ public class VerticalSocialLoginListView extends LinearLayout {
                 break;
             case Const.TYPE_LINKEDIN:
                 str = getContext().getString(R.string.authing_login_by_linkedin);
+                break;
+            case Const.TYPE_DING_TALK:
+                str = getContext().getString(R.string.authing_login_by_ding_talk);
                 break;
         }
         return str;

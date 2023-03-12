@@ -192,12 +192,16 @@ public class OIDCClient {
         AuthClient.loginByWeibo(authRequest, accessToken, callback);
     }
 
-    public void loginByBaidu(String access_token, @NotNull AuthCallback<UserInfo> callback) {
-        AuthClient.loginByBaidu(authRequest, access_token, callback);
+    public void loginByBaidu(String accessToken, @NotNull AuthCallback<UserInfo> callback) {
+        AuthClient.loginByBaidu(authRequest, accessToken, callback);
     }
 
     public void loginByLinkedin(String authCode, @NotNull AuthCallback<UserInfo> callback) {
         AuthClient.loginByLinkedin(authRequest, authCode, callback);
+    }
+
+    public void loginByDingTalk(String authCode, @NotNull AuthCallback<UserInfo> callback) {
+        AuthClient.loginByDingTalk(authRequest, authCode, callback);
     }
 
     private static void error(Exception e, @NotNull AuthCallback<?> callback){

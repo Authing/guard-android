@@ -33,11 +33,12 @@ public class Const {
     public final static int ERROR_CODE_10008 = 10008; // 在 60 秒内已发送短信验证码
     public final static int ERROR_CODE_10009 = 10009; // Upload avatar failed
     public final static int ERROR_CODE_10010 = 10010; // FaceBook auth failed
-    public final static int ERROR_CODE_10011 = 10011; //webauthn error
+    public final static int ERROR_CODE_10011 = 10011; // webauthn error
     public final static int ERROR_CODE_10012 = 10012; // Weibo auth failed
     public final static int ERROR_CODE_10013 = 10013; // QQ auth failed
     public final static int ERROR_CODE_10014 = 10014; // 百度 auth failed
     public final static int ERROR_CODE_10015 = 10015; // Linkedin auth failed
+    public final static int ERROR_CODE_10016 = 10016; // 钉钉 auth failed
 
     // mfa
     public static final String MFA_POLICY_SMS = "SMS";
@@ -60,6 +61,7 @@ public class Const {
     public static final String EC_TYPE_WEIBO = "weibo:mobile";
     public static final String EC_TYPE_BAIDU = "baidu:mobile";
     public static final String EC_TYPE_LINKEDIN = "linkedin:mobile";
+    public static final String EC_TYPE_DING_TALK = "dingtalk:mobile";
 
     public static final String TYPE_WECHAT = "wechat";
     public static final String TYPE_WECHAT_MINI_PROGRAM = "wechat-miniprogram";
@@ -74,6 +76,7 @@ public class Const {
     public static final String TYPE_BAIDU = "baidu";
     public static final String TYPE_FINGER = "fingerprint";
     public static final String TYPE_LINKEDIN = "linkedin";
+    public static final String TYPE_DING_TALK = "dingtalk";
     public static final String TYPE_FACE = "face";
 
     // network

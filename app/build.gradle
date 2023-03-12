@@ -88,6 +88,9 @@ dependencies {
     implementation 'io.github.sinaweibosdk:core:12.5.0@aar'
     // 百度
     implementation files('libs/baidu-android-openapi-sdk.jar')
+    // 钉钉
+    implementation 'com.alibaba.android:ddopenauth:1.5.0.8'
+    implementation 'com.alibaba.android:ddsharesdk:1.1.0'
 
     implementation 'com.getui:gtsdk:3.2.13.0'  //个推SDK
     implementation 'com.getui:gtc:3.1.12.0'  //个推核心组件

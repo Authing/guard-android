@@ -140,6 +140,7 @@
     <string name="authing_login_by_weibo">Login by Weibo</string>
     <string name="authing_login_by_baidu">Login by Baidu</string>
     <string name="authing_login_by_linkedin">Login by Linkedin</string>
+    <string name="authing_login_by_ding_talk">Login by DingTalk</string>
     <string name="authing_login_by_finger">Login by Finger</string>
     <string name="authing_login_by_face">Login by Face</string>
     <string name="authing_social_alipay">Alipay</string>
@@ -153,6 +154,7 @@
     <string name="authing_social_weibo">Weibo</string>
     <string name="authing_social_baidu">Baidu</string>
     <string name="authing_social_linkedin">Linkedin</string>
+    <string name="authing_social_ding_talk">DingTalk</string>
     <string name="authing_finger">Finger</string>
     <string name="authing_face">Face</string>
     <string name="authing_get_code_again">Resend Code</string>
