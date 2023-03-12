@@ -8,8 +8,6 @@ import android.util.AttributeSet;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.netease.nis.quicklogin.QuickLogin;
-
 import java.util.List;
 
 import cn.authing.guard.Authing;
@@ -67,7 +65,7 @@ public class MFABaseButton extends LoadingButton {
                     intent.putExtra("user", userInfo);
                     activity.setResult(AuthActivity.OK, intent);
                     activity.finish();
-                    QuickLogin.getInstance().quitActivity();
+                    Util.quitActivity();
                 }
             }
         });

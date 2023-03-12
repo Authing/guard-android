@@ -617,7 +617,7 @@ public class Util {
         intent.putExtra("user", userInfo);
         activity.setResult(AuthActivity.OK, intent);
         activity.finish();
-        QuickLogin.getInstance().quitActivity();
+        quitActivity();
     }
 
 
@@ -702,6 +702,14 @@ public class Util {
             }
         });
         webAuthNRegister.startRegister();
+    }
+
+    public static void quitActivity(){
+        try {
+            QuickLogin.getInstance().quitActivity();
+        } catch (NoClassDefFoundError e){
+            Log.e("Util", "quitActivity : e = " + e);
+        }
     }
 
 }

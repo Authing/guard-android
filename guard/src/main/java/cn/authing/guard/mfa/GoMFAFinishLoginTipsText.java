@@ -13,8 +13,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatTextView;
 
-import com.netease.nis.quicklogin.QuickLogin;
-
 import java.util.List;
 
 import cn.authing.guard.Authing;
@@ -94,7 +92,7 @@ public class GoMFAFinishLoginTipsText extends AppCompatTextView {
                             intent.putExtra("user", Authing.getCurrentUser());
                             activity.setResult(AuthActivity.OK, intent);
                             activity.finish();
-                            QuickLogin.getInstance().quitActivity();
+                            Util.quitActivity();
                         }
                     });
                 }

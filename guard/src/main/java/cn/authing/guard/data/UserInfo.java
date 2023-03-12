@@ -931,7 +931,7 @@ public class UserInfo implements Serializable {
                 String provider = obj.getString("provider");
                 identities.setProvider(provider);
             }
-            if (obj.has("userInfoInIdp")) {
+            if (obj.has("userInfoInIdp") && !obj.isNull("userInfoInIdp")) {
                 JSONObject fields = obj.getJSONObject("userInfoInIdp");
                 Identities.UserInfoInIdp userInfoInIdp = new Identities.UserInfoInIdp();
                 if (fields.has("nickname")) {

@@ -13,8 +13,6 @@ import android.view.WindowManager;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.netease.nis.quicklogin.QuickLogin;
-
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -153,7 +151,7 @@ public class UserInfoCompleteButton extends LoadingButton {
             intent.putExtra("user", userInfo);
             activity.setResult(AuthActivity.OK, intent);
             activity.finish();
-            QuickLogin.getInstance().quitActivity();
+            Util.quitActivity();
         }
     }
 

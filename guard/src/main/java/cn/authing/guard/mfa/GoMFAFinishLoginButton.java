@@ -10,8 +10,6 @@ import android.view.View;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.netease.nis.quicklogin.QuickLogin;
-
 import java.util.List;
 
 import cn.authing.guard.Authing;
@@ -79,7 +77,7 @@ public class GoMFAFinishLoginButton extends androidx.appcompat.widget.AppCompatB
                         intent.putExtra("user", Authing.getCurrentUser());
                         activity.setResult(AuthActivity.OK, intent);
                         activity.finish();
-                        QuickLogin.getInstance().quitActivity();
+                        Util.quitActivity();
                     }
                 }
             });

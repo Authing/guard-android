@@ -10,8 +10,6 @@ import android.view.View;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.netease.nis.quicklogin.QuickLogin;
-
 import java.util.List;
 
 import cn.authing.guard.activity.AuthActivity;
@@ -27,7 +25,6 @@ import cn.authing.guard.handler.login.ILoginRequestCallBack;
 import cn.authing.guard.handler.login.LoginRequestManager;
 import cn.authing.guard.internal.PrimaryButton;
 import cn.authing.guard.util.Const;
-import cn.authing.guard.util.ImageUtil;
 import cn.authing.guard.util.ToastUtil;
 import cn.authing.guard.util.Util;
 
@@ -199,7 +196,7 @@ public class LoginButton extends PrimaryButton implements ILoginRequestCallBack 
                             intent.putExtra("user", userInfo);
                             activity.setResult(AuthActivity.OK, intent);
                             activity.finish();
-                            QuickLogin.getInstance().quitActivity();
+                            Util.quitActivity();
                         });
                     }
                 }

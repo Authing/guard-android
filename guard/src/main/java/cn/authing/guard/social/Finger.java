@@ -6,8 +6,6 @@ import android.text.TextUtils;
 
 import androidx.annotation.NonNull;
 
-import com.netease.nis.quicklogin.QuickLogin;
-
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -112,7 +110,7 @@ public class Finger extends SocialAuthenticator {
                 intent.putExtra("user", data);
                 activity.setResult(AuthActivity.OK, intent);
                 activity.finish();
-                QuickLogin.getInstance().quitActivity();
+                Util.quitActivity();
             });
         } else {
             Safe.logoutUser(Authing.getCurrentUser());

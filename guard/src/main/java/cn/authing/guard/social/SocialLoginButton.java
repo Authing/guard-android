@@ -9,8 +9,6 @@ import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.View;
 
-import com.netease.nis.quicklogin.QuickLogin;
-
 import java.util.List;
 
 import cn.authing.guard.AuthCallback;
@@ -74,7 +72,7 @@ public abstract class SocialLoginButton extends androidx.appcompat.widget.AppCom
                                 intent.putExtra("user", userInfo);
                                 activity.setResult(AuthActivity.OK, intent);
                                 activity.finish();
-                                QuickLogin.getInstance().quitActivity();
+                                Util.quitActivity();
                             });
                         }
                     }
