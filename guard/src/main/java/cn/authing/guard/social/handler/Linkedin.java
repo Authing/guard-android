@@ -7,8 +7,6 @@ import android.content.Intent;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.shantanudeshmukh.linkedinsdk.LinkedInBuilder;
-import com.shantanudeshmukh.linkedinsdk.helpers.LinkedInUser;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -18,6 +16,8 @@ import cn.authing.guard.data.UserInfo;
 import cn.authing.guard.network.AuthClient;
 import cn.authing.guard.network.OIDCClient;
 import cn.authing.guard.social.SocialAuthenticator;
+import cn.authing.guard.social.linkedin.LinkedInBuilder;
+import cn.authing.guard.social.linkedin.helpers.LinkedInUser;
 import cn.authing.guard.util.ALog;
 import cn.authing.guard.util.Const;
 

@@ -106,6 +106,7 @@
             android:exported="false"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
         <activity android:name=".activity.AppScanLoginActivity" />
+        <activity android:name=".social.linkedin.LinkedInAuthenticationActivity" />
 
         <activity
             android:name="com.tencent.connect.common.AssistActivity"
