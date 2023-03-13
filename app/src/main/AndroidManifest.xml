@@ -173,6 +173,8 @@
                 <data android:scheme="tencent102043018" />
             </intent-filter>
         </activity>
+        <activity android:name=".guard.ddauth.DDAuthActivity"
+            android:exported="true"/>
     </application>
 
 </manifest>

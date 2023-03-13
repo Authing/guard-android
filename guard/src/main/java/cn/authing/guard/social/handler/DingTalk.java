@@ -25,7 +25,7 @@ import cn.authing.guard.util.Const;
 
 public class DingTalk extends SocialAuthenticator {
 
-    private static final String TAG = "DingDing";
+    private static final String TAG = "DingTalk";
     public static String appKey;
     public static String redirectUrl;
     public static String scope = "openid";

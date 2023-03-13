@@ -1,4 +1,4 @@
-package cn.authing.guard.ddauth;
+package cn.authing.guard.social.ddauth;
 
 import android.os.Bundle;
 
@@ -7,7 +7,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import cn.authing.guard.social.handler.DingTalk;
 
-public class DDAuthActivity extends AppCompatActivity {
+public class DDCallBackActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {

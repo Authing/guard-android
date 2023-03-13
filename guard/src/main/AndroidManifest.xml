@@ -112,8 +112,6 @@
             android:configChanges="orientation|keyboardHidden"
             android:screenOrientation="behind"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />
-        <activity android:name=".ddauth.DDAuthActivity"
-            android:exported="true"/>
 
         <service android:name=".push.GuardPushServer"
             android:exported="false"
