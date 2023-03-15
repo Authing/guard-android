@@ -581,6 +581,10 @@ public class Config {
         return getSocialValue(type, "redirectURI");
     }
 
+    public String getSocialClientKey(String type) {
+        return getSocialValue(type, "clientKey");
+    }
+
     public String getSocialValue(String type, String fieldName) {
         String value = "";
         List<SocialConfig> configs = getSocialConfigs();
@@ -617,6 +621,9 @@ public class Config {
                         break;
                     case "redirectURI":
                         value = c.getRedirectUrl();
+                        break;
+                    case "clientKey":
+                        value = c.getClientKey();
                         break;
                 }
                 break;
@@ -674,6 +681,9 @@ public class Config {
                 }
                 if (fields.has("redirectURI")) {
                     config.setRedirectUrl(fields.getString("redirectURI"));
+                }
+                if (fields.has("clientKey")) {
+                    config.setClientKey(fields.getString("clientKey"));
                 }
             }
             list.add(config);

@@ -1,4 +1,4 @@
-package cn.authing.guard.social;
+package cn.authing.guard.social.handler;
 
 import android.app.Activity;
 import android.content.Context;

@@ -1,4 +1,4 @@
-package cn.authing.guard.social;
+package cn.authing.guard.social.view;
 
 import static cn.authing.guard.util.Const.NS_ANDROID;
 
@@ -21,6 +21,8 @@ import cn.authing.guard.data.UserInfo;
 import cn.authing.guard.dialog.PrivacyConfirmDialog;
 import cn.authing.guard.flow.AuthFlow;
 import cn.authing.guard.flow.FlowHelper;
+import cn.authing.guard.social.handler.SocialAuthenticator;
+import cn.authing.guard.util.ALog;
 import cn.authing.guard.util.Const;
 import cn.authing.guard.util.ToastUtil;
 import cn.authing.guard.util.Util;
@@ -104,6 +106,7 @@ public abstract class SocialLoginButton extends androidx.appcompat.widget.AppCom
                         && getContext().getString(R.string.authing_cancelled_by_user).equals(message)) {
                     post(() -> ToastUtil.showCenter(getContext(), message));
                 }
+                ALog.e("SocialLoginButton", "loginDone: errCode = " + code + " errMessage = " + message);
             }
         }
     }
@@ -189,7 +192,7 @@ public abstract class SocialLoginButton extends androidx.appcompat.widget.AppCom
     }
 
     @Override
-    protected void onDetachedFromWindow() {
+    public void onDetachedFromWindow() {
         super.onDetachedFromWindow();
         if (authenticator != null) {
             authenticator.onDetachedFromWindow();

@@ -21,10 +21,20 @@ import cn.authing.guard.R;
 import cn.authing.guard.data.SocialConfig;
 import cn.authing.guard.data.UserInfo;
 import cn.authing.guard.internal.ContinueWithTextView;
+import cn.authing.guard.social.view.AlipayLoginButton;
 import cn.authing.guard.social.view.BaiduLoginButton;
 import cn.authing.guard.social.view.DingTalkLoginButton;
+import cn.authing.guard.social.view.DouYinLoginButton;
+import cn.authing.guard.social.view.FaceBookLoginButton;
+import cn.authing.guard.social.view.FingerLoginButton;
+import cn.authing.guard.social.view.GoogleLoginButton;
+import cn.authing.guard.social.view.LarkLoginButton;
 import cn.authing.guard.social.view.LinkedinLoginButton;
 import cn.authing.guard.social.view.QQLoginButton;
+import cn.authing.guard.social.view.SocialLoginButton;
+import cn.authing.guard.social.view.WeComLoginButton;
+import cn.authing.guard.social.view.WechatLoginButton;
+import cn.authing.guard.social.view.WechatMiniProgramLoginButton;
 import cn.authing.guard.social.view.WeiboLoginButton;
 import cn.authing.guard.util.Const;
 import cn.authing.guard.util.Util;
@@ -180,6 +190,10 @@ public class VerticalSocialLoginListView extends LinearLayout {
             sb.append(Const.TYPE_DING_TALK);
             sb.append("|");
         }
+        if (types.contains(Const.EC_TYPE_DOU_YIN)){
+            sb.append(Const.TYPE_DOU_YIN);
+            sb.append("|");
+        }
         String socialString = sb.toString();
         if (socialString.endsWith("|")){
             socialString = socialString.substring(0, socialString.length() - 1);
@@ -245,6 +259,9 @@ public class VerticalSocialLoginListView extends LinearLayout {
                 break;
             case Const.TYPE_DING_TALK:
                 button = new DingTalkLoginButton(getContext());
+                break;
+            case Const.TYPE_DOU_YIN:
+                button = new DouYinLoginButton(getContext());
                 break;
         }
         if (button != null) {
@@ -317,6 +334,9 @@ public class VerticalSocialLoginListView extends LinearLayout {
                 break;
             case Const.TYPE_DING_TALK:
                 str = getContext().getString(R.string.authing_login_by_ding_talk);
+                break;
+            case Const.TYPE_DOU_YIN:
+                str = getContext().getString(R.string.authing_login_by_dou_yin);
                 break;
         }
         return str;

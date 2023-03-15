@@ -20,15 +20,14 @@ import cn.authing.guard.Authing;
 import cn.authing.guard.data.UserInfo;
 import cn.authing.guard.network.AuthClient;
 import cn.authing.guard.network.OIDCClient;
-import cn.authing.guard.social.SocialAuthenticator;
 import cn.authing.guard.util.ALog;
 import cn.authing.guard.util.Const;
 
 public class QQ extends SocialAuthenticator {
 
     private static final String TAG = "QQ";
-    public static String appId;
-    public static String scope = "get_user_info,list_photo,add_album,list_album,upload_pic,get_vip_rich_info,get_vip_info";
+    private String appId;
+    private String scope = "get_user_info,list_photo,add_album,list_album,upload_pic,get_vip_rich_info,get_vip_info";
     private Tencent mTencent;
     private BaseUiListener baseUiListener;
 
@@ -131,4 +130,19 @@ public class QQ extends SocialAuthenticator {
 
     }
 
+    public String getAppId() {
+        return appId;
+    }
+
+    public void setAppId(String appId) {
+        this.appId = appId;
+    }
+
+    public String getScope() {
+        return scope;
+    }
+
+    public void setScope(String scope) {
+        this.scope = scope;
+    }
 }

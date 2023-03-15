@@ -1,4 +1,4 @@
-package cn.authing.guard.social;
+package cn.authing.guard.social.handler;
 
 import android.content.Context;
 
@@ -13,14 +13,14 @@ import org.jetbrains.annotations.NotNull;
 import cn.authing.guard.AuthCallback;
 import cn.authing.guard.Authing;
 import cn.authing.guard.data.UserInfo;
-import cn.authing.guard.social.wechat.WXCallbackActivity;
+import cn.authing.guard.social.callback.wechat.WXCallbackActivity;
 import cn.authing.guard.util.Const;
 
 public class WechatMiniProgram extends SocialAuthenticator {
 
     public static IWXAPI api;
-    public static String mobileAppId;
-    public static String miniProgramOriginalID;
+    private String mobileAppId;
+    private String miniProgramOriginalID;
     private int miniProgramType = WXLaunchMiniProgram.Req.MINIPTOGRAM_TYPE_RELEASE;
 
     @Override
@@ -64,5 +64,21 @@ public class WechatMiniProgram extends SocialAuthenticator {
     @Override
     protected void oidcLogin(String authCode, @NonNull AuthCallback<UserInfo> callback) {
 
+    }
+
+    public String getMobileAppId() {
+        return mobileAppId;
+    }
+
+    public void setMobileAppId(String mobileAppId) {
+        this.mobileAppId = mobileAppId;
+    }
+
+    public String getMiniProgramOriginalID() {
+        return miniProgramOriginalID;
+    }
+
+    public void setMiniProgramOriginalID(String miniProgramOriginalID) {
+        this.miniProgramOriginalID = miniProgramOriginalID;
     }
 }

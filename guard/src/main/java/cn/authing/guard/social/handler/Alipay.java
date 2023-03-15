@@ -1,4 +1,4 @@
-package cn.authing.guard.social;
+package cn.authing.guard.social.handler;
 
 import android.app.Activity;
 import android.content.Context;
@@ -26,7 +26,7 @@ import cn.authing.guard.util.Const;
 public class Alipay extends SocialAuthenticator {
 
     private static final String TAG = "Alipay";
-    public static String appId;
+    private String appId;
 
     /**
      * 通用跳转授权业务 Demo
@@ -98,5 +98,13 @@ public class Alipay extends SocialAuthenticator {
     @Override
     protected void oidcLogin(String authCode, @NonNull AuthCallback<UserInfo> callback) {
         new OIDCClient().loginByAlipay(authCode, callback);
+    }
+
+    public String getAppId() {
+        return appId;
+    }
+
+    public void setAppId(String appId) {
+        this.appId = appId;
     }
 }

@@ -22,16 +22,15 @@ import cn.authing.guard.Authing;
 import cn.authing.guard.data.UserInfo;
 import cn.authing.guard.network.AuthClient;
 import cn.authing.guard.network.OIDCClient;
-import cn.authing.guard.social.SocialAuthenticator;
 import cn.authing.guard.util.ALog;
 import cn.authing.guard.util.Const;
 
 public class Weibo extends SocialAuthenticator {
 
     private static final String TAG = "Weibo";
-    public static String appKey; // 应用的APP_KEY
-    public static String redirectUrl; // 应用的回调页
-    public static String scope = "email,direct_messages_read,direct_messages_write,friendships_groups_read," +
+    private String appKey; // 应用的APP_KEY
+    private String redirectUrl; // 应用的回调页
+    private String scope = "email,direct_messages_read,direct_messages_write,friendships_groups_read," +
             "friendships_groups_write,statuses_to_me_read,follow_app_official_microblog,invitation_write";
     private IWBAPI mWBAPI;
 
@@ -98,4 +97,27 @@ public class Weibo extends SocialAuthenticator {
         static final Weibo mInstance = new Weibo();
     }
 
+    public String getAppKey() {
+        return appKey;
+    }
+
+    public void setAppKey(String appKey) {
+        this.appKey = appKey;
+    }
+
+    public String getRedirectUrl() {
+        return redirectUrl;
+    }
+
+    public void setRedirectUrl(String redirectUrl) {
+        this.redirectUrl = redirectUrl;
+    }
+
+    public String getScope() {
+        return scope;
+    }
+
+    public void setScope(String scope) {
+        this.scope = scope;
+    }
 }

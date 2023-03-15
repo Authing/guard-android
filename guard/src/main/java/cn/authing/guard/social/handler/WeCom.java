@@ -1,4 +1,4 @@
-package cn.authing.guard.social;
+package cn.authing.guard.social.handler;
 
 import android.content.Context;
 import android.text.TextUtils;
@@ -25,9 +25,9 @@ public class WeCom extends SocialAuthenticator {
     private static final String TAG = "WeCom";
 
     private final String type;
-    public static String schema;
-    public static String agentId;
-    public static String corpId;
+    private String schema;
+    private String agentId;
+    private String corpId;
 
     public WeCom() {
         type = Const.EC_TYPE_WECHAT_COM;
@@ -109,5 +109,29 @@ public class WeCom extends SocialAuthenticator {
         if (callback != null) {
             callback.call(500, message, null);
         }
+    }
+
+    public String getSchema() {
+        return schema;
+    }
+
+    public void setSchema(String schema) {
+        this.schema = schema;
+    }
+
+    public String getAgentId() {
+        return agentId;
+    }
+
+    public void setAgentId(String agentId) {
+        this.agentId = agentId;
+    }
+
+    public String getCorpId() {
+        return corpId;
+    }
+
+    public void setCorpId(String corpId) {
+        this.corpId = corpId;
     }
 }

@@ -1,4 +1,4 @@
-package cn.authing.guard.social.ddauth;
+package cn.authing.guard.social.callback.ddauth;
 
 import android.os.Bundle;
 

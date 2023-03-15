@@ -20,7 +20,7 @@ Authing.init(this, "your_authing_app_id"); // 'this' is your Application or init
 * 推荐使用 Authing [语义化编程模型](./design.md)，只需在布局文件里面放置一个 OneClickAuthButton，如：
 
  ```xml
- <cn.authing.guard.oneclick.OneClickAuthButton
+ <cn.authing.guard.social.view.OneClickAuthButton
     android:background="@drawable/authing_button_background"
     android:textColor="@color/white"
     android:layout_width="match_parent"

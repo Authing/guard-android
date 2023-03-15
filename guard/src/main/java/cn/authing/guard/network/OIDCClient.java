@@ -204,6 +204,10 @@ public class OIDCClient {
         AuthClient.loginByDingTalk(authRequest, authCode, callback);
     }
 
+    public void loginByDouYin(String authCode, @NotNull AuthCallback<UserInfo> callback) {
+        AuthClient.loginByDouYin(authRequest, authCode, callback);
+    }
+
     private static void error(Exception e, @NotNull AuthCallback<?> callback){
         e.printStackTrace();
         callback.call(Const.ERROR_CODE_10004, "JSON parse failed", null);

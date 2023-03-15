@@ -23,7 +23,7 @@
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toTopOf="parent"/>
 
-        <cn.authing.guard.oneclick.OneClickAuthButton
+        <cn.authing.guard.social.view.OneClickAuthButton
             android:id="@+id/one_click_btn"
             android:background="@drawable/authing_button_background"
             android:textColor="@color/white"

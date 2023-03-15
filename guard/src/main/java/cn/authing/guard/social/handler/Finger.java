@@ -1,4 +1,4 @@
-package cn.authing.guard.social;
+package cn.authing.guard.social.handler;
 
 import android.content.Context;
 import android.content.Intent;
@@ -26,7 +26,6 @@ import cn.authing.guard.webauthn.WebAuthNAuthentication;
 public class Finger extends SocialAuthenticator {
 
     private static final String TAG = "Finger";
-    public static String appId;
 
     /**
      * 通用跳转授权业务 Demo

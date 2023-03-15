@@ -5,28 +5,28 @@ import android.util.AttributeSet;
 
 import cn.authing.guard.R;
 import cn.authing.guard.social.handler.SocialAuthenticator;
-import cn.authing.guard.social.handler.Weibo;
+import cn.authing.guard.social.handler.DouYin;
 
-public class WeiboLoginButton extends SocialLoginButton {
-    public WeiboLoginButton(Context context) {
+public class DouYinLoginButton extends SocialLoginButton {
+    public DouYinLoginButton(Context context) {
         this(context, null);
     }
 
-    public WeiboLoginButton(Context context, AttributeSet attrs) {
+    public DouYinLoginButton(Context context, AttributeSet attrs) {
         this(context, attrs, 0);
     }
 
-    public WeiboLoginButton(Context context, AttributeSet attrs, int defStyleAttr) {
+    public DouYinLoginButton(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
     }
 
     @Override
     public SocialAuthenticator createAuthenticator() {
-        return Weibo.getInstance();
+        return DouYin.getInstance();
     }
 
     @Override
     protected int getImageRes() {
-        return R.drawable.ic_authing_weibo;
+        return R.drawable.ic_authing_douyin;
     }
 }

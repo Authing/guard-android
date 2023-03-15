@@ -1,4 +1,4 @@
-package cn.authing.guard.social;
+package cn.authing.guard.social.handler;
 
 import android.content.Context;
 
@@ -13,13 +13,13 @@ import org.jetbrains.annotations.NotNull;
 import cn.authing.guard.AuthCallback;
 import cn.authing.guard.Authing;
 import cn.authing.guard.data.UserInfo;
-import cn.authing.guard.social.wechat.WXCallbackActivity;
+import cn.authing.guard.social.callback.wechat.WXCallbackActivity;
 import cn.authing.guard.util.Const;
 
 public class Wechat extends SocialAuthenticator {
 
     public static IWXAPI api;
-    public static String appId;
+    private String appId;
 
     @Override
     public void login(Context context, @NotNull AuthCallback<UserInfo> callback) {
@@ -72,5 +72,13 @@ public class Wechat extends SocialAuthenticator {
     @Override
     protected void oidcLogin(String authCode, @NonNull AuthCallback<UserInfo> callback) {
 
+    }
+
+    public String getAppId() {
+        return appId;
+    }
+
+    public void setAppId(String appId) {
+        this.appId = appId;
     }
 }

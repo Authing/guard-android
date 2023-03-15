@@ -175,6 +175,12 @@
         </activity>
         <activity android:name=".guard.ddauth.DDAuthActivity"
             android:exported="true"/>
+        <activity
+            android:name=".guard.douyinapi.DouYinEntryActivity"
+            android:launchMode="singleTask"
+            android:taskAffinity="cn.authing.guard"
+            android:exported="true">
+        </activity>
     </application>
 
 </manifest>

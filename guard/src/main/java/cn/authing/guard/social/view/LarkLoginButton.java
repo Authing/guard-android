@@ -1,10 +1,12 @@
-package cn.authing.guard.social;
+package cn.authing.guard.social.view;
 
 import android.content.Context;
 import android.util.AttributeSet;
 
 import cn.authing.guard.R;
 import cn.authing.guard.analyze.Analyzer;
+import cn.authing.guard.social.handler.SocialAuthenticator;
+import cn.authing.guard.social.handler.Lark;
 
 public class LarkLoginButton extends SocialLoginButton {
     public LarkLoginButton(Context context) {

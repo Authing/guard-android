@@ -1,4 +1,4 @@
-package cn.authing.guard.oneclick;
+package cn.authing.guard.social.handler;
 
 import android.app.Activity;
 import android.content.Context;
@@ -17,7 +17,6 @@ import android.text.style.URLSpan;
 import android.util.DisplayMetrics;
 import android.util.TypedValue;
 import android.view.Gravity;
-import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -54,7 +53,7 @@ import cn.authing.guard.flow.AuthFlow;
 import cn.authing.guard.internal.ContinueWithTextView;
 import cn.authing.guard.network.AuthClient;
 import cn.authing.guard.network.OIDCClient;
-import cn.authing.guard.social.SocialAuthenticator;
+import cn.authing.guard.social.handler.SocialAuthenticator;
 import cn.authing.guard.social.SocialLoginListView;
 import cn.authing.guard.util.ALog;
 import cn.authing.guard.util.Const;
@@ -65,7 +64,7 @@ public class OneClick extends SocialAuthenticator implements Serializable {
     private static final String TAG = "OneClick";
     private static final int MSG_LOGIN = 1;
 
-    public static String bizId;
+    private String bizId;
 
     private final Context context;
     private final Handler handler;
@@ -85,6 +84,14 @@ public class OneClick extends SocialAuthenticator implements Serializable {
                     startLogin(uiConfig, callback);
             }
         };
+    }
+
+    public String getBizId() {
+        return bizId;
+    }
+
+    public void setBizId(String bizId) {
+        this.bizId = bizId;
     }
 
     public void start(@NotNull AuthCallback<UserInfo> callback) {

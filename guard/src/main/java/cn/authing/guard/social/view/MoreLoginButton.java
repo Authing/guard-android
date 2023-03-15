@@ -1,4 +1,4 @@
-package cn.authing.guard.social;
+package cn.authing.guard.social.view;
 
 import android.content.Context;
 import android.util.AttributeSet;
@@ -6,6 +6,7 @@ import android.util.AttributeSet;
 import cn.authing.guard.R;
 import cn.authing.guard.analyze.Analyzer;
 import cn.authing.guard.dialog.SocialLoginListDialog;
+import cn.authing.guard.social.handler.SocialAuthenticator;
 
 public class MoreLoginButton extends SocialLoginButton {
 
@@ -43,7 +44,7 @@ public class MoreLoginButton extends SocialLoginButton {
     }
 
     @Override
-    protected void onDetachedFromWindow() {
+    public void onDetachedFromWindow() {
         super.onDetachedFromWindow();
         if (socialLoginListDialog != null && socialLoginListDialog.isShowing()){
             socialLoginListDialog.dismiss();

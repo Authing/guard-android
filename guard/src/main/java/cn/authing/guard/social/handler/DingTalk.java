@@ -19,20 +19,19 @@ import cn.authing.guard.Authing;
 import cn.authing.guard.data.UserInfo;
 import cn.authing.guard.network.AuthClient;
 import cn.authing.guard.network.OIDCClient;
-import cn.authing.guard.social.SocialAuthenticator;
 import cn.authing.guard.util.ALog;
 import cn.authing.guard.util.Const;
 
 public class DingTalk extends SocialAuthenticator {
 
     private static final String TAG = "DingTalk";
-    public static String appKey;
-    public static String redirectUrl;
-    public static String scope = "openid";
-    public static String responseType = "code";
-    public static String nonce = "";
-    public static String state = "";
-    public static String prompt = "consent";
+    private String appKey;
+    private String redirectUrl;
+    private String scope = "openid";
+    private String responseType = "code";
+    private String nonce = "";
+    private String state = "";
+    private String prompt = "consent";
     private Context context;
     private AuthCallback<UserInfo> callback;
 
@@ -100,5 +99,59 @@ public class DingTalk extends SocialAuthenticator {
         new OIDCClient().loginByDingTalk(authCode, callback);
     }
 
+    public String getAppKey() {
+        return appKey;
+    }
 
+    public void setAppKey(String appKey) {
+        this.appKey = appKey;
+    }
+
+    public String getRedirectUrl() {
+        return redirectUrl;
+    }
+
+    public void setRedirectUrl(String redirectUrl) {
+        this.redirectUrl = redirectUrl;
+    }
+
+    public String getScope() {
+        return scope;
+    }
+
+    public void setScope(String scope) {
+        this.scope = scope;
+    }
+
+    public String getResponseType() {
+        return responseType;
+    }
+
+    public void setResponseType(String responseType) {
+        this.responseType = responseType;
+    }
+
+    public String getNonce() {
+        return nonce;
+    }
+
+    public void setNonce(String nonce) {
+        this.nonce = nonce;
+    }
+
+    public String getState() {
+        return state;
+    }
+
+    public void setState(String state) {
+        this.state = state;
+    }
+
+    public String getPrompt() {
+        return prompt;
+    }
+
+    public void setPrompt(String prompt) {
+        this.prompt = prompt;
+    }
 }

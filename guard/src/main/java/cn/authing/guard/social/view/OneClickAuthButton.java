@@ -1,4 +1,4 @@
-package cn.authing.guard.oneclick;
+package cn.authing.guard.social.view;
 
 import static cn.authing.guard.util.Const.NS_ANDROID;
 
@@ -31,6 +31,7 @@ import cn.authing.guard.data.UserInfo;
 import cn.authing.guard.flow.AuthFlow;
 import cn.authing.guard.flow.FlowHelper;
 import cn.authing.guard.internal.LoadingButton;
+import cn.authing.guard.social.handler.OneClick;
 import cn.authing.guard.util.Const;
 import cn.authing.guard.util.NetworkUtils;
 import cn.authing.guard.util.ToastUtil;

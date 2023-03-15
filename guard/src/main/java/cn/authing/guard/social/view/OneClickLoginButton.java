@@ -1,4 +1,4 @@
-package cn.authing.guard.oneclick;
+package cn.authing.guard.social.view;
 
 import android.content.Context;
 import android.util.AttributeSet;
@@ -7,8 +7,9 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import cn.authing.guard.analyze.Analyzer;
-import cn.authing.guard.social.SocialAuthenticator;
-import cn.authing.guard.social.SocialLoginButton;
+import cn.authing.guard.social.handler.OneClick;
+import cn.authing.guard.social.handler.SocialAuthenticator;
+import cn.authing.guard.social.view.SocialLoginButton;
 
 public class OneClickLoginButton extends SocialLoginButton {
 

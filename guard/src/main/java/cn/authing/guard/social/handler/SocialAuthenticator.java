@@ -1,4 +1,4 @@
-package cn.authing.guard.social;
+package cn.authing.guard.social.handler;
 
 import android.content.Context;
 
@@ -8,6 +8,7 @@ import cn.authing.guard.AuthCallback;
 import cn.authing.guard.Authing;
 import cn.authing.guard.data.UserInfo;
 import cn.authing.guard.handler.BaseHandler;
+import cn.authing.guard.social.view.SocialLoginButton;
 
 public abstract class SocialAuthenticator extends BaseHandler {
 
@@ -27,7 +28,7 @@ public abstract class SocialAuthenticator extends BaseHandler {
         }
     }
 
-    protected void onDetachedFromWindow() {
+    public void onDetachedFromWindow() {
 
     }
 }

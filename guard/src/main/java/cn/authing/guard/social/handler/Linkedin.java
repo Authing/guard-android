@@ -15,7 +15,6 @@ import cn.authing.guard.Authing;
 import cn.authing.guard.data.UserInfo;
 import cn.authing.guard.network.AuthClient;
 import cn.authing.guard.network.OIDCClient;
-import cn.authing.guard.social.SocialAuthenticator;
 import cn.authing.guard.social.linkedin.LinkedInBuilder;
 import cn.authing.guard.social.linkedin.helpers.LinkedInUser;
 import cn.authing.guard.util.ALog;
@@ -24,8 +23,8 @@ import cn.authing.guard.util.Const;
 public class Linkedin extends SocialAuthenticator {
 
     private static final String TAG = "Linkedin";
-    public static String appKey; // 应用的APP_KEY
-    public static String redirectUrl; // 应用的回调页
+    private String appKey; // 应用的APP_KEY
+    private String redirectUrl; // 应用的回调页
     public static final int LINKEDIN_REQUEST = 99;
     private AuthCallback<UserInfo> callback;
 
@@ -83,4 +82,19 @@ public class Linkedin extends SocialAuthenticator {
         static final Linkedin mInstance = new Linkedin();
     }
 
+    public String getAppKey() {
+        return appKey;
+    }
+
+    public void setAppKey(String appKey) {
+        this.appKey = appKey;
+    }
+
+    public String getRedirectUrl() {
+        return redirectUrl;
+    }
+
+    public void setRedirectUrl(String redirectUrl) {
+        this.redirectUrl = redirectUrl;
+    }
 }

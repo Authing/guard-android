@@ -3,7 +3,7 @@
 ## 布局文件使用方式
 
 ```xml
-<cn.authing.guard.social.WechatLoginButton
+<cn.authing.guard.social.vew.WechatLoginButton
     android:layout_width="48dp"
     android:layout_height="48dp" />
 ```

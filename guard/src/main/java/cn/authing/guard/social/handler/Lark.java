@@ -1,4 +1,4 @@
-package cn.authing.guard.social;
+package cn.authing.guard.social.handler;
 
 import android.app.Activity;
 import android.content.Context;
@@ -25,7 +25,7 @@ import cn.authing.guard.util.Const;
 public class Lark extends SocialAuthenticator {
 
     private static final String TAG = "Lark";
-    public static String appId;
+    private String appId;
 
     @Override
     public void login(Context context, @NotNull AuthCallback<UserInfo> callback) {
@@ -87,5 +87,13 @@ public class Lark extends SocialAuthenticator {
     @Override
     protected void oidcLogin(String authCode, @NonNull AuthCallback<UserInfo> callback) {
         new OIDCClient().loginByLark(authCode, callback);
+    }
+
+    public String getAppId() {
+        return appId;
+    }
+
+    public void setAppId(String appId) {
+        this.appId = appId;
     }
 }

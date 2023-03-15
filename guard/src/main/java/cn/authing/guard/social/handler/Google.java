@@ -1,4 +1,4 @@
-package cn.authing.guard.social;
+package cn.authing.guard.social.handler;
 
 import android.app.Activity;
 import android.content.BroadcastReceiver;
@@ -24,13 +24,14 @@ import cn.authing.guard.network.OIDCClient;
 import cn.authing.guard.util.ALog;
 import cn.authing.guard.util.Const;
 
-public class Google extends SocialAuthenticator{
+public class Google extends SocialAuthenticator {
 
     public static final int RC_SIGN_IN = 1000;
     private Context context;
     private AuthCallback<UserInfo> callback;
     private GoogleLoginReceiver googleLoginReceiver;
     private boolean registered;
+    private String serverClientId;
 
     @Override
     public void login(Context context, @NonNull AuthCallback<UserInfo> callback) {
@@ -44,8 +45,12 @@ public class Google extends SocialAuthenticator{
 
             registerReceiver();
 
+            if (serverClientId == null) {
+                serverClientId = config.getSocialClientId(Const.EC_TYPE_GOOGLE);
+            }
+
             GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                    .requestServerAuthCode(config.getSocialClientId(Const.EC_TYPE_GOOGLE))
+                    .requestServerAuthCode(serverClientId)
                     .requestEmail()
                     .requestId()
                     .requestProfile()
@@ -90,7 +95,7 @@ public class Google extends SocialAuthenticator{
     }
 
     @Override
-    protected void onDetachedFromWindow() {
+    public void onDetachedFromWindow() {
         super.onDetachedFromWindow();
         unregisterReceiver();
     }
@@ -111,5 +116,13 @@ public class Google extends SocialAuthenticator{
         public void onReceive(Context context, Intent intent) {
             handleSignInResult(context, intent);
         }
+    }
+
+    public String getServerClientId() {
+        return serverClientId;
+    }
+
+    public void setServerClientId(String serverClientId) {
+        this.serverClientId = serverClientId;
     }
 }

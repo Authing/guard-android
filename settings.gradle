@@ -8,6 +8,7 @@ dependencyResolutionManagement {
         maven {
             url "https://mvn.getui.com/nexus/content/repositories/releases/"
         }
+        maven { url 'https://artifact.bytedance.com/repository/AwemeOpenSDK' }
     }
 }
 rootProject.name = "Guard"

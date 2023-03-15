@@ -141,6 +141,7 @@
     <string name="authing_login_by_baidu">使用 百度 登录</string>
     <string name="authing_login_by_linkedin">使用 Linkedin 登录</string>
     <string name="authing_login_by_ding_talk">使用 钉钉 登录</string>
+    <string name="authing_login_by_dou_yin">使用 抖音 登录</string>
     <string name="authing_login_by_finger">使用 指纹识别 登录</string>
     <string name="authing_login_by_face">使用 人脸识别 登录</string>
     <string name="authing_social_alipay">支付宝</string>
@@ -155,6 +156,7 @@
     <string name="authing_social_baidu">百度</string>
     <string name="authing_social_linkedin">Linkedin</string>
     <string name="authing_social_ding_talk">钉钉</string>
+    <string name="authing_social_dou_yin">抖音</string>
     <string name="authing_finger">指纹识别</string>
     <string name="authing_face">人脸识别</string>
     <string name="authing_get_code_again">重新发送验证码</string>

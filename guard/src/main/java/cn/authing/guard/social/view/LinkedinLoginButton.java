@@ -4,8 +4,7 @@ import android.content.Context;
 import android.util.AttributeSet;
 
 import cn.authing.guard.R;
-import cn.authing.guard.social.SocialAuthenticator;
-import cn.authing.guard.social.SocialLoginButton;
+import cn.authing.guard.social.handler.SocialAuthenticator;
 import cn.authing.guard.social.handler.Linkedin;
 
 public class LinkedinLoginButton extends SocialLoginButton {

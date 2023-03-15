@@ -3,6 +3,7 @@ package cn.authing.guard.social.handler;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
+import android.text.TextUtils;
 
 import androidx.annotation.NonNull;
 
@@ -17,14 +18,14 @@ import cn.authing.guard.Authing;
 import cn.authing.guard.data.UserInfo;
 import cn.authing.guard.network.AuthClient;
 import cn.authing.guard.network.OIDCClient;
-import cn.authing.guard.social.SocialAuthenticator;
 import cn.authing.guard.util.ALog;
 import cn.authing.guard.util.Const;
+import cn.authing.guard.util.ToastUtil;
 
 public class Baidu extends SocialAuthenticator {
 
     private static final String TAG = "Baidu";
-    public static String appKey; // 应用的APP_KEY
+    private String appKey; // 应用的APP_KEY
     private com.baidu.api.Baidu baidu;
 
     private Baidu() {
@@ -39,6 +40,12 @@ public class Baidu extends SocialAuthenticator {
         Authing.getPublicConfig(config -> {
             if (appKey == null && config != null) {
                 appKey = config.getSocialAppKey(Const.EC_TYPE_BAIDU);
+            }
+
+            if (TextUtils.isEmpty(appKey)){
+                ALog.e(TAG, "appKey is null");
+                callback.call(Const.ERROR_CODE_10014, "appKey is null", null);
+                return;
             }
 
             baidu = new com.baidu.api.Baidu(appKey, context);
@@ -91,4 +98,11 @@ public class Baidu extends SocialAuthenticator {
     }
 
 
+    public String getAppKey() {
+        return appKey;
+    }
+
+    public void setAppKey(String appKey) {
+        this.appKey = appKey;
+    }
 }

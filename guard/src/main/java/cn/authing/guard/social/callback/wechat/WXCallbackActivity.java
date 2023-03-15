@@ -1,4 +1,4 @@
-package cn.authing.guard.social.wechat;
+package cn.authing.guard.social.callback.wechat;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -19,12 +19,11 @@ import org.json.JSONObject;
 
 import cn.authing.guard.AuthCallback;
 import cn.authing.guard.Authing;
-import cn.authing.guard.R;
 import cn.authing.guard.data.UserInfo;
 import cn.authing.guard.network.AuthClient;
 import cn.authing.guard.network.OIDCClient;
-import cn.authing.guard.social.SocialLoginButton;
-import cn.authing.guard.social.Wechat;
+import cn.authing.guard.social.view.SocialLoginButton;
+import cn.authing.guard.social.handler.Wechat;
 import cn.authing.guard.util.ALog;
 
 public class WXCallbackActivity extends AppCompatActivity implements IWXAPIEventHandler {
