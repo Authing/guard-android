@@ -1,14 +1,12 @@
 package cn.authing.guard.activity;
 
+import android.os.Bundle;
+
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.os.Bundle;
-import android.view.View;
-import android.view.WindowManager;
-
-import java.util.Objects;
-
 import cn.authing.guard.GlobalStyle;
+import cn.authing.guard.R;
+import cn.authing.guard.util.Util;
 
 public class BaseAuthActivity extends AppCompatActivity {
 
@@ -18,14 +16,12 @@ public class BaseAuthActivity extends AppCompatActivity {
         if (getSupportActionBar() != null) {
             getSupportActionBar().hide();
         }
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS, WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-        getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+        Util.setStatusBarColor(this, R.color.authing_status_bar_bg);
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        getWindow().clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         GlobalStyle.clear();
     }
 }

@@ -143,10 +143,7 @@ public class AuthActivity extends AppCompatActivity {
             setResult(OK, intent);
             finish();
         }
-        if (requestCode == Google.RC_SIGN_IN && data != null) {
-            data.setAction("cn.authing.guard.broadcast.GOOGLE_LOGIN");
-            sendBroadcast(data);
-        }
+        Google.getInstance().onActivityResult(this, requestCode, resultCode, data);
         FaceBook.getInstance().onActivityResult(requestCode, resultCode, data);
         QQ.getInstance().onActivityResult(requestCode, resultCode, data);
         Weibo.getInstance().onActivityResult(this, requestCode, resultCode, data);

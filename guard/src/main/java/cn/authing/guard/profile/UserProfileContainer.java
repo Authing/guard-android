@@ -159,7 +159,6 @@ public class UserProfileContainer extends LinearLayout {
         LinearLayout layout = new LinearLayout(getContext());
         LinearLayout.LayoutParams containerParam = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, height);
         layout.setLayoutParams(containerParam);
-        layout.setBackgroundColor(0xffffffff);
         layout.setPadding(padding, 0, padding, 0);
         layout.setOrientation(HORIZONTAL);
         return layout;
@@ -305,8 +304,8 @@ public class UserProfileContainer extends LinearLayout {
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 1);
         View v = new View(getContext());
         v.setLayoutParams(params);
-        v.setBackgroundColor(0xffdddddd);
-        v.setPadding(padding, 0, 0, 0);
+        v.setBackgroundColor(getContext().getColor(R.color.authing_line_color));
+        params.setMargins(padding, 0, padding, 0);
         addView(v);
     }
 

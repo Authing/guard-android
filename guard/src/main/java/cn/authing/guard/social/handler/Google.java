@@ -1,10 +1,8 @@
 package cn.authing.guard.social.handler;
 
 import android.app.Activity;
-import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -27,23 +25,28 @@ import cn.authing.guard.util.Const;
 public class Google extends SocialAuthenticator {
 
     public static final int RC_SIGN_IN = 1000;
-    private Context context;
     private AuthCallback<UserInfo> callback;
-    private GoogleLoginReceiver googleLoginReceiver;
-    private boolean registered;
     private String serverClientId;
+
+    private Google() {
+    }
+
+    public static Google getInstance() {
+        return GoogleInstanceHolder.mInstance;
+    }
+
+    private static class GoogleInstanceHolder {
+        private static final Google mInstance = new Google();
+    }
 
     @Override
     public void login(Context context, @NonNull AuthCallback<UserInfo> callback) {
-        this.context = context;
         this.callback = callback;
         Authing.getPublicConfig(config -> {
             if (config == null) {
                 ALog.d("Google", "Config not found");
                 return;
             }
-
-            registerReceiver();
 
             if (serverClientId == null) {
                 serverClientId = config.getSocialClientId(Const.EC_TYPE_GOOGLE);
@@ -58,46 +61,23 @@ public class Google extends SocialAuthenticator {
             GoogleSignInClient googleSignInClient = GoogleSignIn.getClient(context, gso);
 
             Intent intent = googleSignInClient.getSignInIntent();
-            ((Activity)context).startActivityForResult(intent, RC_SIGN_IN);
+            ((Activity) context).startActivityForResult(intent, RC_SIGN_IN);
         });
 
     }
 
-    private void registerReceiver(){
-        if (context == null){
-            return;
+    public void onActivityResult(Context context, int requestCode, int resultCode, @Nullable Intent data) {
+        if (requestCode == Google.RC_SIGN_IN && data != null) {
+            Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
+
+            try {
+                GoogleSignInAccount account = task.getResult(ApiException.class);
+                login(context, account.getServerAuthCode(), callback);
+            } catch (ApiException e) {
+                ALog.e("Google", e.toString());
+                callback.call(e.getStatusCode(), e.getMessage(), null);
+            }
         }
-        IntentFilter intentFilter =new IntentFilter();
-        intentFilter.addAction("cn.authing.guard.broadcast.GOOGLE_LOGIN");
-        googleLoginReceiver =new GoogleLoginReceiver();
-        context.registerReceiver(googleLoginReceiver, intentFilter);
-        registered = true;
-    }
-
-    public void unregisterReceiver(){
-        if (!registered || context == null || googleLoginReceiver == null){
-            return;
-        }
-        context.unregisterReceiver(googleLoginReceiver);
-        registered = false;
-    }
-
-    private void handleSignInResult(Context context, @Nullable Intent data) {
-        Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
-
-        try {
-            GoogleSignInAccount account = task.getResult(ApiException.class);
-            login(context, account.getServerAuthCode(), callback);
-        } catch (ApiException e) {
-            ALog.e("Google", e.toString());
-            callback.call(e.getStatusCode(), e.getMessage(), null);
-        }
-    }
-
-    @Override
-    public void onDetachedFromWindow() {
-        super.onDetachedFromWindow();
-        unregisterReceiver();
     }
 
     @Override
@@ -108,14 +88,6 @@ public class Google extends SocialAuthenticator {
     @Override
     protected void oidcLogin(String authCode, @NonNull AuthCallback<UserInfo> callback) {
         new OIDCClient().loginByGoogle(authCode, callback);
-    }
-
-    private class GoogleLoginReceiver extends BroadcastReceiver{
-
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            handleSignInResult(context, intent);
-        }
     }
 
     public String getServerClientId() {

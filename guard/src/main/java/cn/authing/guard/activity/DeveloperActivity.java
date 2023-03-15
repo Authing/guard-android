@@ -63,7 +63,6 @@ public class DeveloperActivity extends BaseAuthActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Util.setStatusBarColor(this, R.color.authing_developer_color);
         setContentView(R.layout.authing_developer);
 
         findViewById(R.id.btn_back).setOnClickListener(v -> finish());

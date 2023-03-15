@@ -8,4 +8,5 @@
     android:layout_height="48dp"
     android:ellipsize="marquee"
     android:gravity="center_vertical"
+    android:textColor="@color/authing_spinner_text_color"
     android:textAlignment="inherit"/>

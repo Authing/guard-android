@@ -163,7 +163,7 @@
         <cn.authing.guard.RegisterContainer
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="14dp"
+            android:layout_marginTop="@dimen/authing_form_start_end_margin"
             android:clipChildren="false"
             android:visibility="invisible"
             app:type="phonePassword">
@@ -172,29 +172,33 @@
                 android:layout_height="wrap_content"
                 android:background="@null"
                 app:errorEnabled="true"
-                app:pageType="register"/>
+                app:pageType="register"
+                app:inputHeight="@dimen/authing_edit_text_height"
+                app:errorHeight="@dimen/authing_form_top_margin"/>
             <cn.authing.guard.PasswordEditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
                 android:background="@null"
                 app:clearAllEnabled="false"
                 app:errorEnabled="true"
-                app:leftIconDrawable="@drawable/ic_authing_password"/>
+                app:leftIconDrawable="@drawable/ic_authing_password"
+                app:inputHeight="@dimen/authing_edit_text_height"
+                app:errorHeight="@dimen/authing_form_top_margin"/>
             <cn.authing.guard.PasswordConfirmEditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
                 android:background="@null"
                 app:clearAllEnabled="false"
-                app:errorEnabled="true"
-                app:leftIconDrawable="@drawable/ic_authing_password"/>
+                app:errorEnabled="false"
+                app:leftIconDrawable="@drawable/ic_authing_password"
+                app:inputHeight="@dimen/authing_edit_text_height"
+                app:errorHeight="@dimen/authing_form_top_margin"/>
         </cn.authing.guard.RegisterContainer>
 
         <cn.authing.guard.RegisterContainer
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="14dp"
+            android:layout_marginTop="@dimen/authing_form_start_end_margin"
             android:clipChildren="false"
             android:visibility="invisible"
             app:type="extendFiled">
@@ -204,23 +208,27 @@
                 android:background="@null"
                 app:errorEnabled="true"
                 app:leftIconDrawable="@drawable/ic_authing_user"
-                app:pageType="register"/>
+                app:pageType="register"
+                app:inputHeight="@dimen/authing_edit_text_height"
+                app:errorHeight="@dimen/authing_form_top_margin"/>
             <cn.authing.guard.PasswordEditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
                 android:background="@null"
                 app:clearAllEnabled="false"
                 app:errorEnabled="true"
-                app:leftIconDrawable="@drawable/ic_authing_password"/>
+                app:leftIconDrawable="@drawable/ic_authing_password"
+                app:inputHeight="@dimen/authing_edit_text_height"
+                app:errorHeight="@dimen/authing_form_top_margin"/>
             <cn.authing.guard.PasswordConfirmEditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
                 android:background="@null"
                 app:clearAllEnabled="false"
-                app:errorEnabled="true"
-                app:leftIconDrawable="@drawable/ic_authing_password"/>
+                app:errorEnabled="false"
+                app:leftIconDrawable="@drawable/ic_authing_password"
+                app:inputHeight="@dimen/authing_edit_text_height"
+                app:errorHeight="@dimen/authing_form_top_margin"/>
         </cn.authing.guard.RegisterContainer>
 
         <cn.authing.guard.ErrorTextView

@@ -2,6 +2,7 @@ package cn.authing.guard.util;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.UiModeManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -481,7 +482,10 @@ public class Util {
             return;
         }
         Window window = activity.getWindow();
-        window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+        UiModeManager uiModeManager = (UiModeManager) activity.getSystemService(Context.UI_MODE_SERVICE);
+        if (uiModeManager.getNightMode() != UiModeManager.MODE_NIGHT_YES) {
+            window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+        }
         window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
         window.setStatusBarColor(activity.getColor(colorResId));

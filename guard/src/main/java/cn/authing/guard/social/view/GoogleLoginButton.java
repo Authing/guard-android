@@ -23,7 +23,7 @@ public class GoogleLoginButton extends SocialLoginButton {
 
     @Override
     protected SocialAuthenticator createAuthenticator() {
-        return new Google();
+        return Google.getInstance();
     }
 
     @Override

@@ -18,8 +18,6 @@ public class DeleteAccountActivity extends BaseAuthActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Util.setStatusBarColor(this, R.color.authing_status_bar_bg);
-
         setContentView(R.layout.authing_delete_account);
 
         TitleLayout titleLayout = findViewById(R.id.title_layout);

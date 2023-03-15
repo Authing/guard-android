@@ -3,5 +3,10 @@
 
     <color name="authing_app_name">#FFFFFF</color>
     <color name="authing_status_bar_bg">#00000000</color>
+    <color name="authing_title_color">#FFFFFF</color>
+    <color name="authing_text_color">#FFFFFF</color>
+    <color name="authing_spinner_text_color">#86909C</color>
+    <color name="authing_icon_back">#FFFFFF</color>
+    <color name="authing_line_color">#FFFFFF</color>
 
 </resources>

@@ -10,7 +10,7 @@
         android:layout_marginTop="24dp"
         android:textSize="@dimen/authing_text_large_size"
         android:textStyle="bold"
-        android:textColor="@color/authing_text_black"/>
+        android:textColor="@color/authing_text_color"/>
 
     <cn.authing.guard.PhoneNumberEditText
         android:layout_width="match_parent"

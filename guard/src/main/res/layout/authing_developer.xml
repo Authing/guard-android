@@ -4,7 +4,6 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#F2F3F5"
     android:fitsSystemWindows="true">
 
     <RelativeLayout
@@ -29,7 +28,7 @@
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:text="@string/authing_developer"
-            android:textColor="#1D2129"
+            android:textColor="@color/authing_text_color"
             android:textStyle="bold"
             android:textSize="16sp" />
         <TextView

@@ -29,45 +29,35 @@
     <application>
         <activity
             android:name=".activity.DeveloperActivity"
-            android:exported="false"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+            android:exported="false" />
         <activity
             android:name=".activity.OrganizationActivity"
-            android:exported="false"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+            android:exported="false"/>
         <activity
             android:name=".activity.AuthorizedResourcesActivity"
-            android:exported="false"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+            android:exported="false" />
         <activity
             android:name=".activity.ApplicationActivity"
-            android:exported="false"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+            android:exported="false"/>
         <activity
             android:name=".activity.RolesActivity"
-            android:exported="false"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+            android:exported="false" />
         <activity
             android:name=".activity.FeedbackActivity"
             android:configChanges="orientation|screenSize"
-            android:exported="false"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+            android:exported="false" />
         <activity
             android:name=".activity.BindEmailActivity"
-            android:exported="false"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+            android:exported="false"/>
         <activity
             android:name=".activity.BindPhoneActivity"
-            android:exported="false"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+            android:exported="false"/>
         <activity
             android:name=".activity.ChangePasswordActivity"
-            android:exported="false"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+            android:exported="false"/>
         <activity
             android:name=".activity.UpdateUserProfileActivity"
-            android:exported="false"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+            android:exported="false"/>
         <activity
             android:name=".activity.BaseAuthActivity"
             android:exported="false">
@@ -96,15 +86,12 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".activity.UserProfileActivity"
-            android:exported="false"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+            android:exported="false"/>
         <activity
             android:name=".activity.DeleteAccountActivity"
-            android:exported="false"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+            android:exported="false" />
         <activity android:name=".activity.WebActivity"
-            android:exported="false"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
+            android:exported="false"/>
         <activity android:name=".activity.AppScanLoginActivity" />
         <activity android:name=".social.linkedin.LinkedInAuthenticationActivity" />
 

@@ -223,6 +223,11 @@ public class LoginButton extends PrimaryButton implements ILoginRequestCallBack 
                 if (add){
                     loginFailCount++;
                 }
+                CaptchaImageView captchaImageView = (CaptchaImageView)Util.findViewByClass(LoginButton.this, CaptchaImageView.class);
+                if (captchaImageView != null && captchaImageView.getVisibility() == View.VISIBLE){
+                    feedbackImage.setVisibility(VISIBLE);
+                    return;
+                }
                 feedbackImage.setVisibility(loginFailCount >= 2 ? VISIBLE : GONE);
             }
         });

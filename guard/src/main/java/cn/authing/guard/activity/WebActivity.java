@@ -20,7 +20,6 @@ public class WebActivity extends BaseAuthActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Util.setStatusBarColor(this, R.color.authing_status_bar_bg);
         setContentView(R.layout.authing_activity_web);
         Intent intent = getIntent();
         String title = "";

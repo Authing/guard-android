@@ -86,7 +86,7 @@ public class PrivacyConfirmBox extends LinearLayout {
         String text = array.getString(R.styleable.PrivacyConfirmBox_android_text);
         float textSize = array.getDimension(R.styleable.PrivacyConfirmBox_android_textSize, Util.sp2px(context, 12));
         textView.setTextSize(TypedValue.COMPLEX_UNIT_PX, textSize);
-        int linkColor = array.getColor(R.styleable.PrivacyConfirmBox_linkTextColor, context.getColor(R.color.authing_text_black));
+        int linkColor = array.getColor(R.styleable.PrivacyConfirmBox_linkTextColor, context.getColor(R.color.authing_text_color));
         int uncheckColor = array.getColor(R.styleable.PrivacyConfirmBox_uncheckedColor, getThemeAccentColor(context));
         int checkColor = array.getColor(R.styleable.PrivacyConfirmBox_uncheckedColor, getThemeAccentColor(context));
         boolean round = array.getBoolean(R.styleable.PrivacyConfirmBox_isRound, false);

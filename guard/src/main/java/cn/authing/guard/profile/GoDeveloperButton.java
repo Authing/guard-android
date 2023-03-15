@@ -6,33 +6,28 @@ import android.content.Context;
 import android.content.Intent;
 import android.util.AttributeSet;
 import android.view.Gravity;
-import android.widget.Button;
 
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.AppCompatButton;
 
 import cn.authing.guard.Authing;
 import cn.authing.guard.R;
 import cn.authing.guard.activity.DeveloperActivity;
 import cn.authing.guard.util.Util;
 
-public class GoDeveloperButton extends Button {
+public class GoDeveloperButton extends AppCompatButton {
 
     public GoDeveloperButton(Context context) {
         this(context, null);
     }
 
     public GoDeveloperButton(Context context, @Nullable AttributeSet attrs) {
-        this(context, attrs, R.attr.buttonStyle);
+        this(context, attrs, 0);
     }
 
     public GoDeveloperButton(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
-        this(context, attrs, defStyleAttr, 0);
-    }
-
-    public GoDeveloperButton(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
-        super(context, attrs, defStyleAttr, defStyleRes);
-
-        int padding = (int)Util.dp2px(getContext(), 12);
+        super(context, attrs, defStyleAttr);
+        int padding = (int) Util.dp2px(getContext(), 12);
         setPadding(padding, 0, 0, 0);
         setGravity(Gravity.LEFT | Gravity.CENTER_VERTICAL);
 
@@ -50,7 +45,7 @@ public class GoDeveloperButton extends Button {
 
         setTextAppearance(0);
 
-        setOnClickListener((v)->goDeveloper());
+        setOnClickListener((v) -> goDeveloper());
     }
 
     private void goDeveloper() {

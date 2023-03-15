@@ -25,7 +25,7 @@
             android:layout_marginEnd="@dimen/authing_form_start_end_margin"
             android:layout_marginTop="20dp"
             android:textSize="@dimen/authing_text_large_size"
-            android:textColor="@color/authing_text_black"
+            android:textColor="@color/authing_text_color"
             android:textStyle="normal"
             android:text="@string/authing_welcome_to"/>
 

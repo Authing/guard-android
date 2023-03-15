@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.widget.Button;
 
 import cn.authing.guard.R;
-import cn.authing.guard.util.Util;
 
 public class UserProfileActivity extends BaseAuthActivity {
 
@@ -16,7 +15,6 @@ public class UserProfileActivity extends BaseAuthActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Util.setStatusBarColor(this, R.color.authing_background);
         setContentView(R.layout.authing_activity_user_profile);
         fragment = (UserProfileFragment)getSupportFragmentManager().findFragmentById(R.id.fragment_user_profile);
         if (null != fragment){

@@ -19,7 +19,7 @@ import cn.authing.guard.util.Const;
 public class Wechat extends SocialAuthenticator {
 
     public static IWXAPI api;
-    private String appId;
+    public static String appId;
 
     @Override
     public void login(Context context, @NotNull AuthCallback<UserInfo> callback) {
@@ -74,11 +74,4 @@ public class Wechat extends SocialAuthenticator {
 
     }
 
-    public String getAppId() {
-        return appId;
-    }
-
-    public void setAppId(String appId) {
-        this.appId = appId;
-    }
 }

@@ -79,7 +79,7 @@ public class TitleLayout extends RelativeLayout {
         showSkipIcon = array.getBoolean(R.styleable.TitleLayout_showSkipIcon, false);
         titleText = array.getString(R.styleable.TitleLayout_titleText);
         titleTextSie = array.getDimension(R.styleable.TitleLayout_titleTextSize, Util.sp2px(context, 16));
-        titleTextColor = array.getColor(R.styleable.TitleLayout_titleTextColor, context.getColor(R.color.authing_text_black));
+        titleTextColor = array.getColor(R.styleable.TitleLayout_titleTextColor, context.getColor(R.color.authing_title_color));
         titleTextBold = array.getBoolean(R.styleable.TitleLayout_titleTextBold, true);
         skipText = array.getString(R.styleable.TitleLayout_skipText);
         skipTextSie = array.getDimension(R.styleable.TitleLayout_skipTextSize, Util.sp2px(context, 16));

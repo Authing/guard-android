@@ -115,6 +115,7 @@ public class VerifyCodeEditText extends EditTextLayout implements TextWatcher {
                 }
 
                 et.setTextSize(TypedValue.COMPLEX_UNIT_SP, maxLength == 6 ? 20 : 24);
+                et.setTextColor(context.getColor(R.color.authing_text_black));
                 et.setInputType(InputType.TYPE_CLASS_NUMBER);
                 et.setTextAlignment(TEXT_ALIGNMENT_CENTER);
                 et.setText(" "); // when text is empty & cursor is hidden, menu will not show on long click
