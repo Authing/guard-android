@@ -1,9 +1,10 @@
-package cn.authing.guard.social.linkedin.helpers;
+package cn.authing.guard.social.web.helpers;
 
 import android.os.Parcel;
 import android.os.Parcelable;
 
-public class LinkedInUser implements Parcelable {
+public class WebAuthUser implements Parcelable {
+
     private String id;
     private String email;
     private String firstName;
@@ -13,11 +14,11 @@ public class LinkedInUser implements Parcelable {
     private String accessToken;
     private long accessTokenExpiry;
 
-    public LinkedInUser() {
+    public WebAuthUser() {
 
     }
 
-    protected LinkedInUser(Parcel in) {
+    protected WebAuthUser(Parcel in) {
         id = in.readString();
         email = in.readString();
         firstName = in.readString();
@@ -45,15 +46,15 @@ public class LinkedInUser implements Parcelable {
         return 0;
     }
 
-    public static final Creator<LinkedInUser> CREATOR = new Creator<LinkedInUser>() {
+    public static final Creator<WebAuthUser> CREATOR = new Creator<WebAuthUser>() {
         @Override
-        public LinkedInUser createFromParcel(Parcel in) {
-            return new LinkedInUser(in);
+        public WebAuthUser createFromParcel(Parcel in) {
+            return new WebAuthUser(in);
         }
 
         @Override
-        public LinkedInUser[] newArray(int size) {
-            return new LinkedInUser[size];
+        public WebAuthUser[] newArray(int size) {
+            return new WebAuthUser[size];
         }
     };
 

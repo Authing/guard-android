@@ -51,7 +51,7 @@ public class DouYinCallBackActivity extends Activity implements IApiEventHandler
                 login(response.authCode);
             } else {
                 ALog.e(TAG, "Auth Failed: errorCode = " + response.errorCode + " errorMsg = " + response.errorMsg);
-                callback.call(Const.ERROR_CODE_10016, "Login by Weibo failed", null);
+                callback.call(Const.ERROR_CODE_10017, "Login by dou yin failed", null);
             }
             finish();
         }
@@ -62,7 +62,7 @@ public class DouYinCallBackActivity extends Activity implements IApiEventHandler
         // 错误数据
         if (callback != null) {
             ALog.e(TAG, "Auth Failed");
-            callback.call(Const.ERROR_CODE_10016, "Login by Weibo failed", null);
+            callback.call(Const.ERROR_CODE_10017, "Login by dou yin failed", null);
         }
         finish();
     }

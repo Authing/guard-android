@@ -29,6 +29,7 @@ import cn.authing.guard.data.UserInfo;
 import cn.authing.guard.flow.AuthFlow;
 import cn.authing.guard.internal.CircularAnimatedView;
 import cn.authing.guard.social.handler.FaceBook;
+import cn.authing.guard.social.handler.Github;
 import cn.authing.guard.social.handler.Google;
 import cn.authing.guard.social.handler.Linkedin;
 import cn.authing.guard.social.handler.QQ;
@@ -148,6 +149,7 @@ public class AuthActivity extends AppCompatActivity {
         QQ.getInstance().onActivityResult(requestCode, resultCode, data);
         Weibo.getInstance().onActivityResult(this, requestCode, resultCode, data);
         Linkedin.getInstance().onActivityResult(this, requestCode, resultCode, data);
+        Github.getInstance().onActivityResult(this, requestCode, resultCode, data);
         if (resultCode == BIOMETRIC_BIND_OK){
             Util.biometricBind(this);
         }

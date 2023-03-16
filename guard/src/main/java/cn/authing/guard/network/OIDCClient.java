@@ -208,6 +208,10 @@ public class OIDCClient {
         AuthClient.loginByDouYin(authRequest, authCode, callback);
     }
 
+    public void loginByGithub(String authCode, @NotNull AuthCallback<UserInfo> callback) {
+        AuthClient.loginByGithub(authRequest, authCode, callback);
+    }
+
     private static void error(Exception e, @NotNull AuthCallback<?> callback){
         e.printStackTrace();
         callback.call(Const.ERROR_CODE_10004, "JSON parse failed", null);

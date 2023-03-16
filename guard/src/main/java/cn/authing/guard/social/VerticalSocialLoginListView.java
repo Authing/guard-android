@@ -27,6 +27,7 @@ import cn.authing.guard.social.view.DingTalkLoginButton;
 import cn.authing.guard.social.view.DouYinLoginButton;
 import cn.authing.guard.social.view.FaceBookLoginButton;
 import cn.authing.guard.social.view.FingerLoginButton;
+import cn.authing.guard.social.view.GithubLoginButton;
 import cn.authing.guard.social.view.GoogleLoginButton;
 import cn.authing.guard.social.view.LarkLoginButton;
 import cn.authing.guard.social.view.LinkedinLoginButton;
@@ -194,6 +195,10 @@ public class VerticalSocialLoginListView extends LinearLayout {
             sb.append(Const.TYPE_DOU_YIN);
             sb.append("|");
         }
+        if (types.contains(Const.EC_TYPE_GITHUB)){
+            sb.append(Const.TYPE_GITHUB);
+            sb.append("|");
+        }
         String socialString = sb.toString();
         if (socialString.endsWith("|")){
             socialString = socialString.substring(0, socialString.length() - 1);
@@ -262,6 +267,9 @@ public class VerticalSocialLoginListView extends LinearLayout {
                 break;
             case Const.TYPE_DOU_YIN:
                 button = new DouYinLoginButton(getContext());
+                break;
+            case Const.TYPE_GITHUB:
+                button = new GithubLoginButton(getContext());
                 break;
         }
         if (button != null) {
@@ -337,6 +345,9 @@ public class VerticalSocialLoginListView extends LinearLayout {
                 break;
             case Const.TYPE_DOU_YIN:
                 str = getContext().getString(R.string.authing_login_by_dou_yin);
+                break;
+            case Const.TYPE_GITHUB:
+                str = getContext().getString(R.string.authing_login_by_github);
                 break;
         }
         return str;

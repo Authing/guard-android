@@ -743,6 +743,27 @@ public class AuthClient {
         });
     }
 
+    public static void loginByGithub(String authCode, @NotNull AuthCallback<UserInfo> callback) {
+        loginByGithub(null, authCode, callback);
+    }
+
+    public static void loginByGithub(AuthRequest authData, String authCode, @NotNull AuthCallback<UserInfo> callback) {
+        Authing.getPublicConfig(config -> {
+            try {
+                JSONObject body = new JSONObject();
+                String connId = config != null ? config.getSocialConnectionId(Const.EC_TYPE_GITHUB) : "";
+                body.put("connId", connId);
+                body.put("code", authCode);
+                String endpoint = "/api/v2/ecConn/github/authByCode";
+                Guardian.post(endpoint, body, (data)-> {
+                    startOidcInteraction(authData, data, callback);
+                });
+            } catch (Exception e) {
+                error(e, callback);
+            }
+        });
+    }
+
     public static void loginByOneAuth(String token, String accessToken, @NotNull AuthCallback<UserInfo> callback) {
         loginByOneAuth(null, token, accessToken, 0, callback);
     }

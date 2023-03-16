@@ -8,5 +8,6 @@
     <color name="authing_spinner_text_color">#86909C</color>
     <color name="authing_icon_back">#FFFFFF</color>
     <color name="authing_line_color">#FFFFFF</color>
+    <color name="authing_social_dialog_background">#000000</color>
 
 </resources>

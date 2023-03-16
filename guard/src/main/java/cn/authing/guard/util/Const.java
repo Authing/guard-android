@@ -40,6 +40,7 @@ public class Const {
     public final static int ERROR_CODE_10015 = 10015; // Linkedin auth failed
     public final static int ERROR_CODE_10016 = 10016; // 钉钉 auth failed
     public final static int ERROR_CODE_10017 = 10017; // 抖音 auth failed
+    public final static int ERROR_CODE_10018 = 10018; // Github auth failed
 
     // mfa
     public static final String MFA_POLICY_SMS = "SMS";
@@ -64,6 +65,7 @@ public class Const {
     public static final String EC_TYPE_LINKEDIN = "linkedin:mobile";
     public static final String EC_TYPE_DING_TALK = "dingtalk:mobile";
     public static final String EC_TYPE_DOU_YIN = "douyin:mobile";
+    public static final String EC_TYPE_GITHUB= "github:mobile";
 
     public static final String TYPE_WECHAT = "wechat";
     public static final String TYPE_WECHAT_MINI_PROGRAM = "wechat-miniprogram";
@@ -80,6 +82,7 @@ public class Const {
     public static final String TYPE_LINKEDIN = "linkedin";
     public static final String TYPE_DING_TALK = "dingtalk";
     public static final String TYPE_DOU_YIN = "douyin";
+    public static final String TYPE_GITHUB = "github";
     public static final String TYPE_FACE = "face";
 
     // network

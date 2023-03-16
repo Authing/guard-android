@@ -1,4 +1,4 @@
-package cn.authing.guard.social.linkedin.helpers;
+package cn.authing.guard.social.web.helpers;
 
 import android.util.Log;
 
@@ -21,7 +21,7 @@ import javax.net.ssl.HttpsURLConnection;
 
 public class RequestHandler {
 
-    private static final String TAG = "LinkedInAuth";
+    private static final String TAG = "WebAuth";
 
     /**
      * Method that handles Post request

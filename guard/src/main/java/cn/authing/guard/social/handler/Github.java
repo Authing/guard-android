@@ -7,7 +7,6 @@ import android.content.Intent;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-
 import org.jetbrains.annotations.NotNull;
 
 import cn.authing.guard.AuthCallback;
@@ -20,24 +19,24 @@ import cn.authing.guard.social.web.helpers.WebAuthUser;
 import cn.authing.guard.util.ALog;
 import cn.authing.guard.util.Const;
 
-public class Linkedin extends SocialAuthenticator {
+public class Github extends SocialAuthenticator {
 
-    private static final String TAG = "Linkedin";
-    private String appKey; // 应用的APP_KEY
-    private String redirectUrl; // 应用的回调页
-    private String scope = "r_liteprofile%20r_emailaddress";
-    public static final int LINKEDIN_REQUEST = 2000;
+    private static final String TAG = "Github";
+    private String clientId;
+    private String redirectUrl;
+    private String scope = "user";
+    public static final int GITHUB_REQUEST = 2001;
     private AuthCallback<UserInfo> callback;
 
-    private Linkedin() {
+    private Github() {
     }
 
-    public static Linkedin getInstance() {
-        return LinkedinInstanceHolder.mInstance;
+    public static Github getInstance() {
+        return GithubInstanceHolder.mInstance;
     }
 
     public void onActivityResult(Activity activity, int requestCode, int resultCode, @Nullable Intent data) {
-        if (requestCode == LINKEDIN_REQUEST && data != null) {
+        if (requestCode == GITHUB_REQUEST && data != null) {
             if (resultCode == Activity.RESULT_OK && data.hasExtra("social_login")) {
                 ALog.i(TAG, "Auth onSuccess");
                 WebAuthUser user = data.getParcelableExtra("social_login");
@@ -47,8 +46,8 @@ public class Linkedin extends SocialAuthenticator {
             } else {
                 ALog.e(TAG, "Auth Failed, onError errorCode = " + data.getIntExtra("err_code", 0)
                         + " errorMsg = " + data.getStringExtra("err_message"));
-                if (callback != null){
-                    callback.call(Const.ERROR_CODE_10015, "Login by Linkedin failed", null);
+                if (callback != null) {
+                    callback.call(Const.ERROR_CODE_10018, "Login by Github failed", null);
                 }
             }
         }
@@ -58,42 +57,42 @@ public class Linkedin extends SocialAuthenticator {
     public void login(Context context, @NotNull AuthCallback<UserInfo> callback) {
         this.callback = callback;
         Authing.getPublicConfig(config -> {
-            if (appKey == null && config != null) {
-                appKey = config.getSocialClientId(Const.EC_TYPE_LINKEDIN);
+            if (clientId == null && config != null) {
+                clientId = config.getSocialClientId(Const.EC_TYPE_GITHUB);
             }
             if (redirectUrl == null && config != null) {
-                redirectUrl = config.getSocialRedirectUrl(Const.EC_TYPE_LINKEDIN);
+                redirectUrl = config.getSocialRedirectUrl(Const.EC_TYPE_GITHUB);
             }
             WebAuthBuilder.getInstance((Activity) context)
-                    .setAuthorizationUrl("https://www.linkedin.com/uas/oauth2/authorization")
-                    .setAccessTokenUrl("https://www.linkedin.com/uas/oauth2/accessToken")
-                    .setClientID(appKey)
+                    .setAuthorizationUrl("https://github.com/login/oauth/authorize")
+                    .setAccessTokenUrl("https://github.com/login/oauth/access_token")
+                    .setClientID(clientId)
                     .setRedirectURI(redirectUrl)
                     .setScope(scope)
-                    .authenticate(LINKEDIN_REQUEST);
+                    .authenticate(GITHUB_REQUEST);
         });
     }
 
     @Override
     protected void standardLogin(String authCode, @NonNull AuthCallback<UserInfo> callback) {
-        AuthClient.loginByLinkedin(authCode, callback);
+        AuthClient.loginByGithub(authCode, callback);
     }
 
     @Override
     protected void oidcLogin(String authCode, @NonNull AuthCallback<UserInfo> callback) {
-        new OIDCClient().loginByLinkedin(authCode, callback);
+        new OIDCClient().loginByGithub(authCode, callback);
     }
 
-    private static final class LinkedinInstanceHolder {
-        static final Linkedin mInstance = new Linkedin();
+    private static final class GithubInstanceHolder {
+        static final Github mInstance = new Github();
     }
 
-    public String getAppKey() {
-        return appKey;
+    public String getClientId() {
+        return clientId;
     }
 
-    public void setAppKey(String appKey) {
-        this.appKey = appKey;
+    public void setClientId(String clientId) {
+        this.clientId = clientId;
     }
 
     public String getRedirectUrl() {

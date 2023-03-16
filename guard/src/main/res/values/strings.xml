@@ -142,6 +142,7 @@
     <string name="authing_login_by_linkedin">Login by Linkedin</string>
     <string name="authing_login_by_ding_talk">Login by DingTalk</string>
     <string name="authing_login_by_dou_yin">Login by Douyin</string>
+    <string name="authing_login_by_github">Login by Github</string>
     <string name="authing_login_by_finger">Login by Finger</string>
     <string name="authing_login_by_face">Login by Face</string>
     <string name="authing_social_alipay">Alipay</string>
@@ -157,6 +158,7 @@
     <string name="authing_social_linkedin">Linkedin</string>
     <string name="authing_social_ding_talk">DingTalk</string>
     <string name="authing_social_dou_yin">抖音</string>
+    <string name="authing_social_github">Github</string>
     <string name="authing_finger">Finger</string>
     <string name="authing_face">Face</string>
     <string name="authing_get_code_again">Resend Code</string>

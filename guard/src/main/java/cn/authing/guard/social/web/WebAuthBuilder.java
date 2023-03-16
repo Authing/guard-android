@@ -1,4 +1,4 @@
-package cn.authing.guard.social.linkedin;
+package cn.authing.guard.social.web;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -6,25 +6,27 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 
-
 import java.util.Random;
 
-import cn.authing.guard.social.linkedin.helpers.OnBasicProfileListener;
+import cn.authing.guard.social.web.helpers.OnBasicProfileListener;
 
-public class LinkedInBuilder {
+public class WebAuthBuilder {
 
-    public static final String TAG = "LinkedInAuth";
+    public static final String TAG = "WebAuth";
 
     private final Activity context;
     private final Intent intent;
     private String state;
     private int authType = AUTH_CODE;
 
+    public static final String AUTH_TYPE = "auth_type";
+    public static final String AUTHORIZATION_URL = "authorization_url";
+    public static final String ACCESS_TOKEN_URL = "access_token_url";
     public static final String CLIENT_ID = "client_id";
     public static final String CLIENT_SECRET_KEY = "client_secret";
     public static final String REDIRECT_URI = "redirect_uri";
+    public static final String SCOPE = "scope";
     public static final String STATE = "state";
-    public static final String AUTH_TYPE = "auth_type";
 
     public static final int AUTH_CODE = 1;
     public static final int AUTH_TOKEN = 2;
@@ -34,37 +36,52 @@ public class LinkedInBuilder {
     public static final int ERROR_FAILED = 12;
 
 
-    private LinkedInBuilder(Activity context) {
+    private WebAuthBuilder(Activity context) {
         this.context = context;
-        this.intent = new Intent(context, LinkedInAuthenticationActivity.class);
+        this.intent = new Intent(context, WebAuthActivity.class);
     }
 
-    public static LinkedInBuilder getInstance(Activity context) {
-        return new LinkedInBuilder(context);
+    public static WebAuthBuilder getInstance(Activity context) {
+        return new WebAuthBuilder(context);
     }
 
-    public LinkedInBuilder setClientID(String clientID) {
-        intent.putExtra(CLIENT_ID, clientID);
-        return this;
-    }
-
-    public LinkedInBuilder setClientSecret(String clientSecret) {
-        intent.putExtra(CLIENT_SECRET_KEY, clientSecret);
-        return this;
-    }
-
-    public LinkedInBuilder setRedirectURI(String redirectURI) {
-        intent.putExtra(REDIRECT_URI, redirectURI);
-        return this;
-    }
-
-    public LinkedInBuilder setAuthType(int authType) {
+    public WebAuthBuilder setAuthType(int authType) {
         this.authType = authType;
         intent.putExtra(AUTH_TYPE, authType);
         return this;
     }
 
-    public LinkedInBuilder setState(String state) {
+    public WebAuthBuilder setAuthorizationUrl(String url) {
+        intent.putExtra(AUTHORIZATION_URL, url);
+        return this;
+    }
+
+    public WebAuthBuilder setAccessTokenUrl(String url) {
+        intent.putExtra(ACCESS_TOKEN_URL, url);
+        return this;
+    }
+
+    public WebAuthBuilder setClientID(String clientID) {
+        intent.putExtra(CLIENT_ID, clientID);
+        return this;
+    }
+
+    public WebAuthBuilder setClientSecret(String clientSecret) {
+        intent.putExtra(CLIENT_SECRET_KEY, clientSecret);
+        return this;
+    }
+
+    public WebAuthBuilder setRedirectURI(String redirectURI) {
+        intent.putExtra(REDIRECT_URI, redirectURI);
+        return this;
+    }
+
+    public WebAuthBuilder setScope(String state) {
+        intent.putExtra(SCOPE, state);
+        return this;
+    }
+
+    public WebAuthBuilder setState(String state) {
         this.state = state;
         intent.putExtra(STATE, state);
         return this;

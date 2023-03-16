@@ -1,4 +1,4 @@
-package cn.authing.guard.social.linkedin;
+package cn.authing.guard.social.web;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -7,7 +7,8 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.view.WindowManager;
+import android.webkit.WebResourceRequest;
+import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
@@ -21,20 +22,21 @@ import java.io.IOException;
 import java.util.Calendar;
 
 import cn.authing.guard.R;
-import cn.authing.guard.social.linkedin.helpers.LinkedInUser;
-import cn.authing.guard.social.linkedin.helpers.OnBasicProfileListener;
-import cn.authing.guard.social.linkedin.helpers.RequestHandler;
+import cn.authing.guard.social.web.helpers.OnBasicProfileListener;
+import cn.authing.guard.social.web.helpers.RequestHandler;
+import cn.authing.guard.social.web.helpers.WebAuthUser;
 
-public class LinkedInAuthenticationActivity extends AppCompatActivity {
+public class WebAuthActivity extends AppCompatActivity {
 
     private static String CLIENT_ID;
     private static String CLIENT_SECRET_KEY;
     private static String STATE; //for security
+    private static String SCOPE;
     private static String REDIRECT_URI;
     private static int AUTH_TYPE;
+    private static String AUTHORIZATION_URL;
+    private static String ACCESS_TOKEN_URL;
 
-    private static final String AUTHORIZATION_URL = "https://www.linkedin.com/uas/oauth2/authorization";
-    private static final String ACCESS_TOKEN_URL = "https://www.linkedin.com/uas/oauth2/accessToken";
     private static final String SECRET_KEY_PARAM = "client_secret";
     private static final String RESPONSE_TYPE_PARAM = "response_type";
     private static final String GRANT_TYPE_PARAM = "grant_type";
@@ -46,34 +48,38 @@ public class LinkedInAuthenticationActivity extends AppCompatActivity {
     private static final String QUESTION_MARK = "?";
     private static final String AMPERSAND = "&";
     private static final String EQUALS = "=";
+    private static final String SCOPE_PARAM = "scope";
 
     private WebView webView;
     private AlertDialog progressDialog;
 
-    private LinkedInUser linkedInUser = new LinkedInUser();
+    private WebAuthUser linkedInUser = new WebAuthUser();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.authing_linkedin_activity_authentication);
+        setContentView(R.layout.authing_activity_web_auth);
 
-        //enable fullscreen mode
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-                WindowManager.LayoutParams.FLAG_FULLSCREEN);
         if (getSupportActionBar() != null) {
             getSupportActionBar().hide();
         }
 
-        CLIENT_ID = getIntent().getStringExtra(LinkedInBuilder.CLIENT_ID);
-        CLIENT_SECRET_KEY = getIntent().getStringExtra(LinkedInBuilder.CLIENT_SECRET_KEY);
-        REDIRECT_URI = getIntent().getStringExtra(LinkedInBuilder.REDIRECT_URI);
-        STATE = getIntent().getStringExtra(LinkedInBuilder.STATE);
-        AUTH_TYPE = getIntent().getIntExtra(LinkedInBuilder.AUTH_TYPE, LinkedInBuilder.AUTH_CODE);
+        AUTH_TYPE = getIntent().getIntExtra(WebAuthBuilder.AUTH_TYPE, WebAuthBuilder.AUTH_CODE);
+        AUTHORIZATION_URL = getIntent().getStringExtra(WebAuthBuilder.AUTHORIZATION_URL);
+        ACCESS_TOKEN_URL = getIntent().getStringExtra(WebAuthBuilder.ACCESS_TOKEN_URL);
+        CLIENT_ID = getIntent().getStringExtra(WebAuthBuilder.CLIENT_ID);
+        CLIENT_SECRET_KEY = getIntent().getStringExtra(WebAuthBuilder.CLIENT_SECRET_KEY);
+        REDIRECT_URI = getIntent().getStringExtra(WebAuthBuilder.REDIRECT_URI);
+        STATE = getIntent().getStringExtra(WebAuthBuilder.STATE);
+        SCOPE = getIntent().getStringExtra(WebAuthBuilder.SCOPE);
 
-        webView = findViewById(R.id.web_view_linkedin_login);
+        webView = findViewById(R.id.web_view_auth_login);
         webView.requestFocus(View.FOCUS_DOWN);
         webView.clearHistory();
         webView.clearCache(true);
+        WebSettings webSettings = webView.getSettings();
+        webSettings.setJavaScriptEnabled(true);
+        WebView.setWebContentsDebuggingEnabled(true);
 
         showProgressDialog();
 
@@ -85,8 +91,8 @@ public class LinkedInAuthenticationActivity extends AppCompatActivity {
 
             //to support below Android N we need to use the deprecated method only
             @Override
-            public boolean shouldOverrideUrlLoading(WebView view, String authorizationUrl) {
-
+            public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
+                String authorizationUrl = request.getUrl().toString();
                 showProgressDialog();
 
                 if (authorizationUrl.startsWith(REDIRECT_URI)) {
@@ -94,7 +100,7 @@ public class LinkedInAuthenticationActivity extends AppCompatActivity {
                     Uri uri = Uri.parse(authorizationUrl);
                     String stateToken = uri.getQueryParameter(STATE_PARAM);
                     if (stateToken == null || !stateToken.equals(STATE)) {
-                        Log.e(LinkedInBuilder.TAG, "State token doesn't match");
+                        Log.e(WebAuthBuilder.TAG, "State token doesn't match");
                         return true;
                     }
 
@@ -102,13 +108,13 @@ public class LinkedInAuthenticationActivity extends AppCompatActivity {
                     String authorizationToken = uri.getQueryParameter(RESPONSE_TYPE_VALUE);
                     if (authorizationToken == null) {
                         Intent intent = new Intent();
-                        intent.putExtra("err_code", LinkedInBuilder.ERROR_USER_DENIED);
+                        intent.putExtra("err_code", WebAuthBuilder.ERROR_USER_DENIED);
                         intent.putExtra("err_message", "Authorization not received. User didn't allow access to account.");
                         setResult(Activity.RESULT_CANCELED, intent);
                         finish();
                     }
 
-                    if (AUTH_TYPE == LinkedInBuilder.AUTH_CODE) {
+                    if (AUTH_TYPE == WebAuthBuilder.AUTH_CODE) {
                         linkedInUser.setCode(authorizationToken);
                         Intent intent = new Intent();
                         intent.putExtra("social_login", linkedInUser);
@@ -123,6 +129,7 @@ public class LinkedInAuthenticationActivity extends AppCompatActivity {
                 }
                 return true;
             }
+
         });
 
         String authUrl = getAuthorizationUrl();
@@ -147,10 +154,7 @@ public class LinkedInAuthenticationActivity extends AppCompatActivity {
 
                     retrieveAccessTokenFromAPI(authorizationToken);
 
-                } catch (IOException e) {
-                    e.printStackTrace();
-                    return false;
-                } catch (JSONException e) {
+                } catch (IOException | JSONException e) {
                     e.printStackTrace();
                     return false;
                 }
@@ -165,7 +169,7 @@ public class LinkedInAuthenticationActivity extends AppCompatActivity {
             super.onPostExecute(didSuccess);
 
             if (linkedInUser.getAccessToken() != null) {
-                if (AUTH_TYPE == LinkedInBuilder.AUTH_TOKEN) {
+                if (AUTH_TYPE == WebAuthBuilder.AUTH_TOKEN) {
                     hideProgressDialog();
                     Intent intent = new Intent();
                     intent.putExtra("social_login", linkedInUser);
@@ -174,13 +178,13 @@ public class LinkedInAuthenticationActivity extends AppCompatActivity {
                     return;
                 }
 
-                LinkedInBuilder.retrieveBasicProfile(linkedInUser.getAccessToken(), linkedInUser.getAccessTokenExpiry(), new OnBasicProfileListener() {
+                WebAuthBuilder.retrieveBasicProfile(linkedInUser.getAccessToken(), linkedInUser.getAccessTokenExpiry(), new OnBasicProfileListener() {
                     @Override
                     public void onDataRetrievalStart() {
                     }
 
                     @Override
-                    public void onDataSuccess(LinkedInUser linkedInUser) {
+                    public void onDataSuccess(WebAuthUser linkedInUser) {
                         hideProgressDialog();
                         Intent intent = new Intent();
                         intent.putExtra("social_login", linkedInUser);
@@ -203,7 +207,7 @@ public class LinkedInAuthenticationActivity extends AppCompatActivity {
 
                 hideProgressDialog();
                 Intent intent = new Intent();
-                intent.putExtra("err_code", LinkedInBuilder.ERROR_FAILED);
+                intent.putExtra("err_code", WebAuthBuilder.ERROR_FAILED);
                 intent.putExtra("err_message", "AUTHORIZATION FAILED");
                 setResult(Activity.RESULT_CANCELED, intent);
                 finish();
@@ -232,10 +236,10 @@ public class LinkedInAuthenticationActivity extends AppCompatActivity {
                 linkedInUser.setAccessToken(accessToken1);
                 linkedInUser.setAccessTokenExpiry(expireDate);
             } else {
-                Log.e(LinkedInBuilder.TAG, "Access Token Expired or Doesn't exist");
+                Log.e(WebAuthBuilder.TAG, "Access Token Expired or Doesn't exist");
             }
         } else {
-            Log.e(LinkedInBuilder.TAG, "Failed To Retrieve Access Token");
+            Log.e(WebAuthBuilder.TAG, "Failed To Retrieve Access Token");
         }
     }
 
@@ -246,7 +250,6 @@ public class LinkedInAuthenticationActivity extends AppCompatActivity {
      * @return String - access token url
      */
     private static String getAccessTokenUrl(String authorizationToken) {
-
         return ACCESS_TOKEN_URL
                 + QUESTION_MARK
                 + GRANT_TYPE_PARAM + EQUALS + GRANT_TYPE
@@ -272,15 +275,15 @@ public class LinkedInAuthenticationActivity extends AppCompatActivity {
                 + AMPERSAND + CLIENT_ID_PARAM + EQUALS + CLIENT_ID
                 + AMPERSAND + STATE_PARAM + EQUALS + STATE
                 + AMPERSAND + REDIRECT_URI_PARAM + EQUALS + REDIRECT_URI
-                + AMPERSAND + "scope=r_liteprofile%20r_emailaddress";
+                + AMPERSAND + SCOPE_PARAM + EQUALS + SCOPE;
     }
 
     private void showProgressDialog() {
-        if (!LinkedInAuthenticationActivity.this.isFinishing()) {
+        if (!WebAuthActivity.this.isFinishing()) {
             if (progressDialog == null) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(LinkedInAuthenticationActivity.this);
+                AlertDialog.Builder builder = new AlertDialog.Builder(WebAuthActivity.this);
                 builder.setCancelable(false); // if you want user to wait for some process to finish,
-                builder.setView(R.layout.authing_linkedin_layout_progress_dialog);
+                builder.setView(R.layout.authing_layout_web_auth_progress);
                 progressDialog = builder.create();
             }
             progressDialog.show();
@@ -288,7 +291,7 @@ public class LinkedInAuthenticationActivity extends AppCompatActivity {
     }
 
     private void hideProgressDialog() {
-        if (!LinkedInAuthenticationActivity.this.isFinishing() && progressDialog != null) {
+        if (!WebAuthActivity.this.isFinishing() && progressDialog != null) {
             progressDialog.dismiss();
         }
     }

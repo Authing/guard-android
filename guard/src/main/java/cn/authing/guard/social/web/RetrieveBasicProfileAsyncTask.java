@@ -1,4 +1,4 @@
-package cn.authing.guard.social.linkedin;
+package cn.authing.guard.social.web;
 
 import android.os.AsyncTask;
 import android.util.Log;
@@ -9,15 +9,15 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 
-import cn.authing.guard.social.linkedin.helpers.LinkedInUser;
-import cn.authing.guard.social.linkedin.helpers.OnBasicProfileListener;
-import cn.authing.guard.social.linkedin.helpers.RequestHandler;
+import cn.authing.guard.social.web.helpers.WebAuthUser;
+import cn.authing.guard.social.web.helpers.OnBasicProfileListener;
+import cn.authing.guard.social.web.helpers.RequestHandler;
 
 class RetrieveBasicProfileAsyncTask extends AsyncTask<String, Void, Boolean> {
 
-    private static final String TAG = "LinkedInAuth";
+    private static final String TAG = "WebAuth";
     private OnBasicProfileListener basicProfileListener;
-    private LinkedInUser linkedInUser = new LinkedInUser();
+    private WebAuthUser linkedInUser = new WebAuthUser();
 
     RetrieveBasicProfileAsyncTask(String accessToken, long accessTokenExpiry, OnBasicProfileListener basicProfileListener) {
         this.basicProfileListener = basicProfileListener;
@@ -65,7 +65,7 @@ class RetrieveBasicProfileAsyncTask extends AsyncTask<String, Void, Boolean> {
         if (didSuccess) {
             basicProfileListener.onDataSuccess(linkedInUser);
         } else {
-            basicProfileListener.onDataFailed(LinkedInBuilder.ERROR_FAILED, "AUTHORIZATION FAILED");
+            basicProfileListener.onDataFailed(WebAuthBuilder.ERROR_FAILED, "AUTHORIZATION FAILED");
         }
     }
 
