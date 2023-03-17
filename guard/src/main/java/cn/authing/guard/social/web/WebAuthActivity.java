@@ -53,7 +53,7 @@ public class WebAuthActivity extends AppCompatActivity {
     private WebView webView;
     private AlertDialog progressDialog;
 
-    private WebAuthUser linkedInUser = new WebAuthUser();
+    private final WebAuthUser linkedInUser = new WebAuthUser();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

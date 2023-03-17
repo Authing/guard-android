@@ -143,6 +143,7 @@
     <string name="authing_login_by_ding_talk">Login by DingTalk</string>
     <string name="authing_login_by_dou_yin">Login by Douyin</string>
     <string name="authing_login_by_github">Login by Github</string>
+    <string name="authing_login_by_gitee">Login by Gitee</string>
     <string name="authing_login_by_finger">Login by Finger</string>
     <string name="authing_login_by_face">Login by Face</string>
     <string name="authing_social_alipay">Alipay</string>
@@ -159,6 +160,7 @@
     <string name="authing_social_ding_talk">DingTalk</string>
     <string name="authing_social_dou_yin">抖音</string>
     <string name="authing_social_github">Github</string>
+    <string name="authing_social_gitee">Gitee</string>
     <string name="authing_finger">Finger</string>
     <string name="authing_face">Face</string>
     <string name="authing_get_code_again">Resend Code</string>
@@ -184,6 +186,7 @@
     <string name="authing_enable_fingerprint_unlock">Please enable fingerprint unlock first</string>
     <string name="authing_no_social_tips">Unable to experience ID source login. Please experience it after integrating Guard SDK on the client APP developed by yourself.</string>
     <string name="authing_account_error">The account no longer exists</string>
+    <string name="authing_please_wait">Please wait! This may take a moment.</string>
 
     <!--user profile-->
     <string name="authing_user_profile">User profile</string>

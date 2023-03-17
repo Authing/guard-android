@@ -143,6 +143,7 @@
     <string name="authing_login_by_ding_talk">使用 钉钉 登錄</string>
     <string name="authing_login_by_dou_yin">使用 抖音 登錄</string>
     <string name="authing_login_by_github">使用 Github 登錄</string>
+    <string name="authing_login_by_gitee">使用 Gitee 登錄</string>
     <string name="authing_login_by_finger">使用 指紋識別 登錄</string>
     <string name="authing_login_by_face">使用 人臉識別 登錄</string>
     <string name="authing_social_alipay">支付寶</string>
@@ -159,6 +160,7 @@
     <string name="authing_social_ding_talk">钉钉</string>
     <string name="authing_social_dou_yin">抖音</string>
     <string name="authing_social_github">Github</string>
+    <string name="authing_social_gitee">Gitee</string>
     <string name="authing_finger">指紋識別</string>
     <string name="authing_face">人臉識別</string>
     <string name="authing_get_code_again">重新發送驗證碼</string>
@@ -184,6 +186,7 @@
     <string name="authing_enable_fingerprint_unlock">請先開啟指紋解鎖</string>
     <string name="authing_no_social_tips">無法體驗身份源登錄，請您在自己開發的客戶端 APP 上集成 Guard SDK 之後體驗。</string>
     <string name="authing_account_error">賬號已不存在</string>
+    <string name="authing_please_wait">請稍後！</string>
 
     <!--user profile-->
     <string name="authing_user_profile">個人中心</string>

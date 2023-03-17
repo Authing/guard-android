@@ -66,6 +66,7 @@ public class Const {
     public static final String EC_TYPE_DING_TALK = "dingtalk:mobile";
     public static final String EC_TYPE_DOU_YIN = "douyin:mobile";
     public static final String EC_TYPE_GITHUB= "github:mobile";
+    public static final String EC_TYPE_GITEE= "gitee:mobile";
 
     public static final String TYPE_WECHAT = "wechat";
     public static final String TYPE_WECHAT_MINI_PROGRAM = "wechat-miniprogram";
@@ -83,6 +84,7 @@ public class Const {
     public static final String TYPE_DING_TALK = "dingtalk";
     public static final String TYPE_DOU_YIN = "douyin";
     public static final String TYPE_GITHUB = "github";
+    public static final String TYPE_GITEE = "gitee";
     public static final String TYPE_FACE = "face";
 
     // network

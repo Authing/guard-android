@@ -143,6 +143,7 @@
     <string name="authing_login_by_ding_talk">Login by DingTalk</string>
     <string name="authing_login_by_dou_yin">Login by Douyin</string>
     <string name="authing_login_by_github">Login by Github</string>
+    <string name="authing_login_by_gitee">Login by Gitee</string>
     <string name="authing_login_by_finger">指紋認証を使ってログインします</string>
     <string name="authing_login_by_face">顔認証を使ってログインします</string>
     <string name="authing_social_alipay">アリペイ</string>
@@ -159,6 +160,7 @@
     <string name="authing_social_ding_talk">DingTalk</string>
     <string name="authing_social_dou_yin">抖音</string>
     <string name="authing_social_github">Github</string>
+    <string name="authing_social_gitee">Gitee</string>
     <string name="authing_finger">指紋認識です</string>
     <string name="authing_face">顔認識です</string>
     <string name="authing_get_code_again">コードの再送信</string>
@@ -184,6 +186,7 @@
     <string name="authing_enable_fingerprint_unlock">まず指紋ロック解除をオンにしてください</string>
     <string name="authing_no_social_tips">IDソースログインは体験できません。自分で開発したクライアントアプリにGuardSDKを統合してから体験してください。</string>
     <string name="authing_account_error">アカウントは既に存在しません</string>
+    <string name="authing_please_wait">しばらくお待ちください</string>
 
     <!--user profile-->
     <string name="authing_user_profile">個人センター</string>

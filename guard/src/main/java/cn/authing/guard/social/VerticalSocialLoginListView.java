@@ -27,6 +27,7 @@ import cn.authing.guard.social.view.DingTalkLoginButton;
 import cn.authing.guard.social.view.DouYinLoginButton;
 import cn.authing.guard.social.view.FaceBookLoginButton;
 import cn.authing.guard.social.view.FingerLoginButton;
+import cn.authing.guard.social.view.GiteeLoginButton;
 import cn.authing.guard.social.view.GithubLoginButton;
 import cn.authing.guard.social.view.GoogleLoginButton;
 import cn.authing.guard.social.view.LarkLoginButton;
@@ -199,6 +200,10 @@ public class VerticalSocialLoginListView extends LinearLayout {
             sb.append(Const.TYPE_GITHUB);
             sb.append("|");
         }
+        if (types.contains(Const.EC_TYPE_GITEE)){
+            sb.append(Const.TYPE_GITEE);
+            sb.append("|");
+        }
         String socialString = sb.toString();
         if (socialString.endsWith("|")){
             socialString = socialString.substring(0, socialString.length() - 1);
@@ -270,6 +275,9 @@ public class VerticalSocialLoginListView extends LinearLayout {
                 break;
             case Const.TYPE_GITHUB:
                 button = new GithubLoginButton(getContext());
+                break;
+            case Const.TYPE_GITEE:
+                button = new GiteeLoginButton(getContext());
                 break;
         }
         if (button != null) {
@@ -348,6 +356,9 @@ public class VerticalSocialLoginListView extends LinearLayout {
                 break;
             case Const.TYPE_GITHUB:
                 str = getContext().getString(R.string.authing_login_by_github);
+                break;
+            case Const.TYPE_GITEE:
+                str = getContext().getString(R.string.authing_login_by_gitee);
                 break;
         }
         return str;

@@ -212,6 +212,10 @@ public class OIDCClient {
         AuthClient.loginByGithub(authRequest, authCode, callback);
     }
 
+    public void loginByGitee(String authCode, @NotNull AuthCallback<UserInfo> callback) {
+        AuthClient.loginByGitee(authRequest, authCode, callback);
+    }
+
     private static void error(Exception e, @NotNull AuthCallback<?> callback){
         e.printStackTrace();
         callback.call(Const.ERROR_CODE_10004, "JSON parse failed", null);
