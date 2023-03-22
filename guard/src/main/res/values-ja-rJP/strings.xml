@@ -144,6 +144,9 @@
     <string name="authing_login_by_dou_yin">Login by Douyin</string>
     <string name="authing_login_by_github">Login by Github</string>
     <string name="authing_login_by_gitee">Login by Gitee</string>
+    <string name="authing_login_by_gitlab">Login by GitLab</string>
+    <string name="authing_login_by_xiaomi">Login by Xiaomi</string>
+    <string name="authing_login_by_kuai_shou">Login by Kuaishou</string>
     <string name="authing_login_by_finger">指紋認証を使ってログインします</string>
     <string name="authing_login_by_face">顔認証を使ってログインします</string>
     <string name="authing_social_alipay">アリペイ</string>
@@ -159,8 +162,11 @@
     <string name="authing_social_linkedin">Linkedin</string>
     <string name="authing_social_ding_talk">DingTalk</string>
     <string name="authing_social_dou_yin">抖音</string>
-    <string name="authing_social_github">Github</string>
+    <string name="authing_social_github">GitHub</string>
     <string name="authing_social_gitee">Gitee</string>
+    <string name="authing_social_gitlab">GitLab</string>
+    <string name="authing_social_xiaomi">Xiaomi</string>
+    <string name="authing_social_kuai_shou">Kuaishou</string>
     <string name="authing_finger">指紋認識です</string>
     <string name="authing_face">顔認識です</string>
     <string name="authing_get_code_again">コードの再送信</string>

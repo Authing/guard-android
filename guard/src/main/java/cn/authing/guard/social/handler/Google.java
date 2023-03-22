@@ -66,13 +66,13 @@ public class Google extends SocialAuthenticator {
 
     }
 
-    public void onActivityResult(Context context, int requestCode, int resultCode, @Nullable Intent data) {
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         if (requestCode == Google.RC_SIGN_IN && data != null) {
             Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
 
             try {
                 GoogleSignInAccount account = task.getResult(ApiException.class);
-                login(context, account.getServerAuthCode(), callback);
+                login(account.getServerAuthCode(), callback);
             } catch (ApiException e) {
                 ALog.e("Google", e.toString());
                 callback.call(e.getStatusCode(), e.getMessage(), null);

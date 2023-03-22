@@ -21,6 +21,10 @@ android {
                 //从 3.1.2.0 版本开始，APPID 占位符从 GETUI_APP_ID 切换为 GETUI_APPID
                 //后续所有产品的 APPID 均统一配置为 GETUI_APPID 占位符
                 GETUI_APPID       : "hi6dpigOEb8flDh6wQTy9",
+                //快手
+                "KWAI_APP_ID": "ks664280945531625530", // 申请分配的appId
+                //"KWAI_SCOPE" : "user_phone"
+                "KWAI_SCOPE" : "user_info,user_base" // 账号授权需要申请的scope权限，多个scope可以使用","分割，代表需要用户授权什么能力
         ]
     }
 
@@ -94,6 +98,13 @@ dependencies {
     // 抖音
     implementation 'com.bytedance.ies.ugc.aweme:opensdk-china-external:0.1.9.6'
     implementation 'com.bytedance.ies.ugc.aweme:opensdk-common:0.1.9.6'
+    //小米
+    implementation ("com.xiaomi.account:oauth-android:latest.release"){
+        exclude group: 'com.google.guava', module: 'guava'
+        exclude group: 'com.google.guava', module: 'listenablefuture'
+    }
+    //快手
+    implementation "com.github.kwaisocial:kwai-opensdk-withauth:3.0.4"
 
     implementation 'com.getui:gtsdk:3.2.13.0'  //个推SDK
     implementation 'com.getui:gtc:3.1.12.0'  //个推核心组件

@@ -9,6 +9,8 @@ dependencyResolutionManagement {
             url "https://mvn.getui.com/nexus/content/repositories/releases/"
         }
         maven { url 'https://artifact.bytedance.com/repository/AwemeOpenSDK' }
+        maven { url 'https://raw.githubusercontent.com/xiaomi-passport/maven-repository/master/releases' }
+        //maven { url 'https://gitlab.com/xiaomi-passport/maven-repository/raw/master/releases' }
     }
 }
 rootProject.name = "Guard"

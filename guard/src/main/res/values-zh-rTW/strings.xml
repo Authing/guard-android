@@ -144,6 +144,9 @@
     <string name="authing_login_by_dou_yin">使用 抖音 登錄</string>
     <string name="authing_login_by_github">使用 Github 登錄</string>
     <string name="authing_login_by_gitee">使用 Gitee 登錄</string>
+    <string name="authing_login_by_gitlab">使用 GitLab 登錄</string>
+    <string name="authing_login_by_xiaomi">使用 小米 登錄</string>
+    <string name="authing_login_by_kuai_shou">使用 快手 登錄</string>
     <string name="authing_login_by_finger">使用 指紋識別 登錄</string>
     <string name="authing_login_by_face">使用 人臉識別 登錄</string>
     <string name="authing_social_alipay">支付寶</string>
@@ -159,8 +162,11 @@
     <string name="authing_social_linkedin">Linkedin</string>
     <string name="authing_social_ding_talk">钉钉</string>
     <string name="authing_social_dou_yin">抖音</string>
-    <string name="authing_social_github">Github</string>
+    <string name="authing_social_github">GitHub</string>
     <string name="authing_social_gitee">Gitee</string>
+    <string name="authing_social_gitlab">GitLab</string>
+    <string name="authing_social_xiaomi">小米</string>
+    <string name="authing_social_kuai_shou">快手</string>
     <string name="authing_finger">指紋識別</string>
     <string name="authing_face">人臉識別</string>
     <string name="authing_get_code_again">重新發送驗證碼</string>

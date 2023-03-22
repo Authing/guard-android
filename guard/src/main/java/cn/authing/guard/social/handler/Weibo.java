@@ -64,7 +64,7 @@ public class Weibo extends SocialAuthenticator {
                 @Override
                 public void onComplete(Oauth2AccessToken token) {
                     ALog.i(TAG, "Auth onSuccess");
-                    login(context, token.getAccessToken(), callback);
+                    login(token.getAccessToken(), callback);
                 }
 
                 @Override

@@ -25,7 +25,6 @@ public class Github extends SocialAuthenticator {
     private String clientId;
     private String redirectUrl;
     private String scope = "user";
-    public static final int GITHUB_REQUEST = 2001;
     private AuthCallback<UserInfo> callback;
 
     private Github() {
@@ -35,13 +34,13 @@ public class Github extends SocialAuthenticator {
         return GithubInstanceHolder.mInstance;
     }
 
-    public void onActivityResult(Activity activity, int requestCode, int resultCode, @Nullable Intent data) {
-        if (requestCode == GITHUB_REQUEST && data != null) {
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        if (requestCode == Const.GITHUB_REQUEST && data != null) {
             if (resultCode == Activity.RESULT_OK && data.hasExtra("social_login")) {
                 ALog.i(TAG, "Auth onSuccess");
                 WebAuthUser user = data.getParcelableExtra("social_login");
                 if (user != null && user.getCode() != null) {
-                    login(activity, user.getCode(), callback);
+                    login(user.getCode(), callback);
                 }
             } else {
                 ALog.e(TAG, "Auth Failed, onError errorCode = " + data.getIntExtra("err_code", 0)
@@ -69,7 +68,7 @@ public class Github extends SocialAuthenticator {
                     .setClientID(clientId)
                     .setRedirectURI(redirectUrl)
                     .setScope(scope)
-                    .authenticate(GITHUB_REQUEST);
+                    .authenticate(Const.GITHUB_REQUEST);
         });
     }
 

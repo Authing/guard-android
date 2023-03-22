@@ -216,6 +216,18 @@ public class OIDCClient {
         AuthClient.loginByGitee(authRequest, authCode, callback);
     }
 
+    public void loginByGitLab(String authCode, @NotNull AuthCallback<UserInfo> callback) {
+        AuthClient.loginByGitLab(authRequest, authCode, callback);
+    }
+
+    public void loginByXiaomi(String authCode, @NotNull AuthCallback<UserInfo> callback) {
+        AuthClient.loginByXiaomi(authRequest, authCode, callback);
+    }
+
+    public void loginByKuaiShou(String authCode, @NotNull AuthCallback<UserInfo> callback) {
+        AuthClient.loginByKuaiShou(authRequest, authCode, callback);
+    }
+
     private static void error(Exception e, @NotNull AuthCallback<?> callback){
         e.printStackTrace();
         callback.call(Const.ERROR_CODE_10004, "JSON parse failed", null);

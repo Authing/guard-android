@@ -23,7 +23,7 @@ public class DouYin extends SocialAuthenticator {
 
     private static final String TAG = "DouYin";
     private String clientKey;
-    private String scope = "user_info,trial.whitelist";
+    private String scope;
     private String state;
     private String callerLocalEntry;
 
@@ -50,12 +50,11 @@ public class DouYin extends SocialAuthenticator {
             request.scope = scope;
             // 用于保持请求和回调的状态，授权请求后原样带回给第三方。
             //request.state = "ww";
-            if (state != null){
+            if (state != null) {
                 request.state = state;
             }
             // 第三方指定自定义的回调类 Activity
-            //request.callerLocalEntry = "cn.authing.guard.douyinapi.DouYinEntryActivity";
-            if (callerLocalEntry != null){
+            if (callerLocalEntry != null) {
                 request.callerLocalEntry = callerLocalEntry;
             }
             // 优先使用抖音app进行授权，如果抖音app因版本或者其他原因无法授权，则使用web页授权

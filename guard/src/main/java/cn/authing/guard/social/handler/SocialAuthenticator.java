@@ -18,7 +18,7 @@ public abstract class SocialAuthenticator extends BaseHandler {
 
     protected abstract void oidcLogin(String authCode, @NotNull AuthCallback<UserInfo> callback);
 
-    protected void login(Context context, String authCode, @NotNull AuthCallback<UserInfo> callback) {
+    protected void login(String authCode, @NotNull AuthCallback<UserInfo> callback) {
         callback.call(SocialLoginButton.AUTH_SUCCESS, "Auth success", null);
         Authing.AuthProtocol authProtocol = getAuthProtocol();
         if (authProtocol == Authing.AuthProtocol.EInHouse) {

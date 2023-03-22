@@ -7,7 +7,6 @@ import android.content.Intent;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-
 import org.jetbrains.annotations.NotNull;
 
 import cn.authing.guard.AuthCallback;
@@ -26,7 +25,6 @@ public class Linkedin extends SocialAuthenticator {
     private String appKey; // 应用的APP_KEY
     private String redirectUrl; // 应用的回调页
     private String scope = "r_liteprofile%20r_emailaddress";
-    public static final int LINKEDIN_REQUEST = 2000;
     private AuthCallback<UserInfo> callback;
 
     private Linkedin() {
@@ -36,18 +34,18 @@ public class Linkedin extends SocialAuthenticator {
         return LinkedinInstanceHolder.mInstance;
     }
 
-    public void onActivityResult(Activity activity, int requestCode, int resultCode, @Nullable Intent data) {
-        if (requestCode == LINKEDIN_REQUEST && data != null) {
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        if (requestCode == Const.LINKEDIN_REQUEST && data != null) {
             if (resultCode == Activity.RESULT_OK && data.hasExtra("social_login")) {
                 ALog.i(TAG, "Auth onSuccess");
                 WebAuthUser user = data.getParcelableExtra("social_login");
                 if (user != null && user.getCode() != null) {
-                    login(activity, user.getCode(), callback);
+                    login(user.getCode(), callback);
                 }
             } else {
                 ALog.e(TAG, "Auth Failed, onError errorCode = " + data.getIntExtra("err_code", 0)
                         + " errorMsg = " + data.getStringExtra("err_message"));
-                if (callback != null){
+                if (callback != null) {
                     callback.call(Const.ERROR_CODE_10015, "Login by Linkedin failed", null);
                 }
             }
@@ -70,7 +68,7 @@ public class Linkedin extends SocialAuthenticator {
                     .setClientID(appKey)
                     .setRedirectURI(redirectUrl)
                     .setScope(scope)
-                    .authenticate(LINKEDIN_REQUEST);
+                    .authenticate(Const.LINKEDIN_REQUEST);
         });
     }
 

@@ -53,7 +53,6 @@ import cn.authing.guard.flow.AuthFlow;
 import cn.authing.guard.internal.ContinueWithTextView;
 import cn.authing.guard.network.AuthClient;
 import cn.authing.guard.network.OIDCClient;
-import cn.authing.guard.social.handler.SocialAuthenticator;
 import cn.authing.guard.social.SocialLoginListView;
 import cn.authing.guard.util.ALog;
 import cn.authing.guard.util.Const;
@@ -384,6 +383,13 @@ public class OneClick extends SocialAuthenticator implements Serializable {
             callback.call(code, message, userInfo);
         }));
         socialRel.addView(slv);
+        slv.post(() -> {
+            int measureHeight = slv.getMeasuredHeight();
+            if (measureHeight > Const.SOCIAL_DIALOG_MAX_HEIGHT){
+                LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) slv.getLayoutParams();
+                layoutParams.height = Const.SOCIAL_DIALOG_MAX_HEIGHT;
+            }
+        });
         return socialRel;
     }
 

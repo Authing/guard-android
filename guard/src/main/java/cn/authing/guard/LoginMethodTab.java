@@ -90,7 +90,8 @@ public class LoginMethodTab extends RelativeLayout {
         }
 
         List<String> loginTabList = config.getLoginTabList();
-        if (loginTabList == null || loginTabList.size() == 0) {
+        if (loginTabList == null || loginTabList.size() == 0
+                || (loginTabList.size() == 1 && loginTabList.contains("app-qrcode"))) {
             if (getContext() instanceof AuthActivity) {
                 List<SocialConfig> socialConfigs = config.getSocialConfigs();
                 if (socialConfigs == null || socialConfigs.size() == 0){

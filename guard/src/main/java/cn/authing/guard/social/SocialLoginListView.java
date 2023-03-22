@@ -7,7 +7,9 @@ import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
@@ -21,25 +23,10 @@ import cn.authing.guard.R;
 import cn.authing.guard.data.SocialConfig;
 import cn.authing.guard.data.UserInfo;
 import cn.authing.guard.internal.ContinueWithTextView;
-import cn.authing.guard.social.view.AlipayLoginButton;
-import cn.authing.guard.social.view.BaiduLoginButton;
-import cn.authing.guard.social.view.DingTalkLoginButton;
-import cn.authing.guard.social.view.DouYinLoginButton;
-import cn.authing.guard.social.view.FaceBookLoginButton;
-import cn.authing.guard.social.view.FingerLoginButton;
-import cn.authing.guard.social.view.GiteeLoginButton;
-import cn.authing.guard.social.view.GithubLoginButton;
-import cn.authing.guard.social.view.GoogleLoginButton;
-import cn.authing.guard.social.view.LarkLoginButton;
-import cn.authing.guard.social.view.LinkedinLoginButton;
 import cn.authing.guard.social.view.MoreLoginButton;
-import cn.authing.guard.social.view.QQLoginButton;
 import cn.authing.guard.social.view.SocialLoginButton;
-import cn.authing.guard.social.view.WeComLoginButton;
-import cn.authing.guard.social.view.WechatLoginButton;
-import cn.authing.guard.social.view.WechatMiniProgramLoginButton;
-import cn.authing.guard.social.view.WeiboLoginButton;
 import cn.authing.guard.util.Const;
+import cn.authing.guard.util.SocialUtils;
 import cn.authing.guard.util.SystemUtil;
 import cn.authing.guard.util.Util;
 
@@ -93,15 +80,21 @@ public class SocialLoginListView extends LinearLayout {
             addView(continueWithTextView);
         }
 
+        ScrollView scrollView = new ScrollView(getContext());
+        LayoutParams scrollParams = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
+        scrollView.setLayoutParams(scrollParams);
+        scrollView.setVerticalScrollBarEnabled(false);
+        addView(scrollView);
+
         socialLinearLayout = new LinearLayout(getContext());
-        LayoutParams layoutParams = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
+        FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(LayoutParams.MATCH_PARENT, 400);
         if (showSingleLine) {
             layoutParams.topMargin = (int) Util.dp2px(getContext(), 16);
         }
         socialLinearLayout.setLayoutParams(layoutParams);
         socialLinearLayout.setOrientation(showSingleLine ? HORIZONTAL : VERTICAL);
         socialLinearLayout.setGravity(Gravity.CENTER);
-        addView(socialLinearLayout);
+        scrollView.addView(socialLinearLayout);
 
         if ("auto".equals(src)) {
             Authing.getPublicConfig((config -> {
@@ -110,12 +103,12 @@ public class SocialLoginListView extends LinearLayout {
                 }
                 List<String> types = new ArrayList<>();
                 List<String> livingAuthSortConfig = config.getLivingAuthSortConfig();
-                if (livingAuthSortConfig != null && !livingAuthSortConfig.isEmpty()){
+                if (livingAuthSortConfig != null && !livingAuthSortConfig.isEmpty()) {
                     for (int i = 0, n = livingAuthSortConfig.size(); i < n; i++) {
                         String type = livingAuthSortConfig.get(i);
                         if (Const.TYPE_FINGER.equals(type)
                                 && config.isEnableFingerprintLogin()
-                                && SystemUtil.isHardwareDetected(getContext())){
+                                && SystemUtil.isHardwareDetected(getContext())) {
                             types.add(type);
                         }
 //                        if (Const.TYPE_FACE.equals(type) && config.isEnableFaceLogin()){
@@ -124,7 +117,7 @@ public class SocialLoginListView extends LinearLayout {
                     }
                 } else {
                     if (config.isEnableFingerprintLogin()
-                            && SystemUtil.isHardwareDetected(getContext())){
+                            && SystemUtil.isHardwareDetected(getContext())) {
                         types.add(Const.TYPE_FINGER);
                     }
 //                    if (config.isEnableFaceLogin()){
@@ -133,97 +126,19 @@ public class SocialLoginListView extends LinearLayout {
                 }
 
                 List<SocialConfig> socialConfigs = config.getSocialConfigs();
-                if (socialConfigs != null && !socialConfigs.isEmpty()){
+                if (socialConfigs != null && !socialConfigs.isEmpty()) {
                     for (int i = 0, n = socialConfigs.size(); i < n; i++) {
                         SocialConfig sc = socialConfigs.get(i);
-                        if (sc.getType() != null){
+                        if (sc.getType() != null) {
                             types.add(sc.getType());
                         }
                     }
                 }
-                addSocialList(parsSource(types));
+                addSocialList(SocialUtils.parsSource(types));
             }));
         } else {
             addSocialList(src);
         }
-    }
-
-    private String parsSource(List<String> types) {
-        StringBuilder sb = new StringBuilder();
-        if (types.contains(Const.EC_TYPE_WECHAT)){
-            sb.append(Const.TYPE_WECHAT);
-            sb.append("|");
-        }
-        if (types.contains(Const.EC_TYPE_ALIPAY)){
-            sb.append(Const.TYPE_ALIPAY);
-            sb.append("|");
-        }
-        if (types.contains(Const.EC_TYPE_GOOGLE)){
-            sb.append(Const.TYPE_GOOGLE);
-            sb.append("|");
-        }
-        if (types.contains(Const.EC_TYPE_WECHAT_COM)){
-            sb.append(Const.TYPE_WECHAT_COM);
-            sb.append("|");
-        }
-        if (types.contains(Const.EC_TYPE_WECHAT_COM_AGENCY)){
-            sb.append(Const.TYPE_WECHAT_COM_AGENCY);
-            sb.append("|");
-        }
-        if (types.contains(Const.EC_TYPE_LARK_INTERNAL)
-                || types.contains(Const.EC_TYPE_LARK_PUBLIC)){
-            sb.append(Const.TYPE_LARK);
-            sb.append("|");
-        }
-        if (types.contains(Const.EC_TYPE_FACEBOOK)){
-            sb.append(Const.TYPE_FACEBOOK);
-            sb.append("|");
-        }
-        if (types.contains(Const.EC_TYPE_WECHAT_MINI_PROGRAM)){
-            sb.append(Const.TYPE_WECHAT_MINI_PROGRAM);
-            sb.append("|");
-        }
-        if (types.contains(Const.TYPE_FINGER)){
-            sb.append(Const.TYPE_FINGER);
-            sb.append("|");
-        }
-        if (types.contains(Const.EC_TYPE_QQ)){
-            sb.append(Const.TYPE_QQ);
-            sb.append("|");
-        }
-        if (types.contains(Const.EC_TYPE_WEIBO)){
-            sb.append(Const.TYPE_WEIBO);
-            sb.append("|");
-        }
-        if (types.contains(Const.EC_TYPE_BAIDU)){
-            sb.append(Const.TYPE_BAIDU);
-            sb.append("|");
-        }
-        if (types.contains(Const.EC_TYPE_LINKEDIN)){
-            sb.append(Const.TYPE_LINKEDIN);
-            sb.append("|");
-        }
-        if (types.contains(Const.EC_TYPE_DING_TALK)){
-            sb.append(Const.TYPE_DING_TALK);
-            sb.append("|");
-        }
-        if (types.contains(Const.EC_TYPE_DOU_YIN)){
-            sb.append(Const.TYPE_DOU_YIN);
-            sb.append("|");
-        }
-        if (types.contains(Const.EC_TYPE_GITHUB)){
-            sb.append(Const.TYPE_GITHUB);
-            sb.append("|");
-        }
-        if (types.contains(Const.EC_TYPE_GITEE)){
-            sb.append(Const.TYPE_GITEE);
-            sb.append("|");
-        }
-        String socialString = sb.toString();
-        if (socialString.endsWith("|")){
-            socialString = socialString.substring(0, socialString.length() - 1);
-        }
-        return socialString;
     }
 
     private void addSocialList(String src) {
@@ -244,7 +159,7 @@ public class SocialLoginListView extends LinearLayout {
             if (added == 3) {
                 button = new MoreLoginButton(getContext());
             } else {
-                button = getSocialButton(src);
+                button = SocialUtils.getSocialButton(src, getContext());
             }
 
             if (button == null) {
@@ -272,7 +187,7 @@ public class SocialLoginListView extends LinearLayout {
             }
 
             LinearLayout itemLayout = getSocialItemLayout();
-            SocialLoginButton button = getSocialButton(src);
+            SocialLoginButton button = SocialUtils.getSocialButton(src, getContext());
             if (button == null) {
                 continue;
             }
@@ -286,63 +201,6 @@ public class SocialLoginListView extends LinearLayout {
                 socialLinearLayout.addView(linearLayout);
             }
         }
-    }
-
-    private SocialLoginButton getSocialButton(String src) {
-        SocialLoginButton button = null;
-        switch (src) {
-            case Const.TYPE_WECHAT:
-                button = new WechatLoginButton(getContext());
-                break;
-            case Const.TYPE_ALIPAY:
-                button = new AlipayLoginButton(getContext());
-                break;
-            case Const.TYPE_WECHAT_COM:
-            case Const.TYPE_WECHAT_COM_AGENCY:
-                button = new WeComLoginButton(getContext());
-                button.setType(src);
-                break;
-            case Const.TYPE_LARK:
-                button = new LarkLoginButton(getContext());
-                break;
-            case Const.TYPE_GOOGLE:
-                button = new GoogleLoginButton(getContext());
-                break;
-            case Const.TYPE_FACEBOOK:
-                button = new FaceBookLoginButton(getContext());
-                break;
-            case Const.TYPE_WECHAT_MINI_PROGRAM:
-                button = new WechatMiniProgramLoginButton(getContext());
-                break;
-            case Const.TYPE_FINGER:
-                button = new FingerLoginButton(getContext());
-                break;
-            case Const.TYPE_QQ:
-                button = new QQLoginButton(getContext());
-                break;
-            case Const.TYPE_WEIBO:
-                button = new WeiboLoginButton(getContext());
-                break;
-            case Const.TYPE_BAIDU:
-                button = new BaiduLoginButton(getContext());
-                break;
-            case Const.TYPE_LINKEDIN:
-                button = new LinkedinLoginButton(getContext());
-                break;
-            case Const.TYPE_DING_TALK:
-                button = new DingTalkLoginButton(getContext());
-                break;
-            case Const.TYPE_DOU_YIN:
-                button = new DouYinLoginButton(getContext());
-                break;
-            case Const.TYPE_GITHUB:
-                button = new GithubLoginButton(getContext());
-                break;
-            case Const.TYPE_GITEE:
-                button = new GiteeLoginButton(getContext());
-                break;
-        }
-        return button;
     }
 
     private void setSocialButtonParams(SocialLoginButton button) {
@@ -375,7 +233,7 @@ public class SocialLoginListView extends LinearLayout {
     private TextView getSocialItemTextView(String src) {
         TextView textView = new TextView(getContext());
         LinearLayout.LayoutParams params = new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
-        params.topMargin = (int)Util.dp2px(getContext(), 4);
+        params.topMargin = (int) Util.dp2px(getContext(), 4);
         textView.setLayoutParams(params);
         textView.setGravity(Gravity.CENTER);
         textView.setTextColor(getContext().getColor(R.color.authing_text_gray));
@@ -383,58 +241,7 @@ public class SocialLoginListView extends LinearLayout {
                 getContext().getResources().getDimension(R.dimen.authing_text_small_size));
         textView.setSingleLine();
         textView.setEllipsize(TextUtils.TruncateAt.END);
-        String title = "";
-        switch (src) {
-            case Const.TYPE_WECHAT:
-                title = getContext().getString(R.string.authing_social_wechat);
-                break;
-            case Const.TYPE_ALIPAY:
-                title = getContext().getString(R.string.authing_social_alipay);
-                break;
-            case Const.TYPE_WECHAT_COM:
-            case Const.TYPE_WECHAT_COM_AGENCY:
-                title = getContext().getString(R.string.authing_social_we_com);
-                break;
-            case Const.TYPE_LARK:
-                title = getContext().getString(R.string.authing_social_lark);
-                break;
-            case Const.TYPE_GOOGLE:
-                title = getContext().getString(R.string.authing_social_google);
-                break;
-            case Const.TYPE_FACEBOOK:
-                title = getContext().getString(R.string.authing_social_facebook);
-                break;
-            case Const.TYPE_WECHAT_MINI_PROGRAM:
-                title = getContext().getString(R.string.authing_social_wechat_miniprogram);
-                break;
-            case Const.TYPE_QQ:
-                title = getContext().getString(R.string.authing_social_qq);
-                break;
-            case Const.TYPE_WEIBO:
-                title = getContext().getString(R.string.authing_social_weibo);
-                break;
-            case Const.TYPE_BAIDU:
-                title = getContext().getString(R.string.authing_social_baidu);
-                break;
-            case Const.TYPE_LINKEDIN:
-                title = getContext().getString(R.string.authing_social_linkedin);
-                break;
-            case Const.TYPE_DING_TALK:
-                title = getContext().getString(R.string.authing_social_ding_talk);
-                break;
-            case Const.TYPE_DOU_YIN:
-                title = getContext().getString(R.string.authing_social_dou_yin);
-                break;
-            case Const.TYPE_GITHUB:
-                title = getContext().getString(R.string.authing_social_github);
-                break;
-            case Const.TYPE_GITEE:
-                title = getContext().getString(R.string.authing_social_gitee);
-                break;
-            case Const.TYPE_FINGER:
-                title = getContext().getString(R.string.authing_finger);
-                break;
-        }
+        String title = SocialUtils.getSocialButtonTitle(getContext(), src);
         textView.setText(title);
         return textView;
     }

@@ -40,11 +40,12 @@ dependencies {
     implementation "com.squareup.okhttp3:okhttp:4.9.2"
     implementation "androidx.biometric:biometric:1.1.0"
 
-    compileOnly 'io.github.yidun:quicklogin:3.2.4'
-    compileOnly 'com.tencent.mm.opensdk:wechat-sdk-android:6.8.0'
     compileOnly files('libs/lib_wwapi-2.0.12.11.aar')
     compileOnly files('libs/alipaysdk.aar')
     compileOnly files('libs/larksso-3.0.8.aar')
+    compileOnly files('libs/baidu-android-openapi-sdk.jar')
+    compileOnly 'io.github.yidun:quicklogin:3.2.4'
+    compileOnly 'com.tencent.mm.opensdk:wechat-sdk-android:6.8.0'
     compileOnly 'com.google.android.gms:play-services-auth:20.2.0'
     compileOnly 'com.getui:gtsdk:3.2.13.0'  //个推SDK
     compileOnly 'com.getui:gtc:3.1.12.0'  //个推核心组件
@@ -52,10 +53,15 @@ dependencies {
     compileOnly 'cn.authing:authing-android-webauthn:1.0.0'
     compileOnly 'com.tencent.tauth:qqopensdk:3.52.0'
     compileOnly 'io.github.sinaweibosdk:core:12.5.0@aar'
-    compileOnly files('libs/baidu-android-openapi-sdk.jar')
     compileOnly 'com.alibaba.android:ddopenauth:1.5.0.8'
     compileOnly 'com.alibaba.android:ddsharesdk:1.1.0'
     compileOnly 'com.bytedance.ies.ugc.aweme:opensdk-china-external:0.1.9.6'
     compileOnly 'com.bytedance.ies.ugc.aweme:opensdk-common:0.1.9.6'
+    compileOnly ("com.xiaomi.account:oauth-android:latest.release"){
+        exclude group: 'com.google.guava', module: 'guava'
+        exclude group: 'com.google.guava', module: 'listenablefuture'
+    }
+    compileOnly "com.github.kwaisocial:kwai-opensdk-withauth:3.0.4"
+
 
 }

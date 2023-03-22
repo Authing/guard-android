@@ -53,7 +53,7 @@ public class Lark extends SocialAuthenticator {
                         return;
                     }
                     ALog.i(TAG, "Auth success");
-                    login(context, callBackData.code, callback);
+                    login(callBackData.code, callback);
                 }
 
                 @Override

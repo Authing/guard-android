@@ -102,7 +102,7 @@ public class QQ extends SocialAuthenticator {
                 String expires = obj.getString("expires_in");
                 mTencent.setOpenId(openID);
                 mTencent.setAccessToken(accessToken, expires);
-                mInstance.login(context, accessToken, callback);
+                mInstance.login(accessToken, callback);
             } catch (JSONException e) {
                 e.printStackTrace();
             }

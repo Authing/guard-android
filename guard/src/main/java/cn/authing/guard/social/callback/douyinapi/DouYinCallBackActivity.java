@@ -32,7 +32,9 @@ public class DouYinCallBackActivity extends Activity implements IApiEventHandler
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         DouYinOpenApi douYinOpenApi = DouYinOpenApiFactory.create(this);
-        douYinOpenApi.handleIntent(getIntent(), this);
+        if (douYinOpenApi != null){
+            douYinOpenApi.handleIntent(getIntent(), this);
+        }
     }
 
     @Override

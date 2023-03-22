@@ -59,7 +59,7 @@ public class Baidu extends SocialAuthenticator {
                     } else {
                         access_token = baidu.getAccessToken();
                     }
-                    login(context, access_token, callback);
+                    login(access_token, callback);
                 }
 
                 @Override

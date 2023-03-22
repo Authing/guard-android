@@ -41,6 +41,10 @@ public class Const {
     public final static int ERROR_CODE_10016 = 10016; // 钉钉 auth failed
     public final static int ERROR_CODE_10017 = 10017; // 抖音 auth failed
     public final static int ERROR_CODE_10018 = 10018; // Github auth failed
+    public final static int ERROR_CODE_10019 = 10019; // Gitee auth failed
+    public final static int ERROR_CODE_10020 = 10020; // GitLab auth failed
+    public final static int ERROR_CODE_10021 = 10020; // 小米 auth failed
+    public final static int ERROR_CODE_10022 = 10021; // 快手 auth failed
 
     // mfa
     public static final String MFA_POLICY_SMS = "SMS";
@@ -67,6 +71,9 @@ public class Const {
     public static final String EC_TYPE_DOU_YIN = "douyin:mobile";
     public static final String EC_TYPE_GITHUB= "github:mobile";
     public static final String EC_TYPE_GITEE= "gitee:mobile";
+    public static final String EC_TYPE_GITLAB= "gitlab:mobile";
+    public static final String EC_TYPE_XIAOMI= "xiaomi:mobile";
+    public static final String EC_TYPE_KUAI_SHOU= "kuaishou:mobile";
 
     public static final String TYPE_WECHAT = "wechat";
     public static final String TYPE_WECHAT_MINI_PROGRAM = "wechat-miniprogram";
@@ -85,13 +92,22 @@ public class Const {
     public static final String TYPE_DOU_YIN = "douyin";
     public static final String TYPE_GITHUB = "github";
     public static final String TYPE_GITEE = "gitee";
+    public static final String TYPE_GITLAB = "gitlab";
+    public static final String TYPE_XIAOMI = "xiaomi";
+    public static final String TYPE_KUAI_SHOU = "kuaishou";
     public static final String TYPE_FACE = "face";
 
     // network
     public static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
     public static final MediaType FORM = MediaType.parse("application/x-www-form-urlencoded; charset=utf-8");
 
-
+    // request code
     public static final int REQUEST_CODE_QR = 101;
     public static final int REQUEST_MFA_BINDING = 102;
+    public static final int LINKEDIN_REQUEST = 2000;
+    public static final int GITHUB_REQUEST = 2001;
+    public static final int GITEE_REQUEST = 2002;
+    public static final int GITLAB_REQUEST = 2003;
+
+    public static final int SOCIAL_DIALOG_MAX_HEIGHT = 800;
 }

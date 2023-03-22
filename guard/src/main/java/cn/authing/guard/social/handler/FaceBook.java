@@ -51,7 +51,7 @@ public class FaceBook extends SocialAuthenticator {
                     @Override
                     public void onSuccess(LoginResult loginResult) {
                         ALog.i(TAG, "Auth onSuccess");
-                        login(context, loginResult.getAccessToken().getToken(), callback);
+                        login(loginResult.getAccessToken().getToken(), callback);
                     }
 
                     @Override

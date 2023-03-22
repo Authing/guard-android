@@ -87,7 +87,7 @@ public class Alipay extends SocialAuthenticator {
         }
         ALog.i(TAG, "Auth success");
         String code = bundle.get("auth_code").toString();
-        login(context, code, callback);
+        login(code, callback);
     }
 
     @Override

@@ -19,23 +19,23 @@ import cn.authing.guard.social.web.helpers.WebAuthUser;
 import cn.authing.guard.util.ALog;
 import cn.authing.guard.util.Const;
 
-public class Gitee extends SocialAuthenticator {
+public class GitLab extends SocialAuthenticator {
 
-    private static final String TAG = "Gitee";
-    private String clientId;
+    private static final String TAG = "GitLab";
+    private String appId;
     private String redirectUrl;
-    private String scope = "user_info emails";
+    private String scope = "read_user openid profile email";
     private AuthCallback<UserInfo> callback;
 
-    private Gitee() {
+    private GitLab() {
     }
 
-    public static Gitee getInstance() {
-        return GithubInstanceHolder.mInstance;
+    public static GitLab getInstance() {
+        return GitLibInstanceHolder.mInstance;
     }
 
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        if (requestCode == Const.GITEE_REQUEST && data != null) {
+        if (requestCode == Const.GITLAB_REQUEST && data != null) {
             if (resultCode == Activity.RESULT_OK && data.hasExtra("social_login")) {
                 ALog.i(TAG, "Auth onSuccess");
                 WebAuthUser user = data.getParcelableExtra("social_login");
@@ -46,7 +46,7 @@ public class Gitee extends SocialAuthenticator {
                 ALog.e(TAG, "Auth Failed, onError errorCode = " + data.getIntExtra("err_code", 0)
                         + " errorMsg = " + data.getStringExtra("err_message"));
                 if (callback != null) {
-                    callback.call(Const.ERROR_CODE_10019, "Login by Gitee failed", null);
+                    callback.call(Const.ERROR_CODE_10020, "Login by GitLab failed", null);
                 }
             }
         }
@@ -56,42 +56,42 @@ public class Gitee extends SocialAuthenticator {
     public void login(Context context, @NotNull AuthCallback<UserInfo> callback) {
         this.callback = callback;
         Authing.getPublicConfig(config -> {
-            if (clientId == null && config != null) {
-                clientId = config.getSocialClientId(Const.EC_TYPE_GITEE);
+            if (appId == null && config != null) {
+                appId = config.getSocialClientId(Const.EC_TYPE_GITLAB);
             }
             if (redirectUrl == null && config != null) {
-                redirectUrl = config.getSocialRedirectUrl(Const.EC_TYPE_GITEE);
+                redirectUrl = config.getSocialRedirectUrl(Const.EC_TYPE_GITLAB);
             }
             WebAuthBuilder.getInstance((Activity) context)
-                    .setAuthorizationUrl("https://gitee.com/oauth/authorize")
-                    .setAccessTokenUrl("https://gitee.com/oauth/token")
-                    .setClientID(clientId)
+                    .setAuthorizationUrl("https://gitlab.com/oauth/authorize")
+                    .setAccessTokenUrl("https://gitlab.com/oauth/token")
+                    .setClientID(appId)
                     .setRedirectURI(redirectUrl)
                     .setScope(scope)
-                    .authenticate(Const.GITEE_REQUEST);
+                    .authenticate(Const.GITLAB_REQUEST);
         });
     }
 
     @Override
     protected void standardLogin(String authCode, @NonNull AuthCallback<UserInfo> callback) {
-        AuthClient.loginByGitee(authCode, callback);
+        AuthClient.loginByGitLab(authCode, callback);
     }
 
     @Override
     protected void oidcLogin(String authCode, @NonNull AuthCallback<UserInfo> callback) {
-        new OIDCClient().loginByGitee(authCode, callback);
+        new OIDCClient().loginByGitLab(authCode, callback);
     }
 
-    private static final class GithubInstanceHolder {
-        static final Gitee mInstance = new Gitee();
+    private static final class GitLibInstanceHolder {
+        static final GitLab mInstance = new GitLab();
     }
 
-    public String getClientId() {
-        return clientId;
+    public String getAppId() {
+        return appId;
     }
 
-    public void setClientId(String clientId) {
-        this.clientId = clientId;
+    public void setAppId(String appId) {
+        this.appId = appId;
     }
 
     public String getRedirectUrl() {

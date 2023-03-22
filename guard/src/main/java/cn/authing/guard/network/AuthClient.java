@@ -785,6 +785,69 @@ public class AuthClient {
         });
     }
 
+    public static void loginByGitLab(String authCode, @NotNull AuthCallback<UserInfo> callback) {
+        loginByGitLab(null, authCode, callback);
+    }
+
+    public static void loginByGitLab(AuthRequest authData, String authCode, @NotNull AuthCallback<UserInfo> callback) {
+        Authing.getPublicConfig(config -> {
+            try {
+                JSONObject body = new JSONObject();
+                String connId = config != null ? config.getSocialConnectionId(Const.EC_TYPE_GITLAB) : "";
+                body.put("connId", connId);
+                body.put("code", authCode);
+                String endpoint = "/api/v2/ecConn/gitlab/authByCode";
+                Guardian.post(endpoint, body, (data)-> {
+                    startOidcInteraction(authData, data, callback);
+                });
+            } catch (Exception e) {
+                error(e, callback);
+            }
+        });
+    }
+
+    public static void loginByXiaomi(String authCode, @NotNull AuthCallback<UserInfo> callback) {
+        loginByXiaomi(null, authCode, callback);
+    }
+
+    public static void loginByXiaomi(AuthRequest authData, String authCode, @NotNull AuthCallback<UserInfo> callback) {
+        Authing.getPublicConfig(config -> {
+            try {
+                JSONObject body = new JSONObject();
+                String connId = config != null ? config.getSocialConnectionId(Const.EC_TYPE_XIAOMI) : "";
+                body.put("connId", connId);
+                body.put("code", authCode);
+                String endpoint = "/api/v2/ecConn/xiaomi/authByCode";
+                Guardian.post(endpoint, body, (data)-> {
+                    startOidcInteraction(authData, data, callback);
+                });
+            } catch (Exception e) {
+                error(e, callback);
+            }
+        });
+    }
+
+    public static void loginByKuaiShou(String authCode, @NotNull AuthCallback<UserInfo> callback) {
+        loginByKuaiShou(null, authCode, callback);
+    }
+
+    public static void loginByKuaiShou(AuthRequest authData, String authCode, @NotNull AuthCallback<UserInfo> callback) {
+        Authing.getPublicConfig(config -> {
+            try {
+                JSONObject body = new JSONObject();
+                String connId = config != null ? config.getSocialConnectionId(Const.EC_TYPE_KUAI_SHOU) : "";
+                body.put("connId", connId);
+                body.put("code", authCode);
+                String endpoint = "/api/v2/ecConn/kuaishou/authByCode";
+                Guardian.post(endpoint, body, (data)-> {
+                    startOidcInteraction(authData, data, callback);
+                });
+            } catch (Exception e) {
+                error(e, callback);
+            }
+        });
+    }
+
     public static void loginByOneAuth(String token, String accessToken, @NotNull AuthCallback<UserInfo> callback) {
         loginByOneAuth(null, token, accessToken, 0, callback);
     }

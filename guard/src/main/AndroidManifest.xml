@@ -8,14 +8,12 @@
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.USE_FINGERPRINT" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-
     <!--设备信息-->
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.READ_PRIVILEGED_PHONE_STATE"
         tools:ignore="ProtectedPermissions" />
     <uses-permission android:name="android.permission.LOCAL_MAC_ADDRESS"
         tools:ignore="ProtectedPermissions" />
-
     <!--推送-->
     <!-- iBeancon 功能所需权限 -->
     <uses-permission android:name="android.permission.BLUETOOTH"/>
@@ -24,7 +22,6 @@
     <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-
 
     <application>
         <activity
@@ -100,6 +97,7 @@
             android:configChanges="orientation|keyboardHidden"
             android:screenOrientation="behind"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+        <activity android:name="com.xiaomi.account.openauth.AuthorizeActivity" />
 
         <service android:name=".push.GuardPushServer"
             android:exported="false"
@@ -142,6 +140,11 @@
         <!--允许查询抖音和抖音极速版的软件包信息-->
         <package android:name="com.ss.android.ugc.aweme" />
         <package android:name="com.ss.android.ugc.aweme.lite" />
+    </queries>
+
+    <queries>
+        <package android:name="com.smile.gifmaker"/>
+        <package android:name="com.kuaishou.nebula"/>
     </queries>
 
 </manifest>

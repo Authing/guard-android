@@ -54,7 +54,7 @@ public class DingTalk extends SocialAuthenticator {
         if (!TextUtils.isEmpty(authCode)) {
             // 授权成功
             ALog.i(TAG, "Auth onSuccess");
-            login(context, authCode, callback);
+            login(authCode, callback);
         } else {
             // 授权失败
             ALog.e(TAG, "Auth Failed, errorMessage is" + error);
