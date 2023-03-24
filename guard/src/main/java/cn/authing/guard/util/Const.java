@@ -6,7 +6,7 @@ public class Const {
     public final static String NS_ANDROID = "http://schemas.android.com/apk/res/android";
 
     public static final String SDK_TAG = "Guard-Android@";
-    public static final String SDK_VERSION = "1.5.3";
+    public static final String SDK_VERSION = "1.5.4";
 
     // error code
     public final static int EC_MFA_REQUIRED = 1636;
@@ -43,8 +43,8 @@ public class Const {
     public final static int ERROR_CODE_10018 = 10018; // Github auth failed
     public final static int ERROR_CODE_10019 = 10019; // Gitee auth failed
     public final static int ERROR_CODE_10020 = 10020; // GitLab auth failed
-    public final static int ERROR_CODE_10021 = 10020; // 小米 auth failed
-    public final static int ERROR_CODE_10022 = 10021; // 快手 auth failed
+    public final static int ERROR_CODE_10021 = 10021; // 小米 auth failed
+    public final static int ERROR_CODE_10022 = 10022; // 快手 auth failed
 
     // mfa
     public static final String MFA_POLICY_SMS = "SMS";
