@@ -228,6 +228,10 @@ public class OIDCClient {
         AuthClient.loginByKuaiShou(authRequest, authCode, callback);
     }
 
+    public void loginByLine(String accessToken, String idToken, @NotNull AuthCallback<UserInfo> callback) {
+        AuthClient.loginByLine(authRequest, accessToken, idToken, callback);
+    }
+
     private static void error(Exception e, @NotNull AuthCallback<?> callback){
         e.printStackTrace();
         callback.call(Const.ERROR_CODE_10004, "JSON parse failed", null);

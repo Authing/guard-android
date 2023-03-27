@@ -33,6 +33,7 @@ import cn.authing.guard.social.handler.Gitee;
 import cn.authing.guard.social.handler.Github;
 import cn.authing.guard.social.handler.GitLab;
 import cn.authing.guard.social.handler.Google;
+import cn.authing.guard.social.handler.Line;
 import cn.authing.guard.social.handler.Linkedin;
 import cn.authing.guard.social.handler.QQ;
 import cn.authing.guard.social.handler.Weibo;
@@ -154,6 +155,7 @@ public class AuthActivity extends AppCompatActivity {
         Github.getInstance().onActivityResult(requestCode, resultCode, data);
         Gitee.getInstance().onActivityResult(requestCode, resultCode, data);
         GitLab.getInstance().onActivityResult(requestCode, resultCode, data);
+        Line.getInstance().onActivityResult(requestCode, resultCode, data);
         if (resultCode == BIOMETRIC_BIND_OK){
             Util.biometricBind(this);
         }

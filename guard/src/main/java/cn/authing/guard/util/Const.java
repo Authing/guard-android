@@ -45,6 +45,7 @@ public class Const {
     public final static int ERROR_CODE_10020 = 10020; // GitLab auth failed
     public final static int ERROR_CODE_10021 = 10021; // 小米 auth failed
     public final static int ERROR_CODE_10022 = 10022; // 快手 auth failed
+    public final static int ERROR_CODE_10023 = 10023; // Line auth failed
 
     // mfa
     public static final String MFA_POLICY_SMS = "SMS";
@@ -74,6 +75,7 @@ public class Const {
     public static final String EC_TYPE_GITLAB= "gitlab:mobile";
     public static final String EC_TYPE_XIAOMI= "xiaomi:mobile";
     public static final String EC_TYPE_KUAI_SHOU= "kuaishou:mobile";
+    public static final String EC_TYPE_LINE= "line:mobile";
 
     public static final String TYPE_WECHAT = "wechat";
     public static final String TYPE_WECHAT_MINI_PROGRAM = "wechat-miniprogram";
@@ -95,6 +97,7 @@ public class Const {
     public static final String TYPE_GITLAB = "gitlab";
     public static final String TYPE_XIAOMI = "xiaomi";
     public static final String TYPE_KUAI_SHOU = "kuaishou";
+    public static final String TYPE_LINE = "line";
     public static final String TYPE_FACE = "face";
 
     // network
@@ -108,6 +111,7 @@ public class Const {
     public static final int GITHUB_REQUEST = 2001;
     public static final int GITEE_REQUEST = 2002;
     public static final int GITLAB_REQUEST = 2003;
+    public static final int LINE_REQUEST = 2004;
 
     public static final int SOCIAL_DIALOG_MAX_HEIGHT = 800;
 }

@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 
 import com.igexin.sdk.PushManager;
+import com.kwai.auth.KwaiAuthAPI;
 
 import cn.authing.guard.Authing;
 
@@ -59,6 +60,7 @@ public class App extends android.app.Application {
 
         Authing.init(getApplicationContext(), appid);
         Authing.setAuthProtocol(Authing.AuthProtocol.EOIDC);
+        KwaiAuthAPI.init(this);
 
         PushManager.getInstance().initialize(this);
 //        PushManager.getInstance().setDebugLogger(this, new IUserLoggerInterface() {

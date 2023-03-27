@@ -13,6 +13,7 @@ public class SocialConfig {
     private String appKey;
     private String redirectUrl;
     private String clientKey;
+    private String channelId;
 
     public String getId() {
         return id;
@@ -108,5 +109,13 @@ public class SocialConfig {
 
     public void setClientKey(String clientKey) {
         this.clientKey = clientKey;
+    }
+
+    public String getChannelId() {
+        return channelId;
+    }
+
+    public void setChannelId(String channelId) {
+        this.channelId = channelId;
     }
 }

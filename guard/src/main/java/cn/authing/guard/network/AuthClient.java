@@ -848,6 +848,30 @@ public class AuthClient {
         });
     }
 
+    public static void loginByLine(String accessToken, String idToken, @NotNull AuthCallback<UserInfo> callback) {
+        loginByLine(null, accessToken, idToken, callback);
+    }
+
+    public static void loginByLine(AuthRequest authData, String accessToken, String idToken, @NotNull AuthCallback<UserInfo> callback) {
+        Authing.getPublicConfig(config -> {
+            try {
+                JSONObject body = new JSONObject();
+                String connId = config != null ? config.getSocialConnectionId(Const.EC_TYPE_LINE) : "";
+                body.put("connId", connId);
+                body.put("access_token", accessToken);
+                if (idToken != null){
+                    body.put("id_token", idToken);
+                }
+                String endpoint = "/api/v2/ecConn/line/authByAccessToken";
+                Guardian.post(endpoint, body, (data)-> {
+                    startOidcInteraction(authData, data, callback);
+                });
+            } catch (Exception e) {
+                error(e, callback);
+            }
+        });
+    }
+
     public static void loginByOneAuth(String token, String accessToken, @NotNull AuthCallback<UserInfo> callback) {
         loginByOneAuth(null, token, accessToken, 0, callback);
     }

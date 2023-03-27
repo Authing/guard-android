@@ -17,6 +17,7 @@ import cn.authing.guard.social.view.GithubLoginButton;
 import cn.authing.guard.social.view.GoogleLoginButton;
 import cn.authing.guard.social.view.KuaiShouLoginButton;
 import cn.authing.guard.social.view.LarkLoginButton;
+import cn.authing.guard.social.view.LineLoginButton;
 import cn.authing.guard.social.view.LinkedinLoginButton;
 import cn.authing.guard.social.view.QQLoginButton;
 import cn.authing.guard.social.view.SocialLoginButton;
@@ -111,6 +112,10 @@ public class SocialUtils {
             sb.append(Const.TYPE_KUAI_SHOU);
             sb.append("|");
         }
+        if (types.contains(Const.EC_TYPE_LINE)) {
+            sb.append(Const.TYPE_LINE);
+            sb.append("|");
+        }
         String socialString = sb.toString();
         if (socialString.endsWith("|")) {
             socialString = socialString.substring(0, socialString.length() - 1);
@@ -180,6 +185,9 @@ public class SocialUtils {
             case Const.TYPE_KUAI_SHOU:
                 button = new KuaiShouLoginButton(context);
                 break;
+            case Const.TYPE_LINE:
+                button = new LineLoginButton(context);
+                break;
         }
         return button;
     }
@@ -241,6 +249,9 @@ public class SocialUtils {
                 break;
             case Const.TYPE_KUAI_SHOU:
                 title = context.getString(R.string.authing_social_kuai_shou);
+                break;
+            case Const.TYPE_LINE:
+                title = context.getString(R.string.authing_social_line);
                 break;
             case Const.TYPE_FINGER:
                 title = context.getString(R.string.authing_finger);
@@ -309,6 +320,9 @@ public class SocialUtils {
                 break;
             case Const.TYPE_KUAI_SHOU:
                 str = context.getString(R.string.authing_login_by_kuai_shou);
+                break;
+            case Const.TYPE_LINE:
+                str = context.getString(R.string.authing_login_by_line);
                 break;
         }
         return str;

@@ -147,6 +147,7 @@
     <string name="authing_login_by_gitlab">使用 GitLab 登錄</string>
     <string name="authing_login_by_xiaomi">使用 小米 登錄</string>
     <string name="authing_login_by_kuai_shou">使用 快手 登錄</string>
+    <string name="authing_login_by_line">使用 Line 登錄</string>
     <string name="authing_login_by_finger">使用 指紋識別 登錄</string>
     <string name="authing_login_by_face">使用 人臉識別 登錄</string>
     <string name="authing_social_alipay">支付寶</string>
@@ -167,6 +168,7 @@
     <string name="authing_social_gitlab">GitLab</string>
     <string name="authing_social_xiaomi">小米</string>
     <string name="authing_social_kuai_shou">快手</string>
+    <string name="authing_social_line">Line</string>
     <string name="authing_finger">指紋識別</string>
     <string name="authing_face">人臉識別</string>
     <string name="authing_get_code_again">重新發送驗證碼</string>

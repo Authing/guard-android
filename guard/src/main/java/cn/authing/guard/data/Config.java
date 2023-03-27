@@ -585,6 +585,10 @@ public class Config {
         return getSocialValue(type, "clientKey");
     }
 
+    public String getSocialChannelID(String type) {
+        return getSocialValue(type, "channelID");
+    }
+
     public String getSocialValue(String type, String fieldName) {
         String value = "";
         List<SocialConfig> configs = getSocialConfigs();
@@ -624,6 +628,9 @@ public class Config {
                         break;
                     case "clientKey":
                         value = c.getClientKey();
+                        break;
+                    case "channelID":
+                        value = c.getChannelId();
                         break;
                 }
                 break;
@@ -684,6 +691,9 @@ public class Config {
                 }
                 if (fields.has("clientKey")) {
                     config.setClientKey(fields.getString("clientKey"));
+                }
+                if (fields.has("channelID")) {
+                    config.setChannelId(fields.getString("channelID"));
                 }
             }
             list.add(config);
