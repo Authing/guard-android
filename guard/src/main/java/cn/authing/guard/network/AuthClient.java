@@ -32,8 +32,8 @@ import cn.authing.guard.data.Role;
 import cn.authing.guard.data.Safe;
 import cn.authing.guard.data.SocialBindData;
 import cn.authing.guard.data.UserInfo;
-import cn.authing.guard.svg.SVG;
-import cn.authing.guard.svg.SVGParser;
+import cn.authing.guard.util.svg.SVG;
+import cn.authing.guard.util.svg.SVGParser;
 import cn.authing.guard.util.ALog;
 import cn.authing.guard.util.Const;
 import cn.authing.guard.util.GlobalCountDown;
@@ -863,6 +863,27 @@ public class AuthClient {
                     body.put("id_token", idToken);
                 }
                 String endpoint = "/api/v2/ecConn/line/authByAccessToken";
+                Guardian.post(endpoint, body, (data)-> {
+                    startOidcInteraction(authData, data, callback);
+                });
+            } catch (Exception e) {
+                error(e, callback);
+            }
+        });
+    }
+
+    public static void loginBySlack(String authCode, @NotNull AuthCallback<UserInfo> callback) {
+        loginBySlack(null, authCode, callback);
+    }
+
+    public static void loginBySlack(AuthRequest authData, String authCode, @NotNull AuthCallback<UserInfo> callback) {
+        Authing.getPublicConfig(config -> {
+            try {
+                JSONObject body = new JSONObject();
+                String connId = config != null ? config.getSocialConnectionId(Const.EC_TYPE_SLACK) : "";
+                body.put("connId", connId);
+                body.put("code", authCode);
+                String endpoint = "/api/v2/ecConn/slack/authByCode";
                 Guardian.post(endpoint, body, (data)-> {
                     startOidcInteraction(authData, data, callback);
                 });

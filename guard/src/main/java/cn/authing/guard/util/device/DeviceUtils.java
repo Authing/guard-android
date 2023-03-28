@@ -1,4 +1,4 @@
-package cn.authing.guard.util;
+package cn.authing.guard.util.device;
 
 import android.Manifest;
 import android.annotation.SuppressLint;

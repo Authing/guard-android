@@ -232,6 +232,10 @@ public class OIDCClient {
         AuthClient.loginByLine(authRequest, accessToken, idToken, callback);
     }
 
+    public void loginBySlack(String authCode, @NotNull AuthCallback<UserInfo> callback) {
+        AuthClient.loginBySlack(authRequest, authCode, callback);
+    }
+
     private static void error(Exception e, @NotNull AuthCallback<?> callback){
         e.printStackTrace();
         callback.call(Const.ERROR_CODE_10004, "JSON parse failed", null);

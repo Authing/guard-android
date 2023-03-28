@@ -148,6 +148,7 @@
     <string name="authing_login_by_xiaomi">Login by Xiaomi</string>
     <string name="authing_login_by_kuai_shou">Login by Kuaishou</string>
     <string name="authing_login_by_line">Login by Line</string>
+    <string name="authing_login_by_slack">Login by Slack</string>
     <string name="authing_login_by_finger">指紋認証を使ってログインします</string>
     <string name="authing_login_by_face">顔認証を使ってログインします</string>
     <string name="authing_social_alipay">アリペイ</string>
@@ -169,6 +170,7 @@
     <string name="authing_social_xiaomi">Xiaomi</string>
     <string name="authing_social_kuai_shou">Kuaishou</string>
     <string name="authing_social_line">Line</string>
+    <string name="authing_social_slack">Slack</string>
     <string name="authing_finger">指紋認識です</string>
     <string name="authing_face">顔認識です</string>
     <string name="authing_get_code_again">コードの再送信</string>

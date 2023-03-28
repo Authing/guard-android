@@ -1,4 +1,4 @@
-package cn.authing.guard.util;
+package cn.authing.guard.util.device;
 
 import static android.Manifest.permission.READ_PHONE_STATE;
 

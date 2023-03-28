@@ -100,8 +100,6 @@ public class Line extends SocialAuthenticator {
                         return;
                     }
                     ALog.i(TAG, "Auth onSuccess");
-                    ALog.e("zjh", "accessToken = " + accessToken);
-                    ALog.e("zjh", "idToken = " + (result.getLineIdToken() == null ? null : result.getLineIdToken().getRawString()));
                     idToken = (result.getLineIdToken() == null ? null : result.getLineIdToken().getRawString());
                     login(accessToken, callback);
                     break;

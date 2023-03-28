@@ -20,6 +20,7 @@ import cn.authing.guard.social.view.LarkLoginButton;
 import cn.authing.guard.social.view.LineLoginButton;
 import cn.authing.guard.social.view.LinkedinLoginButton;
 import cn.authing.guard.social.view.QQLoginButton;
+import cn.authing.guard.social.view.SlackLoginButton;
 import cn.authing.guard.social.view.SocialLoginButton;
 import cn.authing.guard.social.view.WeComLoginButton;
 import cn.authing.guard.social.view.WechatLoginButton;
@@ -116,6 +117,10 @@ public class SocialUtils {
             sb.append(Const.TYPE_LINE);
             sb.append("|");
         }
+        if (types.contains(Const.EC_TYPE_SLACK)) {
+            sb.append(Const.TYPE_SLACK);
+            sb.append("|");
+        }
         String socialString = sb.toString();
         if (socialString.endsWith("|")) {
             socialString = socialString.substring(0, socialString.length() - 1);
@@ -188,6 +193,9 @@ public class SocialUtils {
             case Const.TYPE_LINE:
                 button = new LineLoginButton(context);
                 break;
+            case Const.TYPE_SLACK:
+                button = new SlackLoginButton(context);
+                break;
         }
         return button;
     }
@@ -252,6 +260,9 @@ public class SocialUtils {
                 break;
             case Const.TYPE_LINE:
                 title = context.getString(R.string.authing_social_line);
+                break;
+            case Const.TYPE_SLACK:
+                title = context.getString(R.string.authing_social_slack);
                 break;
             case Const.TYPE_FINGER:
                 title = context.getString(R.string.authing_finger);
@@ -323,6 +334,9 @@ public class SocialUtils {
                 break;
             case Const.TYPE_LINE:
                 str = context.getString(R.string.authing_login_by_line);
+                break;
+            case Const.TYPE_SLACK:
+                str = context.getString(R.string.authing_login_by_slack);
                 break;
         }
         return str;

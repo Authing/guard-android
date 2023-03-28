@@ -67,6 +67,8 @@ import cn.authing.guard.data.TabMethodsField;
 import cn.authing.guard.data.UserInfo;
 import cn.authing.guard.flow.AuthFlow;
 import cn.authing.guard.network.AuthClient;
+import cn.authing.guard.util.device.DeviceUtils;
+import cn.authing.guard.util.device.PhoneUtils;
 import cn.authing.guard.webauthn.WebAuthNRegister;
 
 public class Util {

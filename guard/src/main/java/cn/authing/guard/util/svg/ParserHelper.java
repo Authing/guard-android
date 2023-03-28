@@ -1,4 +1,4 @@
-package cn.authing.guard.svg;
+package cn.authing.guard.util.svg;
 
 public class ParserHelper {
 
