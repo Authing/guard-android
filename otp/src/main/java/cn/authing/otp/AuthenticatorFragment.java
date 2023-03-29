@@ -75,8 +75,8 @@ public class AuthenticatorFragment extends Fragment implements CountDownListener
         if (countingDown) {
             getView().postDelayed(this::countDown, 1000);
             // TODO each item might have different period
-            int delta = TOTPUtils.getRemainingMilliSeconds();
-            degree = 360f / TOTPUtils.TIME_STEP * delta / 1000;
+            int delta = TOTPGenerator.getRemainingMilliSeconds();
+            degree = 360f / TOTPGenerator.TIME_STEP * delta / 1000;
             adapter.notifyDataSetChanged();
         }
     }
@@ -111,7 +111,7 @@ public class AuthenticatorFragment extends Fragment implements CountDownListener
 
             TOTPEntity data = totpList.get(position);
             TextView tvAccount = view.findViewById(R.id.tv_account);
-            tvAccount.setText(data.getAccount());
+            tvAccount.setText(data.getAccountDetail());
             TextView tvCode = view.findViewById(R.id.tv_totp_code);
             tvCode.setText(data.getTotpCode());
 

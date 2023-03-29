@@ -12,7 +12,8 @@ import java.util.Map;
 
 public class TOTP {
 
-    public static void bind(Context context, String data) {
+    public static TOTPBindResult bind(Context context, String data) {
+        TOTPBindResult result = new TOTPBindResult();
         try {
             URI uri = new URI(data);
             String path = uri.getPath();
@@ -25,35 +26,69 @@ public class TOTP {
                 String algorithm = map.get("algorithm");
                 String digitsStr = map.get("digits");
                 String periodStr = map.get("period");
-                int digits = TOTPUtils.CODE_DIGITS;
+                String issuer = map.get("issuer");
+                int digits = TOTPGenerator.CODE_DIGITS;
                 if (null != digitsStr){
                     try {
                         digits = Integer.parseInt(digitsStr);
                     } catch (Exception ignored) {}
                 }
-                int period = TOTPUtils.TIME_STEP;
+                int period = TOTPGenerator.TIME_STEP;
                 if (null != periodStr){
                     try {
                         period = Integer.parseInt(periodStr);
                     } catch (Exception ignored) {}
                 }
-                String issuer = map.get("issuer");
-                if (secret != null && issuer != null) {
-                    TOTPEntity totp = new TOTPEntity();
-                    totp.setAccount(path);
-                    totp.setSecret(secret);
-                    totp.setAlgorithm(algorithm);
-                    totp.setDigits(digits);
-                    totp.setPeriod(period);
-                    totp.setIssuer(issuer);
-                    DatabaseHelper db = new DatabaseHelper(context);
-                    db.addOTP(totp);
+
+                if(secret == null){
+                    result.setMessage(context.getResources().getString(R.string.qr_exception));
+                    return result;
                 }
+
+                TOTPEntity newTotp = new TOTPEntity();
+                newTotp.setPath(path);
+                if (path.contains(":")){
+                    String[] pathArray = path.split(":");
+                    newTotp.setApplication(pathArray.length > 0 ? pathArray[0] : "");
+                    newTotp.setAccount(pathArray.length > 1 ? pathArray[1] : "");
+                }
+                newTotp.setSecret(secret);
+                newTotp.setAlgorithm(algorithm);
+                newTotp.setDigits(digits);
+                newTotp.setPeriod(period);
+                newTotp.setIssuer(issuer);
+
+                DatabaseHelper db = new DatabaseHelper(context);
+                TOTPEntity historyTotp = db.getOTP(path);
+                if (null != historyTotp && path.equals(historyTotp.getPath())){
+                    if (secret.equals(historyTotp.getSecret())){
+                        result.setCode(TOTPBindResult.BIND_FAILURE);
+                        result.setMessage(context.getResources().
+                                getString(R.string.the_account_is_bound, historyTotp.getAccountDetail()));
+                    }else {
+                        result.setCode(TOTPBindResult.UPDATED_ACCOUNT);
+                        result.setMessage(context.getResources().
+                                getString(R.string.the_account_is_updated, historyTotp.getAccountDetail()));
+                        newTotp.setUuid(historyTotp.getUuid());
+                        newTotp.setApplication(historyTotp.getApplication());
+                        newTotp.setAccount(historyTotp.getAccount());
+                        updateTotp(context, newTotp);
+                    }
+                    return result;
+                }
+
+                db.addOTP(newTotp);
+                result.setCode(TOTPBindResult.BIND_SUCCESS);
+            }else {
+                result.setMessage(context.getResources().getString(R.string.qr_exception));
             }
         } catch (UnsupportedEncodingException | URISyntaxException e) {
             e.printStackTrace();
+            result.setMessage(context.getResources().getString(R.string.qr_exception));
         }
+        return result;
     }
+
 
     private static Map<String, String> splitQuery(URI url) throws UnsupportedEncodingException {
         final Map<String, String> queryPairs = new LinkedHashMap<>();
@@ -72,8 +107,19 @@ public class TOTP {
         return queryPairs;
     }
 
-    public static void delete(Context context, TOTPEntity totp){
+    public static void deleteTotp(Context context, TOTPEntity totp){
         DatabaseHelper db = new DatabaseHelper(context);
         db.deleteOTP(totp);
     }
+
+    public static void addTotp(Context context, TOTPEntity totp){
+        DatabaseHelper db = new DatabaseHelper(context);
+        db.addOTP(totp);
+    }
+
+    public static void updateTotp(Context context, TOTPEntity totp){
+        DatabaseHelper db = new DatabaseHelper(context);
+        db.updateOTP(totp);
+    }
+
 }

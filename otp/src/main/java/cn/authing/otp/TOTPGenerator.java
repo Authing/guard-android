@@ -5,10 +5,11 @@ import java.nio.ByteBuffer;
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
 
-public class TOTPUtils {
+public class TOTPGenerator {
 
     public static final int TIME_STEP = 30;
     public static final int CODE_DIGITS = 6;
+    public static final String ALGORITHM = "SHA1";
 
     public static String getQRCodeStr(String user, String secret) {
         String format = "otpauth://totp/%s?secret=%s";
@@ -16,25 +17,25 @@ public class TOTPUtils {
     }
 
     public static String generateTOTP(String secret) {
-        return generateTOTP(secret, getCurrentInterval(), CODE_DIGITS);
+        return generateTOTP(secret, getCurrentInterval(), CODE_DIGITS, ALGORITHM);
     }
 
     public static String generateTOTP(String secret, int codeDigits) {
-        return generateTOTP(secret, getCurrentInterval(), codeDigits);
+        return generateTOTP(secret, getCurrentInterval(), codeDigits, ALGORITHM);
     }
 
-    public static String generateTOTP(String secret, int period, int codeDigits) {
-        return generateTOTP(secret, getCurrentInterval(period), codeDigits);
+    public static String generateTOTP(String secret, int period, int codeDigits, String algorithm) {
+        return generateTOTP(secret, getCurrentInterval(period), codeDigits, algorithm);
     }
 
     public static boolean verify(String secret, String code) {
-        return verify(secret, code, CODE_DIGITS);
+        return verify(secret, code, CODE_DIGITS, ALGORITHM);
     }
 
-    public static boolean verify(String secret, String code, int codeDigits) {
+    public static boolean verify(String secret, String code, int codeDigits, String algorithm) {
         long currentInterval = getCurrentInterval();
         for (int i = 0; i <= 1; i++) {
-            String tmpCode = generateTOTP(secret, currentInterval - i, codeDigits);
+            String tmpCode = generateTOTP(secret, currentInterval - i, codeDigits, algorithm);
             if (tmpCode.equals(code)) {
                 return true;
             }
@@ -50,12 +51,12 @@ public class TOTPUtils {
         return TIME_STEP * 1000 - (int) (System.currentTimeMillis() % (TIME_STEP * 1000));
     }
 
-    private static String generateTOTP(String secret, long currentInterval, int codeDigits) {
+    private static String generateTOTP(String secret, long currentInterval, int codeDigits, String algorithm) {
         if (codeDigits < 1 || codeDigits > 18) {
             throw new UnsupportedOperationException("不支持" + codeDigits + "位数的动态口令");
         }
         byte[] content = ByteBuffer.allocate(8).putLong(currentInterval).array();
-        byte[] hash = hmacsha("HmacSHA1", content, secret);
+        byte[] hash = hmacsha("Hmac"+algorithm, content, secret);
         if(hash == null){
             return "";
         }

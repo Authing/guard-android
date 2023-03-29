@@ -74,9 +74,9 @@ public class AuthenticatorDetailDialog extends Dialog {
             AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
             builder.setIcon(android.R.drawable.ic_dialog_alert)
                     .setTitle(mContext.getString(R.string.sure_delete))
-                    .setMessage(mContext.getString(R.string.sure_delete_message))
+                    .setMessage(mContext.getString(R.string.sure_delete_message, mAccount.getText().toString()))
                     .setPositiveButton(mContext.getString(R.string.ok), (dialog, which) -> {
-                        TOTP.delete(mContext, mData);
+                        TOTP.deleteTotp(mContext, mData);
                         dismiss();
                     })
                     .setNegativeButton(mContext.getString(R.string.cancel), (dialog, which) -> dialog.dismiss()).show();

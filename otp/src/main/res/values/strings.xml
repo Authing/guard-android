@@ -1,10 +1,31 @@
 <resources>
 
-    <string name="no_data">no data</string>
-    <string name="delete">delete</string>
-    <string name="sure_delete">Confirm to delete the account</string>
-    <string name="sure_delete_message">Removing your account will prevent you from generating a captcha, but it will not turn off two-factor authentication, and you may not be able to log in to your account. Before removing the account, perform the following operations：\n 1.Disable two-factor authentication for this account, or\n2.Make sure you can generate captcha by other means</string>
-    <string name="cancel">Cancel</string>
     <string name="ok">OK</string>
+    <string name="no_data">Please add an organization or application account</string>
+    <string name="scan_the_qr">Scan QR code</string>
+    <string name="manual_key_input">Manual key input</string>
+    <string name="token_detail">Details of the token</string>
+    <string name="save">Save</string>
+    <string name="account">Account</string>
+    <string name="application">Application</string>
+    <string name="digits">Digits</string>
+    <string name="interval">Interval</string>
+    <string name="algorithm">Algorithm</string>
+    <string name="issuer">Issuer</string>
+    <string name="delete">delete</string>
+    <string name="sure_delete">Remove Account?</string>
+    <string name="sure_delete_message">After removing your account %s, you will not be able to use this device to verify your identity.</string>
+    <string name="cancel">Cancel</string>
+    <string name="delete_account">Remove Account</string>
+    <string name="input_key">Enter the key</string>
+    <string name="account_name">Account name</string>
+    <string name="key">Key</string>
+    <string name="add_account">Add account</string>
+    <string name="qr_exception">The QR code is invalid.</string>
+    <string name="the_account_is_updated">The account %s key is updated successfully!</string>
+    <string name="the_account_is_bound">The account %s has been bound, Do not bind it again!</string>
+    <string name="copy_success">Copy success</string>
+    <string name="account_ame_cannot_be_empty">The account name cannot be empty</string>
+    <string name="application_name_cannot_be_empty">The application name cannot be empty</string>
 
 </resources>

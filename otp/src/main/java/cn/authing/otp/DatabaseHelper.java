@@ -15,7 +15,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "authing";
     private static final String TABLE_OTP = "otp";
     private static final String KEY_ID = "id";
+    private static final String KEY_PATH = "path";
     private static final String KEY_ACCOUNT = "account";
+    private static final String KEY_APPLICATION = "application";
     private static final String KEY_SECRET = "secret";
     private static final String KEY_ALGORITHM = "algorithm";
     private static final String KEY_DIGITS = "digits";
@@ -30,7 +32,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
         String CREATE_CONTACTS_TABLE = "CREATE TABLE " + TABLE_OTP + "("
                 + KEY_ID + " INTEGER PRIMARY KEY,"
+                + KEY_PATH + " TEXT,"
                 + KEY_ACCOUNT + " TEXT,"
+                + KEY_APPLICATION + " TEXT,"
                 + KEY_SECRET + " TEXT,"
                 + KEY_ALGORITHM + " TEXT,"
                 + KEY_DIGITS + " INT,"
@@ -44,11 +48,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     }
 
-    void addOTP(TOTPEntity totp) {
+    public void addOTP(TOTPEntity totp) {
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
+        values.put(KEY_PATH, totp.getPath());
         values.put(KEY_ACCOUNT, totp.getAccount());
+        values.put(KEY_APPLICATION, totp.getApplication());
         values.put(KEY_SECRET, totp.getSecret());
         values.put(KEY_ALGORITHM, totp.getAlgorithm());
         values.put(KEY_DIGITS, totp.getDigits());
@@ -59,7 +65,52 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.close();
     }
 
-    List<TOTPEntity> getOTPs() {
+    public void updateOTP(TOTPEntity totp){
+        SQLiteDatabase database = this.getWritableDatabase();
+        if(database.isOpen()){
+            ContentValues values =new ContentValues();
+            values.put(KEY_PATH, totp.getPath());
+            values.put(KEY_ACCOUNT, totp.getAccount());
+            values.put(KEY_APPLICATION, totp.getApplication());
+            values.put(KEY_SECRET, totp.getSecret());
+            values.put(KEY_ALGORITHM, totp.getAlgorithm());
+            values.put(KEY_DIGITS, totp.getDigits());
+            values.put(KEY_INTERVAL, totp.getPeriod());
+            values.put(KEY_ISSUER, totp.getIssuer());
+            database.update(TABLE_OTP, values, KEY_ID + " = ?",
+                    new String[] { String.valueOf(totp.getUuid()) });
+        }
+        database.close();
+    }
+
+
+    public TOTPEntity getOTP(String key) {
+        TOTPEntity contact = null;
+        String selectQuery = "SELECT  * FROM " + TABLE_OTP + " WHERE " + KEY_PATH + " == ? ";
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(selectQuery, new String[]{key});
+
+        if (cursor.moveToFirst()) {
+            do {
+                contact = new TOTPEntity();
+                contact.setUuid(Integer.parseInt(cursor.getString(0)));
+                contact.setPath(cursor.getString(1));
+                contact.setAccount(cursor.getString(2));
+                contact.setApplication(cursor.getString(3));
+                contact.setSecret(cursor.getString(4));
+                contact.setAlgorithm(cursor.getString(5));
+                contact.setDigits(cursor.getInt(6));
+                contact.setPeriod(cursor.getInt(7));
+                contact.setIssuer(cursor.getString(8));
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+        db.close();
+        return contact;
+    }
+
+    public List<TOTPEntity> getOTPs() {
         List<TOTPEntity> list = new ArrayList<>();
         String selectQuery = "SELECT  * FROM " + TABLE_OTP;
 
@@ -70,20 +121,23 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             do {
                 TOTPEntity contact = new TOTPEntity();
                 contact.setUuid(Integer.parseInt(cursor.getString(0)));
-                contact.setAccount(cursor.getString(1));
-                contact.setSecret(cursor.getString(2));
-                contact.setAlgorithm(cursor.getString(3));
-                contact.setDigits(cursor.getInt(4));
-                contact.setPeriod(cursor.getInt(5));
-                contact.setIssuer(cursor.getString(6));
+                contact.setPath(cursor.getString(1));
+                contact.setAccount(cursor.getString(2));
+                contact.setApplication(cursor.getString(3));
+                contact.setSecret(cursor.getString(4));
+                contact.setAlgorithm(cursor.getString(5));
+                contact.setDigits(cursor.getInt(6));
+                contact.setPeriod(cursor.getInt(7));
+                contact.setIssuer(cursor.getString(8));
                 list.add(contact);
             } while (cursor.moveToNext());
         }
-
+        cursor.close();
+        db.close();
         return list;
     }
 
-    void deleteOTP(TOTPEntity totp) {
+    public void deleteOTP(TOTPEntity totp) {
         SQLiteDatabase db = this.getWritableDatabase();
         db.delete(TABLE_OTP, KEY_ID + " = ?",
                 new String[] { String.valueOf(totp.getUuid()) });

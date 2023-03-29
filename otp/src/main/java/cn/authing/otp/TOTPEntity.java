@@ -7,6 +7,7 @@ public class TOTPEntity {
 
     private int uuid;
     private String account;
+    private String application;
     private String secret;
     private int period;
     private int digits;
@@ -54,6 +55,18 @@ public class TOTPEntity {
         this.account = account;
     }
 
+    public String getApplication() {
+        return application;
+    }
+
+    public void setApplication(String application) {
+        this.application = application;
+    }
+
+    public String getAccountDetail() {
+        return application + "  (" + account + ")" ;
+    }
+
     public String getSecret() {
         return secret;
     }
@@ -95,7 +108,7 @@ public class TOTPEntity {
     }
 
     public String getTotpCode() {
-        totpCode = TOTPUtils.generateTOTP(secret, period, digits);
+        totpCode = TOTPGenerator.generateTOTP(secret, period, digits, algorithm);
         return totpCode;
     }
 
