@@ -20,22 +20,22 @@ public class TOTPGenerator {
         return generateTOTP(secret, getCurrentInterval(), CODE_DIGITS, ALGORITHM);
     }
 
-    public static String generateTOTP(String secret, int codeDigits) {
-        return generateTOTP(secret, getCurrentInterval(), codeDigits, ALGORITHM);
+    public static String generateTOTP(String secret, int digits) {
+        return generateTOTP(secret, getCurrentInterval(), digits, ALGORITHM);
     }
 
-    public static String generateTOTP(String secret, int period, int codeDigits, String algorithm) {
-        return generateTOTP(secret, getCurrentInterval(period), codeDigits, algorithm);
+    public static String generateTOTP(String secret, int period, int digits, String algorithm) {
+        return generateTOTP(secret, getCurrentInterval(period), digits, algorithm);
     }
 
     public static boolean verify(String secret, String code) {
         return verify(secret, code, CODE_DIGITS, ALGORITHM);
     }
 
-    public static boolean verify(String secret, String code, int codeDigits, String algorithm) {
+    public static boolean verify(String secret, String code, int digits, String algorithm) {
         long currentInterval = getCurrentInterval();
         for (int i = 0; i <= 1; i++) {
-            String tmpCode = generateTOTP(secret, currentInterval - i, codeDigits, algorithm);
+            String tmpCode = generateTOTP(secret, currentInterval - i, digits, algorithm);
             if (tmpCode.equals(code)) {
                 return true;
             }
@@ -51,9 +51,9 @@ public class TOTPGenerator {
         return TIME_STEP * 1000 - (int) (System.currentTimeMillis() % (TIME_STEP * 1000));
     }
 
-    private static String generateTOTP(String secret, long currentInterval, int codeDigits, String algorithm) {
-        if (codeDigits < 1 || codeDigits > 18) {
-            throw new UnsupportedOperationException("不支持" + codeDigits + "位数的动态口令");
+    private static String generateTOTP(String secret, long currentInterval, int digits, String algorithm) {
+        if (digits < 1 || digits > 18) {
+            throw new UnsupportedOperationException("不支持" + digits + "位数的动态口令");
         }
         byte[] content = ByteBuffer.allocate(8).putLong(currentInterval).array();
         byte[] hash = hmacsha("Hmac"+algorithm, content, secret);
@@ -66,9 +66,9 @@ public class TOTPGenerator {
                         ((hash[offset + 1] & 0xff) << 16) |
                         ((hash[offset + 2] & 0xff) << 8) |
                         (hash[offset + 3] & 0xff);
-        long digitsPower = Long.parseLong(rightPadding("1", codeDigits + 1));
+        long digitsPower = Long.parseLong(rightPadding("1", digits + 1));
         long code = binary % digitsPower;
-        return leftPadding(Long.toString(code), codeDigits);
+        return leftPadding(Long.toString(code), digits);
     }
 
     private static long getCurrentInterval() {

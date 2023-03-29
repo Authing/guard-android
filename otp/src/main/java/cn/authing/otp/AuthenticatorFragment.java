@@ -37,8 +37,7 @@ public class AuthenticatorFragment extends Fragment implements CountDownListener
     @Override
     public void onResume() {
         super.onResume();
-        DatabaseHelper db = new DatabaseHelper(getActivity());
-        totpList = db.getOTPs();
+        totpList = TOTP.getTotpList(getActivity());
         if (null == totpList || totpList.size() == 0){
             textView.setVisibility(View.VISIBLE);
             listView.setVisibility(View.GONE);

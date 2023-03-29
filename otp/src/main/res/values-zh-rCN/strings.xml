@@ -21,7 +21,7 @@
     <string name="account_name">账户名称</string>
     <string name="key">密钥</string>
     <string name="add_account">添加账号</string>
-    <string name="qr_exception">QR 码无效</string>
+    <string name="data_exception">数据无效</string>
     <string name="the_account_is_updated">%s 账户密钥更新成功！</string>
     <string name="the_account_is_bound">%s 账户已存在，请勿重复录入！</string>
     <string name="copy_success">复制成功</string>

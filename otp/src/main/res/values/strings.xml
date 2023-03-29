@@ -21,7 +21,7 @@
     <string name="account_name">Account name</string>
     <string name="key">Key</string>
     <string name="add_account">Add account</string>
-    <string name="qr_exception">The QR code is invalid.</string>
+    <string name="data_exception">The data is invalid.</string>
     <string name="the_account_is_updated">The account %s key is updated successfully!</string>
     <string name="the_account_is_bound">The account %s has been bound, Do not bind it again!</string>
     <string name="copy_success">Copy success</string>

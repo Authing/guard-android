@@ -8,6 +8,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URLDecoder;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
 public class TOTP {
@@ -41,7 +42,7 @@ public class TOTP {
                 }
 
                 if(secret == null){
-                    result.setMessage(context.getResources().getString(R.string.qr_exception));
+                    result.setMessage(context.getResources().getString(R.string.data_exception));
                     return result;
                 }
 
@@ -80,11 +81,11 @@ public class TOTP {
                 db.addOTP(newTotp);
                 result.setCode(TOTPBindResult.BIND_SUCCESS);
             }else {
-                result.setMessage(context.getResources().getString(R.string.qr_exception));
+                result.setMessage(context.getResources().getString(R.string.data_exception));
             }
         } catch (UnsupportedEncodingException | URISyntaxException e) {
             e.printStackTrace();
-            result.setMessage(context.getResources().getString(R.string.qr_exception));
+            result.setMessage(context.getResources().getString(R.string.data_exception));
         }
         return result;
     }
@@ -107,11 +108,6 @@ public class TOTP {
         return queryPairs;
     }
 
-    public static void deleteTotp(Context context, TOTPEntity totp){
-        DatabaseHelper db = new DatabaseHelper(context);
-        db.deleteOTP(totp);
-    }
-
     public static void addTotp(Context context, TOTPEntity totp){
         DatabaseHelper db = new DatabaseHelper(context);
         db.addOTP(totp);
@@ -120,6 +116,26 @@ public class TOTP {
     public static void updateTotp(Context context, TOTPEntity totp){
         DatabaseHelper db = new DatabaseHelper(context);
         db.updateOTP(totp);
+    }
+
+    public static List<TOTPEntity> getTotpList(Context context){
+        DatabaseHelper db = new DatabaseHelper(context);
+        return db.getOTPs();
+    }
+
+    public static TOTPEntity getTotp(Context context, String path){
+        DatabaseHelper db = new DatabaseHelper(context);
+        return db.getOTP(path);
+    }
+
+    public static void deleteTotp(Context context, TOTPEntity totp){
+        DatabaseHelper db = new DatabaseHelper(context);
+        db.deleteOTP(totp);
+    }
+
+    public static void deleteTotp(Context context, String path){
+        DatabaseHelper db = new DatabaseHelper(context);
+        db.deleteOTP(path);
     }
 
 }

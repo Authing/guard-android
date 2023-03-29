@@ -143,4 +143,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 new String[] { String.valueOf(totp.getUuid()) });
         db.close();
     }
+
+    public void deleteOTP(String path) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.delete(TABLE_OTP, KEY_PATH + " = ?",
+                new String[] { path });
+        db.close();
+    }
 }
