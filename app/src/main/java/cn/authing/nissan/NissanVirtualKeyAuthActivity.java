@@ -2,8 +2,9 @@ package cn.authing.nissan;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.widget.Button;
 import android.widget.TextView;
+
+import androidx.appcompat.widget.AppCompatTextView;
 
 import cn.authing.MainActivity;
 import cn.authing.R;
@@ -19,7 +20,7 @@ public class NissanVirtualKeyAuthActivity extends BaseAuthActivity {
         setContentView(R.layout.activity_nissan_virtual_key_login);
 
         TextView tvReset = findViewById(R.id.tv_reset);
-        tvReset.setOnClickListener((v)->{
+        tvReset.setOnClickListener((v) -> {
             Intent intent = new Intent(NissanVirtualKeyAuthActivity.this, NissanVirtualKeySendEmailActivity.class);
             startActivity(intent);
         });
@@ -34,8 +35,8 @@ public class NissanVirtualKeyAuthActivity extends BaseAuthActivity {
             }
         });
 
-        Button signBtn = findViewById(R.id.btn_goto_signup);
-        signBtn.setOnClickListener((v)->{
+        AppCompatTextView signBtn = findViewById(R.id.btn_goto_signup);
+        signBtn.setOnClickListener((v) -> {
             Intent intent = new Intent(NissanVirtualKeyAuthActivity.this, NissanVirtualKeySignupOneActivity.class);
             startActivity(intent);
         });

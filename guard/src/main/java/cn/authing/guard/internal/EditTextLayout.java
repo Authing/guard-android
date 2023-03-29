@@ -546,7 +546,7 @@ public class EditTextLayout extends LinearLayout implements TextWatcher, View.On
                         canvas.drawText(hintText.toString(), leftPaddingPx, hintUpY, hintPaint);
                     } else if (TextUtils.isEmpty(getText())) {
                         float y = (h + th) / 2 - d;
-                        canvas.drawText(hintText.toString(), leftPaddingPx, y, hintPaint);
+                        canvas.drawText(hintText.toString(), editText.getLeft(), y, hintPaint);
                     }
                 }
 

@@ -29,6 +29,7 @@ import cn.authing.guard.Authing;
 import cn.authing.guard.data.UserInfo;
 import cn.authing.guard.flow.AuthFlow;
 import cn.authing.guard.social.handler.OneClick;
+import cn.authing.nissan.NissanVirtualKeyAuthActivity;
 import cn.authing.oneclick.OneClickActivity;
 import cn.authing.push.LoginByPushNotificationActivity;
 import cn.authing.scan.ScanAuthActivity;
@@ -59,6 +60,7 @@ public class SampleListActivity extends AppCompatActivity {
             "生物二次验证",
             "Authenticator",
             "Login by push notification",
+            "Nissan",
     };
 
     @Override
@@ -111,9 +113,10 @@ public class SampleListActivity extends AppCompatActivity {
                 // if you want to return refreshToken、idToken、refreshToken
                 Authing.setAuthProtocol(Authing.AuthProtocol.EOIDC);
                 AuthFlow.start(this);
-//                Intent intent = new Intent(SampleListActivity.this, NissanVirtualKeyAuthActivity.class);
-//                startActivity(intent);
-            } else if (pos == 8) {
+            } else if (pos == 16) {
+                Intent intent = new Intent(SampleListActivity.this, NissanVirtualKeyAuthActivity.class);
+                startActivity(intent);
+            }else if (pos == 8) {
                 AuthFlow flow = AuthFlow.startWeb(this);
 //                flow.setScope("openid");
                 flow.setSkipConsent(true);

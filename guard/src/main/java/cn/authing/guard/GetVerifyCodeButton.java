@@ -33,6 +33,7 @@ public class GetVerifyCodeButton extends LoadingButton {
     private boolean autoRegister;
     private int textColor;
     private final int verifyEnableTextColor;
+    private OnGetVerifyCodeListener onGetVerifyCodeListener;
 
     private static final int VERIFY_CODE_NONE = 0;
     private static final int VERIFY_CODE_PHONE = 1;
@@ -312,6 +313,9 @@ public class GetVerifyCodeButton extends LoadingButton {
                 if (v != null) {
                     v.requestFocus();
                 }
+                if (onGetVerifyCodeListener != null){
+                    onGetVerifyCodeListener.onSuccess();
+                }
             } else {
                 setText(getContext().getString(R.string.authing_get_verify_code_resend));
                 ToastUtil.showCenter(getContext(), getContext().getString(R.string.authing_get_verify_code_error));
@@ -399,6 +403,9 @@ public class GetVerifyCodeButton extends LoadingButton {
                 if (v != null) {
                     v.requestFocus();
                 }
+                if (onGetVerifyCodeListener != null){
+                    onGetVerifyCodeListener.onSuccess();
+                }
             } else {
                 setText(getContext().getString(R.string.authing_get_verify_code_resend));
                 ToastUtil.showCenter(getContext(), getContext().getString(R.string.authing_get_email_code_failed));
@@ -408,5 +415,15 @@ public class GetVerifyCodeButton extends LoadingButton {
 
     public void setScene(String scene) {
         this.scene = scene;
+    }
+
+    public void setOnGetVerifyCodeListener(OnGetVerifyCodeListener onGetVerifyCodeListener) {
+        this.onGetVerifyCodeListener = onGetVerifyCodeListener;
+    }
+
+    public interface OnGetVerifyCodeListener {
+
+        void onSuccess();
+
     }
 }

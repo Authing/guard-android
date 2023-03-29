@@ -20,18 +20,7 @@
         android:background="@drawable/abao_et_bg"
         android:layout_width="match_parent"
         android:layout_height="56dp"
-        android:layout_marginTop="48dp">
-        <cn.authing.guard.CountryCodePicker
-            android:id="@+id/ccp"
-            app:showFlag="true"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:textSize="16sp"
-            android:textColor="@color/black"
-            app:showRightArrow="false"
-            android:layout_marginStart="32dp"
-            android:layout_marginEnd="8dp"/>
-    </cn.authing.guard.PhoneNumberEditText>
+        android:layout_marginTop="48dp"/>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -41,7 +30,6 @@
         android:orientation="horizontal"
         android:gravity="center_vertical">
         <cn.authing.guard.VerifyCodeEditText
-
             android:layout_width="0dp"
             android:layout_height="56dp"
             android:layout_weight="1"

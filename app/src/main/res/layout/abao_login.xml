@@ -20,17 +20,7 @@
         android:background="@drawable/abao_et_bg"
         android:layout_width="match_parent"
         android:layout_height="56dp"
-        android:layout_marginTop="48dp">
-        <cn.authing.guard.CountryCodePicker
-            android:id="@+id/ccp"
-            app:showFlag="true"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:textSize="16sp"
-            android:textColor="@color/black"
-            android:layout_marginStart="32dp"
-            android:layout_marginEnd="8dp"/>
-    </cn.authing.guard.PhoneNumberEditText>
+        android:layout_marginTop="48dp"/>
 
     <cn.authing.guard.ErrorTextView
         android:id="@+id/tv_error"
@@ -38,19 +28,20 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"/>
 
-    <ImageView
+    <cn.authing.guard.GetVerifyCodeButton
         android:id="@+id/btn_login"
-        android:layout_width="56dp"
-        android:layout_height="56dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:background="@drawable/abao_btn_bg"
         android:src="@drawable/ic_arrow_right"
-        android:padding="16dp"
         app:backgroundTint="@null"
         android:textSize="14sp"
         android:text="@string/authing_login"
         android:textColor="@color/white"
-        android:layout_marginTop="24dp" />
+        android:layout_marginTop="24dp"
+        app:verifyAuthType="login"
+        app:verifyCodeType="phone"/>
 
     <Space
         android:layout_width="match_parent"

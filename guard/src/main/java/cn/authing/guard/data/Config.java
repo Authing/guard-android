@@ -645,16 +645,20 @@ public class Config {
         for (int i = 0; i < size; i++) {
             JSONObject obj = array.getJSONObject(i);
             SocialConfig config = new SocialConfig();
+            String type = null;
+            if (obj.has("type")) {
+                type = obj.getString("type");
+            }
+            if(type == null || "apple".equals(type)){
+                continue;
+            }
+            config.setType(type);
             if (obj.has("id")) {
                 String id = obj.getString("id");
                 config.setId(id);
             }
             if (obj.has("provider")) {
                 String provider = obj.getString("provider");
-                config.setType(provider);
-            }
-            if (obj.has("type")) {
-                String provider = obj.getString("type");
                 config.setType(provider);
             }
             if (obj.has("fields")) {

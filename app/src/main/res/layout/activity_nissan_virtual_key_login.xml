@@ -96,8 +96,9 @@
             <cn.authing.guard.GoRegisterButton
                 android:id="@+id/btn_goto_signup"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="48dp"
                 android:layout_marginTop="16dp"
+                android:gravity="center"
                 android:text="Sign up"
                 android:textAllCaps="false"
                 android:textColor="#7ACAFF"

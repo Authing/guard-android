@@ -36,7 +36,12 @@ public class AuthingWebViewActivity extends AuthActivity {
         webView = findViewById(R.id.wv_auth);
         FrameLayout flLoading = findViewById(R.id.fl_loading);
         webView.setListener(()->{
-            flLoading.setVisibility(View.GONE);
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    flLoading.setVisibility(View.GONE);
+                }
+            });
         });
         webView.setOnLoginCallback(this::setResult);
 

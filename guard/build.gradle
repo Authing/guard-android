@@ -57,13 +57,7 @@ dependencies {
     compileOnly 'com.alibaba.android:ddsharesdk:1.1.0'
     compileOnly 'com.bytedance.ies.ugc.aweme:opensdk-china-external:0.1.9.6'
     compileOnly 'com.bytedance.ies.ugc.aweme:opensdk-common:0.1.9.6'
-    compileOnly ("com.xiaomi.account:oauth-android:latest.release"){
-        exclude group: 'com.google.guava', module: 'guava'
-        exclude group: 'com.google.guava', module: 'listenablefuture'
-    }
+    compileOnly 'com.xiaomi.account:oauth-android:latest.release'
     compileOnly "com.github.kwaisocial:kwai-opensdk-withauth:3.0.4"
-    compileOnly ("com.linecorp.linesdk:linesdk:latest.release"){
-        exclude group: 'androidx.lifecycle', module: 'lifecycle-viewmodel-ktx'
-        exclude group: 'androidx.lifecycle', module: 'lifecycle-viewmodel'
-    }
+    compileOnly "com.linecorp.linesdk:linesdk:latest.release"
 }
