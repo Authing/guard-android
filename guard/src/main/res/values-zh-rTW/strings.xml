@@ -149,6 +149,10 @@
     <string name="authing_login_by_kuai_shou">使用 快手 登錄</string>
     <string name="authing_login_by_line">使用 Line 登錄</string>
     <string name="authing_login_by_slack">使用 Slack 登錄</string>
+    <string name="authing_login_by_huawei">使用 华为 登錄</string>
+    <string name="authing_login_by_honor">使用 荣耀 登錄</string>
+    <string name="authing_login_by_oppo">使用 OPPO 登錄</string>
+    <string name="authing_login_by_amazon">使用 Amazon 登錄</string>
     <string name="authing_login_by_finger">使用 指紋識別 登錄</string>
     <string name="authing_login_by_face">使用 人臉識別 登錄</string>
     <string name="authing_social_alipay">支付寶</string>
@@ -171,6 +175,10 @@
     <string name="authing_social_kuai_shou">快手</string>
     <string name="authing_social_line">Line</string>
     <string name="authing_social_slack">Slack</string>
+    <string name="authing_social_huawei">华为</string>
+    <string name="authing_social_honor">荣耀</string>
+    <string name="authing_social_oppo">OPPO</string>
+    <string name="authing_social_amazon">亚马逊</string>
     <string name="authing_finger">指紋識別</string>
     <string name="authing_face">人臉識別</string>
     <string name="authing_get_code_again">重新發送驗證碼</string>

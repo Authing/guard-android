@@ -116,11 +116,12 @@ public class SocialLoginListDialog extends Dialog {
         });
 
         contentView.addView(socialLoginListView, 0);
-        socialLoginListView.post(() -> {
+        contentView.post(() -> {
             int measureHeight = socialLoginListView.getMeasuredHeight();
             if (measureHeight > Const.SOCIAL_DIALOG_MAX_HEIGHT){
                 LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) socialLoginListView.getLayoutParams();
                 layoutParams.height = Const.SOCIAL_DIALOG_MAX_HEIGHT;
+                contentView.requestLayout();
             }
         });
     }

@@ -44,6 +44,7 @@ dependencies {
     compileOnly files('libs/alipaysdk.aar')
     compileOnly files('libs/larksso-3.0.8.aar')
     compileOnly files('libs/baidu-android-openapi-sdk.jar')
+    compileOnly files('libs/login-with-amazon-sdk.jar')
     compileOnly 'io.github.yidun:quicklogin:3.2.4'
     compileOnly 'com.tencent.mm.opensdk:wechat-sdk-android:6.8.0'
     compileOnly 'com.google.android.gms:play-services-auth:20.2.0'
@@ -60,4 +61,8 @@ dependencies {
     compileOnly 'com.xiaomi.account:oauth-android:latest.release'
     compileOnly "com.github.kwaisocial:kwai-opensdk-withauth:3.0.4"
     compileOnly "com.linecorp.linesdk:linesdk:latest.release"
+    compileOnly 'com.heytap.msp.sdk:msp-sdk:1.10.1.2'
+    compileOnly 'com.heytap.msp.sdk:msp-oauth-sdk:1.10.1.2'
+    compileOnly 'com.huawei.hms:hwid:6.9.0.301'
+
 }

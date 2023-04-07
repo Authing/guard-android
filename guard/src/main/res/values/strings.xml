@@ -149,6 +149,10 @@
     <string name="authing_login_by_kuai_shou">Login by Kuaishou</string>
     <string name="authing_login_by_line">Login by Line</string>
     <string name="authing_login_by_slack">Login by Slack</string>
+    <string name="authing_login_by_huawei">Login by HuaWei</string>
+    <string name="authing_login_by_honor">Login by Honor</string>
+    <string name="authing_login_by_oppo">Login by OPPO</string>
+    <string name="authing_login_by_amazon">Login by Amazon</string>
     <string name="authing_login_by_finger">Login by Finger</string>
     <string name="authing_login_by_face">Login by Face</string>
     <string name="authing_social_alipay">Alipay</string>
@@ -157,7 +161,7 @@
     <string name="authing_social_lark">Lark</string>
     <string name="authing_social_google">Google</string>
     <string name="authing_social_facebook">Facebook</string>
-    <string name="authing_social_wechat_miniprogram">Wechat MiniProgram</string>
+    <string name="authing_social_wechat_miniprogram">MiniProgram</string>
     <string name="authing_social_qq">QQ</string>
     <string name="authing_social_weibo">Weibo</string>
     <string name="authing_social_baidu">Baidu</string>
@@ -171,6 +175,10 @@
     <string name="authing_social_kuai_shou">Kuaishou</string>
     <string name="authing_social_line">Line</string>
     <string name="authing_social_slack">Slack</string>
+    <string name="authing_social_huawei">HuaWei</string>
+    <string name="authing_social_honor">Honor</string>
+    <string name="authing_social_oppo">OPPO</string>
+    <string name="authing_social_amazon">Amazon</string>
     <string name="authing_finger">Finger</string>
     <string name="authing_face">Face</string>
     <string name="authing_get_code_again">Resend Code</string>

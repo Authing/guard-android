@@ -1,9 +1,12 @@
 package cn.authing.guard.social.handler;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import com.ss.android.larksso.CallBackData;
 import com.ss.android.larksso.IGetDataCallback;
@@ -27,15 +30,22 @@ public class Lark extends SocialAuthenticator {
     private static final String TAG = "Lark";
     private String appId;
 
+    private Lark() {
+    }
+
+    public static Lark getInstance() {
+        return Lark.LarkInstanceHolder.mInstance;
+    }
+
     @Override
     public void login(Context context, @NotNull AuthCallback<UserInfo> callback) {
         Authing.getPublicConfig(config -> {
             ArrayList<String> scopeList = new ArrayList<>();
             scopeList.add("contact:user.id:readonly");
             String aid = appId;
-            if (aid == null && config != null){
+            if (aid == null && config != null) {
                 aid = config.getSocialAppId(Const.EC_TYPE_LARK_INTERNAL);
-                if (aid == null){
+                if (aid == null) {
                     aid = config.getSocialAppId(Const.EC_TYPE_LARK_PUBLIC);
                 }
             }
@@ -48,7 +58,7 @@ public class Lark extends SocialAuthenticator {
 
                 @Override
                 public void onSuccess(CallBackData callBackData) {
-                    if (null == callBackData){
+                    if (null == callBackData) {
                         ALog.e(TAG, "Auth Failed, callBackData is null");
                         return;
                     }
@@ -59,17 +69,17 @@ public class Lark extends SocialAuthenticator {
                 @Override
                 public void onError(CallBackData callBackData) {
                     String errorMessage = "Auth failed";
-                    if ("-1".equals(callBackData.code)){
+                    if ("-1".equals(callBackData.code)) {
                         errorMessage = "状态码校验失败，非当前SDK请求的响应";
-                    } else if("-2".equals(callBackData.code)){
+                    } else if ("-2".equals(callBackData.code)) {
                         errorMessage = "没有获得有效的授权码";
-                    } else if("-3".equals(callBackData.code)){
+                    } else if ("-3".equals(callBackData.code)) {
                         errorMessage = context.getString(R.string.authing_cancelled_by_user);
-                    } else if("-4".equals(callBackData.code)){
+                    } else if ("-4".equals(callBackData.code)) {
                         errorMessage = "跳转飞书失败";
-                    } else if("-5".equals(callBackData.code)){
+                    } else if ("-5".equals(callBackData.code)) {
                         errorMessage = "授权失败";
-                    } else if("-6".equals(callBackData.code)){
+                    } else if ("-6".equals(callBackData.code)) {
                         errorMessage = "请求参数错误";
                     }
                     ALog.e(TAG, "Auth Failed, errorCode is: " + callBackData.code + ",errorMessage is: " + errorMessage);
@@ -77,6 +87,33 @@ public class Lark extends SocialAuthenticator {
                 }
             });
         });
+    }
+
+    public void onResume(Activity activity) {
+        try {
+            Class.forName("com.ss.android.larksso.LarkSSO");
+            LarkSSO.inst().parseIntent(activity, activity.getIntent());
+        } catch (ClassNotFoundException e) {
+            //ALog.e(TAG, e.toString());
+        }
+    }
+
+    public void onNewIntent(Activity activity, Intent intent) {
+        try {
+            Class.forName("com.ss.android.larksso.LarkSSO");
+            LarkSSO.inst().parseIntent(activity, intent);
+        } catch (ClassNotFoundException e) {
+            //ALog.e(TAG, e.toString());
+        }
+    }
+
+    public void onActivityResult(Activity activity, @Nullable Intent data) {
+        try {
+            Class.forName("com.ss.android.larksso.LarkSSO");
+            LarkSSO.inst().parseIntent(activity, data);
+        } catch (ClassNotFoundException e) {
+            //ALog.e(TAG, e.toString());
+        }
     }
 
     @Override
@@ -87,6 +124,11 @@ public class Lark extends SocialAuthenticator {
     @Override
     protected void oidcLogin(String authCode, @NonNull AuthCallback<UserInfo> callback) {
         new OIDCClient().loginByLark(authCode, callback);
+    }
+
+    @SuppressLint("StaticFieldLeak")
+    private static final class LarkInstanceHolder {
+        static final Lark mInstance = new Lark();
     }
 
     public String getAppId() {

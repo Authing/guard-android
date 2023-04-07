@@ -236,6 +236,18 @@ public class OIDCClient {
         AuthClient.loginBySlack(authRequest, authCode, callback);
     }
 
+    public void loginByHuaWei(String authCode, @NotNull AuthCallback<UserInfo> callback) {
+        AuthClient.loginByHuaWei(authRequest, authCode, callback);
+    }
+
+    public void loginByOppo(String authCode, @NotNull AuthCallback<UserInfo> callback) {
+        AuthClient.loginByOppo(authRequest, authCode, callback);
+    }
+
+    public void loginByAmazon(String authCode, @NotNull AuthCallback<UserInfo> callback) {
+        AuthClient.loginByAmazon(authRequest, authCode, callback);
+    }
+
     private static void error(Exception e, @NotNull AuthCallback<?> callback){
         e.printStackTrace();
         callback.call(Const.ERROR_CODE_10004, "JSON parse failed", null);

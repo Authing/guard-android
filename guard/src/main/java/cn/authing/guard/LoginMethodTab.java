@@ -170,7 +170,7 @@ public class LoginMethodTab extends RelativeLayout {
             view.setLayoutParams(params);
         } else if (itemGravity == 1){
             LayoutParams params = new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
-            params.setMarginStart((int) Util.dp2px(getContext(), 32));
+            params.setMarginStart((int) Util.dp2px(getContext(), 30));
             view.setLayoutParams(params);
             view.setPadding(0, 0, 0, 0);
         } else if (itemGravity == 2){
@@ -240,11 +240,13 @@ public class LoginMethodTab extends RelativeLayout {
     }
 
     private void initDefaultLogins(ViewGroup container) {
+        int padding = (int) Util.dp2px(getContext(), 16);
         LoginMethodTabItem b = new LoginMethodTabItem(getContext());
         b.setText(getResources().getString(R.string.authing_login_by_phone_code));
         container.addView(b);
         b.gainFocus(null);
         b.setType(LoginContainer.LoginType.EByPhoneCode);
+        b.setPadding(padding, 0, padding, 0);
         addClickListener(b);
         items.add(b);
 
@@ -253,6 +255,7 @@ public class LoginMethodTab extends RelativeLayout {
         b.setType(LoginContainer.LoginType.EByAccountPassword);
         container.addView(b);
         addClickListener(b);
+        b.setPadding(padding, 0, padding, 0);
         items.add(b);
     }
 }

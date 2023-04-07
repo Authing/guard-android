@@ -32,13 +32,13 @@ import cn.authing.guard.data.Role;
 import cn.authing.guard.data.Safe;
 import cn.authing.guard.data.SocialBindData;
 import cn.authing.guard.data.UserInfo;
-import cn.authing.guard.util.svg.SVG;
-import cn.authing.guard.util.svg.SVGParser;
 import cn.authing.guard.util.ALog;
 import cn.authing.guard.util.Const;
 import cn.authing.guard.util.GlobalCountDown;
 import cn.authing.guard.util.Util;
 import cn.authing.guard.util.Validator;
+import cn.authing.guard.util.svg.SVG;
+import cn.authing.guard.util.svg.SVGParser;
 import okhttp3.Call;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -452,18 +452,7 @@ public class AuthClient {
     }
 
     public static void loginByWechat(AuthRequest authData, String authCode, @NotNull AuthCallback<UserInfo> callback) {
-        Authing.getPublicConfig(config -> {
-            try {
-                JSONObject body = new JSONObject();
-                body.put("connId", config != null ? config.getSocialConnectionId(Const.EC_TYPE_WECHAT) : "");
-                body.put("code", authCode);
-                Guardian.post("/api/v2/ecConn/wechatMobile/authByCode", body, (data) -> {
-                    startOidcInteraction(authData, data, callback);
-                });
-            } catch (Exception e) {
-                error(e, callback);
-            }
-        });
+        loginByAuthCode(authData, authCode, Const.EC_TYPE_WECHAT, "wechatMobile", callback);
     }
 
     public static void loginByWecom(String authCode, @NotNull AuthCallback<UserInfo> callback) {
@@ -471,19 +460,7 @@ public class AuthClient {
     }
 
     public static void loginByWecom(AuthRequest authData, String authCode, @NotNull AuthCallback<UserInfo> callback) {
-        Authing.getPublicConfig(config -> {
-            try {
-                JSONObject body = new JSONObject();
-                body.put("connId", config != null ? config.getSocialConnectionId(Const.EC_TYPE_WECHAT_COM) : "");
-                body.put("code", authCode);
-                String endpoint = "/api/v2/ecConn/wechat-work/authByCode";
-                Guardian.post(endpoint, body, (data) -> {
-                    startOidcInteraction(authData, data, callback);
-                });
-            } catch (Exception e) {
-                error(e, callback);
-            }
-        });
+        loginByAuthCode(authData, authCode, Const.EC_TYPE_WECHAT_COM, "wechat-work", callback);
     }
 
     public static void loginByWecomAgency(String authCode, @NotNull AuthCallback<UserInfo> callback) {
@@ -491,19 +468,7 @@ public class AuthClient {
     }
 
     public static void loginByWecomAgency(AuthRequest authData, String authCode, @NotNull AuthCallback<UserInfo> callback) {
-        Authing.getPublicConfig(config -> {
-            try {
-                JSONObject body = new JSONObject();
-                body.put("connId", config != null ? config.getSocialConnectionId(Const.EC_TYPE_WECHAT_COM_AGENCY) : "");
-                body.put("code", authCode);
-                String endpoint = "/api/v2/ecConn/wechat-work-agency/authByCode";
-                Guardian.post(endpoint, body, (data) -> {
-                    startOidcInteraction(authData, data, callback);
-                });
-            } catch (Exception e) {
-                error(e, callback);
-            }
-        });
+        loginByAuthCode(authData, authCode, Const.EC_TYPE_WECHAT_COM_AGENCY, "wechat-work-agency", callback);
     }
 
     public static void loginByAlipay(String authCode, @NotNull AuthCallback<UserInfo> callback) {
@@ -511,19 +476,7 @@ public class AuthClient {
     }
 
     public static void loginByAlipay(AuthRequest authData, String authCode, @NotNull AuthCallback<UserInfo> callback) {
-        Authing.getPublicConfig(config -> {
-            try {
-                JSONObject body = new JSONObject();
-                body.put("connId", config != null ? config.getSocialConnectionId(Const.EC_TYPE_ALIPAY) : "");
-                body.put("code", authCode);
-                String endpoint = "/api/v2/ecConn/alipay/authByCode";
-                Guardian.post(endpoint, body, (data) -> {
-                    startOidcInteraction(authData, data, callback);
-                });
-            } catch (Exception e) {
-                error(e, callback);
-            }
-        });
+        loginByAuthCode(authData, authCode, Const.EC_TYPE_ALIPAY, Const.TYPE_ALIPAY, callback);
     }
 
     public static void loginByLark(String authCode, @NotNull AuthCallback<UserInfo> callback) {
@@ -556,20 +509,7 @@ public class AuthClient {
     }
 
     public static void loginByGoogle(AuthRequest authData, String authCode, @NotNull AuthCallback<UserInfo> callback) {
-        Authing.getPublicConfig(config -> {
-            try {
-                JSONObject body = new JSONObject();
-                String connId = config != null ? config.getSocialConnectionId(Const.EC_TYPE_GOOGLE) : "";
-                body.put("connId", connId);
-                body.put("code", authCode);
-                String endpoint = "/api/v2/ecConn/google/authByCode";
-                Guardian.post(endpoint, body, (data) -> {
-                    startOidcInteraction(authData, data, callback);
-                });
-            } catch (Exception e) {
-                error(e, callback);
-            }
-        });
+        loginByAuthCode(authData, authCode, Const.EC_TYPE_GOOGLE, Const.TYPE_GOOGLE, callback);
     }
 
     public static void loginByFaceBook(String accessToken, @NotNull AuthCallback<UserInfo> callback) {
@@ -577,20 +517,7 @@ public class AuthClient {
     }
 
     public static void loginByFaceBook(AuthRequest authData, String accessToken, @NotNull AuthCallback<UserInfo> callback) {
-        Authing.getPublicConfig(config -> {
-            try {
-                JSONObject body = new JSONObject();
-                String connId = config != null ? config.getSocialConnectionId(Const.EC_TYPE_FACEBOOK) : "";
-                body.put("connId", connId);
-                body.put("access_token", accessToken);
-                String endpoint = "/api/v2/ecConn/facebook/authByAccessToken";
-                Guardian.post(endpoint, body, (data)-> {
-                    startOidcInteraction(authData, data, callback);
-                });
-            } catch (Exception e) {
-                error(e, callback);
-            }
-        });
+        loginByAccessToken(authData, accessToken, Const.EC_TYPE_FACEBOOK, Const.TYPE_FACEBOOK, callback);
     }
 
     public static void loginByWechatMiniProgram(String code, String phoneInfoCode, @NotNull AuthCallback<UserInfo> callback) {
@@ -622,20 +549,7 @@ public class AuthClient {
     }
 
     public static void loginByQQ(AuthRequest authData, String accessToken, @NotNull AuthCallback<UserInfo> callback) {
-        Authing.getPublicConfig(config -> {
-            try {
-                JSONObject body = new JSONObject();
-                String connId = config != null ? config.getSocialConnectionId(Const.EC_TYPE_QQ) : "";
-                body.put("connId", connId);
-                body.put("access_token", accessToken);
-                String endpoint = "/api/v2/ecConn/QQConnect/authByAccessToken";
-                Guardian.post(endpoint, body, (data)-> {
-                    startOidcInteraction(authData, data, callback);
-                });
-            } catch (Exception e) {
-                error(e, callback);
-            }
-        });
+        loginByAccessToken(authData, accessToken, Const.EC_TYPE_QQ, "QQConnect", callback);
     }
 
     public static void loginByWeibo(String accessToken, @NotNull AuthCallback<UserInfo> callback) {
@@ -643,20 +557,7 @@ public class AuthClient {
     }
 
     public static void loginByWeibo(AuthRequest authData, String accessToken, @NotNull AuthCallback<UserInfo> callback) {
-        Authing.getPublicConfig(config -> {
-            try {
-                JSONObject body = new JSONObject();
-                String connId = config != null ? config.getSocialConnectionId(Const.EC_TYPE_WEIBO) : "";
-                body.put("connId", connId);
-                body.put("access_token", accessToken);
-                String endpoint = "/api/v2/ecConn/weibo/authByAccessToken";
-                Guardian.post(endpoint, body, (data)-> {
-                    startOidcInteraction(authData, data, callback);
-                });
-            } catch (Exception e) {
-                error(e, callback);
-            }
-        });
+        loginByAccessToken(authData, accessToken, Const.EC_TYPE_WEIBO, Const.TYPE_WEIBO, callback);
     }
 
     public static void loginByBaidu(String accessToken, @NotNull AuthCallback<UserInfo> callback) {
@@ -664,20 +565,7 @@ public class AuthClient {
     }
 
     public static void loginByBaidu(AuthRequest authData, String accessToken, @NotNull AuthCallback<UserInfo> callback) {
-        Authing.getPublicConfig(config -> {
-            try {
-                JSONObject body = new JSONObject();
-                String connId = config != null ? config.getSocialConnectionId(Const.EC_TYPE_BAIDU) : "";
-                body.put("connId", connId);
-                body.put("access_token", accessToken);
-                String endpoint = "/api/v2/ecConn/baidu/authByAccessToken";
-                Guardian.post(endpoint, body, (data)-> {
-                    startOidcInteraction(authData, data, callback);
-                });
-            } catch (Exception e) {
-                error(e, callback);
-            }
-        });
+        loginByAccessToken(authData, accessToken, Const.EC_TYPE_BAIDU, Const.TYPE_BAIDU, callback);
     }
 
     public static void loginByLinkedin(String authCode, @NotNull AuthCallback<UserInfo> callback) {
@@ -685,20 +573,7 @@ public class AuthClient {
     }
 
     public static void loginByLinkedin(AuthRequest authData, String authCode, @NotNull AuthCallback<UserInfo> callback) {
-        Authing.getPublicConfig(config -> {
-            try {
-                JSONObject body = new JSONObject();
-                String connId = config != null ? config.getSocialConnectionId(Const.EC_TYPE_LINKEDIN) : "";
-                body.put("connId", connId);
-                body.put("code", authCode);
-                String endpoint = "/api/v2/ecConn/linkedin/authByCode";
-                Guardian.post(endpoint, body, (data)-> {
-                    startOidcInteraction(authData, data, callback);
-                });
-            } catch (Exception e) {
-                error(e, callback);
-            }
-        });
+        loginByAuthCode(authData, authCode, Const.EC_TYPE_LINKEDIN, Const.TYPE_LINKEDIN, callback);
     }
 
     public static void loginByDingTalk(String authCode, @NotNull AuthCallback<UserInfo> callback) {
@@ -706,20 +581,7 @@ public class AuthClient {
     }
 
     public static void loginByDingTalk(AuthRequest authData, String authCode, @NotNull AuthCallback<UserInfo> callback) {
-        Authing.getPublicConfig(config -> {
-            try {
-                JSONObject body = new JSONObject();
-                String connId = config != null ? config.getSocialConnectionId(Const.EC_TYPE_DING_TALK) : "";
-                body.put("connId", connId);
-                body.put("code", authCode);
-                String endpoint = "/api/v2/ecConn/dingtalk/authByCode";
-                Guardian.post(endpoint, body, (data)-> {
-                    startOidcInteraction(authData, data, callback);
-                });
-            } catch (Exception e) {
-                error(e, callback);
-            }
-        });
+        loginByAuthCode(authData, authCode, Const.EC_TYPE_DING_TALK, Const.TYPE_DING_TALK, callback);
     }
 
     public static void loginByDouYin(String authCode, @NotNull AuthCallback<UserInfo> callback) {
@@ -727,20 +589,7 @@ public class AuthClient {
     }
 
     public static void loginByDouYin(AuthRequest authData, String authCode, @NotNull AuthCallback<UserInfo> callback) {
-        Authing.getPublicConfig(config -> {
-            try {
-                JSONObject body = new JSONObject();
-                String connId = config != null ? config.getSocialConnectionId(Const.EC_TYPE_DOU_YIN) : "";
-                body.put("connId", connId);
-                body.put("code", authCode);
-                String endpoint = "/api/v2/ecConn/douyin/authByCode";
-                Guardian.post(endpoint, body, (data)-> {
-                    startOidcInteraction(authData, data, callback);
-                });
-            } catch (Exception e) {
-                error(e, callback);
-            }
-        });
+        loginByAuthCode(authData, authCode, Const.EC_TYPE_DOU_YIN, Const.TYPE_DOU_YIN, callback);
     }
 
     public static void loginByGithub(String authCode, @NotNull AuthCallback<UserInfo> callback) {
@@ -748,20 +597,7 @@ public class AuthClient {
     }
 
     public static void loginByGithub(AuthRequest authData, String authCode, @NotNull AuthCallback<UserInfo> callback) {
-        Authing.getPublicConfig(config -> {
-            try {
-                JSONObject body = new JSONObject();
-                String connId = config != null ? config.getSocialConnectionId(Const.EC_TYPE_GITHUB) : "";
-                body.put("connId", connId);
-                body.put("code", authCode);
-                String endpoint = "/api/v2/ecConn/github/authByCode";
-                Guardian.post(endpoint, body, (data)-> {
-                    startOidcInteraction(authData, data, callback);
-                });
-            } catch (Exception e) {
-                error(e, callback);
-            }
-        });
+        loginByAuthCode(authData, authCode, Const.EC_TYPE_GITHUB, Const.TYPE_GITHUB, callback);
     }
 
     public static void loginByGitee(String authCode, @NotNull AuthCallback<UserInfo> callback) {
@@ -769,20 +605,7 @@ public class AuthClient {
     }
 
     public static void loginByGitee(AuthRequest authData, String authCode, @NotNull AuthCallback<UserInfo> callback) {
-        Authing.getPublicConfig(config -> {
-            try {
-                JSONObject body = new JSONObject();
-                String connId = config != null ? config.getSocialConnectionId(Const.EC_TYPE_GITEE) : "";
-                body.put("connId", connId);
-                body.put("code", authCode);
-                String endpoint = "/api/v2/ecConn/gitee/authByCode";
-                Guardian.post(endpoint, body, (data)-> {
-                    startOidcInteraction(authData, data, callback);
-                });
-            } catch (Exception e) {
-                error(e, callback);
-            }
-        });
+        loginByAuthCode(authData, authCode, Const.EC_TYPE_GITEE, Const.TYPE_GITEE, callback);
     }
 
     public static void loginByGitLab(String authCode, @NotNull AuthCallback<UserInfo> callback) {
@@ -790,20 +613,7 @@ public class AuthClient {
     }
 
     public static void loginByGitLab(AuthRequest authData, String authCode, @NotNull AuthCallback<UserInfo> callback) {
-        Authing.getPublicConfig(config -> {
-            try {
-                JSONObject body = new JSONObject();
-                String connId = config != null ? config.getSocialConnectionId(Const.EC_TYPE_GITLAB) : "";
-                body.put("connId", connId);
-                body.put("code", authCode);
-                String endpoint = "/api/v2/ecConn/gitlab/authByCode";
-                Guardian.post(endpoint, body, (data)-> {
-                    startOidcInteraction(authData, data, callback);
-                });
-            } catch (Exception e) {
-                error(e, callback);
-            }
-        });
+        loginByAuthCode(authData, authCode, Const.EC_TYPE_GITLAB, Const.TYPE_GITLAB, callback);
     }
 
     public static void loginByXiaomi(String authCode, @NotNull AuthCallback<UserInfo> callback) {
@@ -811,20 +621,7 @@ public class AuthClient {
     }
 
     public static void loginByXiaomi(AuthRequest authData, String authCode, @NotNull AuthCallback<UserInfo> callback) {
-        Authing.getPublicConfig(config -> {
-            try {
-                JSONObject body = new JSONObject();
-                String connId = config != null ? config.getSocialConnectionId(Const.EC_TYPE_XIAOMI) : "";
-                body.put("connId", connId);
-                body.put("code", authCode);
-                String endpoint = "/api/v2/ecConn/xiaomi/authByCode";
-                Guardian.post(endpoint, body, (data)-> {
-                    startOidcInteraction(authData, data, callback);
-                });
-            } catch (Exception e) {
-                error(e, callback);
-            }
-        });
+        loginByAuthCode(authData, authCode, Const.EC_TYPE_XIAOMI, Const.TYPE_XIAOMI, callback);
     }
 
     public static void loginByKuaiShou(String authCode, @NotNull AuthCallback<UserInfo> callback) {
@@ -832,20 +629,7 @@ public class AuthClient {
     }
 
     public static void loginByKuaiShou(AuthRequest authData, String authCode, @NotNull AuthCallback<UserInfo> callback) {
-        Authing.getPublicConfig(config -> {
-            try {
-                JSONObject body = new JSONObject();
-                String connId = config != null ? config.getSocialConnectionId(Const.EC_TYPE_KUAI_SHOU) : "";
-                body.put("connId", connId);
-                body.put("code", authCode);
-                String endpoint = "/api/v2/ecConn/kuaishou/authByCode";
-                Guardian.post(endpoint, body, (data)-> {
-                    startOidcInteraction(authData, data, callback);
-                });
-            } catch (Exception e) {
-                error(e, callback);
-            }
-        });
+        loginByAuthCode(authData, authCode, Const.EC_TYPE_KUAI_SHOU, Const.TYPE_KUAI_SHOU, callback);
     }
 
     public static void loginByLine(String accessToken, String idToken, @NotNull AuthCallback<UserInfo> callback) {
@@ -877,13 +661,58 @@ public class AuthClient {
     }
 
     public static void loginBySlack(AuthRequest authData, String authCode, @NotNull AuthCallback<UserInfo> callback) {
+        loginByAuthCode(authData, authCode, Const.EC_TYPE_SLACK, Const.TYPE_SLACK, callback);
+    }
+
+    public static void loginByHuaWei(String authCode, @NotNull AuthCallback<UserInfo> callback) {
+        loginByHuaWei(null, authCode, callback);
+    }
+
+    public static void loginByHuaWei(AuthRequest authData, String authCode, @NotNull AuthCallback<UserInfo> callback) {
+        loginByAuthCode(authData, authCode, Const.EC_TYPE_HUAWEI, Const.TYPE_HUAWEI, callback);
+    }
+
+    public static void loginByOppo(String authCode, @NotNull AuthCallback<UserInfo> callback) {
+        loginByOppo(null, authCode, callback);
+    }
+
+    public static void loginByOppo(AuthRequest authData, String authCode, @NotNull AuthCallback<UserInfo> callback) {
+        loginByAuthCode(authData, authCode, Const.EC_TYPE_OPPO, Const.TYPE_OPPO, callback);
+    }
+
+    public static void loginByAmazon(String accessToken, @NotNull AuthCallback<UserInfo> callback) {
+        loginByAmazon(null, accessToken, callback);
+    }
+
+    public static void loginByAmazon(AuthRequest authData, String accessToken, @NotNull AuthCallback<UserInfo> callback) {
+        loginByAccessToken(authData, accessToken, Const.EC_TYPE_AMAZON, Const.TYPE_AMAZON, callback);
+    }
+
+    private static void loginByAuthCode(AuthRequest authData, String authCode, String type, String point, @NotNull AuthCallback<UserInfo> callback) {
         Authing.getPublicConfig(config -> {
             try {
                 JSONObject body = new JSONObject();
-                String connId = config != null ? config.getSocialConnectionId(Const.EC_TYPE_SLACK) : "";
+                String connId = config != null ? config.getSocialConnectionId(type) : "";
                 body.put("connId", connId);
                 body.put("code", authCode);
-                String endpoint = "/api/v2/ecConn/slack/authByCode";
+                String endpoint = "/api/v2/ecConn/" + point + "/authByCode";
+                Guardian.post(endpoint, body, (data)-> {
+                    startOidcInteraction(authData, data, callback);
+                });
+            } catch (Exception e) {
+                error(e, callback);
+            }
+        });
+    }
+
+    private static void loginByAccessToken(AuthRequest authData, String accessToken, String type, String point, @NotNull AuthCallback<UserInfo> callback) {
+        Authing.getPublicConfig(config -> {
+            try {
+                JSONObject body = new JSONObject();
+                String connId = config != null ? config.getSocialConnectionId(type) : "";
+                body.put("connId", connId);
+                body.put("access_token", accessToken);
+                String endpoint = "/api/v2/ecConn/" + point + "/authByAccessToken";
                 Guardian.post(endpoint, body, (data)-> {
                     startOidcInteraction(authData, data, callback);
                 });

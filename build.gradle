@@ -5,7 +5,7 @@ buildscript {
         google()
         jcenter()
         mavenCentral()
-
+        // 华为
         maven {url 'https://developer.huawei.com/repo/'}
     }
     dependencies {

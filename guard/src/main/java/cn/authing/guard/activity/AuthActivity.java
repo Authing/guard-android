@@ -16,8 +16,6 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.ss.android.larksso.LarkSSO;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -28,11 +26,14 @@ import cn.authing.guard.R;
 import cn.authing.guard.data.UserInfo;
 import cn.authing.guard.flow.AuthFlow;
 import cn.authing.guard.internal.CircularAnimatedView;
+import cn.authing.guard.social.handler.Amazon;
 import cn.authing.guard.social.handler.FaceBook;
+import cn.authing.guard.social.handler.GitLab;
 import cn.authing.guard.social.handler.Gitee;
 import cn.authing.guard.social.handler.Github;
-import cn.authing.guard.social.handler.GitLab;
 import cn.authing.guard.social.handler.Google;
+import cn.authing.guard.social.handler.HuaWei;
+import cn.authing.guard.social.handler.Lark;
 import cn.authing.guard.social.handler.Line;
 import cn.authing.guard.social.handler.Linkedin;
 import cn.authing.guard.social.handler.QQ;
@@ -108,26 +109,20 @@ public class AuthActivity extends AppCompatActivity {
         } else if (Authing.getAppId() == null) {
             ToastUtil.showCenter(this, getString(R.string.authing_uninitialized));
         }
+        Amazon.getInstance().onCreate(this);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        try {
-            Class.forName("com.ss.android.larksso.LarkSSO");
-            LarkSSO.inst().parseIntent(this, getIntent());
-        } catch( ClassNotFoundException e ) {
-        }
+        Lark.getInstance().onResume(this);
+        Amazon.getInstance().onResume();
     }
 
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
-        try {
-            Class.forName("com.ss.android.larksso.LarkSSO");
-            LarkSSO.inst().parseIntent(this, intent);
-        } catch( ClassNotFoundException e ) {
-        }
+        Lark.getInstance().onNewIntent(this, intent);
     }
 
     @Override
@@ -136,11 +131,6 @@ public class AuthActivity extends AppCompatActivity {
         if (webAuthNAuthentication != null){
             webAuthNAuthentication.onActivityResult(requestCode, resultCode, data);
         }
-        try {
-            Class.forName("com.ss.android.larksso.LarkSSO");
-            LarkSSO.inst().parseIntent(this, data);
-        } catch( ClassNotFoundException e ) {
-        }
         if (requestCode == RC_LOGIN && resultCode == OK && data != null) {
             UserInfo userInfo = (UserInfo)data.getSerializableExtra("user");
             Intent intent = new Intent();
@@ -148,6 +138,7 @@ public class AuthActivity extends AppCompatActivity {
             setResult(OK, intent);
             finish();
         }
+        Lark.getInstance().onActivityResult(this, data);
         Google.getInstance().onActivityResult(requestCode, resultCode, data);
         FaceBook.getInstance().onActivityResult(requestCode, resultCode, data);
         QQ.getInstance().onActivityResult(requestCode, resultCode, data);
@@ -158,6 +149,7 @@ public class AuthActivity extends AppCompatActivity {
         GitLab.getInstance().onActivityResult(requestCode, resultCode, data);
         Line.getInstance().onActivityResult(requestCode, resultCode, data);
         Slack.getInstance().onActivityResult(requestCode, resultCode, data);
+        HuaWei.getInstance().onActivityResult(requestCode, resultCode, data);
         if (resultCode == BIOMETRIC_BIND_OK){
             Util.biometricBind(this);
         }

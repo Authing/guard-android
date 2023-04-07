@@ -6,6 +6,7 @@ import java.util.List;
 
 import cn.authing.guard.R;
 import cn.authing.guard.social.view.AlipayLoginButton;
+import cn.authing.guard.social.view.AmazonLoginButton;
 import cn.authing.guard.social.view.BaiduLoginButton;
 import cn.authing.guard.social.view.DingTalkLoginButton;
 import cn.authing.guard.social.view.DouYinLoginButton;
@@ -15,10 +16,12 @@ import cn.authing.guard.social.view.GitLabLoginButton;
 import cn.authing.guard.social.view.GiteeLoginButton;
 import cn.authing.guard.social.view.GithubLoginButton;
 import cn.authing.guard.social.view.GoogleLoginButton;
+import cn.authing.guard.social.view.HuaWeiLoginButton;
 import cn.authing.guard.social.view.KuaiShouLoginButton;
 import cn.authing.guard.social.view.LarkLoginButton;
 import cn.authing.guard.social.view.LineLoginButton;
 import cn.authing.guard.social.view.LinkedinLoginButton;
+import cn.authing.guard.social.view.OPPOLoginButton;
 import cn.authing.guard.social.view.QQLoginButton;
 import cn.authing.guard.social.view.SlackLoginButton;
 import cn.authing.guard.social.view.SocialLoginButton;
@@ -121,6 +124,18 @@ public class SocialUtils {
             sb.append(Const.TYPE_SLACK);
             sb.append("|");
         }
+        if (types.contains(Const.EC_TYPE_HUAWEI)) {
+            sb.append(Const.TYPE_HUAWEI);
+            sb.append("|");
+        }
+        if (types.contains(Const.EC_TYPE_OPPO)) {
+            sb.append(Const.TYPE_OPPO);
+            sb.append("|");
+        }
+        if (types.contains(Const.EC_TYPE_AMAZON)) {
+            sb.append(Const.TYPE_AMAZON);
+            sb.append("|");
+        }
         String socialString = sb.toString();
         if (socialString.endsWith("|")) {
             socialString = socialString.substring(0, socialString.length() - 1);
@@ -196,6 +211,15 @@ public class SocialUtils {
             case Const.TYPE_SLACK:
                 button = new SlackLoginButton(context);
                 break;
+            case Const.TYPE_HUAWEI:
+                button = new HuaWeiLoginButton(context);
+                break;
+            case Const.TYPE_OPPO:
+                button = new OPPOLoginButton(context);
+                break;
+            case Const.TYPE_AMAZON:
+                button = new AmazonLoginButton(context);
+                break;
         }
         return button;
     }
@@ -263,6 +287,15 @@ public class SocialUtils {
                 break;
             case Const.TYPE_SLACK:
                 title = context.getString(R.string.authing_social_slack);
+                break;
+            case Const.TYPE_HUAWEI:
+                title = context.getString(R.string.authing_social_huawei);
+                break;
+            case Const.TYPE_OPPO:
+                title = context.getString(R.string.authing_social_oppo);
+                break;
+            case Const.TYPE_AMAZON:
+                title = context.getString(R.string.authing_social_amazon);
                 break;
             case Const.TYPE_FINGER:
                 title = context.getString(R.string.authing_finger);
@@ -337,6 +370,15 @@ public class SocialUtils {
                 break;
             case Const.TYPE_SLACK:
                 str = context.getString(R.string.authing_login_by_slack);
+                break;
+            case Const.TYPE_HUAWEI:
+                str = context.getString(R.string.authing_login_by_huawei);
+                break;
+            case Const.TYPE_OPPO:
+                str = context.getString(R.string.authing_login_by_oppo);
+                break;
+            case Const.TYPE_AMAZON:
+                str = context.getString(R.string.authing_login_by_amazon);
                 break;
         }
         return str;

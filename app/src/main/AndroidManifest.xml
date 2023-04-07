@@ -183,6 +183,23 @@
             android:taskAffinity="cn.authing.guard"
             android:exported="true">
         </activity>
+        <activity android:name="com.amazon.identity.auth.device.workflow.WorkflowActivity"
+            android:theme="@android:style/Theme.NoDisplay"
+            android:allowTaskReparenting="true"
+            android:launchMode="singleTask"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
+                <!-- android:host must use the full package name found in Manifest General Attributes -->
+                <data android:host="cn.authing.guard" android:scheme="amzn"/>
+            </intent-filter>
+        </activity>
+
+        <meta-data
+            android:name="com.heytap.msp.client.appid"
+            android:value="30828869" />
     </application>
 
 </manifest>

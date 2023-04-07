@@ -47,6 +47,9 @@ public class Const {
     public final static int ERROR_CODE_10022 = 10022; // 快手 auth failed
     public final static int ERROR_CODE_10023 = 10023; // Line auth failed
     public final static int ERROR_CODE_10024 = 10024; // Slack auth failed
+    public final static int ERROR_CODE_10025 = 10025; // 华为 auth failed
+    public final static int ERROR_CODE_10027 = 10027; // OPPO auth failed
+    public final static int ERROR_CODE_10028 = 10028; // Amazon auth failed
 
     // mfa
     public static final String MFA_POLICY_SMS = "SMS";
@@ -78,6 +81,9 @@ public class Const {
     public static final String EC_TYPE_KUAI_SHOU= "kuaishou:mobile";
     public static final String EC_TYPE_LINE= "line:mobile";
     public static final String EC_TYPE_SLACK= "slack:mobile";
+    public static final String EC_TYPE_HUAWEI= "huawei:mobile";
+    public static final String EC_TYPE_OPPO= "oppo:mobile";
+    public static final String EC_TYPE_AMAZON= "amazon:mobile";
 
     public static final String TYPE_WECHAT = "wechat";
     public static final String TYPE_WECHAT_MINI_PROGRAM = "wechat-miniprogram";
@@ -101,6 +107,9 @@ public class Const {
     public static final String TYPE_KUAI_SHOU = "kuaishou";
     public static final String TYPE_LINE = "line";
     public static final String TYPE_SLACK = "slack";
+    public static final String TYPE_HUAWEI = "huawei";
+    public static final String TYPE_OPPO = "oppo";
+    public static final String TYPE_AMAZON= "amazon";
     public static final String TYPE_FACE = "face";
 
     // network
@@ -116,6 +125,8 @@ public class Const {
     public static final int GITLAB_REQUEST = 2003;
     public static final int LINE_REQUEST = 2004;
     public static final int SLACK_REQUEST = 2005;
+    public static final int HUAWEI_REQUEST = 2006;
+    public static final int HONOR_REQUEST = 2007;
 
     public static final int SOCIAL_DIALOG_MAX_HEIGHT = 800;
 }

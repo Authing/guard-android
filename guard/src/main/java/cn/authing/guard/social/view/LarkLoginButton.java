@@ -5,8 +5,8 @@ import android.util.AttributeSet;
 
 import cn.authing.guard.R;
 import cn.authing.guard.analyze.Analyzer;
-import cn.authing.guard.social.handler.SocialAuthenticator;
 import cn.authing.guard.social.handler.Lark;
+import cn.authing.guard.social.handler.SocialAuthenticator;
 
 public class LarkLoginButton extends SocialLoginButton {
     public LarkLoginButton(Context context) {
@@ -25,7 +25,7 @@ public class LarkLoginButton extends SocialLoginButton {
 
     @Override
     public SocialAuthenticator createAuthenticator() {
-        return new Lark();
+        return Lark.getInstance();
     }
 
     @Override

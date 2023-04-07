@@ -4,13 +4,25 @@ dependencyResolutionManagement {
         google()
         jcenter()
         mavenCentral()
+        // 华为
         maven {url 'https://developer.huawei.com/repo/'}
+        // 个推
         maven {
             url "https://mvn.getui.com/nexus/content/repositories/releases/"
         }
+        // 抖音
         maven { url 'https://artifact.bytedance.com/repository/AwemeOpenSDK' }
+        // 小米
         maven { url 'https://raw.githubusercontent.com/xiaomi-passport/maven-repository/master/releases' }
         //maven { url 'https://gitlab.com/xiaomi-passport/maven-repository/raw/master/releases' }
+        // oppo
+        maven {
+            url 'https://maven.columbus.heytapmobi.com/repository/maven-public/'
+            credentials {
+                username 'cmuser'
+                password 'c0b08da17ery566c3870fed67789bcb36abc2e32'
+            }
+        }
     }
 }
 rootProject.name = "Guard"

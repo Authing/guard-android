@@ -1,4 +1,10 @@
 {
+	"agcgw":{
+		"backurl":"connect-drcn.hispace.hicloud.com",
+		"url":"connect-drcn.dbankcloud.cn",
+		"websocketbackurl":"connect-ws-drcn.hispace.dbankcloud.com",
+		"websocketurl":"connect-ws-drcn.hispace.dbankcloud.cn"
+	},
 	"agcgw_all":{
 		"CN":"connect-drcn.dbankcloud.cn",
 		"CN_back":"connect-drcn.hispace.hicloud.com",
@@ -20,37 +26,66 @@
 		"SG_back":"connect-ws-dra.hispace.dbankcloud.com"
 	},
 	"client":{
-		"cp_id":"390086000001036423",
-		"product_id":"99536292102284345",
-		"client_id":"893425270432747328",
-		"client_secret":"2657B5FFC6EEB6B9A1264C95730F8C83FC76846C7F992E300D98234ADA4B8A16",
-		"project_id":"99536292102284345",
-		"app_id":"106247535",
-		"api_key":"DAEDANrTwtktkGkyARcCRQ+WvK+Kj6oN9HpV/6zKy6LjDXGvCAXyo2ghH3tUpvbM8YHJiQy/LfD1Z/ZF4hqiOoQRrSriT5h8dNqf9g==",
+		"cp_id":"30086000594362300",
+		"product_id":"99536292102830402",
+		"client_id":"1042713985473858816",
+		"client_secret":"EE78459A626F18E61BF95F2D0F42B47308B2FE539C7875D1F807B5CBA06E4B34",
+		"project_id":"99536292102830402",
+		"app_id":"106538703",
+		"api_key":"DAEDAKEmFSZ6VCbYWC9kEiF83uZhSUbCEa8N4iqCKxmRdXDWunbmLdaoYqOexlstZDIZf+GFWKPEx+URRbsSvPXI7BDXrH/NyPjIvg==",
 		"package_name":"cn.authing.guard"
 	},
 	"oauth_client":{
-		"client_id":"106247535",
+		"client_id":"106538703",
 		"client_type":1
 	},
 	"app_info":{
-		"app_id":"106247535",
+		"app_id":"106538703",
 		"package_name":"cn.authing.guard"
 	},
+	"service":{
+		"analytics":{
+			"collector_url":"datacollector-drcn.dt.hicloud.com,datacollector-drcn.dt.dbankcloud.cn",
+			"collector_url_ru":"datacollector-drru.dt.dbankcloud.ru,datacollector-drru.dt.hicloud.com",
+			"collector_url_sg":"datacollector-dra.dt.hicloud.com,datacollector-dra.dt.dbankcloud.cn",
+			"collector_url_de":"datacollector-dre.dt.hicloud.com,datacollector-dre.dt.dbankcloud.cn",
+			"collector_url_cn":"datacollector-drcn.dt.hicloud.com,datacollector-drcn.dt.dbankcloud.cn",
+			"resource_id":"p1",
+			"channel_id":""
+		},
+		"search":{
+			"url":"https://search-drcn.cloud.huawei.com"
+		},
+		"cloudstorage":{
+			"storage_url_sg_back":"https://agc-storage-dra.cloud.huawei.asia",
+			"storage_url_ru_back":"https://agc-storage-drru.cloud.huawei.ru",
+			"storage_url_ru":"https://agc-storage-drru.cloud.huawei.ru",
+			"storage_url_de_back":"https://agc-storage-dre.cloud.huawei.eu",
+			"storage_url_de":"https://ops-dre.agcstorage.link",
+			"storage_url":"https://agc-storage-drcn.platform.dbankcloud.cn",
+			"storage_url_sg":"https://ops-dra.agcstorage.link",
+			"storage_url_cn_back":"https://agc-storage-drcn.cloud.huawei.com.cn",
+			"storage_url_cn":"https://agc-storage-drcn.platform.dbankcloud.cn"
+		},
+		"ml":{
+			"mlservice_url":"ml-api-drcn.ai.dbankcloud.com,ml-api-drcn.ai.dbankcloud.cn"
+		}
+	},
+	"region":"CN",
 	"configuration_version":"3.0",
 	"appInfos":[
 		{
 			"package_name":"cn.authing.guard",
 			"client":{
-				"app_id":"106247535"
+				"app_id":"106538703"
 			},
 			"app_info":{
 				"package_name":"cn.authing.guard",
-				"app_id":"106247535"
+				"app_id":"106538703"
 			},
 			"oauth_client":{
 				"client_type":1,
-				"client_id":"106247535"
+				"client_id":"106538703"
 			}
 		}
 	]
