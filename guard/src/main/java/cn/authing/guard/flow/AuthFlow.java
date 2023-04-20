@@ -81,6 +81,8 @@ public class AuthFlow implements Serializable {
     private boolean skipConsent;
     // save confirmed data across Guard. e.g. Phone Number, Email
     private boolean syncData = true;
+    private static AuthFlowUIConfig uiConfig;
+
 
     public interface Callback<T> extends Serializable {
         void call(Context context, int code, String message, T userInfo);
@@ -92,12 +94,24 @@ public class AuthFlow implements Serializable {
         return start(context, R.layout.authing_login);
     }
 
+    public static AuthFlow start(Activity context, AuthFlowUIConfig uiConfig) {
+        if (uiConfig != null && uiConfig.getContentMode() == AuthFlowUIConfig.ContentMode.MIDDLE){
+            return start(context, R.layout.authing_login_middle, uiConfig);
+        }
+        return start(context, R.layout.authing_login, uiConfig);
+    }
+
     public static AuthFlow startWeb(Activity context) {
         return start(context, R.layout.authing_login_web);
     }
 
     public static AuthFlow start(Activity activity, int layoutId) {
+        return start(activity, layoutId, null);
+    }
+
+    public static AuthFlow start(Activity activity, int layoutId, AuthFlowUIConfig uiConfig) {
         final AuthFlow flow = new AuthFlow();
+        flow.setUiConfig(uiConfig);
         flow.indexLayoutId = layoutId;
 
         if (Authing.getAppId() == null) {
@@ -180,6 +194,9 @@ public class AuthFlow implements Serializable {
 
     public int getRegisterLayoutId() {
         if (registerLayoutId == 0) {
+            if (uiConfig != null && uiConfig.getContentMode() == AuthFlowUIConfig.ContentMode.MIDDLE){
+                return R.layout.authing_register_middle;
+            }
             return R.layout.authing_register;
         } else {
             return registerLayoutId;
@@ -588,5 +605,13 @@ public class AuthFlow implements Serializable {
 
     public void setSyncData(boolean syncData) {
         this.syncData = syncData;
+    }
+
+    public AuthFlowUIConfig getUiConfig() {
+        return uiConfig;
+    }
+
+    private void setUiConfig(AuthFlowUIConfig uiConfig) {
+        AuthFlow.uiConfig = uiConfig;
     }
 }
