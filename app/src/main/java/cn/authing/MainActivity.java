@@ -1,6 +1,5 @@
 package cn.authing;
 
-import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Toast;
@@ -8,7 +7,6 @@ import android.widget.Toast;
 import cn.authing.guard.activity.DeleteAccountActivity;
 import cn.authing.guard.activity.UserProfileActivity;
 import cn.authing.guard.network.AuthClient;
-import cn.authing.guard.util.ALog;
 import cn.authing.push.Push;
 
 public class MainActivity extends UserProfileActivity {
@@ -16,7 +14,6 @@ public class MainActivity extends UserProfileActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         logoutButton.setOnClickListener(v -> logout());
         deleteButton.setOnClickListener(v -> delete());
     }

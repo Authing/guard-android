@@ -13,8 +13,6 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -40,12 +38,13 @@ import cn.authing.guard.social.handler.QQ;
 import cn.authing.guard.social.handler.Slack;
 import cn.authing.guard.social.handler.Weibo;
 import cn.authing.guard.util.Const;
+import cn.authing.guard.util.DarkModeManager;
 import cn.authing.guard.util.ImageUtil;
 import cn.authing.guard.util.ToastUtil;
 import cn.authing.guard.util.Util;
 import cn.authing.guard.webauthn.WebAuthNAuthentication;
 
-public class AuthActivity extends AppCompatActivity {
+public class AuthActivity extends BaseAuthActivity {
 
     public static final int RC_LOGIN = 1024;
     public static final int OK = 42;
@@ -72,13 +71,6 @@ public class AuthActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        ActionBar bar = getSupportActionBar();
-        if (bar != null) {
-            bar.hide();
-        }
-        Util.setStatusBarColor(this, R.color.authing_status_bar_bg);
-
         Intent intent = getIntent();
         flow = (AuthFlow) intent.getSerializableExtra(AUTH_FLOW);
         if (flow != null) {
@@ -90,6 +82,7 @@ public class AuthActivity extends AppCompatActivity {
                 setContentView(layoutId);
             }
         }
+        DarkModeManager.getInstance().setDarkMode(this);
 
         if (Authing.isGettingConfig()) {
             FrameLayout rootLayout = findViewById(android.R.id.content);

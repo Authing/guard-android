@@ -26,6 +26,7 @@ import cn.authing.guard.R;
 import cn.authing.guard.data.UserInfo;
 import cn.authing.guard.jwt.Jwt;
 import cn.authing.guard.network.OIDCClient;
+import cn.authing.guard.util.DarkModeManager;
 import cn.authing.guard.util.ToastUtil;
 import cn.authing.guard.util.Util;
 
@@ -64,7 +65,7 @@ public class DeveloperActivity extends BaseAuthActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.authing_developer);
-
+        DarkModeManager.getInstance().setDarkMode(this);
         findViewById(R.id.btn_back).setOnClickListener(v -> finish());
         userInfo = (UserInfo) getIntent().getSerializableExtra("user");
         if (userInfo == null) {

@@ -2,8 +2,10 @@ package cn.authing.guard.social.handler;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.res.Configuration;
 import android.graphics.Color;
 import android.graphics.drawable.AnimatedVectorDrawable;
+import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Handler;
 import android.os.Looper;
@@ -255,15 +257,17 @@ public class OneClick extends SocialAuthenticator implements Serializable {
         TitleLayout titleLayout = inflateTitleLayout();
         RelativeLayout otherLoginRel = inflateOtherLayout();
         //LinearLayout socialRel = inflateSocialLayout();
-
+        int uiMode = context.getResources().getConfiguration().uiMode;
         UnifyUiConfig.Builder builder = new UnifyUiConfig.Builder()
-                .setStatusBarDarkColor(true)
+                .setStatusBarColor(context.getColor(R.color.authing_status_bar_bg))
+                .setStatusBarDarkColor((uiMode & Configuration.UI_MODE_NIGHT_MASK) != Configuration.UI_MODE_NIGHT_YES)
                 .setHideNavigation(true)
                 .setLogoIconDrawable(logo)
                 .setLogoTopYOffset(160)
                 .setLogoHeight(52)
                 .setLogoWidth(46)
                 .setSloganColor(0)
+                .setMaskNumberColor(context.getColor(R.color.authing_text_black))
                 .setMaskNumberTopYOffset(233)//160+52+21=233
                 .setSloganTopYOffset(265)//160+52+21+24+8=265
                 //.setPrivacyTopYOffset(263)
@@ -294,6 +298,7 @@ public class OneClick extends SocialAuthenticator implements Serializable {
                 .addCustomView(titleLayout, "titleLayout", UnifyUiConfig.POSITION_IN_BODY, null)
                 .addCustomView(otherLoginRel, "otherBtn", UnifyUiConfig.POSITION_IN_BODY, null)
                 //.addCustomView(socialRel, "socialList", UnifyUiConfig.POSITION_IN_BODY, null)
+                .setBackgroundImageDrawable(new ColorDrawable(context.getColor(R.color.authing_page_bg)))
                 .setLoadingVisible(true)
                 .setLoadingView(inflateLoadingLayout())
                 .setLoginListener(new LoginListener() {

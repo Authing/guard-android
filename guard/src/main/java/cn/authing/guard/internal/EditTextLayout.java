@@ -483,7 +483,7 @@ public class EditTextLayout extends LinearLayout implements TextWatcher, View.On
                 outlinePaint = new Paint();
             }
 
-            bgPaint.setColor(Color.parseColor("#F7F8FA"));
+            bgPaint.setColor(getContext().getColor(R.color.authing_edit_background));
             canvas.drawRoundRect(0, 0, getRight(), getBottom(), corner, corner, bgPaint);
 
             if (fadeInAnimator != null && fadeInAnimator.isRunning()) {

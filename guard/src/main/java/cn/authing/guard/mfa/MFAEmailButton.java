@@ -67,7 +67,6 @@ public class MFAEmailButton extends MFABaseButton implements AuthActivity.EventL
                 Util.setErrorText(v, getContext().getString(R.string.authing_verify_code_empty));
                 inputEmpty = true;
             }
-            startLoadingVisualEffect();
             AuthActivity activity = (AuthActivity) getContext();
             AuthFlow flow = activity.getFlow();
             if (currentMfaType == MFA_TYPE_BIND){
@@ -82,11 +81,13 @@ public class MFAEmailButton extends MFABaseButton implements AuthActivity.EventL
                 if (inputEmpty){
                     return;
                 }
+                startLoadingVisualEffect();
                 AuthClient.mfaVerifyByEmail(email, verifyCode, (code, message, data)-> activity.runOnUiThread(()-> mfaBindDone(code, message, data)));
             } else if (currentMfaType == MFA_TYPE_VERIFY){
                 if (inputEmpty){
                     return;
                 }
+                startLoadingVisualEffect();
                 String email = (String) flow.getData().get(AuthFlow.KEY_MFA_EMAIL);
                 AuthClient.mfaVerifyByEmail(email, verifyCode, (code, message, data)-> activity.runOnUiThread(()-> mfaVerifyDone(code, message, data)));
             }

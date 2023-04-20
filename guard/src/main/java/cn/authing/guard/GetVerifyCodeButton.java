@@ -66,6 +66,7 @@ public class GetVerifyCodeButton extends LoadingButton {
         if (attrs != null && attrs.getAttributeValue(NS_ANDROID, "textColor") != null) {
             textColor = getCurrentTextColor();
         }
+        setTextColor(context.getColor(R.color.authing_text_black));
 
         setSingleLine();
         setEllipsize(TextUtils.TruncateAt.END);

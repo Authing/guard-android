@@ -10,6 +10,7 @@ import cn.authing.guard.data.UserInfo;
 import cn.authing.guard.internal.EditTextLayout;
 import cn.authing.guard.internal.LoadingButton;
 import cn.authing.guard.network.AuthClient;
+import cn.authing.guard.util.DarkModeManager;
 import cn.authing.guard.util.Util;
 
 public class UpdateUserProfileActivity extends BaseAuthActivity {
@@ -22,7 +23,7 @@ public class UpdateUserProfileActivity extends BaseAuthActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.authing_user_profile_update);
-
+        DarkModeManager.getInstance().setDarkMode(this);
         key = getIntent().getStringExtra("key");
         String label = getIntent().getStringExtra("label");
         data = (UserInfo.CustomData) getIntent().getSerializableExtra("data");

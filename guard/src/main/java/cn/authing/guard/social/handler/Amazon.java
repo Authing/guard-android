@@ -1,6 +1,7 @@
 package cn.authing.guard.social.handler;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Context;
 
 import androidx.annotation.NonNull;
@@ -28,6 +29,7 @@ public class Amazon extends SocialAuthenticator {
 
     private static final String TAG = "Amazon";
     private RequestContext requestContext;
+    private Activity activity;
 
     private Amazon() {
     }
@@ -75,6 +77,7 @@ public class Amazon extends SocialAuthenticator {
     }
 
     public void onCreate(Context context) {
+        this.activity = (Activity) context;
         try {
             Class.forName("com.amazon.identity.auth.device.api.workflow.RequestContext");
             requestContext = RequestContext.create(context);
@@ -84,7 +87,7 @@ public class Amazon extends SocialAuthenticator {
     }
 
     public void onResume() {
-        if (requestContext != null) {
+        if (requestContext != null && activity != null && !activity.isDestroyed()) {
             requestContext.onResume();
         }
     }

@@ -5,5 +5,5 @@
     android:viewportHeight="14">
   <path
       android:pathData="M7.3094,0.3101L8.6883,1.6889L3.3777,6.9995L8.6883,12.3101L7.3094,13.6889L0.62,6.9995L7.3094,0.3101Z"
-      android:fillColor="@color/authing_icon_back"/>
+      android:fillColor="@color/authing_icon_color"/>
 </vector>

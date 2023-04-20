@@ -6,6 +6,7 @@ import android.view.View;
 import cn.authing.guard.Authing;
 import cn.authing.guard.EmailEditText;
 import cn.authing.guard.R;
+import cn.authing.guard.util.DarkModeManager;
 import cn.authing.guard.util.Util;
 
 public class BindEmailActivity extends BaseAuthActivity {
@@ -14,7 +15,7 @@ public class BindEmailActivity extends BaseAuthActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.authing_bind_email);
-
+        DarkModeManager.getInstance().setDarkMode(this);
         EmailEditText editText = findViewById(R.id.et_email);
         if (Authing.getCurrentUser() != null && !Util.isNull(Authing.getCurrentUser().getEmail())) {
             editText.getEditText().setText(Authing.getCurrentUser().getEmail());

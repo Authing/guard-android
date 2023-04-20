@@ -16,6 +16,7 @@ import cn.authing.guard.Authing;
 import cn.authing.guard.R;
 import cn.authing.guard.data.Organization;
 import cn.authing.guard.data.UserInfo;
+import cn.authing.guard.util.DarkModeManager;
 
 public class OrganizationActivity extends BaseAuthActivity {
 
@@ -25,6 +26,8 @@ public class OrganizationActivity extends BaseAuthActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.authing_organizations);
+        DarkModeManager.getInstance().setDarkMode(this);
+
         UserInfo userInfo = Authing.getCurrentUser();
         if (userInfo != null) {
             organizations = userInfo.getOrganizations();

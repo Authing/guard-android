@@ -7,6 +7,7 @@ import android.os.Bundle;
 
 import cn.authing.guard.R;
 import cn.authing.guard.feedback.ImagePickerView;
+import cn.authing.guard.util.DarkModeManager;
 
 public class FeedbackActivity extends AuthActivity {
 
@@ -17,8 +18,8 @@ public class FeedbackActivity extends AuthActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.authing_feedback);
+        DarkModeManager.getInstance().setDarkMode(this);
         pickerView = findViewById(R.id.gv_image_picker);
     }
 

@@ -1,7 +1,5 @@
 package cn.authing.guard.activity;
 
-import androidx.annotation.NonNull;
-
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,12 +8,15 @@ import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+
 import java.util.List;
 
 import cn.authing.guard.Authing;
 import cn.authing.guard.R;
 import cn.authing.guard.data.Application;
 import cn.authing.guard.data.UserInfo;
+import cn.authing.guard.util.DarkModeManager;
 
 public class ApplicationActivity extends BaseAuthActivity {
 
@@ -25,7 +26,7 @@ public class ApplicationActivity extends BaseAuthActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.authing_applications);
-
+        DarkModeManager.getInstance().setDarkMode(this);
         UserInfo userInfo = Authing.getCurrentUser();
         if (userInfo != null) {
             applications = userInfo.getApplications();

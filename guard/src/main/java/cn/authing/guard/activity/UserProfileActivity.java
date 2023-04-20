@@ -2,9 +2,13 @@ package cn.authing.guard.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 
 import cn.authing.guard.R;
+import cn.authing.guard.util.DarkModeManager;
+import cn.authing.guard.util.Util;
 
 public class UserProfileActivity extends BaseAuthActivity {
 
@@ -16,6 +20,8 @@ public class UserProfileActivity extends BaseAuthActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.authing_activity_user_profile);
+        DarkModeManager.getInstance().setDarkMode(this);
+
         fragment = (UserProfileFragment)getSupportFragmentManager().findFragmentById(R.id.fragment_user_profile);
         if (null != fragment){
             logoutButton = fragment.getLogoutButton();

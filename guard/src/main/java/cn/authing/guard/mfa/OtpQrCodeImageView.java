@@ -51,7 +51,7 @@ public class OtpQrCodeImageView extends AppCompatImageView {
                         String qrcode_data_url = data.getString("qrcode_data_url");
                         bitmap = ImageUtil.stringToBitmap(qrcode_data_url);
                         if (bitmap != null) {
-                            post(() -> setBackground(new BitmapDrawable(getResources(), bitmap)));
+                            post(() -> setImageBitmap(bitmap));
                         }
                     } catch (JSONException e) {
                         e.printStackTrace();

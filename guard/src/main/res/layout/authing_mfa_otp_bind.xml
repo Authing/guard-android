@@ -28,7 +28,7 @@
         android:layout_height="200dp"
         android:layout_gravity="center"
         android:layout_marginTop="@dimen/authing_margin_40"
-        android:scaleType="centerInside" />
+        android:background="#FFFFFF" />
 
     <cn.authing.guard.VerifyCodeEditText
         android:layout_width="wrap_content"

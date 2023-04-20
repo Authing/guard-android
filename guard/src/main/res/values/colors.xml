@@ -8,6 +8,7 @@
     <color name="authing_button_disabled">#FF92AAF3</color>
     <color name="authing_background">#FFF0F0F0</color>
     <color name="authing_status_bar_bg">#FFFFFFFF</color>
+    <color name="authing_page_bg">#FFFFFFFF</color>
     <color name="authing_text_gray">#86909C</color>
     <color name="authing_text_black">#1D2129</color>
     <color name="authing_text_yellow">#FB9926</color>
@@ -17,8 +18,11 @@
     <color name="authing_title_color">#1D2129</color>
     <color name="authing_text_color">#1D2129</color>
     <color name="authing_spinner_text_color">#1D2129</color>
-    <color name="authing_icon_back">#4E5969</color>
+    <color name="authing_icon_color">#4E5969</color>
     <color name="authing_line_color">#F2F3F5</color>
     <color name="authing_social_dialog_background">#FFFFFF</color>
+    <color name="authing_social_button_background">#F7F8FA</color>
+    <color name="authing_edit_background">#F7F8FA</color>
+    <color name="authing_button_background">#F2F3F5</color>
 
 </resources>

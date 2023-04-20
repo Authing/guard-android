@@ -17,6 +17,7 @@ import cn.authing.guard.R;
 import cn.authing.guard.data.Application;
 import cn.authing.guard.data.Resource;
 import cn.authing.guard.data.UserInfo;
+import cn.authing.guard.util.DarkModeManager;
 
 public class AuthorizedResourcesActivity extends BaseAuthActivity {
 
@@ -26,7 +27,7 @@ public class AuthorizedResourcesActivity extends BaseAuthActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.authing_authorized_resources);
-
+        DarkModeManager.getInstance().setDarkMode(this);
         UserInfo userInfo = Authing.getCurrentUser();
         if (userInfo != null) {
             resources = userInfo.getResources();

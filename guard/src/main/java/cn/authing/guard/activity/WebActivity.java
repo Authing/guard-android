@@ -10,6 +10,7 @@ import android.widget.TextView;
 import androidx.annotation.Nullable;
 
 import cn.authing.guard.R;
+import cn.authing.guard.util.DarkModeManager;
 import cn.authing.guard.util.Util;
 
 public class WebActivity extends BaseAuthActivity {
@@ -21,6 +22,7 @@ public class WebActivity extends BaseAuthActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.authing_activity_web);
+        DarkModeManager.getInstance().setDarkMode(this);
         Intent intent = getIntent();
         String title = "";
         String url = "";

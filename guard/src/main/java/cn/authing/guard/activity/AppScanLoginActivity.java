@@ -5,29 +5,25 @@ import android.os.Bundle;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AppCompatActivity;
 
 import cn.authing.guard.Authing;
 import cn.authing.guard.R;
 import cn.authing.guard.data.UserInfo;
 import cn.authing.guard.network.AuthClient;
+import cn.authing.guard.util.DarkModeManager;
 import cn.authing.guard.util.ToastUtil;
 import cn.authing.guard.util.Util;
 
-public class AppScanLoginActivity extends AppCompatActivity {
+public class AppScanLoginActivity extends BaseAuthActivity {
 
     private String random = "";;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        ActionBar bar = getSupportActionBar();
-        if (bar != null) {
-            bar.hide();
-        }
-        Util.setStatusBarColor(this, R.color.authing_white);
         setContentView(R.layout.authing_scan_login);
+        DarkModeManager.getInstance().setDarkMode(this);
+
         Intent intent = getIntent();
         if (intent.hasExtra("random")){
             random = intent.getStringExtra("random");

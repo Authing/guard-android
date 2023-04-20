@@ -16,6 +16,7 @@ import cn.authing.guard.Authing;
 import cn.authing.guard.R;
 import cn.authing.guard.data.Role;
 import cn.authing.guard.data.UserInfo;
+import cn.authing.guard.util.DarkModeManager;
 import cn.authing.guard.util.Util;
 
 public class RolesActivity extends BaseAuthActivity {
@@ -26,7 +27,7 @@ public class RolesActivity extends BaseAuthActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.authing_roles);
-
+        DarkModeManager.getInstance().setDarkMode(this);
         UserInfo userInfo = Authing.getCurrentUser();
         if (userInfo != null) {
             roles = userInfo.getRoles();

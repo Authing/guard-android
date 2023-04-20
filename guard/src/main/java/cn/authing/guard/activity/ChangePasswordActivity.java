@@ -8,6 +8,7 @@ import cn.authing.guard.R;
 import cn.authing.guard.internal.BasePasswordEditText;
 import cn.authing.guard.internal.LoadingButton;
 import cn.authing.guard.network.AuthClient;
+import cn.authing.guard.util.DarkModeManager;
 import cn.authing.guard.util.Util;
 
 public class ChangePasswordActivity extends BaseAuthActivity {
@@ -21,7 +22,7 @@ public class ChangePasswordActivity extends BaseAuthActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.authing_change_password);
-
+        DarkModeManager.getInstance().setDarkMode(this);
         oldEditText = findViewById(R.id.pwd_old);
         newEditText = findViewById(R.id.pwd_new);
 

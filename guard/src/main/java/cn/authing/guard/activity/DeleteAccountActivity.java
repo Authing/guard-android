@@ -9,6 +9,7 @@ import cn.authing.guard.PasswordEditText;
 import cn.authing.guard.R;
 import cn.authing.guard.TitleLayout;
 import cn.authing.guard.data.UserInfo;
+import cn.authing.guard.util.DarkModeManager;
 import cn.authing.guard.util.Util;
 
 public class DeleteAccountActivity extends BaseAuthActivity {
@@ -19,6 +20,7 @@ public class DeleteAccountActivity extends BaseAuthActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.authing_delete_account);
+        DarkModeManager.getInstance().setDarkMode(this);
 
         TitleLayout titleLayout = findViewById(R.id.title_layout);
         titleLayout.setBackIconClickListener(v -> finish());
