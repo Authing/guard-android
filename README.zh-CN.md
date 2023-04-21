@@ -44,8 +44,3 @@
 
 Copyright (c) 2019-present, Authing
 
-## 获取帮助
-
-通过微信联系我们的高级Android开发者:
-
-<img width="120" src="./doc/images/zhongjiahui.png">

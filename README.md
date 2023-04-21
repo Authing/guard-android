@@ -43,9 +43,3 @@ In the Authing Console's self-built application, modify your application setting
 [MIT](https://opensource.org/licenses/MIT)
 
 Copyright (c) 2019-present, Authing
-
-## Get help
-
-Contact our senior Android developer via Wechat:
-
-<img width="120" src="./doc/images/zhongjiahui.jpg">
