@@ -23,9 +23,3 @@
 - Commit your changes (git commit -am 'Add some feature')
 - Push to the branch (git push origin my-new-feature)
 - Create new Pull Request
-
-## Get help
-
-Contact our senior Android developer via Wechat:
-
-<img width="120" src="./doc/images/zhongjiahui.jpg">
