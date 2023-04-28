@@ -24,6 +24,7 @@ import cn.authing.guard.R;
 import cn.authing.guard.data.Application;
 import cn.authing.guard.data.AuthenticationParams;
 import cn.authing.guard.data.DeviceInfo;
+import cn.authing.guard.data.DeviceStatus;
 import cn.authing.guard.data.MFAData;
 import cn.authing.guard.data.Organization;
 import cn.authing.guard.data.RegistrationParams;
@@ -1656,6 +1657,37 @@ public class AuthClient {
         }
     }
 
+    public static void deviceList(int page, int limit, DeviceStatus deviceStatus, String os, String keyword, @NotNull AuthCallback<JSONObject> callback) {
+        try {
+            String endpoint = "/api/v3/mydevices/list?page="+page+"&limit="+limit+"&deviceStatus="+deviceStatus+"&os="+os+"&keyword="+keyword;
+            Guardian.get(endpoint, (data) -> callback.call(data.getCode(), data.getMessage(), data.getData()));
+        } catch (Exception e) {
+            error(e, callback);
+        }
+    }
+
+    public static void removeDevice(String deviceId, @NotNull AuthCallback<JSONObject> callback) {
+        try {
+            String endpoint = "/api/v3/mydevices/unbind";
+            JSONObject body = new JSONObject();
+            body.put("deviceId", deviceId);
+            Guardian.post(endpoint, body, (data) -> callback.call(data.getCode(), data.getMessage(), data.getData()));
+        } catch (Exception e) {
+            error(e, callback);
+        }
+    }
+
+    public static void logoutByDeviceId(String deviceId, @NotNull AuthCallback<JSONObject> callback) {
+        try {
+            String endpoint = "/api/v3/mydevices/revoke-session";
+            JSONObject body = new JSONObject();
+            body.put("deviceId", deviceId);
+            Guardian.post(endpoint, body, (data) -> callback.call(data.getCode(), data.getMessage(), data.getData()));
+        } catch (Exception e) {
+            error(e, callback);
+        }
+    }
+
     public static void bindBiometricRequest(@NotNull AuthCallback<JSONObject> callback) {
         try {
             String endpoint = "/api/v3/webauthn/registration";
@@ -1813,15 +1845,16 @@ public class AuthClient {
                 return;
             }
             try {
-                String endpoint = Authing.getWebSocketHostHost() + "/events/v1/authentication/sub?code="+eventCode
-                        +"&token="+Authing.getCurrentUser().getAccessToken();
+                String token= Authing.getCurrentUser().getAccessToken() != null
+                        ? Authing.getCurrentUser().getAccessToken() :
+                        Authing.getCurrentUser().getIdToken();
+                String endpoint = Authing.getWebSocketHostHost() + "/events/v1/authentication/sub?code="+eventCode+"&token="+token;
                 WebSocketClient.getInstance(receiver).connect(endpoint);
             } catch (Exception e) {
                 receiver.onError(e.toString());
             }
         });
     }
-
 
     private static void startOidcInteraction(AuthRequest authData, Response data, @NotNull AuthCallback<UserInfo> callback) {
         if (authData == null) {

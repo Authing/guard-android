@@ -19,7 +19,7 @@
     <dimen name="authing_text_middle_size">14sp</dimen>
     <dimen name="authing_text_large_size">16sp</dimen>
     <dimen name="authing_edit_text_height">48dp</dimen>
-    <dimen name="authing_button_height">44dp</dimen>
+    <dimen name="authing_button_height">48dp</dimen>
     <dimen name="authing_title_layout_height">44dp</dimen>
     <dimen name="authing_login_height">40dp</dimen>
 </resources>

@@ -6,14 +6,23 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+import android.net.wifi.WifiInfo;
+import android.net.wifi.WifiManager;
 import android.os.Build;
+import android.provider.Settings;
 import android.telephony.TelephonyManager;
 import android.text.TextUtils;
 
+import androidx.annotation.RequiresApi;
 import androidx.annotation.RequiresPermission;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.net.InetAddress;
+import java.net.NetworkInterface;
+import java.util.Enumeration;
 
 public class PhoneUtils {
 
@@ -294,7 +303,7 @@ public class PhoneUtils {
     }
 
 
-    public static String getModel() {
+    public static String getDeviceModel() {
         String model = Build.MODEL;
         if (model != null) {
             model = model.trim().replaceAll("\\s*", "");
@@ -304,12 +313,25 @@ public class PhoneUtils {
         return model;
     }
 
-    public static String getManufacturer() {
+    public static String getDeviceManufacturer() {
         return Build.MANUFACTURER;
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N_MR1)
+    public static String getDeviceName(Context context) {
+        return Settings.Global.getString(context.getContentResolver(), Settings.Global.DEVICE_NAME);
     }
 
     public static String getDeviceName() {
         return Build.PRODUCT;
+    }
+
+    public static String getDeviceBoard() {
+        return Build.BOARD;
+    }
+
+    public static String getDeviceBrand() {
+        return Build.BRAND;
     }
 
     public static String getVerName(Context context) {
@@ -323,8 +345,114 @@ public class PhoneUtils {
         return verName;
     }
 
-    public static String getSDKVersionName() {
+    public static String getOsVersion() {
         return Build.VERSION.RELEASE;
+    }
+
+    public static int getAndroidVersion() {
+        return Build.VERSION.SDK_INT;
+    }
+
+    public static String getIp(){
+        InetAddress inetAddress = DeviceUtils.getInetAddress();
+        if (inetAddress != null){
+            return inetAddress.getHostAddress();
+        }
+        return "";
+    }
+
+    public static String getIp(Context context) {
+        String networkType = getNetworkType(context);
+        if (networkType.equals("WiFi")) {
+            WifiManager wifiManager = null;
+            try {
+                wifiManager = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
+                WifiInfo wifiInfo = wifiManager.getConnectionInfo();
+                int i = wifiInfo.getIpAddress();
+                return intToIp(i);
+            } catch (Exception e) {
+                e.printStackTrace();
+                return null;
+            }
+        } else if (networkType.equals("2G") || networkType.equals("3G") || networkType.equals("4G")) {
+            try {
+                for (Enumeration<NetworkInterface> en = NetworkInterface.getNetworkInterfaces(); en.hasMoreElements(); ) {
+                    NetworkInterface intf = en.nextElement();
+                    for (Enumeration<InetAddress> enumIpAddr = intf.getInetAddresses(); enumIpAddr.hasMoreElements(); ) {
+                        InetAddress inetAddress = enumIpAddr.nextElement();
+                        if (!inetAddress.isLoopbackAddress()) {
+                            return inetAddress.getHostAddress().toString();
+                        }
+                    }
+                }
+            } catch (Exception ex) {
+                return null;
+            }
+        } else {
+            return null;
+        }
+        return null;
+    }
+
+    /**
+     * 将ip的整数形式转换成ip形式
+     */
+    public static String intToIp(int i) {
+        return (i & 0xFF) + "." +
+                ((i >> 8) & 0xFF) + "." +
+                ((i >> 16) & 0xFF) + "." +
+                (i >> 24 & 0xFF);
+    }
+
+    public static String getNetworkType(Context context) {
+        ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        if (cm == null) {
+            return "Unknown";
+        }
+        NetworkInfo activeNetInfo = cm.getActiveNetworkInfo();
+        if (activeNetInfo == null || !activeNetInfo.isAvailable()) {
+            return "Unknown";
+        }
+        NetworkInfo wifiInfo = cm.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
+        if (wifiInfo != null) {
+            NetworkInfo.State state = wifiInfo.getState();
+            if (state == NetworkInfo.State.CONNECTED || state == NetworkInfo.State.CONNECTING) {
+                return "WiFi";
+            }
+        }
+        NetworkInfo networkInfo = cm.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
+        if (networkInfo != null) {
+            NetworkInfo.State state = networkInfo.getState();
+            String subtypeName = networkInfo.getSubtypeName();
+            if (state == NetworkInfo.State.CONNECTED || state == NetworkInfo.State.CONNECTING) {
+                switch (activeNetInfo.getSubtype()) {
+                    case TelephonyManager.NETWORK_TYPE_GPRS:
+                    case TelephonyManager.NETWORK_TYPE_CDMA:
+                    case TelephonyManager.NETWORK_TYPE_EDGE:
+                    case TelephonyManager.NETWORK_TYPE_1xRTT:
+                    case TelephonyManager.NETWORK_TYPE_IDEN:
+                        return "2G";
+                    case TelephonyManager.NETWORK_TYPE_EVDO_A:
+                    case TelephonyManager.NETWORK_TYPE_UMTS:
+                    case TelephonyManager.NETWORK_TYPE_EVDO_0:
+                    case TelephonyManager.NETWORK_TYPE_HSDPA:
+                    case TelephonyManager.NETWORK_TYPE_HSUPA:
+                    case TelephonyManager.NETWORK_TYPE_HSPA:
+                    case TelephonyManager.NETWORK_TYPE_EVDO_B:
+                    case TelephonyManager.NETWORK_TYPE_EHRPD:
+                    case TelephonyManager.NETWORK_TYPE_HSPAP:
+                        return "3G";
+                    case TelephonyManager.NETWORK_TYPE_LTE:
+                        return "4G";
+                    default:
+                        if (subtypeName.equalsIgnoreCase("TD-SCDMA") || subtypeName.equalsIgnoreCase("WCDMA") || subtypeName.equalsIgnoreCase("CDMA2000")) {
+                            return "3G";
+                        }
+                        return "Unknown";
+                }
+            }
+        }
+        return "Unknown";
     }
 
 }

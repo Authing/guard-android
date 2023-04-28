@@ -1,6 +1,7 @@
 package cn.authing.guard.util;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.UiModeManager;
 import android.content.Context;
@@ -34,7 +35,9 @@ import java.net.URLDecoder;
 import java.security.KeyFactory;
 import java.security.PublicKey;
 import java.security.spec.X509EncodedKeySpec;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
@@ -618,12 +621,17 @@ public class Util {
      * 登录成功逻辑统一处理
      */
     public static void loginSuccess(Activity activity, UserInfo userInfo){
-        pushDeviceInfo(activity);
         Intent intent = new Intent();
         intent.putExtra("user", userInfo);
         activity.setResult(AuthActivity.OK, intent);
         activity.finish();
         quitActivity();
+    }
+
+    @SuppressLint("SimpleDateFormat")
+    public static String getTimeString() {
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        return format.format(new Date(System.currentTimeMillis()));
     }
 
 
@@ -640,21 +648,30 @@ public class Util {
         if (!hasPermission) {
             return;
         }
+        String deviceName = "";
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N_MR1) {
+            deviceName = PhoneUtils.getDeviceName(context);
+        }
+        if (TextUtils.isEmpty(deviceName)){
+            deviceName = PhoneUtils.getDeviceName();
+        }
         DeviceInfo deviceInfo = new DeviceInfo();
-        deviceInfo.setUniqueId(DeviceUtils.getUniqueDeviceId(context));
-        deviceInfo.setName(PhoneUtils.getDeviceName());
-        deviceInfo.setVersion("Android " + PhoneUtils.getSDKVersionName());
+        deviceInfo.setDeviceUniqueId(DeviceUtils.getUniqueDeviceId(context));
+        deviceInfo.setName(deviceName);
+        deviceInfo.setVersion("Android " + PhoneUtils.getOsVersion());
         deviceInfo.setHks("");
         deviceInfo.setFde("");
         deviceInfo.setHor(DeviceUtils.isDeviceRooted());
         deviceInfo.setSn(PhoneUtils.getSerial());
         deviceInfo.setType("Mobile");
-        deviceInfo.setProducer(PhoneUtils.getManufacturer());
-        deviceInfo.setMod(PhoneUtils.getModel());
+        deviceInfo.setProducer(PhoneUtils.getDeviceManufacturer());
+        deviceInfo.setMod(PhoneUtils.getDeviceModel());
         deviceInfo.setOs("Android");
         deviceInfo.setImei(PhoneUtils.getIMEI(context));
         deviceInfo.setMeid(PhoneUtils.getMEID(context));
         deviceInfo.setDescription("");
+        //deviceInfo.setIp(PhoneUtils.getIp());
+        //deviceInfo.setLoginTime(getTimeString());
         AuthClient.createDevice(deviceInfo, new AuthCallback<JSONObject>() {
             @Override
             public void call(int code, String message, JSONObject data) {

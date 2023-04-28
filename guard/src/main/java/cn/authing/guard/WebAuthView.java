@@ -210,7 +210,6 @@ public class WebAuthView extends WebView {
                 if (cb != null) {
                     cb.call(getContext(), code, message, userInfo);
                 }
-                Util.pushDeviceInfo(activity);
                 Intent intent = new Intent();
                 intent.putExtra("user", userInfo);
                 activity.setResult(AuthActivity.OK, intent);

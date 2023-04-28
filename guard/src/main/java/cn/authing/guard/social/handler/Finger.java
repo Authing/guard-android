@@ -104,7 +104,6 @@ public class Finger extends SocialAuthenticator {
     private void onResult(AuthActivity activity, int code, String message, UserInfo data){
         if (code == 200) {
             activity.runOnUiThread(() -> {
-                Util.pushDeviceInfo(activity);
                 Intent intent = new Intent();
                 intent.putExtra("user", data);
                 activity.setResult(AuthActivity.OK, intent);

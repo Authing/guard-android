@@ -88,7 +88,6 @@ public class SocialLoginListDialog extends Dialog {
                             }
 
                             socialLoginListView.post(() -> {
-                                Util.pushDeviceInfo(activity);
                                 Intent intent = new Intent();
                                 intent.putExtra("user", userInfo);
                                 activity.setResult(AuthActivity.OK, intent);
@@ -103,9 +102,23 @@ public class SocialLoginListDialog extends Dialog {
                         flow.getData().put(AuthFlow.KEY_USER_INFO, userInfo);
                     }
                     FlowHelper.handleMFA(socialLoginListView, userInfo.getMfaData());
-                } else if (code == 1000) {
+                } else if (code == Const.EC_VERIFY_EMAIL) {
+                    if (getContext() instanceof AuthActivity) {
+                        AuthActivity activity = (AuthActivity) getContext();
+                        AuthFlow flow = (AuthFlow) activity.getIntent().getSerializableExtra(AuthActivity.AUTH_FLOW);
+                        Intent intent = new Intent(getContext(), AuthActivity.class);
+                        intent.putExtra(AuthActivity.AUTH_FLOW, flow);
+                        intent.putExtra(AuthActivity.CONTENT_LAYOUT_ID, flow.getVerifyEmailSendSuccessLayoutId());
+                    }
+                } else if (code == Const.EC_ACCOUNT_LOCKED) {
+                    socialLoginListView.post(() -> ToastUtil.showCenterWarning(getContext(), getContext().getString(R.string.authing_account_locked)));
+                } else if (code == Const.EC_NO_DEVICE_PERMISSION_DISABLED) {
+                    socialLoginListView.post(() -> ToastUtil.showCenterWarning(getContext(), getContext().getString(R.string.authing_device_deactivated)));
+                } else if (code == Const.EC_NO_DEVICE_PERMISSION_SUSPENDED) {
+                    socialLoginListView.post(() -> ToastUtil.showCenterWarning(getContext(), message));
+                } else if (code == Const.SOCIAL_DIALOG_DISMISS) {
                     dismiss();
-                } else if (code == 1001) {
+                } else if (code == Const.SOCIAL_DIALOG_SHOW) {
                     show();
                     return;
                 } else {

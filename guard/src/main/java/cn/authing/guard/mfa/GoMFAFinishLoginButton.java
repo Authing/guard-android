@@ -72,7 +72,6 @@ public class GoMFAFinishLoginButton extends androidx.appcompat.widget.AppCompatB
                         flow.getData().put(AuthFlow.KEY_USER_INFO, Authing.getCurrentUser());
                         FlowHelper.handleUserInfoComplete(this, missingFields);
                     } else {
-                        Util.pushDeviceInfo(activity);
                         Intent intent = new Intent();
                         intent.putExtra("user", Authing.getCurrentUser());
                         activity.setResult(AuthActivity.OK, intent);

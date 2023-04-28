@@ -88,6 +88,11 @@
     <string name="authing_mfa_verify_email">電子郵件驗證</string>
     <string name="authing_mfa_verify_otp">OTP 驗證</string>
     <string name="authing_mfa_verify_face">人脸驗證</string>
+    <string name="authing_mfa_verify_device">设备认证</string>
+    <string name="authing_mfa_login_verify_device">认证你的设备</string>
+    <string name="authing_mfa_verify_device_tip">输入验证码以继续。</string>
+    <string name="authing_mfa_verify_device_sub_tip">一条包含验证码的信息已发送至你的 {%1$s} 。</string>
+    <string name="authing_mfa_verify_device_lost_code">没有收到验证码？</string>
     <string name="authing_user_info_complete">完善帳號信息</string>
     <string name="authing_complete_tip">為了更好的使用體驗，請先完善您的資料信息</string>
     <string name="authing_submit">提交</string>
@@ -205,6 +210,13 @@
     <string name="authing_no_social_tips">無法體驗身份源登錄，請您在自己開發的客戶端 APP 上集成 Guard SDK 之後體驗。</string>
     <string name="authing_account_error">賬號已不存在</string>
     <string name="authing_please_wait">請稍後！</string>
+    <string name="authing_device_login_confirm_tip">您的账号正在登录一台新设备</string>
+    <string name="authing_device_name">设备名称</string>
+    <string name="authing_device_location">地点</string>
+    <string name="authing_device_ip">IP 地址</string>
+    <string name="authing_device_allow">允许</string>
+    <string name="authing_device_done">完成</string>
+    <string name="authing_device_login_safe_tip">在您的新设备上输入此验证码以登录。请不要与任何人分享验证码。</string>
 
     <!--user profile-->
     <string name="authing_user_profile">個人中心</string>
@@ -294,4 +306,5 @@
     <string name="authing_get_phone_failed">獲取電話號碼失敗</string>
     <string name="authing_get_auth_code_failed">獲取授權碼失敗</string>
     <string name="authing_account_locked">此賬號被鎖定：\n請聯繫管理員恢復賬號</string>
+    <string name="authing_device_deactivated">此设备被停用：\n请联系管理员恢复</string>
 </resources>

@@ -26,7 +26,7 @@ import cn.authing.guard.flow.FlowHelper;
 import cn.authing.guard.internal.PrimaryButton;
 import cn.authing.guard.network.AuthClient;
 import cn.authing.guard.util.Const;
-import cn.authing.guard.util.Util;
+import cn.authing.guard.util.ToastUtil;
 
 public class GoSocialCreateButton extends PrimaryButton {
 
@@ -83,7 +83,7 @@ public class GoSocialCreateButton extends PrimaryButton {
         stopLoadingVisualEffect();
         if (callback != null) {
             if (code != 200) {
-                Util.setErrorText(GoSocialCreateButton.this, message);
+                post(() -> ToastUtil.showCenter(getContext(), message));
             }
             post(() -> callback.call(code, message, userInfo));
             return;
@@ -117,8 +117,24 @@ public class GoSocialCreateButton extends PrimaryButton {
                 flow.getData().put(AuthFlow.KEY_USER_INFO, userInfo);
             }
             FlowHelper.handleMFA(this, userInfo.getMfaData());
+        } else if (code == Const.EC_FIRST_TIME_LOGIN) {
+            FlowHelper.handleFirstTimeLogin(this, userInfo);
+        } else if (code == Const.EC_VERIFY_EMAIL) {
+            if (getContext() instanceof AuthActivity) {
+                AuthActivity activity = (AuthActivity) getContext();
+                AuthFlow flow = (AuthFlow) activity.getIntent().getSerializableExtra(AuthActivity.AUTH_FLOW);
+                Intent intent = new Intent(getContext(), AuthActivity.class);
+                intent.putExtra(AuthActivity.AUTH_FLOW, flow);
+                intent.putExtra(AuthActivity.CONTENT_LAYOUT_ID, flow.getVerifyEmailSendSuccessLayoutId());
+            }
+        } else if (code == Const.EC_ACCOUNT_LOCKED) {
+            post(() -> ToastUtil.showCenterWarning(getContext(), getContext().getString(R.string.authing_account_locked)));
+        } else if (code == Const.EC_NO_DEVICE_PERMISSION_DISABLED) {
+            post(() -> ToastUtil.showCenterWarning(getContext(), getContext().getString(R.string.authing_device_deactivated)));
+        } else if (code == Const.EC_NO_DEVICE_PERMISSION_SUSPENDED) {
+            post(() -> ToastUtil.showCenterWarning(getContext(), message));
         } else {
-            Util.setErrorText(this, message);
+            post(() -> ToastUtil.showCenter(getContext(), message));
         }
     }
 

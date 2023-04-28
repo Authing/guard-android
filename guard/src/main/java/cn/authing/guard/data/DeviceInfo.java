@@ -1,11 +1,14 @@
 package cn.authing.guard.data;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class DeviceInfo {
+public class DeviceInfo implements Parcelable {
 
-    private String uniqueId; //设备唯一 ID
+    private String deviceUniqueId; //设备唯一 ID
     private String name; //设备名称
     private String version; // 设备系统版本
     private String hks; //硬件存储秘钥
@@ -22,13 +25,80 @@ public class DeviceInfo {
     private String language;
     private boolean cookie;
     private String userAgent;
+    private String ip;
+    private String loginTime;
 
-    public String getUniqueId() {
-        return uniqueId;
+    public DeviceInfo() {
     }
 
-    public void setUniqueId(String uniqueId) {
-        this.uniqueId = uniqueId;
+    protected DeviceInfo(Parcel in) {
+        deviceUniqueId = in.readString();
+        name = in.readString();
+        version = in.readString();
+        hks = in.readString();
+        fde = in.readString();
+        hor = in.readByte() != 0;
+        sn = in.readString();
+        type = in.readString();
+        producer = in.readString();
+        mod = in.readString();
+        os = in.readString();
+        imei = in.readString();
+        meid = in.readString();
+        description = in.readString();
+        language = in.readString();
+        cookie = in.readByte() != 0;
+        userAgent = in.readString();
+        ip = in.readString();
+        loginTime = in.readString();
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(deviceUniqueId);
+        dest.writeString(name);
+        dest.writeString(version);
+        dest.writeString(hks);
+        dest.writeString(fde);
+        dest.writeByte((byte) (hor ? 1 : 0));
+        dest.writeString(sn);
+        dest.writeString(type);
+        dest.writeString(producer);
+        dest.writeString(mod);
+        dest.writeString(os);
+        dest.writeString(imei);
+        dest.writeString(meid);
+        dest.writeString(description);
+        dest.writeString(language);
+        dest.writeByte((byte) (cookie ? 1 : 0));
+        dest.writeString(userAgent);
+        dest.writeString(ip);
+        dest.writeString(loginTime);
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    public static final Creator<DeviceInfo> CREATOR = new Creator<DeviceInfo>() {
+        @Override
+        public DeviceInfo createFromParcel(Parcel in) {
+            return new DeviceInfo(in);
+        }
+
+        @Override
+        public DeviceInfo[] newArray(int size) {
+            return new DeviceInfo[size];
+        }
+    };
+
+    public String getDeviceUniqueId() {
+        return deviceUniqueId;
+    }
+
+    public void setDeviceUniqueId(String deviceUniqueId) {
+        this.deviceUniqueId = deviceUniqueId;
     }
 
     public String getName() {
@@ -159,11 +229,27 @@ public class DeviceInfo {
         this.userAgent = userAgent;
     }
 
+    public String getIp() {
+        return ip;
+    }
+
+    public void setIp(String ip) {
+        this.ip = ip;
+    }
+
+    public String getLoginTime() {
+        return loginTime;
+    }
+
+    public void setLoginTime(String loginTime) {
+        this.loginTime = loginTime;
+    }
+
     public JSONObject toJSON() {
         JSONObject jsonObject = new JSONObject();
         try {
-            if (getUniqueId() != null) {
-                jsonObject.put("uniqueId", getUniqueId());
+            if (getDeviceUniqueId() != null) {
+                jsonObject.put("deviceUniqueId", getDeviceUniqueId());
             }
             if (getName() != null) {
                 jsonObject.put("name", getName());
@@ -204,6 +290,12 @@ public class DeviceInfo {
             if (getDescription() != null) {
                 jsonObject.put("description", getDescription());
             }
+//            if (getIp() != null) {
+//                jsonObject.put("ip", getIp());
+//            }
+//            if (getLoginTime() != null) {
+//                jsonObject.put("loginTime", getLoginTime());
+//            }
 //            if (getLanguage() != null) {
 //                jsonObject.put("language", getLanguage());
 //            }

@@ -9,20 +9,22 @@ public class Const {
     public static final String SDK_VERSION = "1.5.6";
 
     // error code
-    public final static int EC_MFA_REQUIRED = 1636;
-    public final static int EC_FIRST_TIME_LOGIN = 1639;
-    public final static int EC_CAPTCHA = 2000;
+    public final static int EC_MFA_REQUIRED = 1636; // MFA 验证
+    public final static int EC_FIRST_TIME_LOGIN = 1639; // 首次重置密码
+    public final static int EC_CAPTCHA = 2000; //图形码
     public final static int EC_SOCIAL_BIND_LOGIN = 1640;
     public final static int EC_SOCIAL_BIND_REGISTER = 1641;
     public final static int EC_SOCIAL_BIND_SELECT = 2921;
-    public final static int EC_VERIFY_EMAIL = 2042;
-    public final static int EC_ACCOUNT_LOCKED = 2005;
+    public final static int EC_VERIFY_EMAIL = 2042; // 验证邮箱
+    public final static int EC_ACCOUNT_LOCKED = 2005; //账号被锁定
     public final static int EC_ACCOUNT_EXIST = 2004;
     public final static int EC_ACCOUNT_NOT_LOGIN = 2020;
     public final static int EC_400 = 400;
     public final static int EC_422 = 422;
     public final static int EC_INCORRECT_VERIFY_CODE = 2001;
     public final static int EC_INCORRECT_CREDENTIAL = 2333;
+    public final static int EC_NO_DEVICE_PERMISSION_DISABLED = 1577; // 设备被停用
+    public final static int EC_NO_DEVICE_PERMISSION_SUSPENDED = 1578; // 设备被挂起
     public final static int ERROR_CODE_10001 = 10001; // Network error
     public final static int ERROR_CODE_10002 = 10002; // Config not found
     public final static int ERROR_CODE_10003 = 10003; // Login failed
@@ -48,6 +50,7 @@ public class Const {
     public final static int ERROR_CODE_10023 = 10023; // Line auth failed
     public final static int ERROR_CODE_10024 = 10024; // Slack auth failed
     public final static int ERROR_CODE_10025 = 10025; // 华为 auth failed
+    public final static int ERROR_CODE_10026 = 10026; // 荣耀 auth failed
     public final static int ERROR_CODE_10027 = 10027; // OPPO auth failed
     public final static int ERROR_CODE_10028 = 10028; // Amazon auth failed
 
@@ -56,6 +59,7 @@ public class Const {
     public static final String MFA_POLICY_EMAIL = "EMAIL";
     public static final String MFA_POLICY_OTP = "OTP";
     public static final String MFA_POLICY_FACE = "FACE";
+    public static final String MFA_POLICY_DEVICE = "DEVICE";
 
     // social login
     public static final String EC_TYPE_WECHAT = "wechat:mobile";
@@ -82,6 +86,7 @@ public class Const {
     public static final String EC_TYPE_LINE= "line:mobile";
     public static final String EC_TYPE_SLACK= "slack:mobile";
     public static final String EC_TYPE_HUAWEI= "huawei:mobile";
+    public static final String EC_TYPE_HONOR= "honor:mobile";
     public static final String EC_TYPE_OPPO= "oppo:mobile";
     public static final String EC_TYPE_AMAZON= "amazon:mobile";
 
@@ -109,6 +114,7 @@ public class Const {
     public static final String TYPE_SLACK = "slack";
     public static final String TYPE_HUAWEI = "huawei";
     public static final String TYPE_OPPO = "oppo";
+    public static final String TYPE_HONOR = "honor";
     public static final String TYPE_AMAZON= "amazon";
     public static final String TYPE_FACE = "face";
 
@@ -129,4 +135,7 @@ public class Const {
     public static final int HONOR_REQUEST = 2007;
 
     public static final int SOCIAL_DIALOG_MAX_HEIGHT = 800;
+    public static final int SOCIAL_DIALOG_DISMISS = 1000;
+    public static final int SOCIAL_DIALOG_SHOW = 1001;
+
 }

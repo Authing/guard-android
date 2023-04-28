@@ -147,6 +147,10 @@ public class BiometricBindButton extends LoginButton implements ILoginRequestCal
             }
             if (code == Const.EC_ACCOUNT_LOCKED) {
                 post(() -> ToastUtil.showCenterWarning(getContext(), getContext().getString(R.string.authing_account_locked)));
+            } else if (code == Const.EC_NO_DEVICE_PERMISSION_DISABLED) {
+                post(() -> ToastUtil.showCenterWarning(getContext(), getContext().getString(R.string.authing_device_deactivated)));
+            } else if (code == Const.EC_NO_DEVICE_PERMISSION_SUSPENDED) {
+                post(() -> ToastUtil.showCenterWarning(getContext(), message));
             } else {
                 post(() -> ToastUtil.showCenter(getContext(), message));
             }

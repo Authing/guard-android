@@ -163,6 +163,10 @@ public class LoginButton extends PrimaryButton implements ILoginRequestCallBack 
                 }
             } else if (code == Const.EC_ACCOUNT_LOCKED) {
                 post(() -> ToastUtil.showCenterWarning(getContext(), getContext().getString(R.string.authing_account_locked)));
+            } else if (code == Const.EC_NO_DEVICE_PERMISSION_DISABLED) {
+                post(() -> ToastUtil.showCenterWarning(getContext(), getContext().getString(R.string.authing_device_deactivated)));
+            } else if (code == Const.EC_NO_DEVICE_PERMISSION_SUSPENDED) {
+                post(() -> ToastUtil.showCenterWarning(getContext(), message));
             } else if (code == Const.EC_CAPTCHA) {
                 FlowHelper.handleCaptcha(this);
                 if (!"请输入图形验证码".equals(message)){
@@ -191,7 +195,6 @@ public class LoginButton extends PrimaryButton implements ILoginRequestCallBack 
                         }
 
                         post(() -> {
-                            Util.pushDeviceInfo(activity);
                             Intent intent = new Intent();
                             intent.putExtra("user", userInfo);
                             activity.setResult(AuthActivity.OK, intent);

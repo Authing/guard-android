@@ -15,7 +15,7 @@ public class WebSocketClient extends WebSocketListener {
 
     private static final String TAG = "WebSocketClient";
     private static WebSocketClient INSTANCE;
-    private final OkHttpClient client;
+    private OkHttpClient client;
     private okhttp3.WebSocket webSocket;
     private Receiver mReceiver;
 
@@ -23,9 +23,9 @@ public class WebSocketClient extends WebSocketListener {
         this.mReceiver = receiver;
         client = new OkHttpClient.Builder()
                 .retryOnConnectionFailure(true)//允许失败重试
-                .readTimeout(5, TimeUnit.SECONDS)//设置读取超时时间
-                .writeTimeout(5, TimeUnit.SECONDS)//设置写的超时时间
-                .connectTimeout(5, TimeUnit.SECONDS)//设置连接超时时间
+                .readTimeout(50, TimeUnit.SECONDS)//设置读取超时时间
+                .writeTimeout(50, TimeUnit.SECONDS)//设置写的超时时间
+                .connectTimeout(60, TimeUnit.SECONDS)//设置连接超时时间
                 .pingInterval(40, TimeUnit.SECONDS)
                 .build();
     }
@@ -43,7 +43,6 @@ public class WebSocketClient extends WebSocketListener {
         Request request = new Request.Builder()
                 .url(wsUrl)
                 .build();
-
         webSocket = client.newWebSocket(request, this);
         //内存不足时释放
         client.dispatcher().executorService().shutdown();

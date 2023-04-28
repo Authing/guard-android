@@ -410,7 +410,7 @@ public class OneClick extends SocialAuthenticator implements Serializable {
         ImageView imageView = new ImageView(context);
         LinearLayout.LayoutParams imageParams = new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-        imageParams.topMargin = (int) Util.dp2px(context, 520);
+        imageParams.topMargin = (int) Util.dp2px(context, 320);
         loadingDrawable = (AnimatedVectorDrawable) context.getDrawable(R.drawable.ic_authing_animated_loading_blue);
         imageView.setImageDrawable(loadingDrawable);
         loadingDrawable.start();

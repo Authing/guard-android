@@ -4,6 +4,7 @@ import static cn.authing.guard.flow.AuthFlow.KEY_EXTENDED_FIELDS;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.EditText;
@@ -127,7 +128,11 @@ public class UserInfoCompleteContainer extends LinearLayout {
                         JSONObject languageObj = nameObj.getJSONObject(language);
                         boolean enabled = languageObj.getBoolean("enabled");
                         if (enabled){
-                            label.setMandatoryText(languageObj.getString("value"));
+                            String value = languageObj.getString("value");
+                            label.setMandatoryText(value);
+                            if (TextUtils.isEmpty(field.getLabel())){
+                                field.setLabel(value);
+                            }
                         }
                     }
                 } catch (JSONException e) {

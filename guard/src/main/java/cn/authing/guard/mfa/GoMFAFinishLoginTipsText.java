@@ -87,7 +87,6 @@ public class GoMFAFinishLoginTipsText extends AppCompatTextView {
                             flow.getData().put(AuthFlow.KEY_USER_INFO, Authing.getCurrentUser());
                             FlowHelper.handleUserInfoComplete(GoMFAFinishLoginTipsText.this, missingFields);
                         } else {
-                            Util.pushDeviceInfo(activity);
                             Intent intent = new Intent();
                             intent.putExtra("user", Authing.getCurrentUser());
                             activity.setResult(AuthActivity.OK, intent);

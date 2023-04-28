@@ -305,6 +305,28 @@ public class VerifyCodeEditText extends EditTextLayout implements TextWatcher {
         }
     }
 
+    public void setText(List<String> texts){
+        if (codeMode != ENormal && editTextList != null){
+            for (int i = 0; i < texts.size(); i++){
+                if (editTextList.size() > i){
+                    EditText edit = editTextList.get(i);
+                    edit.setText(texts.get(i));
+                } else {
+                    break;
+                }
+            }
+        }
+    }
+
+    public void setEditTextEnable(boolean enable){
+        if (codeMode != ENormal && editTextList != null){
+            for (int i = 0; i < editTextList.size(); i++){
+                EditText edit = editTextList.get(i);
+                edit.setEnabled(enable);
+            }
+        }
+    }
+
     public int getCodeMode() {
         return codeMode;
     }

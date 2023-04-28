@@ -69,7 +69,6 @@ public abstract class SocialLoginButton extends androidx.appcompat.widget.AppCom
                             }
 
                             post(() -> {
-                                Util.pushDeviceInfo(activity);
                                 Intent intent = new Intent();
                                 intent.putExtra("user", userInfo);
                                 activity.setResult(AuthActivity.OK, intent);
@@ -101,6 +100,22 @@ public abstract class SocialLoginButton extends androidx.appcompat.widget.AppCom
                     flow.getData().put(AuthFlow.KEY_USER_INFO, userInfo);
                 }
                 FlowHelper.handleSocialAccountSelect((AuthActivity) getContext());
+            } else if (code == Const.EC_FIRST_TIME_LOGIN) {
+                FlowHelper.handleFirstTimeLogin(this, userInfo);
+            } else if (code == Const.EC_VERIFY_EMAIL) {
+                if (getContext() instanceof AuthActivity) {
+                    AuthActivity activity = (AuthActivity) getContext();
+                    AuthFlow flow = (AuthFlow) activity.getIntent().getSerializableExtra(AuthActivity.AUTH_FLOW);
+                    Intent intent = new Intent(getContext(), AuthActivity.class);
+                    intent.putExtra(AuthActivity.AUTH_FLOW, flow);
+                    intent.putExtra(AuthActivity.CONTENT_LAYOUT_ID, flow.getVerifyEmailSendSuccessLayoutId());
+                }
+            } else if (code == Const.EC_ACCOUNT_LOCKED) {
+                post(() -> ToastUtil.showCenterWarning(getContext(), getContext().getString(R.string.authing_account_locked)));
+            } else if (code == Const.EC_NO_DEVICE_PERMISSION_DISABLED) {
+                post(() -> ToastUtil.showCenterWarning(getContext(), getContext().getString(R.string.authing_device_deactivated)));
+            } else if (code == Const.EC_NO_DEVICE_PERMISSION_SUSPENDED) {
+                post(() -> ToastUtil.showCenterWarning(getContext(), message));
             } else {
                 if (!TextUtils.isEmpty(message)
                         && getContext().getString(R.string.authing_cancelled_by_user).equals(message)) {
@@ -162,21 +177,21 @@ public abstract class SocialLoginButton extends androidx.appcompat.widget.AppCom
             @Override
             public void onShow() {
                 if (callback != null) {
-                    callback.call(1000, "", null);
+                    callback.call(Const.SOCIAL_DIALOG_DISMISS, "", null);
                 }
             }
 
             @Override
             public void onCancel() {
                 if (callback != null) {
-                    callback.call(1001, "", null);
+                    callback.call(Const.SOCIAL_DIALOG_SHOW, "", null);
                 }
             }
 
             @Override
             public void onAgree() {
                 if (callback != null) {
-                    callback.call(1001, "", null);
+                    callback.call(Const.SOCIAL_DIALOG_SHOW, "", null);
                 }
                 performClick();
             }

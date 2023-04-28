@@ -84,10 +84,15 @@
     <string name="authing_bind_face_before_tip">The current administrator has enabled secondary verification,\nPlease go to the "Face Recognition Binding" page</string>
     <string name="authing_other_mfa">Other authentication method</string>
     <string name="authing_mfa_login_verify">Account login secondary verification</string>
-    <string name="authing_mfa_verify_phone">Verify by SMS</string>
-    <string name="authing_mfa_verify_email">Verify by Email</string>
-    <string name="authing_mfa_verify_otp">Verify by security code</string>
-    <string name="authing_mfa_verify_face">Verify by security face</string>
+    <string name="authing_mfa_verify_phone">SMS</string>
+    <string name="authing_mfa_verify_email">Email</string>
+    <string name="authing_mfa_verify_otp">OTP</string>
+    <string name="authing_mfa_verify_face">Face</string>
+    <string name="authing_mfa_verify_device">Device</string>
+    <string name="authing_mfa_login_verify_device">Authenticate your device</string>
+    <string name="authing_mfa_verify_device_tip">Enter the captcha to proceed.</string>
+    <string name="authing_mfa_verify_device_sub_tip">A message containing a verification code has been sent to your {%1$s}.</string>
+    <string name="authing_mfa_verify_device_lost_code">Didn\'t receive the verification code?</string>
     <string name="authing_user_info_complete">Fill up information</string>
     <string name="authing_complete_tip">in order to have a better experience, please improve your information first</string>
     <string name="authing_submit">Submit</string>
@@ -205,6 +210,13 @@
     <string name="authing_no_social_tips">Unable to experience ID source login. Please experience it after integrating Guard SDK on the client APP developed by yourself.</string>
     <string name="authing_account_error">The account no longer exists</string>
     <string name="authing_please_wait">Please wait! This may take a moment.</string>
+    <string name="authing_device_login_confirm_tip">Your account is logging into a new device.</string>
+    <string name="authing_device_name">Device Name</string>
+    <string name="authing_device_location">Location</string>
+    <string name="authing_device_ip">IP Address</string>
+    <string name="authing_device_allow">Allow</string>
+    <string name="authing_device_done">Done</string>
+    <string name="authing_device_login_safe_tip">Enter this verification code on your new device to log in. Please do not share the capTCHA with anyone.</string>
 
     <!--user profile-->
     <string name="authing_user_profile">User profile</string>
@@ -294,4 +306,5 @@
     <string name="authing_get_phone_failed">Failed to get phone number</string>
     <string name="authing_get_auth_code_failed">Failed to get authorization code</string>
     <string name="authing_account_locked">This account is locked: \n Please contact the administrator to restore the account</string>
+    <string name="authing_device_deactivated">The device is disabled：\nContact the administrator for recovery</string>
 </resources>
