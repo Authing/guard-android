@@ -1849,7 +1849,7 @@ public class AuthClient {
                         ? Authing.getCurrentUser().getAccessToken() :
                         Authing.getCurrentUser().getIdToken();
                 String endpoint = Authing.getWebSocketHostHost() + "/events/v1/authentication/sub?code="+eventCode+"&token="+token;
-                WebSocketClient.getInstance(receiver).connect(endpoint);
+                WebSocketClient.getInstance().connect(endpoint, receiver, false);
             } catch (Exception e) {
                 receiver.onError(e.toString());
             }
