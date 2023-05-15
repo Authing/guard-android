@@ -7,6 +7,7 @@ import android.app.UiModeManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.os.Build;
 import android.provider.Settings;
 import android.text.TextUtils;
 import android.util.Base64;
@@ -636,18 +637,16 @@ public class Util {
 
 
     public static void pushDeviceInfo(Context context) {
-        String[] permissions = {Manifest.permission.READ_PHONE_STATE, Manifest.permission.ACCESS_FINE_LOCATION};
-        //验证是否许可权限
-        boolean hasPermission = true;
-        for (String str : permissions) {
-            if (context.checkSelfPermission(str) != PackageManager.PERMISSION_GRANTED) {
-                hasPermission = false;
+        if (android.os.Build.VERSION.SDK_INT < Build.VERSION_CODES.Q){
+            String[] permissions = {Manifest.permission.READ_PHONE_STATE};
+            for (String str : permissions) {
+                if (context.checkSelfPermission(str) != PackageManager.PERMISSION_GRANTED) {
+                    ((Activity)context).requestPermissions(permissions, Const.REQUEST_PERMISSION_PHONE);
+                    return;
+                }
             }
         }
 
-        if (!hasPermission) {
-            return;
-        }
         String deviceName = "";
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N_MR1) {
             deviceName = PhoneUtils.getDeviceName(context);
@@ -662,11 +661,11 @@ public class Util {
         deviceInfo.setHks("");
         deviceInfo.setFde("");
         deviceInfo.setHor(DeviceUtils.isDeviceRooted());
-        deviceInfo.setSn(PhoneUtils.getSerial());
         deviceInfo.setType("Mobile");
         deviceInfo.setProducer(PhoneUtils.getDeviceManufacturer());
         deviceInfo.setMod(PhoneUtils.getDeviceModel());
         deviceInfo.setOs("Android");
+        deviceInfo.setSn(PhoneUtils.getSerial());
         deviceInfo.setImei(PhoneUtils.getIMEI(context));
         deviceInfo.setMeid(PhoneUtils.getMEID(context));
         deviceInfo.setDescription("");
@@ -676,6 +675,16 @@ public class Util {
             @Override
             public void call(int code, String message, JSONObject data) {
                 Log.d("Util", "createDevice : code = " +code + " message = " + message);
+                if(code == 200 && data != null){
+                    if (data.has("deviceUniqueId")){
+                        try {
+                            String deviceUniqueId = data.getString("deviceUniqueId");
+                            Safe.saveDeviceUniqueId(deviceUniqueId);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
             }
         });
     }

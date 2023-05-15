@@ -71,7 +71,7 @@ public class PhoneUtils {
      * @return the serial of device
      */
     @SuppressLint("HardwareIds")
-    @RequiresPermission(READ_PHONE_STATE)
+    //@RequiresPermission(READ_PHONE_STATE)
     public static String getSerial() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
             try {
@@ -124,13 +124,13 @@ public class PhoneUtils {
             return "";
         }
         TelephonyManager tm = getTelephonyManager(context);
-        /*if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             if (isImei) {
                 return getMinOne(tm.getImei(0), tm.getImei(1));
             } else {
                 return getMinOne(tm.getMeid(0), tm.getMeid(1));
             }
-        } else*/ if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+        } else if (Build.VERSION.SDK_INT > Build.VERSION_CODES.N) {
             String ids = getSystemPropertyByReflect(isImei ? "ril.gsm.imei" : "ril.cdma.meid");
             if (!TextUtils.isEmpty(ids)) {
                 String[] idArr = ids.split(",");

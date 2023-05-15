@@ -1,5 +1,6 @@
 package cn.authing.guard.social.handler;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.text.TextUtils;
@@ -12,6 +13,7 @@ import org.json.JSONObject;
 
 import cn.authing.guard.AuthCallback;
 import cn.authing.guard.Authing;
+import cn.authing.guard.R;
 import cn.authing.guard.activity.AuthActivity;
 import cn.authing.guard.data.Safe;
 import cn.authing.guard.data.UserInfo;
@@ -51,13 +53,23 @@ public class Finger extends SocialAuthenticator {
                             return;
                         }
 
-                        if (code == Const.ERROR_CODE_10011 || code == Const.EC_422) {
+                        if (code == Const.EC_ACCOUNT_LOCKED) {
+                            showToast(context, context.getString(R.string.authing_account_locked));
+                        } else if (code == Const.EC_NO_DEVICE_PERMISSION_DISABLED) {
+                            showToast(context, context.getString(R.string.authing_device_deactivated));
+                        } else if (code == Const.EC_NO_DEVICE_PERMISSION_SUSPENDED) {
+                            showToast(context, message);
+                        } else if (code == Const.ERROR_CODE_10011 || code == Const.EC_422) {
                             FlowHelper.handleBiometricAccountBind(activity);
                         }
                     }
                 });
         webAuthNAuthentication.startAuthentication();
         activity.setWebAuthNAuthentication(webAuthNAuthentication);
+    }
+
+    private void showToast(Context context, String message){
+        ((Activity)context).runOnUiThread(() -> ToastUtil.showCenterWarning(context, message));
     }
 
     private void success(AuthActivity activity, int code, String message, JSONObject data) {

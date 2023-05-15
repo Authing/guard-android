@@ -14,10 +14,10 @@ import java.util.Objects;
 
 import cn.authing.guard.Authing;
 import cn.authing.guard.data.Config;
+import cn.authing.guard.data.Safe;
 import cn.authing.guard.data.UserInfo;
 import cn.authing.guard.util.Const;
 import cn.authing.guard.util.Util;
-import cn.authing.guard.util.device.DeviceUtils;
 import okhttp3.Call;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
@@ -95,7 +95,9 @@ public class Guardian {
         builder.addHeader("x-authing-app-id", Authing.getAppId());
         builder.addHeader("x-authing-request-from", Const.SDK_TAG + SDK_VERSION);
         builder.addHeader("x-authing-lang", Util.getLangHeader());
-        builder.addHeader("x-authing-device-id", DeviceUtils.getUniqueDeviceId(Authing.getAppContext()));
+        if (!Util.isNull(Safe.loadDeviceUniqueId())) {
+            builder.addHeader("x-authing-device-id", Safe.loadDeviceUniqueId());
+        }
         if (!Util.isNull(token)) {
             builder.addHeader("Authorization", "Bearer " + token);
         }
@@ -231,7 +233,9 @@ public class Guardian {
         builder.url(url);
         builder.addHeader("x-authing-request-from", Const.SDK_TAG + SDK_VERSION);
         builder.addHeader("x-authing-lang", Util.getLangHeader());
-        builder.addHeader("x-authing-device-id", DeviceUtils.getUniqueDeviceId(Authing.getAppContext()));
+        if (!Util.isNull(Safe.loadDeviceUniqueId())) {
+            builder.addHeader("x-authing-device-id", Safe.loadDeviceUniqueId());
+        }
         if (method.equalsIgnoreCase("post")) {
             builder.post(body);
         } else {

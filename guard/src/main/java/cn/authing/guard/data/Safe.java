@@ -19,6 +19,8 @@ public class Safe {
     private static final String SP_KEY_PRIVACY_CONFIRM = "SP_PRIVACY_CONFIRM";
     private static final String SP_OTP_RECOVERY_CODE = "SP_OTP_RECOVERY_CODE";
     private static final String SP_OTP_ENROLLMENT_TOKEN = "SP_OTP_ENROLLMENT_TOKEN";
+    private static final String SP_DEVICE_UNIQUE_ID = "SP_DEVICE_UNIQUE_ID";
+
 
     public static void saveAccount(String account) {
         SharedPreferences sp = Authing.getAppContext().getSharedPreferences(SP_NAME, MODE_PRIVATE);
@@ -95,6 +97,16 @@ public class Safe {
     public static String loadOtpEnrollmentToken() {
         SharedPreferences sp = Authing.getAppContext().getSharedPreferences(SP_NAME, 0);
         return sp.getString(SP_OTP_ENROLLMENT_TOKEN, "");
+    }
+
+    public static void saveDeviceUniqueId(String recoveryCode) {
+        SharedPreferences sp = Authing.getAppContext().getSharedPreferences(SP_NAME, MODE_PRIVATE);
+        sp.edit().putString(SP_DEVICE_UNIQUE_ID, recoveryCode).commit();
+    }
+
+    public static String loadDeviceUniqueId() {
+        SharedPreferences sp = Authing.getAppContext().getSharedPreferences(SP_NAME, 0);
+        return sp.getString(SP_DEVICE_UNIQUE_ID, "");
     }
 
     public static void saveUser(UserInfo userInfo) {

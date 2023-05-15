@@ -59,10 +59,10 @@ public class WebSocketClient extends WebSocketListener {
 
         OkHttpClient client = new OkHttpClient.Builder()
                 .retryOnConnectionFailure(true)//允许失败重试
-                .readTimeout(50, TimeUnit.SECONDS)//设置读取超时时间
-                .writeTimeout(50, TimeUnit.SECONDS)//设置写的超时时间
-                .connectTimeout(60, TimeUnit.SECONDS)//设置连接超时时间
-                .pingInterval(40, TimeUnit.SECONDS)
+                .readTimeout(20, TimeUnit.SECONDS)//设置读取超时时间
+                .writeTimeout(20, TimeUnit.SECONDS)//设置写的超时时间
+                .connectTimeout(20, TimeUnit.SECONDS)//设置连接超时时间
+                .pingInterval(20, TimeUnit.SECONDS)
                 .build();
         Request request = new Request.Builder()
                 .url(wsUrl)

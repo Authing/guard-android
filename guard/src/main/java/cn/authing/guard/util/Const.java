@@ -138,4 +138,7 @@ public class Const {
     public static final int SOCIAL_DIALOG_DISMISS = 1000;
     public static final int SOCIAL_DIALOG_SHOW = 1001;
 
+
+    public static final int REQUEST_PERMISSION_PHONE = 10001;
+
 }
