@@ -1844,11 +1844,19 @@ public class AuthClient {
                 receiver.onError("Config not found");
                 return;
             }
+            UserInfo userInfo = Authing.getCurrentUser();
+            if (userInfo == null){
+                receiver.onError("User not found");
+                return;
+            }
+            String token= userInfo.getAccessToken() != null
+                    ? userInfo.getAccessToken() : userInfo.getIdToken();
+            if (Util.isNull(token)){
+                receiver.onError("Token is null");
+                return;
+            }
+            String endpoint = Authing.getWebSocketHostHost() + "/events/v1/authentication/sub?code="+eventCode+"&token="+token;
             try {
-                String token= Authing.getCurrentUser().getAccessToken() != null
-                        ? Authing.getCurrentUser().getAccessToken() :
-                        Authing.getCurrentUser().getIdToken();
-                String endpoint = Authing.getWebSocketHostHost() + "/events/v1/authentication/sub?code="+eventCode+"&token="+token;
                 WebSocketClient.getInstance().connect(endpoint, receiver, false);
             } catch (Exception e) {
                 receiver.onError(e.toString());
