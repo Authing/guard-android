@@ -52,7 +52,7 @@ public class WebSocketClient extends WebSocketListener {
         if (!receivers.containsKey(wsUrl)) {
             receivers.put(wsUrl, receiver);
         }
-        if (isHart){
+        if (isHart) {
             heartHandler.removeCallbacksAndMessages(null);
         }
         cancel(wsUrl);
@@ -124,8 +124,10 @@ public class WebSocketClient extends WebSocketListener {
         }
     }
 
-    public void close() {
-        heartHandler.removeCallbacksAndMessages(null);
+    public void closeAll() {
+        if (isHart) {
+            heartHandler.removeCallbacksAndMessages(null);
+        }
         if (webSockets != null) {
             for (String url : webSockets.keySet()) {
                 WebSocket webSocket = webSockets.get(url);
@@ -140,6 +142,24 @@ public class WebSocketClient extends WebSocketListener {
             receivers.clear();
         }
         receivers = null;
+    }
+
+    public void close(String wsUrl) {
+        if (webSockets != null) {
+            for (String url : webSockets.keySet()) {
+                if (url.contains(wsUrl)) {
+                    WebSocket webSocket = webSockets.get(url);
+                    if (webSocket != null) {
+                        webSocket.close(1000, null);
+                        webSockets.remove(url);
+                        if (receivers != null) {
+                            receivers.remove(url);
+                        }
+                        break;
+                    }
+                }
+            }
+        }
     }
 
     @Override
@@ -217,6 +237,13 @@ public class WebSocketClient extends WebSocketListener {
         return httpUrl.url().toString().replace("https", "wss");
     }
 
+    public HashMap<String, Receiver> getReceivers() {
+        return receivers;
+    }
+
+    public HashMap<String, WebSocket> getWebSockets() {
+        return webSockets;
+    }
 }
 
 

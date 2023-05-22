@@ -61,6 +61,8 @@ public class Finger extends SocialAuthenticator {
                             showToast(context, message);
                         } else if (code == Const.ERROR_CODE_10011 || code == Const.EC_422) {
                             FlowHelper.handleBiometricAccountBind(activity);
+                        } else {
+                            ((Activity)context).runOnUiThread(() -> ToastUtil.showCenter(context, message));
                         }
                     }
                 });

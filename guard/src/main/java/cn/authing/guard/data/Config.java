@@ -50,6 +50,7 @@ public class Config {
     private String userAgent;
     private String publicKey;
     private String webSocket;
+    private String eventSocket;
     private boolean enableAppLogin;
     private boolean enableFingerprintLogin;
     private boolean enableFaceLogin;
@@ -85,6 +86,8 @@ public class Config {
             config.setPublicKey(data.getString("publicKey"));
         if (data.has("websocket"))
             config.setWebSocket(data.getString("websocket"));
+        if (data.has("eventSocket"))
+            config.setEventSocket(data.getString("eventSocket"));
         if (data.has("enableAppLogin"))
             config.setEnableAppLogin(data.getBoolean("enableAppLogin"));
         if (data.has("enableFingerprintLogin"))
@@ -411,6 +414,17 @@ public class Config {
 
     public void setWebSocket(String webSocket) {
         this.webSocket = webSocket;
+    }
+
+    public String getEventSocket() {
+        return eventSocket;
+    }
+
+    public void setEventSocket(String eventSocket) {
+        this.eventSocket = eventSocket;
+        if (eventSocket != null){
+            Authing.setWebSocketHost(eventSocket);
+        }
     }
 
     public boolean isSkipComplateFileds() {
