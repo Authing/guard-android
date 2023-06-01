@@ -1,13 +1,10 @@
 package cn.authing.guard.util;
 
-import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.UiModeManager;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.os.Build;
 import android.provider.Settings;
 import android.text.TextUtils;
 import android.util.Base64;
@@ -65,14 +62,11 @@ import cn.authing.guard.VerifyCodeEditText;
 import cn.authing.guard.activity.AuthActivity;
 import cn.authing.guard.data.Config;
 import cn.authing.guard.data.Country;
-import cn.authing.guard.data.DeviceInfo;
 import cn.authing.guard.data.Safe;
 import cn.authing.guard.data.TabMethodsField;
 import cn.authing.guard.data.UserInfo;
 import cn.authing.guard.flow.AuthFlow;
 import cn.authing.guard.network.AuthClient;
-import cn.authing.guard.util.device.DeviceUtils;
-import cn.authing.guard.util.device.PhoneUtils;
 import cn.authing.guard.webauthn.WebAuthNRegister;
 
 public class Util {
@@ -96,7 +90,7 @@ public class Util {
     }
 
     public static String encryptPassword(String password) {
-        if (isNull(password)){
+        if (isNull(password)) {
             return null;
         }
         try {
@@ -455,15 +449,15 @@ public class Util {
         }
     }
 
-    public static String getIdentifierHost(Config config){
+    public static String getIdentifierHost(Config config) {
         if (config != null) {
             String identifier = config.getIdentifier();
             String ssoHost = config.getRequestHostname();
-            if (Util.isNull(ssoHost)){
+            if (Util.isNull(ssoHost)) {
                 return Authing.getHost().contains(identifier)
                         ? Authing.getHost() : identifier + "." + Authing.getHost();
             }
-            if (ssoHost.contains(identifier)){
+            if (ssoHost.contains(identifier)) {
                 return ssoHost;
             }
             int firstIndex = ssoHost.indexOf(".");
@@ -474,7 +468,7 @@ public class Util {
 
     public static List<String> toStringList(JSONArray array) throws JSONException {
         List<String> list = new ArrayList<>();
-        if (array != null){
+        if (array != null) {
             int size = array.length();
             for (int i = 0; i < size; i++) {
                 list.add((array.getString(i)));
@@ -558,18 +552,18 @@ public class Util {
     }
 
     /**
-     *  获取字段名称
+     * 获取字段名称
      */
-    public static String getLabel(Config config, String name){
+    public static String getLabel(Config config, String name) {
         String label = "";
-        List<TabMethodsField> tabMethodsFields = ( config != null ? config.getTabMethodsFields() : null);
-        if (TextUtils.isEmpty(name) || tabMethodsFields == null || tabMethodsFields.isEmpty()){
+        List<TabMethodsField> tabMethodsFields = (config != null ? config.getTabMethodsFields() : null);
+        if (TextUtils.isEmpty(name) || tabMethodsFields == null || tabMethodsFields.isEmpty()) {
             return label;
         }
-        for (TabMethodsField tabMethodsField : tabMethodsFields){
+        for (TabMethodsField tabMethodsField : tabMethodsFields) {
             if (tabMethodsField == null
                     || TextUtils.isEmpty(tabMethodsField.getKey())
-                    || !name.equals(tabMethodsField.getKey())){
+                    || !name.equals(tabMethodsField.getKey())) {
                 continue;
             }
 
@@ -580,11 +574,11 @@ public class Util {
                 label = tabMethodsField.getLabel();
             }
             JSONObject i18n = tabMethodsField.getI18n();
-            if (i18n == null){
+            if (i18n == null) {
                 break;
             }
             try {
-                if (i18n.has(language)){
+                if (i18n.has(language)) {
                     label = i18n.getString(language);
                 }
             } catch (JSONException e) {
@@ -594,24 +588,24 @@ public class Util {
         return label;
     }
 
-    public static String getUserName(UserInfo userInfo){
+    public static String getUserName(UserInfo userInfo) {
         String userName = "-";
-        if (userInfo == null){
+        if (userInfo == null) {
             return userName;
         }
-        if (!Util.isNull(userInfo.getUsername())){
+        if (!Util.isNull(userInfo.getUsername())) {
             return userInfo.getUsername();
         }
-        if (!Util.isNull(userInfo.getName())){
+        if (!Util.isNull(userInfo.getName())) {
             return userInfo.getName();
         }
-        if (!Util.isNull(userInfo.getNickname())){
+        if (!Util.isNull(userInfo.getNickname())) {
             return userInfo.getNickname();
         }
-        if (!Util.isNull(userInfo.getPhone_number())){
+        if (!Util.isNull(userInfo.getPhone_number())) {
             return userInfo.getPhone_number();
         }
-        if (!Util.isNull(userInfo.getEmail())){
+        if (!Util.isNull(userInfo.getEmail())) {
             return userInfo.getEmail();
         }
         return userName;
@@ -621,7 +615,7 @@ public class Util {
     /**
      * 登录成功逻辑统一处理
      */
-    public static void loginSuccess(Activity activity, UserInfo userInfo){
+    public static void loginSuccess(Activity activity, UserInfo userInfo) {
         Intent intent = new Intent();
         intent.putExtra("user", userInfo);
         activity.setResult(AuthActivity.OK, intent);
@@ -635,77 +629,23 @@ public class Util {
         return format.format(new Date(System.currentTimeMillis()));
     }
 
-
-    public static void pushDeviceInfo(Context context) {
-        if (android.os.Build.VERSION.SDK_INT < Build.VERSION_CODES.Q){
-            String[] permissions = {Manifest.permission.READ_PHONE_STATE};
-            for (String str : permissions) {
-                if (context.checkSelfPermission(str) != PackageManager.PERMISSION_GRANTED) {
-                    ((Activity)context).requestPermissions(permissions, Const.REQUEST_PERMISSION_PHONE);
-                    return;
-                }
-            }
-        }
-
-        String deviceName = "";
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N_MR1) {
-            deviceName = PhoneUtils.getDeviceName(context);
-        }
-        if (TextUtils.isEmpty(deviceName)){
-            deviceName = PhoneUtils.getDeviceName();
-        }
-        DeviceInfo deviceInfo = new DeviceInfo();
-        deviceInfo.setDeviceUniqueId(DeviceUtils.getUniqueDeviceId(context));
-        deviceInfo.setName(deviceName);
-        deviceInfo.setVersion("Android " + PhoneUtils.getOsVersion());
-        deviceInfo.setHks("");
-        deviceInfo.setFde("");
-        deviceInfo.setHor(DeviceUtils.isDeviceRooted());
-        deviceInfo.setType("Mobile");
-        deviceInfo.setProducer(PhoneUtils.getDeviceManufacturer());
-        deviceInfo.setMod(PhoneUtils.getDeviceModel());
-        deviceInfo.setOs("Android");
-        deviceInfo.setSn(PhoneUtils.getSerial());
-        deviceInfo.setImei(PhoneUtils.getIMEI(context));
-        deviceInfo.setMeid(PhoneUtils.getMEID(context));
-        deviceInfo.setDescription("");
-        //deviceInfo.setIp(PhoneUtils.getIp());
-        //deviceInfo.setLoginTime(getTimeString());
-        AuthClient.createDevice(deviceInfo, new AuthCallback<JSONObject>() {
-            @Override
-            public void call(int code, String message, JSONObject data) {
-                Log.d("Util", "createDevice : code = " +code + " message = " + message);
-                if(code == 200 && data != null){
-                    if (data.has("deviceUniqueId")){
-                        try {
-                            String deviceUniqueId = data.getString("deviceUniqueId");
-                            Safe.saveDeviceUniqueId(deviceUniqueId);
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }
-            }
-        });
-    }
-
-    public static void pushCid(Context context){
+    public static void pushCid(Context context) {
         String cid = PushManager.getInstance().getClientid(context);
         AuthClient.bindPushCid(cid, new AuthCallback<JSONObject>() {
             @Override
             public void call(int code, String message, JSONObject data) {
-                if (code == 200){
-                    Log.e("Util", "pushCid : code = " +code + " message = " + message);
+                if (code == 200) {
+                    Log.e("Util", "pushCid : code = " + code + " message = " + message);
                 }
             }
         });
     }
 
-    public static String encodeBase64URL(byte[] bytes){
-        return Base64.encodeToString(bytes, Base64.URL_SAFE|Base64.NO_PADDING|Base64.NO_WRAP);
+    public static String encodeBase64URL(byte[] bytes) {
+        return Base64.encodeToString(bytes, Base64.URL_SAFE | Base64.NO_PADDING | Base64.NO_WRAP);
     }
 
-    public static void biometricBind(AuthActivity activity){
+    public static void biometricBind(AuthActivity activity) {
         WebAuthNRegister webAuthNRegister = new WebAuthNRegister(activity, new WebAuthNRegister.WebAuthNRegisterCallBack() {
             @Override
             public void onSuccess() {
@@ -727,7 +667,7 @@ public class Util {
                     }
                 });
                 if (!TextUtils.isEmpty(message) && (message.contains("CancelledException")
-                        || message.contains("TimeoutException") || message.contains("UnknownException"))){
+                        || message.contains("TimeoutException") || message.contains("UnknownException"))) {
                     return;
                 }
                 activity.runOnUiThread(() -> ToastUtil.showCenter(activity, message));
@@ -736,10 +676,10 @@ public class Util {
         webAuthNRegister.startRegister();
     }
 
-    public static void quitActivity(){
+    public static void quitActivity() {
         try {
             QuickLogin.getInstance().quitActivity();
-        } catch (NoClassDefFoundError e){
+        } catch (NoClassDefFoundError e) {
             Log.e("Util", "quitActivity : e = " + e);
         }
     }

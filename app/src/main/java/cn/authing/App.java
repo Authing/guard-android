@@ -4,6 +4,9 @@ import android.app.ActivityManager;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import com.heytap.msp.sdk.OAuthSdk;
+import com.heytap.msp.sdk.SdkAgent;
+import com.heytap.msp.sdk.base.common.log.MspLog;
 import com.igexin.sdk.PushManager;
 import com.kwai.auth.KwaiAuthAPI;
 
@@ -66,6 +69,9 @@ public class App extends android.app.Application {
             Authing.init(getApplicationContext(), appid);
             Authing.setAuthProtocol(Authing.AuthProtocol.EOIDC);
             KwaiAuthAPI.init(this);
+            MspLog.setDebug(true);
+            SdkAgent.init(this);
+            OAuthSdk.init(this);
         }
 
         PushManager.getInstance().initialize(this);

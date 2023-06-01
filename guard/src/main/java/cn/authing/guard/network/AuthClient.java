@@ -1844,6 +1844,10 @@ public class AuthClient {
                 receiver.onError("Config not found");
                 return;
             }
+            if (!config.isDeviceFuncEnabled()){
+                receiver.onError("未启用设备管理");
+                return;
+            }
             UserInfo userInfo = Authing.getCurrentUser();
             if (userInfo == null){
                 receiver.onError("User not found");

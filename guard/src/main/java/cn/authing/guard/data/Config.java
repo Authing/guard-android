@@ -51,6 +51,7 @@ public class Config {
     private String publicKey;
     private String webSocket;
     private String eventSocket;
+    private boolean deviceFuncEnabled;
     private boolean enableAppLogin;
     private boolean enableFingerprintLogin;
     private boolean enableFaceLogin;
@@ -88,6 +89,8 @@ public class Config {
             config.setWebSocket(data.getString("websocket"));
         if (data.has("eventSocket"))
             config.setEventSocket(data.getString("eventSocket"));
+        if (data.has("deviceFuncEnabled"))
+            config.setDeviceFuncEnabled(data.getBoolean("deviceFuncEnabled"));
         if (data.has("enableAppLogin"))
             config.setEnableAppLogin(data.getBoolean("enableAppLogin"));
         if (data.has("enableFingerprintLogin"))
@@ -513,6 +516,14 @@ public class Config {
 
     public List<TabMethodsField> getTabMethodsFields() {
         return tabMethodsFields;
+    }
+
+    public boolean isDeviceFuncEnabled() {
+        return deviceFuncEnabled;
+    }
+
+    public void setDeviceFuncEnabled(boolean deviceFuncEnabled) {
+        this.deviceFuncEnabled = deviceFuncEnabled;
     }
 
     public boolean isEnableAppLogin() {

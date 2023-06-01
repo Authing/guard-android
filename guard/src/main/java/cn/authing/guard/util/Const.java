@@ -12,17 +12,17 @@ public class Const {
     public final static int EC_MFA_REQUIRED = 1636; // MFA 验证
     public final static int EC_FIRST_TIME_LOGIN = 1639; // 首次重置密码
     public final static int EC_CAPTCHA = 2000; //图形码
-    public final static int EC_SOCIAL_BIND_LOGIN = 1640;
-    public final static int EC_SOCIAL_BIND_REGISTER = 1641;
+    public final static int EC_SOCIAL_BIND_LOGIN = 1640; //触发联邦认证询问身份绑定，只允许绑定现有账号
+    public final static int EC_SOCIAL_BIND_REGISTER = 1641; //触发联邦认证询问身份绑定，允许绑定现有账号和创建新账号
     public final static int EC_SOCIAL_BIND_SELECT = 2921;
     public final static int EC_VERIFY_EMAIL = 2042; // 验证邮箱
     public final static int EC_ACCOUNT_LOCKED = 2005; //账号被锁定
-    public final static int EC_ACCOUNT_EXIST = 2004;
-    public final static int EC_ACCOUNT_NOT_LOGIN = 2020;
+    public final static int EC_ACCOUNT_EXIST = 2004; // 用户未找到
+    public final static int EC_ACCOUNT_NOT_LOGIN = 2020; // 尚未登录，无权限访问此请求
     public final static int EC_400 = 400;
     public final static int EC_422 = 422;
-    public final static int EC_INCORRECT_VERIFY_CODE = 2001;
-    public final static int EC_INCORRECT_CREDENTIAL = 2333;
+    public final static int EC_INCORRECT_VERIFY_CODE = 2001;// 验证码验证失败（验证码错误）
+    public final static int EC_INCORRECT_CREDENTIAL = 2333; // 用户名或密码错误
     public final static int EC_NO_DEVICE_PERMISSION_DISABLED = 1577; // 设备被停用
     public final static int EC_NO_DEVICE_PERMISSION_SUSPENDED = 1578; // 设备被挂起
     public final static int ERROR_CODE_10001 = 10001; // Network error
@@ -53,6 +53,7 @@ public class Const {
     public final static int ERROR_CODE_10026 = 10026; // 荣耀 auth failed
     public final static int ERROR_CODE_10027 = 10027; // OPPO auth failed
     public final static int ERROR_CODE_10028 = 10028; // Amazon auth failed
+    public final static int ERROR_CODE_10029 = 10029; // 无权限
 
     // mfa
     public static final String MFA_POLICY_SMS = "SMS";
