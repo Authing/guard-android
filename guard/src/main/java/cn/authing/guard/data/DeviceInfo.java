@@ -6,6 +6,8 @@ import android.os.Parcelable;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.HashMap;
+
 public class DeviceInfo implements Parcelable {
 
     private String deviceUniqueId; //设备唯一 ID
@@ -25,11 +27,11 @@ public class DeviceInfo implements Parcelable {
     private String language;
     private boolean cookie;
     private String userAgent;
-    private String ip;
-    private String loginTime;
+    private HashMap<String, String> customData;
 
     public DeviceInfo() {
     }
+
 
     protected DeviceInfo(Parcel in) {
         deviceUniqueId = in.readString();
@@ -49,8 +51,6 @@ public class DeviceInfo implements Parcelable {
         language = in.readString();
         cookie = in.readByte() != 0;
         userAgent = in.readString();
-        ip = in.readString();
-        loginTime = in.readString();
     }
 
     @Override
@@ -72,8 +72,6 @@ public class DeviceInfo implements Parcelable {
         dest.writeString(language);
         dest.writeByte((byte) (cookie ? 1 : 0));
         dest.writeString(userAgent);
-        dest.writeString(ip);
-        dest.writeString(loginTime);
     }
 
     @Override
@@ -229,20 +227,12 @@ public class DeviceInfo implements Parcelable {
         this.userAgent = userAgent;
     }
 
-    public String getIp() {
-        return ip;
+    public HashMap<String, String> getCustomData() {
+        return customData;
     }
 
-    public void setIp(String ip) {
-        this.ip = ip;
-    }
-
-    public String getLoginTime() {
-        return loginTime;
-    }
-
-    public void setLoginTime(String loginTime) {
-        this.loginTime = loginTime;
+    public void setCustomData(HashMap<String, String> customData) {
+        this.customData = customData;
     }
 
     public JSONObject toJSON() {
@@ -290,12 +280,9 @@ public class DeviceInfo implements Parcelable {
             if (getDescription() != null) {
                 jsonObject.put("description", getDescription());
             }
-//            if (getIp() != null) {
-//                jsonObject.put("ip", getIp());
-//            }
-//            if (getLoginTime() != null) {
-//                jsonObject.put("loginTime", getLoginTime());
-//            }
+            if (getCustomData() != null) {
+                jsonObject.put("customData", new JSONObject(getCustomData()));
+            }
 //            if (getLanguage() != null) {
 //                jsonObject.put("language", getLanguage());
 //            }

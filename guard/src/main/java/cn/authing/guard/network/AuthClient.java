@@ -1402,8 +1402,15 @@ public class AuthClient {
     }
 
     public static void logout(@NotNull AuthCallback<?> callback) {
+        logout(null, callback);
+    }
+
+    public static void logout(String onlySelf, @NotNull AuthCallback<?> callback) {
         try {
             String endpoint = "/api/v2/logout?app_id=" + Authing.getAppId();
+            if (!Util.isNull(onlySelf)){
+                endpoint = endpoint + "&only_self="+onlySelf;
+            }
             Guardian.get(endpoint, (data) -> {
                 Safe.logoutUser(Authing.getCurrentUser());
                 Authing.setCurrentUser(null);
