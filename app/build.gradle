@@ -11,11 +11,11 @@ android {
         minSdk 24
         targetSdk 32
         versionCode 1
-        versionName "1.5.6"
+        versionName "1.5.7"
         archivesBaseName = "GuardDemo-$versionName"
         ndk {
             // 注意：这里需要添加项目所需 CPU 类型的最小集
-            abiFilters "armeabi", "armeabi-v7a", "x86_64", "x86"
+            abiFilters "armeabi", "armeabi-v7a", "x86_64", "x86", "arm64-v8a"
         }
         manifestPlaceholders = [
                 //从 3.1.2.0 版本开始，APPID 占位符从 GETUI_APP_ID 切换为 GETUI_APPID
