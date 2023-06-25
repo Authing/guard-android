@@ -93,6 +93,7 @@
     <string name="authing_mfa_verify_device_tip">输入验证码以继续。</string>
     <string name="authing_mfa_verify_device_sub_tip">一条包含验证码的信息已发送至你的 {%1$s} 。</string>
     <string name="authing_mfa_verify_device_lost_code">没有收到验证码？</string>
+    <string name="authing_mfa_verify_device_lost_code_tip">如果你没有收到验证码，我们可以重新发送一组新验证码，你也可以使用已绑定的二次验证途径：</string>
     <string name="authing_user_info_complete">プロフィール充実</string>
     <string name="authing_complete_tip">より良い使用体験をご提供できるよう個人情報のご記入をお願い致します。</string>
     <string name="authing_submit">提出</string>
@@ -158,6 +159,7 @@
     <string name="authing_login_by_honor">Login by Honor</string>
     <string name="authing_login_by_oppo">Login by OPPO</string>
     <string name="authing_login_by_amazon">Login by Amazon</string>
+    <string name="authing_login_by_twitter">Login by Twitter</string>
     <string name="authing_login_by_finger">指紋認証を使ってログインします</string>
     <string name="authing_login_by_face">顔認証を使ってログインします</string>
     <string name="authing_social_alipay">アリペイ</string>
@@ -184,6 +186,7 @@
     <string name="authing_social_honor">Honor</string>
     <string name="authing_social_oppo">OPPO</string>
     <string name="authing_social_amazon">Amazon</string>
+    <string name="authing_social_twitter">Twitter</string>
     <string name="authing_finger">指紋認識です</string>
     <string name="authing_face">顔認識です</string>
     <string name="authing_get_code_again">コードの再送信</string>

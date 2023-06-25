@@ -25,6 +25,7 @@ import cn.authing.guard.social.view.OPPOLoginButton;
 import cn.authing.guard.social.view.QQLoginButton;
 import cn.authing.guard.social.view.SlackLoginButton;
 import cn.authing.guard.social.view.SocialLoginButton;
+import cn.authing.guard.social.view.TwitterLoginButton;
 import cn.authing.guard.social.view.WeComLoginButton;
 import cn.authing.guard.social.view.WechatLoginButton;
 import cn.authing.guard.social.view.WechatMiniProgramLoginButton;
@@ -136,6 +137,10 @@ public class SocialUtils {
             sb.append(Const.TYPE_AMAZON);
             sb.append("|");
         }
+        if (types.contains(Const.EC_TYPE_TWITTER)) {
+            sb.append(Const.TYPE_TWITTER);
+            sb.append("|");
+        }
         String socialString = sb.toString();
         if (socialString.endsWith("|")) {
             socialString = socialString.substring(0, socialString.length() - 1);
@@ -220,6 +225,9 @@ public class SocialUtils {
             case Const.TYPE_AMAZON:
                 button = new AmazonLoginButton(context);
                 break;
+            case Const.TYPE_TWITTER:
+                button = new TwitterLoginButton(context);
+                break;
         }
         return button;
     }
@@ -296,6 +304,9 @@ public class SocialUtils {
                 break;
             case Const.TYPE_AMAZON:
                 title = context.getString(R.string.authing_social_amazon);
+                break;
+            case Const.TYPE_TWITTER:
+                title = context.getString(R.string.authing_social_twitter);
                 break;
             case Const.TYPE_FINGER:
                 title = context.getString(R.string.authing_finger);
@@ -379,6 +390,9 @@ public class SocialUtils {
                 break;
             case Const.TYPE_AMAZON:
                 str = context.getString(R.string.authing_login_by_amazon);
+                break;
+            case Const.TYPE_TWITTER:
+                str = context.getString(R.string.authing_login_by_twitter);
                 break;
         }
         return str;

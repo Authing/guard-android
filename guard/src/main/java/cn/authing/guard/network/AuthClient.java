@@ -689,6 +689,28 @@ public class AuthClient {
         loginByAccessToken(authData, accessToken, Const.EC_TYPE_AMAZON, Const.TYPE_AMAZON, callback);
     }
 
+    public static void loginByTwitter(String token, String tokenSecret, @NotNull AuthCallback<UserInfo> callback) {
+        loginByTwitter(null, token, tokenSecret, callback);
+    }
+
+    public static void loginByTwitter(AuthRequest authData, String token, String tokenSecret, @NotNull AuthCallback<UserInfo> callback) {
+        Authing.getPublicConfig(config -> {
+            try {
+                JSONObject body = new JSONObject();
+                String connId = config != null ? config.getSocialConnectionId(Const.EC_TYPE_TWITTER) : "";
+                body.put("connId", connId);
+                body.put("token", token);
+                body.put("tokenSecret", tokenSecret);
+                String endpoint = "/api/v2/ecConn/twitter/authByRequestToken";
+                Guardian.post(endpoint, body, (data)-> {
+                    startOidcInteraction(authData, data, callback);
+                });
+            } catch (Exception e) {
+                error(e, callback);
+            }
+        });
+    }
+
     private static void loginByAuthCode(AuthRequest authData, String authCode, String type, String point, @NotNull AuthCallback<UserInfo> callback) {
         Authing.getPublicConfig(config -> {
             try {

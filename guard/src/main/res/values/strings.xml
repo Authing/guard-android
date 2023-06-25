@@ -93,6 +93,7 @@
     <string name="authing_mfa_verify_device_tip">Enter the captcha to proceed.</string>
     <string name="authing_mfa_verify_device_sub_tip">A message containing a verification code has been sent to your {%1$s}.</string>
     <string name="authing_mfa_verify_device_lost_code">Didn\'t receive the verification code?</string>
+    <string name="authing_mfa_verify_device_lost_code_tip">If you do not receive the capTcha, we can resend a new set of capTcha, or you can use the bound secondary verification route:</string>
     <string name="authing_user_info_complete">Fill up information</string>
     <string name="authing_complete_tip">in order to have a better experience, please improve your information first</string>
     <string name="authing_submit">Submit</string>
@@ -158,6 +159,7 @@
     <string name="authing_login_by_honor">Login by Honor</string>
     <string name="authing_login_by_oppo">Login by OPPO</string>
     <string name="authing_login_by_amazon">Login by Amazon</string>
+    <string name="authing_login_by_twitter">Login by Twitter</string>
     <string name="authing_login_by_finger">Login by Finger</string>
     <string name="authing_login_by_face">Login by Face</string>
     <string name="authing_social_alipay">Alipay</string>
@@ -184,6 +186,7 @@
     <string name="authing_social_honor">Honor</string>
     <string name="authing_social_oppo">OPPO</string>
     <string name="authing_social_amazon">Amazon</string>
+    <string name="authing_social_twitter">Twitter</string>
     <string name="authing_finger">Finger</string>
     <string name="authing_face">Face</string>
     <string name="authing_get_code_again">Resend Code</string>

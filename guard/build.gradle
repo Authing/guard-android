@@ -64,5 +64,7 @@ dependencies {
     compileOnly 'com.heytap.msp.sdk:msp-sdk:1.10.1.2'
     compileOnly 'com.heytap.msp.sdk:msp-oauth-sdk:1.10.1.2'
     compileOnly 'com.huawei.hms:hwid:6.9.0.301'
+    compileOnly 'com.twitter.sdk.android:twitter-core:3.3.0'
+    compileOnly 'com.twitter.sdk.android:tweet-composer:3.3.0'
 
 }

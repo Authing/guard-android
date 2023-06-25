@@ -14,6 +14,8 @@ public class SocialConfig {
     private String redirectUrl;
     private String clientKey;
     private String channelId;
+    private String consumerKey;
+    private String consumerSecret;
 
     public String getId() {
         return id;
@@ -117,5 +119,21 @@ public class SocialConfig {
 
     public void setChannelId(String channelId) {
         this.channelId = channelId;
+    }
+
+    public String getConsumerKey() {
+        return consumerKey;
+    }
+
+    public void setConsumerKey(String consumerKey) {
+        this.consumerKey = consumerKey;
+    }
+
+    public String getConsumerSecret() {
+        return consumerSecret;
+    }
+
+    public void setConsumerSecret(String consumerSecret) {
+        this.consumerSecret = consumerSecret;
     }
 }

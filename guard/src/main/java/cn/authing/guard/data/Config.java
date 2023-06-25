@@ -614,6 +614,14 @@ public class Config {
         return getSocialValue(type, "channelID");
     }
 
+    public String getSocialConsumerKey(String type) {
+        return getSocialValue(type, "consumerKey");
+    }
+
+    public String getSocialConsumerSecret(String type) {
+        return getSocialValue(type, "consumerSecret");
+    }
+
     public String getSocialValue(String type, String fieldName) {
         String value = "";
         List<SocialConfig> configs = getSocialConfigs();
@@ -656,6 +664,12 @@ public class Config {
                         break;
                     case "channelID":
                         value = c.getChannelId();
+                        break;
+                    case "consumerKey":
+                        value = c.getConsumerKey();
+                        break;
+                    case "consumerSecret":
+                        value = c.getConsumerSecret();
                         break;
                 }
                 break;
@@ -723,6 +737,12 @@ public class Config {
                 }
                 if (fields.has("channelID")) {
                     config.setChannelId(fields.getString("channelID"));
+                }
+                if (fields.has("consumerKey")) {
+                    config.setConsumerKey(fields.getString("consumerKey"));
+                }
+                if (fields.has("consumerSecret")) {
+                    config.setConsumerSecret(fields.getString("consumerSecret"));
                 }
             }
             list.add(config);

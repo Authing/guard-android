@@ -248,6 +248,10 @@ public class OIDCClient {
         AuthClient.loginByAmazon(authRequest, authCode, callback);
     }
 
+    public void loginByTwitter(String token, String tokenSecret, @NotNull AuthCallback<UserInfo> callback) {
+        AuthClient.loginByTwitter(authRequest, token, tokenSecret, callback);
+    }
+
     private static void error(Exception e, @NotNull AuthCallback<?> callback){
         e.printStackTrace();
         callback.call(Const.ERROR_CODE_10004, "JSON parse failed", null);

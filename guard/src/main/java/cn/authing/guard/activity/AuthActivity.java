@@ -36,6 +36,7 @@ import cn.authing.guard.social.handler.Line;
 import cn.authing.guard.social.handler.Linkedin;
 import cn.authing.guard.social.handler.QQ;
 import cn.authing.guard.social.handler.Slack;
+import cn.authing.guard.social.handler.Twitter;
 import cn.authing.guard.social.handler.Weibo;
 import cn.authing.guard.util.Const;
 import cn.authing.guard.util.DarkModeManager;
@@ -143,6 +144,7 @@ public class AuthActivity extends BaseAuthActivity {
         Line.getInstance().onActivityResult(requestCode, resultCode, data);
         Slack.getInstance().onActivityResult(requestCode, resultCode, data);
         HuaWei.getInstance().onActivityResult(requestCode, resultCode, data);
+        Twitter.getInstance().onActivityResult(requestCode, resultCode, data);
         if (resultCode == BIOMETRIC_BIND_OK){
             Util.biometricBind(this);
         }

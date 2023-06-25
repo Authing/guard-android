@@ -54,6 +54,7 @@ public class Const {
     public final static int ERROR_CODE_10027 = 10027; // OPPO auth failed
     public final static int ERROR_CODE_10028 = 10028; // Amazon auth failed
     public final static int ERROR_CODE_10029 = 10029; // 无权限
+    public final static int ERROR_CODE_10030 = 10030; // Twitter auth failed
 
     // mfa
     public static final String MFA_POLICY_SMS = "SMS";
@@ -87,9 +88,10 @@ public class Const {
     public static final String EC_TYPE_LINE= "line:mobile";
     public static final String EC_TYPE_SLACK= "slack:mobile";
     public static final String EC_TYPE_HUAWEI= "huawei:mobile";
-    public static final String EC_TYPE_HONOR= "honor:mobile";
     public static final String EC_TYPE_OPPO= "oppo:mobile";
+    public static final String EC_TYPE_HONOR= "honor:mobile";
     public static final String EC_TYPE_AMAZON= "amazon:mobile";
+    public static final String EC_TYPE_TWITTER = "twitter:mobile";
 
     public static final String TYPE_WECHAT = "wechat";
     public static final String TYPE_WECHAT_MINI_PROGRAM = "wechat-miniprogram";
@@ -117,6 +119,7 @@ public class Const {
     public static final String TYPE_OPPO = "oppo";
     public static final String TYPE_HONOR = "honor";
     public static final String TYPE_AMAZON= "amazon";
+    public static final String TYPE_TWITTER= "twitter";
     public static final String TYPE_FACE = "face";
 
     // network
@@ -134,6 +137,7 @@ public class Const {
     public static final int SLACK_REQUEST = 2005;
     public static final int HUAWEI_REQUEST = 2006;
     public static final int HONOR_REQUEST = 2007;
+    public static final int XIAOHONGSHU_REQUEST = 2008;
 
     public static final int SOCIAL_DIALOG_MAX_HEIGHT = 800;
     public static final int SOCIAL_DIALOG_DISMISS = 1000;
