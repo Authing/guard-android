@@ -51,7 +51,6 @@ public class Twitter extends SocialAuthenticator {
 
     @Override
     public void login(Context context, @NotNull AuthCallback<UserInfo> callback) {
-        this.callback = callback;
         Authing.getPublicConfig(config -> {
             if (consumerKey == null && config != null) {
                 consumerKey = config.getSocialConsumerKey(Const.EC_TYPE_TWITTER);
