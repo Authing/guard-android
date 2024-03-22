@@ -11,7 +11,7 @@ android {
         minSdk 24
         targetSdk 32
         versionCode 1
-        versionName "1.5.8"
+        versionName "2.0.0"
         archivesBaseName = "GuardDemo-$versionName"
         ndk {
             // 注意：这里需要添加项目所需 CPU 类型的最小集
