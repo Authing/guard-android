@@ -1,4 +1,3 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          package="cn.authing.webauthn">
-    <uses-permission android:name="android.permission.BLUETOOTH"/>
+    package="cn.authing.webauthn">
 </manifest>

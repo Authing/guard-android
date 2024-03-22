@@ -3,24 +3,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="cn.authing">
 
-    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
-    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
-
-    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
-    <uses-permission android:name="com.xiaomi.permission.AUTH_SERVICE" />
-
-    <!--推送-->
-    <!-- iBeancon 功能所需权限 -->
-    <uses-permission android:name="android.permission.BLUETOOTH"/>
-    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN"/>
-    <!-- 个推电子围栏功能所需权限 -->
-    <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-
     <application
         android:name=".App"
         android:icon="@mipmap/ic_launcher"
@@ -72,7 +54,7 @@
             android:name=".SampleListActivity"
             android:exported="false"
             android:launchMode="singleTask"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".MainActivity"
             android:exported="false" />
@@ -149,12 +131,12 @@
         <activity
             android:name=".authenticator.AuthenticatorActivity"
             android:exported="false"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".guard.wxapi.WXEntryActivity"
             android:exported="true"
             android:launchMode="singleTask"
-            android:taskAffinity="cn.authing.guard"/>
+            android:taskAffinity="cn.authing.guard" />
 
         <activity android:name="com.facebook.FacebookActivity"
             android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
@@ -169,8 +151,10 @@
                 <data android:scheme="@string/fb_login_protocol_scheme" />
             </intent-filter>
         </activity>
-        <meta-data android:name="com.facebook.sdk.ApplicationId" android:value="@string/facebook_app_id"/>
-        <meta-data android:name="com.facebook.sdk.ClientToken" android:value="@string/facebook_client_token"/>
+        <meta-data android:name="com.facebook.sdk.ApplicationId"
+            android:value="@string/facebook_app_id" />
+        <meta-data android:name="com.facebook.sdk.ClientToken"
+            android:value="@string/facebook_client_token" />
 
         <activity
             android:name="com.tencent.tauth.AuthActivity"
@@ -185,7 +169,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".guard.ddauth.DDAuthActivity"
-            android:exported="true"/>
+            android:exported="true" />
         <activity
             android:name=".guard.douyinapi.DouYinEntryActivity"
             android:launchMode="singleTask"
@@ -198,11 +182,12 @@
             android:launchMode="singleTask"
             android:exported="true">
             <intent-filter>
-                <action android:name="android.intent.action.VIEW"/>
-                <category android:name="android.intent.category.DEFAULT"/>
-                <category android:name="android.intent.category.BROWSABLE"/>
-                <!-- android:host must use the full package name found in Manifest General Attributes -->
-                <data android:host="cn.authing.guard" android:scheme="amzn"/>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <!-- android:host must use the full package name found in Manifest General
+                Attributes -->
+                <data android:host="cn.authing.guard" android:scheme="amzn" />
             </intent-filter>
         </activity>
 

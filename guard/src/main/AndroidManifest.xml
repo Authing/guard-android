@@ -3,31 +3,19 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="cn.authing.guard">
 
-    <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
-    <uses-permission android:name="android.permission.USE_FINGERPRINT" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <!--设备信息-->
-    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
-    <uses-permission android:name="android.permission.READ_PRIVILEGED_PHONE_STATE"
-        tools:ignore="ProtectedPermissions" />
-    <uses-permission android:name="android.permission.LOCAL_MAC_ADDRESS"
-        tools:ignore="ProtectedPermissions" />
-
     <application>
         <activity
             android:name=".activity.DeveloperActivity"
             android:exported="false" />
         <activity
             android:name=".activity.OrganizationActivity"
-            android:exported="false"/>
+            android:exported="false" />
         <activity
             android:name=".activity.AuthorizedResourcesActivity"
             android:exported="false" />
         <activity
             android:name=".activity.ApplicationActivity"
-            android:exported="false"/>
+            android:exported="false" />
         <activity
             android:name=".activity.RolesActivity"
             android:exported="false" />
@@ -37,16 +25,16 @@
             android:exported="false" />
         <activity
             android:name=".activity.BindEmailActivity"
-            android:exported="false"/>
+            android:exported="false" />
         <activity
             android:name=".activity.BindPhoneActivity"
-            android:exported="false"/>
+            android:exported="false" />
         <activity
             android:name=".activity.ChangePasswordActivity"
-            android:exported="false"/>
+            android:exported="false" />
         <activity
             android:name=".activity.UpdateUserProfileActivity"
-            android:exported="false"/>
+            android:exported="false" />
         <activity
             android:name=".activity.BaseAuthActivity"
             android:exported="false">
@@ -60,7 +48,7 @@
         <activity
             android:name=".activity.AuthActivity"
             android:exported="true"
-            android:screenOrientation="portrait" >
+            android:screenOrientation="portrait">
             <intent-filter tools:node="replace">
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
@@ -75,12 +63,12 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".activity.UserProfileActivity"
-            android:exported="false"/>
+            android:exported="false" />
         <activity
             android:name=".activity.DeleteAccountActivity"
             android:exported="false" />
         <activity android:name=".activity.WebActivity"
-            android:exported="false"/>
+            android:exported="false" />
         <activity android:name=".activity.AppScanLoginActivity" />
         <activity android:name=".social.web.WebAuthActivity" />
 
@@ -94,7 +82,7 @@
         <service android:name=".push.GuardPushServer"
             android:exported="false"
             android:label="PushService"
-            android:process=":pushservice"/>
+            android:process=":pushservice" />
         <service android:name=".push.PushLoginServer" />
     </application>
 
@@ -135,8 +123,8 @@
     </queries>
 
     <queries>
-        <package android:name="com.smile.gifmaker"/>
-        <package android:name="com.kuaishou.nebula"/>
+        <package android:name="com.smile.gifmaker" />
+        <package android:name="com.kuaishou.nebula" />
     </queries>
 
 </manifest>
