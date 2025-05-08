@@ -11,7 +11,7 @@ android {
         minSdk 24
         targetSdk 31
         versionCode 1
-        versionName "1.4.8"
+        versionName "1.4.9"
         archivesBaseName = "GuardDemo-$versionName"
         ndk {
             abiFilters 'armeabi' //, 'armeabi-v7a','arm64-v8a'
@@ -24,6 +24,7 @@ android {
             storePassword '123456'
             keyAlias 'guard'
             keyPassword '123456'
+
         }
     }
 
@@ -43,6 +44,9 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+    lint {
+        baseline = file("lint-baseline.xml")
+    }
 }
 
 dependencies {
@@ -54,13 +58,12 @@ dependencies {
     implementation "com.squareup.okhttp3:okhttp:4.9.2"
     implementation "androidx.biometric:biometric:1.1.0"
     testImplementation 'junit:junit:4.13.2'
-    implementation project(':guard')
     implementation project(':scanner')
     implementation project(':otp')
     implementation project(':push')
 
     // 通过网易云盾实现一键登录
-    implementation 'io.github.yidun:quicklogin:3.1.1'
+    implementation 'io.github.yidun:quicklogin:3.4.8'
     // 微信登录
     implementation 'com.tencent.mm.opensdk:wechat-sdk-android:6.8.0'
     // 支付宝登录
@@ -82,5 +85,7 @@ dependencies {
     implementation 'io.github.sinaweibosdk:core:12.5.0@aar'
     // 百度
     implementation files('libs/baidu-android-openapi-sdk.jar')
-
+    //Line
+    implementation 'cn.authing:guard:1.5.8'
+    implementation 'com.linecorp.linesdk:linesdk:latest.release'
 }

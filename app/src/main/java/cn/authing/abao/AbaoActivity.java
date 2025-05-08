@@ -43,7 +43,7 @@ public class AbaoActivity extends BaseAuthActivity {
                 }
 
                 if (!editText.isContentValid()) {
-                    Util.setErrorText(editText, getString(cn.authing.guard.R.string.authing_invalid_phone_number));
+                    Util.setErrorText(editText, getString(R.string.authing_invalid_phone_number));
                     return;
                 }
 

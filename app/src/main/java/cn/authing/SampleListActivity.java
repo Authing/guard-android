@@ -5,6 +5,7 @@ import static cn.authing.guard.activity.AuthActivity.RC_LOGIN;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ArrayAdapter;
@@ -23,13 +24,14 @@ import java.util.concurrent.Executor;
 import cn.authing.abao.AbaoActivity;
 import cn.authing.appauth.AppAuthActivity;
 import cn.authing.authenticator.AuthenticatorActivity;
+import cn.authing.guard.AuthCallback;
 import cn.authing.guard.Authing;
 import cn.authing.guard.data.UserInfo;
 import cn.authing.guard.flow.AuthFlow;
-import cn.authing.guard.oneclick.OneClick;
+import cn.authing.guard.social.handler.Line;
+import cn.authing.guard.social.handler.OneClick;
 import cn.authing.oneclick.OneClickActivity;
 import cn.authing.push.LoginByPushNotificationActivity;
-import cn.authing.push.Push;
 import cn.authing.scan.ScanAuthActivity;
 import cn.authing.theragun.TheragunAuthActivity;
 import cn.authing.ut.UTActivity;
@@ -60,7 +62,8 @@ public class SampleListActivity extends AppCompatActivity {
             "Authenticator",
             "Login by push notification",
             "谷歌登录",
-            "场景测试-api-v2"
+            "场景测试-api-v2",
+            "Line登录"
     };
 
     @Override
@@ -95,7 +98,22 @@ public class SampleListActivity extends AppCompatActivity {
                 gotoMain();
                 return;
             }
-            if (pos == AUTHING_LOGIN) {//Authing 标准登录
+            if (pos == 18) {//Line登录
+                Authing.init(SampleListActivity.this, "62417fb764e30275c74afbd7");
+                Authing.setAuthProtocol(Authing.AuthProtocol.EOIDC);
+                Line.getInstance().login(this, new AuthCallback<UserInfo>() {
+                    @Override
+                    public void call(int code, String message, UserInfo data) {
+                        Log.e("TAG_登录222","code="+code+";message="+message);
+                        if (code == 200) {
+                            // 登录成功，data 是用户信息
+                            gotoMain();
+                        } else {
+                            // 登录失败
+                        }
+                    }
+                });
+            }else if (pos == AUTHING_LOGIN) {//Authing 标准登录
                 AuthFlow authFlow = AuthFlow.start(this);
 //                authFlow.setAuthCallback(new AuthFlow.Callback<UserInfo>() {
 //                    @Override
@@ -149,7 +167,6 @@ public class SampleListActivity extends AppCompatActivity {
             }
         });
     }
-
     private void startActivity(Class<?> cls) {
         Intent intent = new Intent(SampleListActivity.this, cls);
         startActivity(intent);
@@ -158,6 +175,9 @@ public class SampleListActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        Line.getInstance().onActivityResult(requestCode, resultCode, data);
+        Log.e("TAG_登录","data="+data);
+        //登录成功后获取本地用户数据
         if (requestCode == RC_LOGIN && resultCode == OK && data != null) {
             if (biometric) {
                 startBiometric();
