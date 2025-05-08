@@ -30,7 +30,7 @@ public class TheragunAuthActivity extends BaseAuthActivity {
         if (btn != null) {
             btn.setOnClickListener((v) -> {
                 if (!editText.isContentValid()) {
-                    Util.setErrorText(editText, getString(cn.authing.guard.R.string.authing_invalid_phone_number));
+                    Util.setErrorText(editText, getString(R.string.authing_invalid_phone_number));
                     return;
                 }
 

@@ -8,4 +8,6 @@
     <string name="fb_login_protocol_scheme">fb708096037702599</string>
     <string name="facebook_client_token">47e6797c6e9e7be886ff8b62f18d06ce</string>
 
+    <string name="authing_invalid_phone_number">Invalid phone number</string>
+
 </resources>

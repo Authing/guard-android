@@ -4,7 +4,7 @@ import android.os.Bundle;
 
 import cn.authing.R;
 import cn.authing.guard.activity.AuthActivity;
-import cn.authing.guard.oneclick.OneClickAuthButton;
+import cn.authing.guard.social.view.OneClickAuthButton;
 
 public class OneClickActivity extends AuthActivity {
 
