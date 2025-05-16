@@ -8,8 +8,10 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -18,6 +20,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.biometric.BiometricManager;
 import androidx.biometric.BiometricPrompt;
 import androidx.core.content.ContextCompat;
+
+import com.google.android.material.snackbar.Snackbar;
 
 import java.util.concurrent.Executor;
 
@@ -99,17 +103,17 @@ public class SampleListActivity extends AppCompatActivity {
                 return;
             }
             if (pos == 18) {//Line登录
-                Authing.init(SampleListActivity.this, "62417fb764e30275c74afbd7");
                 Authing.setAuthProtocol(Authing.AuthProtocol.EOIDC);
+                Line.getInstance().setChannelID(null);
                 Line.getInstance().login(this, new AuthCallback<UserInfo>() {
                     @Override
                     public void call(int code, String message, UserInfo data) {
                         Log.e("TAG_登录222","code="+code+";message="+message);
                         if (code == 200) {
                             // 登录成功，data 是用户信息
-                            gotoMain();
                         } else {
                             // 登录失败
+                            showMultiLineSnackbar(findViewById(android.R.id.content), message);
                         }
                     }
                 });
@@ -175,8 +179,9 @@ public class SampleListActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        Log.e("针对Line_登录","requestCode="+requestCode + "\nresultCode="+resultCode + "\ndata="+data);
         Line.getInstance().onActivityResult(requestCode, resultCode, data);
-        Log.e("TAG_登录","data="+data);
+
         //登录成功后获取本地用户数据
         if (requestCode == RC_LOGIN && resultCode == OK && data != null) {
             if (biometric) {
@@ -252,5 +257,16 @@ public class SampleListActivity extends AppCompatActivity {
         //new Push().registerDevice(this);
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
+    }
+
+    void showMultiLineSnackbar(View view, String message) {
+        Snackbar snackbar = Snackbar.make(view, message, Snackbar.LENGTH_LONG);
+        // 获取 Snackbar 的 TextView 并设置多行显示
+        TextView textView = snackbar.getView().findViewById(com.google.android.material.R.id.snackbar_text);
+        if (textView != null) {
+            textView.setMaxLines(5); // 设置最大行数
+        }
+
+        snackbar.show();
     }
 }

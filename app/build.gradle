@@ -11,7 +11,7 @@ android {
         minSdk 24
         targetSdk 31
         versionCode 1
-        versionName "1.4.9"
+        versionName "1.5.0"
         archivesBaseName = "GuardDemo-$versionName"
         ndk {
             abiFilters 'armeabi' //, 'armeabi-v7a','arm64-v8a'
